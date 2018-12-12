@@ -12,7 +12,7 @@ import '@polymer/iron-icons/av-icons.js';
  * https://npm-demos.appspot.com/@polymer/iron-icons@3.0.1/demo/index.html
  */
 
-class JukeboxControl extends PolymerElement {
+class TrackControl extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -37,7 +37,6 @@ class JukeboxControl extends PolymerElement {
           margin-top: 10px;
         }
       </style>
-      <!-- shadow DOM goes here -->
       
       <div class="container">  
         <div class="controls-container">
@@ -54,15 +53,6 @@ class JukeboxControl extends PolymerElement {
             <paper-icon-button icon="av:skip-next"></paper-icon-button>
 
             <paper-icon-button icon="av:repeat"></paper-icon-button>
-
-          </div>
-          
-          <div class="controls">
-            <paper-icon-button icon="av:volume-mute"></paper-icon-button>  
-
-            <paper-icon-button icon="av:volume-down"></paper-icon-button>  
-
-            <paper-icon-button icon="av:volume-up"></paper-icon-button>  
 
           </div>
           
@@ -90,4 +80,4 @@ class JukeboxControl extends PolymerElement {
 
 }
 
-customElements.define('jukebox-control', JukeboxControl);
+customElements.define('track-control', TrackControl);

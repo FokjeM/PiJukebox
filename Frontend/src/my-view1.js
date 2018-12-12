@@ -10,8 +10,10 @@
 
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import './shared-styles.js';
-import './elements/current-song.js';
-import './elements/jukebox-control.js';
+import './elements/current-track.js';
+import './elements/track-list.js';
+import './elements/track-control.js';
+import './elements/volume-control.js';
 
 class MyView1 extends PolymerElement {
   static get template() {
@@ -23,25 +25,23 @@ class MyView1 extends PolymerElement {
           padding: 10px;
         }
         
-        current-song {
+        current-track {
           width: 100%;
         }
       </style>
 
       <div class="card">
-        <div class="circle">1</div>
-        <h1>View One</h1>
-        <p>Ut labores minimum atomorum pro. Laudem tibique ut has.</p>
-        <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
+        <track-list></track-list>
       </div>
       
       <div class="card">
-        <current-song
-            song-id="1"
-            song-name="The current song"
-            song-artist="Artist of the song">
-        </current-song>
-        <jukebox-control></jukebox-control>
+        <current-track
+            track-id="1"
+            track-name="The current track"
+            track-artist="Artist of the track">
+        </current-track>
+        <track-control></track-control>
+        <volume-control></volume-control>
       </div>
     `;
   }

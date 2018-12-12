@@ -1,7 +1,7 @@
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import './../shared-styles.js';
 
-class CurrentSong extends PolymerElement {
+class TrackList extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -14,19 +14,19 @@ class CurrentSong extends PolymerElement {
           flex-direction: column;
         }
         
-        .song-info {
+        .track-info {
           display: flex;
           flex-direction: column;
           align-items: center;
         }
       </style>
-      <!-- shadow DOM goes here -->
       
       <div class="container">
         
-        <div class="song-info">
-          <p>[[songName]]</p>
-          <p>[[songArtist]]</p>
+        <div class="track-info">
+          HERE GOES THE TRACK LIST
+          <!--<p>[[trackName]]</p>-->
+          <!--<p>[[trackArtist]]</p>-->
         </div>
           
       </div>
@@ -35,13 +35,13 @@ class CurrentSong extends PolymerElement {
 
   static get properties() {
     return {
-      songId: {
+      trackId: {
         type: Number
       },
-      songName: {
+      trackName: {
         type: String
       },
-      songArtist: {
+      trackArtist: {
         type: String
       }
     };
@@ -49,4 +49,4 @@ class CurrentSong extends PolymerElement {
 
 }
 
-customElements.define('current-song', CurrentSong);
+customElements.define('track-list', TrackList);
