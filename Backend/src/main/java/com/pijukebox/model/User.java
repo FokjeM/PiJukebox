@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 @Data
 @AllArgsConstructor
-@Table(schema = "", name = "")
+@Table(schema = "pijukebox", name = "user")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class User implements Serializable {
 

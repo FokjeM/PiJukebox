@@ -2,15 +2,13 @@ package com.pijukebox.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Data
 @AllArgsConstructor
-@Table(schema = "", name = "")
+@Table(schema = "pijukebox", name = "genre")
 public class Genre {
 
     @Id

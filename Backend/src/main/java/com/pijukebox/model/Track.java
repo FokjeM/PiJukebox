@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Entity
 @Data
 @AllArgsConstructor
-@Table(schema = "", name = "")
+@Table(schema = "pijukebox", name = "track")
 public class Track implements Serializable {
 
     @Id
@@ -28,5 +28,4 @@ public class Track implements Serializable {
 
     @NotNull
     private String Extension;
-
 }

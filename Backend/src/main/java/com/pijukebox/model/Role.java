@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Data
 @AllArgsConstructor
-@Table(schema = "", name = "")
+@Table(schema = "pijukebox", name = "role")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Role implements Serializable {
 
