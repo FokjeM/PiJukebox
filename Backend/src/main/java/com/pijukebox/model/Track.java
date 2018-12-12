@@ -1,40 +1,32 @@
 package com.pijukebox.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
+@Data
+@AllArgsConstructor
 @Table(schema = "", name = "")
 public class Track implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter
-    @Setter
     private Long id;
 
     @NotNull
-    @Getter
-    @Setter
     private String name;
 
     @NotNull
-    @Getter
-    @Setter
     private String description;
 
     @NotNull
-    @Getter
-    @Setter
     private String Genre;
 
     @NotNull
-    @Getter
-    @Setter
     private String Extension;
 
 }

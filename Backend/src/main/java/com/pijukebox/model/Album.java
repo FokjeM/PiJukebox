@@ -1,17 +1,17 @@
 package com.pijukebox.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import javax.persistence.*;
 
 @Entity
+@Data
+@AllArgsConstructor
 @Table(schema = "", name = "")
 public class Album {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter
-    @Setter
     private Long id;
 }
