@@ -55,7 +55,6 @@ class JukeboxControl extends PolymerElement {
 
             <paper-icon-button icon="av:repeat"></paper-icon-button>
 
-            <paper-icon-button icon="av:stop"></paper-icon-button>  
           </div>
           
           <div class="controls">
@@ -65,7 +64,6 @@ class JukeboxControl extends PolymerElement {
 
             <paper-icon-button icon="av:volume-up"></paper-icon-button>  
 
-            <paper-icon-button icon="av:stop"></paper-icon-button>  
           </div>
           
         </div>
