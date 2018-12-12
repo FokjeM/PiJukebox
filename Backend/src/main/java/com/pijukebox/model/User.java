@@ -1,4 +1,4 @@
-package com.pijubox.model;
+package com.pijukebox.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
+@Table(schema = "", name = "")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class User implements Serializable {
 

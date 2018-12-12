@@ -1,6 +1,6 @@
-package com.pijubox.service;
+package com.pijukebox.service;
 
-import com.pijubox.model.Role;
+import com.pijukebox.model.Role;
 
 import java.util.List;
 

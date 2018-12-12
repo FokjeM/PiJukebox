@@ -1,6 +1,6 @@
-package com.pijubox;
+package com.pijukebox;
 
-import com.pijubox.configuration.AppConfig;
+import com.pijukebox.configuration.AppConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class PiJuboxApplication extends AbstractAnnotationConfigDispatcherServletInitializer {

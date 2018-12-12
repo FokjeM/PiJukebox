@@ -1,9 +1,11 @@
-package com.pijubox.controller;
+package com.pijukebox.controller;
 
-import com.pijubox.model.User;
-import com.pijubox.service.RoleService;
-import com.pijubox.service.UserService;
+import com.pijukebox.model.User;
+import com.pijukebox.service.RoleService;
+import com.pijukebox.service.UserService;
 import io.swagger.annotations.ApiOperation;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,11 +13,12 @@ import java.util.List;
 @CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1")
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserController {
 
-    private final UserService userService;
+    private UserService userService;
 
-    private final RoleService roleService;
+    private RoleService roleService;
 
     public UserController(UserService userService, RoleService roleService) {
         this.userService = userService;
@@ -23,7 +26,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    @ApiOperation(value = "Get all users in the application including their role.", notes = "Only works as admin")
+    @ApiOperation(value = "Get all users in the application including their role.")
     public List<User> users(@RequestParam(required = false) String role) {
         if (role != null) {
             return userService.findByRole(roleService.findByName(role));
