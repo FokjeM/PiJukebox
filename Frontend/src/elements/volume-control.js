@@ -42,6 +42,11 @@ class VolumeControl extends PolymerElement {
           /*color: red;*/
           padding-top: 5px;
         }
+        
+        #volumeSlider {
+          color: red;
+          
+        }
       </style>
       
       <div class="container">  
@@ -49,15 +54,13 @@ class VolumeControl extends PolymerElement {
           
           <!--<div class="controls">-->
             <!--<paper-icon-button icon="av:volume-mute"></paper-icon-button>-->
-
             <!--<paper-icon-button icon="av:volume-down"></paper-icon-button>-->
-
             <!--<paper-icon-button icon="av:volume-up"></paper-icon-button>-->
           <!--</div>-->
           
           <div class="controls">
             <iron-icon icon="[[volumeIcon]]"></iron-icon>
-            <paper-slider id="volumeSlider" max="10" step="1" value="2"></paper-slider>
+            <paper-slider id="volumeSlider" max="10" step="1" value="2" on-change="changeVolumeIcon"></paper-slider>
           </div>
           
         </div>
@@ -74,24 +77,20 @@ class VolumeControl extends PolymerElement {
     };
   }
 
-  ready() {
-    super.ready();
-
+  changeVolumeIcon() {
     let volume = this.$.volumeSlider;
     let volumeLevel = volume.value;
-    volume.addEventListener('value-change', function () {
-      if (volumeLevel => 1 || volumeLevel <= 4) {
-        // low
-      } else if (volumeLevel => 5 || volumeLevel <= 7) {
-        // medium
-      } else if (volumeLevel => 8 || volumeLevel <= 10) {
-        //high
-      } else {
-        // mute
-      }
-      console.log(volume.value);
-    });
 
+    if (volumeLevel >= 1 && volumeLevel <= 5) {
+      // low / medium
+      this.volumeIcon = "av:volume-down";
+    } else if (volumeLevel >= 6 && volumeLevel <= 10) {
+      //high
+      this.volumeIcon = "av:volume-up";
+    } else {
+      // mute
+      this.volumeIcon = "av:volume-off";
+    }
   }
 
 }
