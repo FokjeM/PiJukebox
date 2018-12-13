@@ -11,6 +11,10 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import './shared-styles.js';
 
+import '@polymer/app-route/app-location.js';
+import '@polymer/app-route/app-route.js';
+import '@polymer/iron-ajax/iron-ajax.js';
+
 class MyView3 extends PolymerElement {
   static get template() {
     return html`
@@ -21,12 +25,31 @@ class MyView3 extends PolymerElement {
           padding: 10px;
         }
       </style>
+      
+      <app-location 
+        route="{{route}}"
+        url-space-regex="^[[rootPath]]">
+      </app-location>
 
+      <app-route 
+        route="{{route}}" 
+        pattern="[[rootPath]]view3/:playlistId"
+        data="{{routeData}}" 
+        tail="{{subroute}}">
+      </app-route>
+
+      <iron-ajax
+        auto
+        url="http://localhost:8080/api/v1/laptops/[[routeData.playlistId]]"
+        handle-as="json"
+        last-response="{{playlist}}">
+      </iron-ajax>
+      
       <div class="card">
-        <div class="circle">3</div>
-        <h1>View Three</h1>
-        <p>Modus commodo minimum eum te, vero utinam assueverit per eu.</p>
-        <p>Ea duis bonorum nec, falli paulo aliquid ei eum.Has at minim mucius aliquam, est id tempor laoreet.Pro saepe pertinax ei, ad pri animal labores suscipiantur.</p>
+        <h1>Playlist: [[playlist.name]]</h1>
+        
+        PLACE SONGS HERE
+        
       </div>
     `;
   }

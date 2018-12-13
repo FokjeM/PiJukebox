@@ -8,8 +8,11 @@
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
 
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import './shared-styles.js';
+
+import '@polymer/polymer/lib/elements/dom-repeat.js';
+import '@polymer/iron-ajax/iron-ajax.js';
 
 class MyView2 extends PolymerElement {
   static get template() {
@@ -21,15 +24,43 @@ class MyView2 extends PolymerElement {
           padding: 10px;
         }
       </style>
-
+      
+      <iron-ajax
+        auto
+        url="http://localhost:8080/api/v1/laptops/"
+        handle-as="json"
+        last-response="{{response}}">
+      </iron-ajax>
+        
       <div class="card">
-        <div class="circle">2</div>
-        <h1>View Two</h1>
-        <p>Ea duis bonorum nec, falli paulo aliquid ei eum.</p>
-        <p>Id nam odio natum malorum, tibique copiosae expetenda mel ea.Detracto suavitate repudiandae no eum. Id adhuc minim soluta nam.Id nam odio natum malorum, tibique copiosae expetenda mel ea.</p>
+        <div class="container">
+            
+          <h1>Playlists</h1>
+          <dom-repeat items="{{response}}" as="playlist">
+            <template>
+              <div class="playlist-info">
+                <a name="configure-laptop" href="[[rootPath]]view3/[[playlist.id]]">
+                  <div>
+                    [[playlist.id]]: [[playlist.name]]
+                  </div>
+                </a>
+              </div>
+            </template>
+          </dom-repeat>
+          
+        </div>
       </div>
     `;
   }
+
+  // static get properties() {
+  //   return {
+  //     playlistId: {
+  //       type: Number
+  //     }
+  //   };
+  // }
+
 }
 
 window.customElements.define('my-view2', MyView2);
