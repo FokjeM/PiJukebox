@@ -23,6 +23,11 @@ import '@polymer/iron-selector/iron-selector.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import './my-icons.js';
 
+import './elements/current-track.js';
+import './elements/track-control.js';
+import './elements/volume-control.js';
+
+
 // Gesture events like tap and track generated from touch will not be
 // preventable, allowing for better scrolling performance.
 setPassiveTouchGestures(true);
@@ -106,6 +111,15 @@ class MyApp extends PolymerElement {
             <my-view3 name="view3"></my-view3>
             <my-view404 name="view404"></my-view404>
           </iron-pages>
+          
+          <current-track
+              track-id="1"
+              track-name="The current track"
+              track-artist="Artist of the track">
+          </current-track>
+          <track-control>
+          </track-control>
+          <volume-control></volume-control>
         </app-header-layout>
       </app-drawer-layout>
     `;

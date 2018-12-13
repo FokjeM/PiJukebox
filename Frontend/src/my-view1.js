@@ -34,15 +34,6 @@ class MyView1 extends PolymerElement {
         <track-list></track-list>
       </div>
       
-      <div class="card">
-        <current-track
-            track-id="1"
-            track-name="The current track"
-            track-artist="Artist of the track">
-        </current-track>
-        <track-control></track-control>
-        <volume-control></volume-control>
-      </div>
     `;
   }
 }
