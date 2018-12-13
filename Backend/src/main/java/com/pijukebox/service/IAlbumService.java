@@ -4,7 +4,7 @@ import com.pijukebox.model.Album;
 
 import java.util.List;
 
-public interface AlbumService {
+public interface IAlbumService {
     List<Album> findAll();
 
     Album findById(Long id);

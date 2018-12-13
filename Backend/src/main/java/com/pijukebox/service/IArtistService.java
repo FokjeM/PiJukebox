@@ -4,7 +4,7 @@ import com.pijukebox.model.Artist;
 
 import java.util.List;
 
-public interface ArtistService {
+public interface IArtistService {
 
     List<Artist> findAll();
 
