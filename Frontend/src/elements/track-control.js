@@ -47,7 +47,7 @@ class TrackControl extends PolymerElement {
             <paper-icon-button icon="av:skip-previous"></paper-icon-button>
 
             <paper-icon-button icon="[[playPauseIcon]]"
-                on-click="changePlayPauseIcon">
+                on-tap="changePlayPauseIcon">
             </paper-icon-button>
             
             <paper-icon-button icon="av:skip-next"></paper-icon-button>

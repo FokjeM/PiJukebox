@@ -15,7 +15,7 @@ import './elements/track-list.js';
 import './elements/track-control.js';
 import './elements/volume-control.js';
 
-class MyView1 extends PolymerElement {
+class AllTracks extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -38,4 +38,4 @@ class MyView1 extends PolymerElement {
   }
 }
 
-window.customElements.define('my-view1', MyView1);
+window.customElements.define('all-tracks', AllTracks);

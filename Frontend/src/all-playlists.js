@@ -14,7 +14,7 @@ import './shared-styles.js';
 import '@polymer/polymer/lib/elements/dom-repeat.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 
-class MyView2 extends PolymerElement {
+class AllPlaylists extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -39,7 +39,7 @@ class MyView2 extends PolymerElement {
           <dom-repeat items="{{response}}" as="playlist">
             <template>
               <div class="playlist-info">
-                <a name="configure-laptop" href="[[rootPath]]view3/[[playlist.id]]">
+                <a name="configure-laptop" href="[[rootPath]]playlist/[[playlist.id]]">
                   <div>
                     [[playlist.id]]: [[playlist.name]]
                   </div>
@@ -63,4 +63,4 @@ class MyView2 extends PolymerElement {
 
 }
 
-window.customElements.define('my-view2', MyView2);
+window.customElements.define('all-playlists', AllPlaylists);

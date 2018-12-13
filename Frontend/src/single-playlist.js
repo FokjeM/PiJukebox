@@ -15,7 +15,7 @@ import '@polymer/app-route/app-location.js';
 import '@polymer/app-route/app-route.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 
-class MyView3 extends PolymerElement {
+class SinglePlaylist extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -33,7 +33,7 @@ class MyView3 extends PolymerElement {
 
       <app-route 
         route="{{route}}" 
-        pattern="[[rootPath]]view3/:playlistId"
+        pattern="[[rootPath]]playlist/:playlistId"
         data="{{routeData}}" 
         tail="{{subroute}}">
       </app-route>
@@ -55,4 +55,4 @@ class MyView3 extends PolymerElement {
   }
 }
 
-window.customElements.define('my-view3', MyView3);
+window.customElements.define('single-playlist', SinglePlaylist);
