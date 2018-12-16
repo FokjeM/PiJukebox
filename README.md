@@ -27,3 +27,5 @@ It'll run on the current Raspbian Lite build (No GUI by default, no useless soft
   - mvn build on the Pi
   - polymer serve on the Pi
     - Try looking for a way to have Maven do this for us
+
+## This is the README.md for MASTER, this covers ALL COMPONENTS
