@@ -29,4 +29,8 @@ It'll run on the current Raspbian Lite build (No GUI by default, no useless soft
 
 
 
-# This is the README.md for MASTER, this covers ALL COMPONENTS
+# This is the README.md for Martin, this covers the components:
+  - Media from this branch
+  - Diagrams made for this branch
+  - the Player class
+    - Any classes and components needed for a Player
