@@ -55,6 +55,7 @@
                 <configuration>
                     <source>8</source>
                     <target>8</target>
+                    <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
         </plugins>
