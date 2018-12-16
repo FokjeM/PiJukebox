@@ -9,13 +9,14 @@ This is supposed to emulate a Jukebox on a Raspberry Pi
 It'll run on the current Raspbian Lite build (No GUI by default, no useless software, lightweight and powerful) (Debian 9 based)
 
 # What we NEED on the system
-  [x] Git, so we can download and build the latest source
-  [ ] Polymer.js so we can actually serve the frontend
-    [ ] This is built on NodeJS
-    [ ] This requires NPM
-  [ ] JDK 8 (the JDK includes the JRE); preferrably the Oracle JDK even though it isn't open source
-  [ ] Maven in order to build
-  [ ] MariaDB / MySQL / MongoDB / Any DB system
+  - [x] Git, so we can download and build the latest source
+   - This is included in Linux by default, possibly because Linus Torvalds is also the creator of Git
+  - [ ] Polymer.js so we can actually serve the frontend
+    - [ ] This is built on NodeJS
+    - [ ] This requires NPM
+  - [ ] JDK 8 (the JDK includes the JRE); preferrably the Oracle JDK even though it isn't open source
+  - [ ] Maven in order to build
+  - [ ] MariaDB / MySQL / MongoDB / Any DB system as per the group agreements
 
 # How this works
   - Write a component
