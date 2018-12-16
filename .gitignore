@@ -59,3 +59,9 @@ hs_err_pid*
 # For anyone still using BlueJ #
 *.ctxt
 
+# I use NetBeans as it's the only IDE currently installed on my system. #
+# I moved to this <4mb downspeed dark hole just after needing a fresh Windows. #
+# So now I can't get decent software to download and install due to #
+# errors and failed downloads... #
+nb-configuration.xml # You don't need my config!
+
