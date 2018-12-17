@@ -1,8 +1,6 @@
 package com.pijukebox.controller;
 
-import com.pijukebox.model.Playlist;
 import com.pijukebox.model.User;
-import com.pijukebox.service.IPlaylistService;
 import com.pijukebox.service.IRoleService;
 import com.pijukebox.service.IUserService;
 import io.swagger.annotations.ApiOperation;
@@ -20,16 +18,17 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserController {
 
+    // https://spring.io/guides/gs/accessing-data-mysql/
+
     private IUserService userService;
 
     private IRoleService roleService;
 
-    private IPlaylistService playlistService;
 
-    public UserController(IUserService userService, IRoleService roleService, IPlaylistService playlistService) {
+    public UserController(IUserService userService, IRoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
-        this.playlistService = playlistService;
+
     }
 
     @GetMapping("/users")
@@ -54,26 +53,5 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public User currentUser(Authentication authentication) {
         return ((UserDetails) authentication.getPrincipal()).getUser();
-    }
-
-    @GetMapping("/users/{userId}/playlists")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @ApiOperation(value = "Retrieve all playlists of a user.")
-    public List<Playlist> userPlaylists(@PathVariable Long userId) {
-        return playlistService.findAllByUserId(userId);
-    }
-
-    @PostMapping("/users/{userId}/playlists")
-    @ApiOperation(value = "Save a new playlist.")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public Playlist savePlaylist(@PathVariable Long userId) {
-        return playlistService.save(userId);
-    }
-
-    @DeleteMapping("/users/{userId}/playlists/{playlistId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or isCurrentUser(userId)")
-    @ApiOperation(value = "Delete a playlists of a user.", notes = "Only the current user can delete a playlist and someone with the Admin role.")
-    public Playlist deletePlaylist(@PathVariable Long userId, long playlistId) {
-        return playlistService.delete(userId, playlistId);
     }
 }
