@@ -18,5 +18,6 @@ public class Artist implements Serializable {
     private Long id;
 
     @NotNull
+    @Column(nullable = false)
     private String name;
 }

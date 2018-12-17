@@ -19,12 +19,15 @@ public class Track implements Serializable {
     private Long id;
 
     @NotNull
+    @Column(nullable = false)
     private String name;
 
     @NotNull
+    @Column(nullable = false)
     private String description;
 
     @NotNull
+    @Column(nullable = false)
     private String filename;
 
     // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation

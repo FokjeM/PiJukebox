@@ -18,9 +18,11 @@ public class Role implements Serializable {
     private Long id;
 
     @NotNull
+    @Column(nullable = false)
     private String code;
 
     @NotNull
+    @Column(nullable = false)
     private String description;
 
 }

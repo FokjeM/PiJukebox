@@ -9,7 +9,7 @@ public interface IPlaylistService {
 
     Playlist findById(Long id);
 
-    Playlist save(Long userId);
+    Playlist save(Playlist playlist);
 
     Playlist delete(Long userId, long playlistId);
 }
