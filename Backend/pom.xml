@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.pijukebox</groupId>
+    <artifactId>pi-jukebox</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <properties>
+        <spring.version>5.1.2.RELEASE</spring.version>
+        <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+        <cargo-core-container-tomcat.version>1.7.0</cargo-core-container-tomcat.version>
+        <maven-war-plugin.version>3.2.2</maven-war-plugin.version>
+        <cargo-maven2-plugin.version>9.0.13</cargo-maven2-plugin.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- Necessary for writing our initialization code -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+        </dependency>
+
+        <!-- We want to serialize to and deserialize from JSON -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.9.7</version>
+        </dependency>
+
+        <!-- For managing our logging -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.7</version>
+        </dependency>
+
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.4</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>5.1.2.RELEASE</version>
+        </dependency>
+
+        <!-- API documentation generation -->
+        <!-- https://github.com/springfox/springfox -->
+        <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version>
+        </dependency>
+
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>projectlombok.org</id>
+            <url>http://projectlombok.org/mavenrepo</url>
+        </repository>
+    </repositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${maven-war-plugin.version}</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+
+            <!--We want to deploy our web application and we're using Tomcat for that-->
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <version>${cargo-core-container-tomcat.version}</version>
+                <configuration>
+                    <!-- Container configuration -->
+                    <deployables>
+                        <!--The part of the project to deploy, in our case, this whole project-->
+                        <deployable>
+                            <groupId>com.theepot</groupId>
+                            <artifactId>SpringREST</artifactId>
+                            <type>war</type>
+                            <properties>
+                                <!--We listen to the root path-->
+                                <context>/</context>
+                            </properties>
+                        </deployable>
+                    </deployables>
+                    <!--The container we want to use and what we use to install it
+                    It can do this automatically as well, but it's neat to define it-->
+                    <container>
+                        <containerId>tomcat9x</containerId>
+                        <artifactInstaller>
+                            <groupId>org.apache.tomcat</groupId>
+                            <artifactId>tomcat</artifactId>
+                            <version>${cargo-maven2-plugin.version}</version>
+                        </artifactInstaller>
+                    </container>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>10</source>
+                    <target>11</target>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
