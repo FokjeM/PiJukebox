@@ -2,14 +2,12 @@ package com.pijukebox.service.impl;
 
 import com.pijukebox.model.Playlist;
 import com.pijukebox.service.IPlaylistService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class PlaylistServiceImpl implements IPlaylistService {
-    @Override
-    public List<Playlist> findAll() {
-        return null;
-    }
 
     @Override
     public List<Playlist> findAllByUserId(Long id) {
@@ -22,7 +20,7 @@ public class PlaylistServiceImpl implements IPlaylistService {
     }
 
     @Override
-    public Playlist save(Long userId) {
+    public Playlist save(Playlist playlist) {
         return null;
     }
 

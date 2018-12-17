@@ -7,12 +7,14 @@ import com.pijukebox.service.IUserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UserServiceImpl implements UserDetailsService, IUserService {
 
-    IUserRepository userRepository;
+    private IUserRepository userRepository;
 
     @Override
     public List<User> findAll() {
