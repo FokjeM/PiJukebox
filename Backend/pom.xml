@@ -24,6 +24,25 @@
             <version>${spring.version}</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>5.1.2.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>5.1.2.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>1.11.9.RELEASE</version>
+        </dependency>
+
         <!-- Necessary for writing our initialization code -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -52,13 +71,6 @@
             <version>1.18.4</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-            <version>5.1.2.RELEASE</version>
-        </dependency>
-
         <!-- API documentation generation -->
         <!-- https://github.com/springfox/springfox -->
         <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
@@ -67,6 +79,7 @@
             <artifactId>springfox-swagger2</artifactId>
             <version>2.9.2</version>
         </dependency>
+
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
@@ -103,7 +116,7 @@
                     <deployables>
                         <!--The part of the project to deploy, in our case, this whole project-->
                         <deployable>
-                            <groupId>com.theepot</groupId>
+                            <groupId>com.pijukebox</groupId>
                             <artifactId>SpringREST</artifactId>
                             <type>war</type>
                             <properties>
