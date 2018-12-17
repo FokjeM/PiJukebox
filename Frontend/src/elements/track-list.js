@@ -22,10 +22,36 @@ class TrackList extends PolymerElement {
           flex-direction: column;
         }
         
-        .track-info {
+        .track-link {
           display: flex;
-          flex-direction: column;
-          align-items: flex-start;
+          flex-direction: row;
+          justify-content: space-between;
+          justify-items: center;
+          padding: 10px;
+        }
+        
+        .track-link:hover{
+          background-color: #eeeeee;
+          border-radius: 50px;
+        }
+        
+        .track-track{
+          text-align: left;
+          padding-top: 9px;
+        }
+        
+        .track-artist {
+          text-align: center;
+          padding-top: 9px;
+        }
+        
+        .track-time {
+          text-align: right;
+          padding-top: 9px;
+        }
+        
+        .track-link div{
+          width: 25%;
         }
       </style>
       
@@ -37,21 +63,27 @@ class TrackList extends PolymerElement {
       </iron-ajax>
       
       <div class="container">
-          
-        <div class="track-info">
-          <h1>Tracks</h1>
-            <dom-repeat items="{{response}}" as="track">
-              <template>
-                <div class="track-info">
-                  <div>
-                    <paper-icon-button icon="av:play-circle-outline"></paper-icon-button>
-                    [[track.id]]: [[track.name]]
-                  </div>
-                </div>
-              </template>
-            </dom-repeat>
-        </div>
-          
+        
+        <h1>Tracks</h1>
+        <dom-repeat items="{{response}}" as="track">
+          <template>
+            <div class="track-link">
+              <div class="play-icon">
+                <paper-icon-button icon="av:play-circle-outline"></paper-icon-button>
+              </div>
+              <div class="track-track">
+                [[track.id]]: [[track.name]]
+              </div>
+              <div class="track-artist">
+                artist
+              </div>
+              <div class="track-time">
+                time
+              </div>
+            </div>
+          </template>
+        </dom-repeat>
+        
       </div>
     `;
   }

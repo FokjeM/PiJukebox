@@ -23,6 +23,16 @@ class AllPlaylists extends PolymerElement {
 
           padding: 10px;
         }
+        
+        a {
+          text-decoration: none;
+          color: inherit;
+        }
+      
+        .container {
+          display: flex;
+          flex-direction: column;
+        }
       </style>
       
       <iron-ajax
@@ -38,9 +48,9 @@ class AllPlaylists extends PolymerElement {
           <h1>Playlists</h1>
           <dom-repeat items="{{response}}" as="playlist">
             <template>
-              <div class="playlist-info">
-                <a name="configure-laptop" href="[[rootPath]]playlist/[[playlist.id]]">
-                  <div>
+              <div>
+                <a class="playlist-link" href="[[rootPath]]playlist/[[playlist.id]]">
+                  <div class="playlist-track">
                     [[playlist.id]]: [[playlist.name]]
                   </div>
                 </a>
