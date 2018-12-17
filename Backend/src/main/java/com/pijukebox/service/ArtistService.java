@@ -11,4 +11,8 @@ public interface ArtistService {
     List<Artist> findMany(Long amount);
 
     Artist findByName(String name);
+
+    Artist addArtist(Artist artist);
+
+    Artist deleteArtist(Long id);
 }

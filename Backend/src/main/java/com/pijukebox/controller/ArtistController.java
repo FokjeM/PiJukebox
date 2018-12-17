@@ -21,12 +21,25 @@ public class ArtistController {
         this.artistService = artistService;
     }
 
-    @GetMapping("/tracks?amount={amount}")
-    @ApiOperation(value = "Get all artists in the application or limit results when the 'amount' parameter is specified")
-    public List<Artist> artists(@PathVariable Long amount) {
-        if (amount == null || amount <= 0) {
-            return artistService.findMany(amount);
+    @GetMapping("/artist?limit={limit}")
+    @ApiOperation(value = "Get all artists in the application or limit results when the 'limit' parameter is specified")
+    public List<Artist> artists(@PathVariable("limit") Long limit) {
+        if (limit == null || limit <= 0) {
+            return artistService.findMany(limit);
         }
         return artistService.findAll();
     }
+
+    @PostMapping("/artist")
+    public Artist addArtist(Artist artist)
+    {
+        return artistService.addArtist(artist);
+    }
+
+    @DeleteMapping("/artist/{id}")
+    public Artist deleteArtist(@PathVariable("id") Long id)
+    {
+        return artistService.deleteArtist(id);
+    }
 }
+

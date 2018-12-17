@@ -8,4 +8,8 @@ public interface AlbumService {
     List<Album> findAll();
 
     Album findById(Long id);
+
+    Album addAlbum(Album album);
+
+    Album deleteAlbum(Long id);
 }
