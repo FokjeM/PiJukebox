@@ -5,6 +5,8 @@ import com.pijukebox.service.IArtistService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,10 +25,22 @@ public class ArtistController {
 
     @GetMapping("/tracks?amount={amount}")
     @ApiOperation(value = "Get all artists in the application or limit results when the 'amount' parameter is specified")
-    public List<Artist> artists(@PathVariable Long amount) {
+    public List<Artist> artists(@PathVariable("amount") Long amount) {
         if (amount == null || amount <= 0) {
             return IArtistService.findMany(amount);
         }
         return IArtistService.findAll();
+    }
+
+    @PutMapping("/track")
+    public ResponseEntity<Artist> addArtist(Artist a)
+    {
+        return IArtistService.addArtist(a);
+    }
+
+    @DeleteMapping("/track/{id}")
+    public boolean deleteArtist(@PathVariable("id") Long id)
+    {
+        return IArtistService.deleteArtist(id);
     }
 }
