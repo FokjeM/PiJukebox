@@ -3,12 +3,6 @@ import './../shared-styles.js';
 import '@polymer/polymer/lib/elements/dom-repeat.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 
-import '@polymer/paper-button/paper-button.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@polymer/iron-icon/iron-icon.js';
-import '@polymer/iron-icons/iron-icons.js';
-import '@polymer/iron-icons/av-icons.js';
-
 class TrackList extends PolymerElement {
   static get template() {
     return html`
@@ -16,43 +10,21 @@ class TrackList extends PolymerElement {
         :host {
           display: block;
         }
-        
-        .container {
+
+        .trackLink {
           display: flex;
           flex-direction: column;
+          margin-bottom: 10px;
         }
         
-        .track-link {
+        .trackInfo {
           display: flex;
           flex-direction: row;
           justify-content: space-between;
-          justify-items: center;
-          padding: 10px;
+          flex-wrap: wrap;
+          padding-left: 25px;
         }
         
-        .track-link:hover{
-          background-color: #eeeeee;
-          border-radius: 50px;
-        }
-        
-        .track-track{
-          text-align: left;
-          padding-top: 9px;
-        }
-        
-        .track-artist {
-          text-align: center;
-          padding-top: 9px;
-        }
-        
-        .track-time {
-          text-align: right;
-          padding-top: 9px;
-        }
-        
-        .track-link div{
-          width: 25%;
-        }
       </style>
       
       <iron-ajax
@@ -67,18 +39,17 @@ class TrackList extends PolymerElement {
         <h1>Tracks</h1>
         <dom-repeat items="{{response}}" as="track">
           <template>
-            <div class="track-link">
-              <div class="play-icon">
-                <paper-icon-button icon="av:play-circle-outline"></paper-icon-button>
+            <div class="trackLink">
+              <div class="trackName">
+                [[track.name]]
               </div>
-              <div class="track-track">
-                [[track.id]]: [[track.name]]
-              </div>
-              <div class="track-artist">
-                artist
-              </div>
-              <div class="track-time">
-                time
+              <div class="trackInfo">
+                <div class="trackArtist">
+                  artist
+                </div>
+                <div class="trackTime">
+                  time
+                </div>
               </div>
             </div>
           </template>

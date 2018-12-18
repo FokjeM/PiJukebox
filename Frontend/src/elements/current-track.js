@@ -14,7 +14,7 @@ class CurrentTrack extends PolymerElement {
           flex-direction: column;
         }
         
-        .track-info {
+        .trackInfo {
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -23,7 +23,7 @@ class CurrentTrack extends PolymerElement {
       
       <div class="container">
         
-        <div class="track-info">
+        <div class="trackInfo">
           <p>[[trackName]]</p>
           <p>[[trackArtist]]</p>
         </div>

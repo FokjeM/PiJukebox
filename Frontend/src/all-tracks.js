@@ -24,10 +24,6 @@ class AllTracks extends PolymerElement {
 
           padding: 10px;
         }
-        
-        current-track {
-          width: 100%;
-        }
       </style>
 
       <div class="card">

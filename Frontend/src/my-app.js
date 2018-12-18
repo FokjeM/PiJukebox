@@ -117,8 +117,7 @@ class MyApp extends PolymerElement {
               track-name="The current track"
               track-artist="Artist of the track">
           </current-track>
-          <track-control>
-          </track-control>
+          <track-control></track-control>
           <volume-control></volume-control>
         </app-header-layout>
       </app-drawer-layout>

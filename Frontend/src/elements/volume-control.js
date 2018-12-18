@@ -26,7 +26,7 @@ class VolumeControl extends PolymerElement {
           flex-direction: column;
         }
         
-        .controls-container {
+        .controlsContainer {
           display: flex;
           flex-direction: column;
         }
@@ -50,7 +50,7 @@ class VolumeControl extends PolymerElement {
       </style>
       
       <div class="container">  
-        <div class="controls-container">
+        <div class="controlsContainer">
           
           <!--<div class="controls">-->
             <!--<paper-icon-button icon="av:volume-mute"></paper-icon-button>-->

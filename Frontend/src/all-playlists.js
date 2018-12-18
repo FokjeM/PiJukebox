@@ -49,8 +49,8 @@ class AllPlaylists extends PolymerElement {
           <dom-repeat items="{{response}}" as="playlist">
             <template>
               <div>
-                <a class="playlist-link" href="[[rootPath]]playlist/[[playlist.id]]">
-                  <div class="playlist-track">
+                <a class="playlistLink" href="[[rootPath]]playlist/[[playlist.id]]">
+                  <div class="playlistTrack">
                     [[playlist.id]]: [[playlist.name]]
                   </div>
                 </a>

@@ -25,7 +25,7 @@ class TrackControl extends PolymerElement {
           flex-direction: column;
         }
         
-        .controls-container {
+        .controlsContainer {
           display: flex;
           flex-direction: column;
         }
@@ -39,7 +39,7 @@ class TrackControl extends PolymerElement {
       </style>
       
       <div class="container">  
-        <div class="controls-container">
+        <div class="controlsContainer">
          
           <div class="controls">
             <paper-icon-button icon="av:shuffle"></paper-icon-button>
