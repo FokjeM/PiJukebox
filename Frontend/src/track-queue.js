@@ -13,6 +13,8 @@ class TrackQueue extends PolymerElement {
       <style include="shared-styles">
         :host {
           display: block;
+
+          padding: 10px;
         }
 
         .queueItem {
