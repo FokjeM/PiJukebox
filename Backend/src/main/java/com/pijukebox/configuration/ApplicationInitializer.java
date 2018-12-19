@@ -1,13 +1,14 @@
-package com.pijukebox;
+package com.pijukebox.configuration;
 
-import com.pijukebox.configuration.AppConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class PiJuboxApplication extends AbstractAnnotationConfigDispatcherServletInitializer {
+// https://viralpatel.net/blogs/spring-4-mvc-rest-example-json/
+
+public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
     protected Class[] getRootConfigClasses() {
-        return new Class[]{AppConfig.class};
+        return new Class[]{WebConfig.class};
     }
 
     @Override

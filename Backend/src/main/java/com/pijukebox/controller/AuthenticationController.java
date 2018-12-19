@@ -23,6 +23,6 @@ public class AuthenticationController {
         // https://www.baeldung.com/spring-security-expressions-basic
 
         // TODO Test if this code is correct.
-        return userService.findById(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser().getId());
+        return (User) userService.findById(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser().getId());
     }
 }

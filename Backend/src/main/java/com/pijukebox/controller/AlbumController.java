@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/albums")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AlbumController {
 

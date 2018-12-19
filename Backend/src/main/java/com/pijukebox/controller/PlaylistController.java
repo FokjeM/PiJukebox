@@ -12,7 +12,7 @@ import java.util.List;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/playlists")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PlaylistController {
 
@@ -24,33 +24,33 @@ public class PlaylistController {
         this.playlistService = playlistService;
     }
 
-    @GetMapping("/users/{userId}/playlists")
+    @GetMapping()
     @PreAuthorize("hasRole('ROLE_USER')")
     @ApiOperation(value = "Retrieve all playlists of a user.")
-    public List<Playlist> getPlaylists(@PathVariable Long userId) {
+    public List<Playlist> getPlaylists(@RequestParam("userId") Long userId) {
         return playlistService.findAllByUserId(userId);
     }
 
-    @PostMapping("/users/{userId}/playlists")
+    @PostMapping()
     @ApiOperation(value = "Save a new playlist.")
     @PreAuthorize("isCurrentUser(userId)")
     public Playlist savePlaylist(@PathVariable Long userId, @RequestBody Playlist playlist) {
         return playlistService.save(playlist);
     }
 
-    @PatchMapping("/users/{userId}/playlists/{playlistId}")
+    @PatchMapping()
     @ApiOperation(value = "Update a playlist.")
     @PreAuthorize("isCurrentUser(userId)")
-    public Playlist updatePlaylist(@PathVariable Long userId, long playlistId, @RequestBody Playlist playlist) throws Exception {
+    public Playlist updatePlaylist(@RequestParam long playlistId, Long userId, @RequestBody Playlist playlist) throws Exception {
         Playlist existing = playlistService.findById(playlistId);
         playlist.CopyNonNullProperties(existing);
         return playlistService.save(existing);
     }
 
-    @DeleteMapping("/users/{userId}/playlists/{playlistId}")
+    @DeleteMapping()
     @PreAuthorize("isCurrentUser(userId)")
     @ApiOperation(value = "Delete a playlists of a user.")
-    public Playlist deletePlaylist(@PathVariable Long userId, long playlistId) {
+    public Playlist deletePlaylist(@RequestParam long playlistId, Long userId) {
         return playlistService.delete(userId, playlistId);
     }
 }

@@ -85,6 +85,11 @@
             <artifactId>validation-api</artifactId>
             <version>2.0.1.Final</version>
         </dependency>
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <version>2.2</version>
+        </dependency>
 
     </dependencies>
 
@@ -117,7 +122,7 @@
                         <!--The part of the project to deploy, in our case, this whole project-->
                         <deployable>
                             <groupId>com.pijukebox</groupId>
-                            <artifactId>SpringREST</artifactId>
+                            <artifactId>pi-jukebox</artifactId>
                             <type>war</type>
                             <properties>
                                 <!--We listen to the root path-->
@@ -143,8 +148,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>10</source>
-                    <target>11</target>
+                    <source>8</source>
+                    <target>8</target>
                 </configuration>
             </plugin>
 

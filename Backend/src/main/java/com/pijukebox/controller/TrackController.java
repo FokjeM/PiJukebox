@@ -11,7 +11,7 @@ import java.util.List;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/tracks")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TrackController {
 
@@ -21,9 +21,9 @@ public class TrackController {
         this.trackService = trackService;
     }
 
-    @GetMapping("/tracks?amount={amount}")
+    @GetMapping()
     @ApiOperation(value = "Get all tracks in the application or limit results when the 'amount' parameter is specified")
-    public List<Track> tracks(@PathVariable Long amount) {
+    public List<Track> tracks(@RequestParam Long amount) {
         if (amount == null || amount <= 0) {
             return trackService.findAll(amount);
         }

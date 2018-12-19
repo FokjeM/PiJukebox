@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserDetailsService, IUserService {
 
     @Override
     public List<User> findAll() {
-        return null;
+        return userRepository.findAll();
     }
 
     @Override
