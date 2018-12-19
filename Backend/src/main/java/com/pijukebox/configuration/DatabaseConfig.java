@@ -12,13 +12,11 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
 @Slf4j
 @Configuration
-//@EnableTransactionManagement // Required for Hibernate
 @EnableJpaRepositories("com.pijukebox.repository")
 public class DatabaseConfig {
 
@@ -37,13 +35,6 @@ public class DatabaseConfig {
 
     @Bean
     public DataSource dataSource() {
-        System.out.println("I am creating your bean data source");
-        System.out.println("I am creating your bean data source");
-        System.out.println("I am creating your bean data source");
-        System.out.println("I am creating your bean data source");
-        System.out.println("I am creating your bean data source");
-        System.out.println("I am creating your bean data source");
-        System.out.println("I am creating your bean data source");
         BasicDataSource dataSource = new BasicDataSource();
 
         dataSource.setDriverClassName(DRIVER_CLASS_NAME);
@@ -85,22 +76,13 @@ public class DatabaseConfig {
 
     @Bean
     public JpaVendorAdapter jpaVendorAdapter() {
-        System.out.println("I am creating your bean jpa adapter");
-        System.out.println("I am creating your bean jpa adapter");
-        System.out.println("I am creating your bean jpa adapter");
-        System.out.println("I am creating your bean jpa adapter");
-        System.out.println("I am creating your bean jpa adapter");
         HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
         adapter.setDatabase(Database.MYSQL);
         return adapter;
     }
+
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, JpaVendorAdapter jpaVendorAdapter) {
-        System.out.println("I am creating your bean entity");
-        System.out.println("I am creating your bean entity");
-        System.out.println("I am creating your bean entity");
-        System.out.println("I am creating your bean entity");
-        System.out.println("I am creating your bean entity");
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource);
         entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter);
