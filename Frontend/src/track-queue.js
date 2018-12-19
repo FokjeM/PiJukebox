@@ -1,5 +1,4 @@
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
-import {GestureEventListeners} from '@polymer/polymer/lib/mixins/gesture-event-listeners';
 import './shared-styles.js';
 import '@polymer/polymer/lib/elements/dom-repeat.js';
 import '@polymer/iron-ajax/iron-ajax.js';
@@ -7,9 +6,8 @@ import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
-import './elements/sortable-list.js';
 
-class TrackQueue extends GestureEventListeners(PolymerElement) {
+class TrackQueue extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -17,33 +15,26 @@ class TrackQueue extends GestureEventListeners(PolymerElement) {
           display: block;
         }
 
-        .trackLink {
+        .queueItem {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+          align-items: center;
           background-color: #00000005;
           margin-bottom: 15px;
           padding: 10px;
+        }
+        
+        .trackLink {
+          display: flex;
+          flex-direction: column;
           width: 100%;
-          cursor: move;
-          -webkit-user-select: none; /* Safari 3.1+ */
-          -moz-user-select: none; /* Firefox 2+ */
-          -ms-user-select: none; /* IE 10+ */
-          user-select: none; /* Standard syntax */
         }
 
         .trackArtist {
           font-size: 12px;
         }
         
-        .item {
-        background: #ddd;
-        display: inline-block;
-        float: left;
-        height: 100px;
-        margin: 10px 10px 0 0;
-        text-align: center;
-        vertical-align: top;
-        width: 150px;
-      }
-      
       </style>
       
       <iron-ajax
@@ -53,29 +44,30 @@ class TrackQueue extends GestureEventListeners(PolymerElement) {
         last-response="{{response}}">
       </iron-ajax>
 
+      <iron-ajax
+        id="changeQueue"
+        method="POST"
+        url="http://localhost:8080/api/v1/laptops/">
+      </iron-ajax>
+
       <div class="card">  
         <div class="container">
           
           <h1>Queue</h1>
-
-          <sortable-list sortable=".item">
-            <dom-repeat items="{{response}}" id="domRepeat">
-              <template>
-                <div class="item">
-                  [[item.name]]
-                </div>
-              </template>
-            </dom-repeat>
-          </sortable-list>
-          
           <dom-repeat items="{{response}}" as="track">
             <template>
-              <div on-track="handleTrack" class="trackLink">
-                <div class="trackName">
-                  [[track.name]]
+              <div class="queueItem">
+                <div class="controls">
+                  <paper-icon-button data-track-id$="[[track.id]]" on-click="oneUp" icon="arrow-upward"></paper-icon-button>
+                  <paper-icon-button data-track-id$="[[track.id]]" on-click="oneDown" icon="arrow-downward"></paper-icon-button>
                 </div>
-                <div class="trackArtist">
-                  artist
+                <div class="trackLink">
+                  <div class="trackName">
+                    [[track.name]]
+                  </div>
+                  <div class="trackArtist">
+                    artist
+                  </div>
                 </div>
               </div>
             </template>
@@ -87,20 +79,25 @@ class TrackQueue extends GestureEventListeners(PolymerElement) {
     `;
   }
 
-  handleTrack(e) {
-    console.log('tracking');
+
+  oneUp(e) {
+    let trackToChange = e.target.dataset.trackId;
+    console.log("up: " + e.target.dataset.trackId);
+    this.$.changeQueue.setAttribute('body', '{"id":' + trackToChange + ', "direction":"up"}');
+    this.$.changeQueue.generateRequest();
+  }
+ 
+  oneDown(e) {
+    let trackToChange = e.target.dataset.trackId;
+    console.log("up: " + e.target.dataset.trackId);
+    this.$.changeQueue.setAttribute('body', '{"id":' + trackToChange + ', "direction":"down"}');
+    this.$.changeQueue.generateRequest();
   }
 
   // static get properties() {
   //   return {
-  //     trackId: {
+  //     firstId: {
   //       type: Number
-  //     },
-  //     trackName: {
-  //       type: String
-  //     },
-  //     trackArtist: {
-  //       type: String
   //     }
   //   };
   // }
