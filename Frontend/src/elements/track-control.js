@@ -1,7 +1,6 @@
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import './../shared-styles.js';
 
-import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
@@ -53,7 +52,6 @@ class TrackControl extends PolymerElement {
             <paper-icon-button icon="av:skip-next"></paper-icon-button>
 
             <paper-icon-button icon="av:repeat"></paper-icon-button>
-
           </div>
           
         </div>
