@@ -20,9 +20,9 @@ public class UserDetails implements org.springframework.security.core.userdetail
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        for (Role role : user.getRoles()) {
-            authorities.add(new SimpleGrantedAuthority(role.getCode()));
-        }
+//        for (Role role : user.getRoles()) {
+//            authorities.add(new SimpleGrantedAuthority(role.getCode()));
+//        }
         return authorities;
     }
 

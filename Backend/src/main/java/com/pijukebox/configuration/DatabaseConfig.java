@@ -1,28 +1,24 @@
 package com.pijukebox.configuration;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
-import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
-import java.util.Properties;
 
 @Slf4j
 @Configuration
-@EnableTransactionManagement // Required for Hibernate
+//@EnableTransactionManagement // Required for Hibernate
 @EnableJpaRepositories("com.pijukebox.repository")
 public class DatabaseConfig {
 
@@ -33,28 +29,53 @@ public class DatabaseConfig {
      *
      * @return The connection to the database
      */
+    private final String DRIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
+    private final String URL = "jdbc:mysql://localhost:3306/db_example?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private final String USER_NAME = "root";
+    private final String PASSWORD = "root";
+
+
     @Bean
     public DataSource dataSource() {
-        return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).addScript("classpath:schema.sql").addScript("classpath:insert-data.sql").build();
+        System.out.println("I am creating your bean data source");
+        System.out.println("I am creating your bean data source");
+        System.out.println("I am creating your bean data source");
+        System.out.println("I am creating your bean data source");
+        System.out.println("I am creating your bean data source");
+        System.out.println("I am creating your bean data source");
+        System.out.println("I am creating your bean data source");
+        BasicDataSource dataSource = new BasicDataSource();
+
+        dataSource.setDriverClassName(DRIVER_CLASS_NAME);
+        dataSource.setUsername(USER_NAME);
+        dataSource.setPassword(PASSWORD);
+        dataSource.setUrl(URL);
+        dataSource.setMaxActive(10);
+        dataSource.setMaxIdle(5);
+        dataSource.setInitialSize(5);
+        dataSource.setValidationQuery("SELECT 1");
+        //    return new EmbeddedDatabaseBuilder()
+//            .setType(EmbeddedDatabaseType.H2)
+//            .addScript("classpath:schema.sql")
+//            .addScript("classpath:insert-data.sql")
+//            .build();
+//    return new EmbeddedDatabaseBuilder().setType()
+        return dataSource;
     }
 
-
+    /**
+     * JDBC by itself is tough to use, so we wrap it in the {@link JdbcTemplate} from Spring,
+     * which handles a lot of the boilerplate for us.
+     * Pure JDBC has its uses though. While it gives a lot of boilerplate,
+     * it also gives a lot of control, which can be useful for certain applications.
+     * Think of having to make very complex queries for very specific situations.
+     *
+     * @param dataSource
+     * @return
+     */
     @Bean
-    public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
-        LocalSessionFactoryBean sfb = new LocalSessionFactoryBean();
-        sfb.setDataSource(dataSource);
-        sfb.setPackagesToScan("com.pijukebox.model");
-        Properties props = new Properties();
-        props.setProperty("dialect", "org.hibernate.dialect.H2Dialect");
-        sfb.setHibernateProperties(props);
-        return sfb;
-    }
-
-    @Bean
-    public PlatformTransactionManager transactionManager(LocalContainerEntityManagerFactoryBean entityManagerFactoryBean) {
-        JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
-        jpaTransactionManager.setEntityManagerFactory(entityManagerFactoryBean.getObject());
-        return jpaTransactionManager;
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
     }
 
     @Bean
@@ -64,13 +85,22 @@ public class DatabaseConfig {
 
     @Bean
     public JpaVendorAdapter jpaVendorAdapter() {
+        System.out.println("I am creating your bean jpa adapter");
+        System.out.println("I am creating your bean jpa adapter");
+        System.out.println("I am creating your bean jpa adapter");
+        System.out.println("I am creating your bean jpa adapter");
+        System.out.println("I am creating your bean jpa adapter");
         HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
-        adapter.setDatabase(Database.H2);
+        adapter.setDatabase(Database.MYSQL);
         return adapter;
     }
-
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, JpaVendorAdapter jpaVendorAdapter) {
+        System.out.println("I am creating your bean entity");
+        System.out.println("I am creating your bean entity");
+        System.out.println("I am creating your bean entity");
+        System.out.println("I am creating your bean entity");
+        System.out.println("I am creating your bean entity");
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource);
         entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter);

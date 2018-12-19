@@ -14,7 +14,7 @@ import java.util.List;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserController {
 
@@ -30,7 +30,7 @@ public class UserController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/users")
     @ApiOperation(value = "Get all users in the application including their role.")
 //    @PreAuthorize("hasRole('ROLE_USER')")
     public List<User> users(@RequestParam(required = false) String role) {
@@ -43,14 +43,14 @@ public class UserController {
         return userService.findAll();
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/users/{userId}")
     @ApiOperation(value = "Retrieve the currently logged in user.")
 //    @PreAuthorize("hasRole('ROLE_USER')")
     public User users(@PathVariable Long userId) {
         return userService.findById(userId);
     }
 
-    @GetMapping("/me")
+    @GetMapping("/users/me")
     @ApiOperation(value = "Retrieve the currently logged in user.")
 //    @PreAuthorize("hasRole('ROLE_USER')")
     public User currentUser(Authentication authentication) {
