@@ -48,14 +48,12 @@ class SearchTracks extends PolymerElement {
         </div>
 
         <div style="padding:10px 0 5px 0;">
-          <paper-checkbox on-change="test">Tracks</paper-checkbox>
-          <paper-checkbox>Artists</paper-checkbox>
+          <paper-checkbox data-ajax="ajaxSearchTrack" data-results="trackResults" on-change="setAjaxAuto">Tracks</paper-checkbox>
+          <paper-checkbox data-ajax="ajaxSearchArtist" data-results="artistResults" on-change="setAjaxAuto">Artists</paper-checkbox>
           <paper-checkbox>Albums</paper-checkbox>
           <paper-checkbox>Playlists</paper-checkbox>
         </div>
-        
       </div>
-
 
       <!-- Track search ajax -->
       <iron-ajax
@@ -66,10 +64,8 @@ class SearchTracks extends PolymerElement {
         last-response="{{trackResults}}">
       </iron-ajax>
 
-
-
       <!-- Track search results -->
-      <div class="card">
+      <div id="trackResults" class="card" hidden>
         <h1>Tracks</h1>
         <dom-repeat items="{{trackResults}}" as="track">
           <template>
@@ -84,24 +80,51 @@ class SearchTracks extends PolymerElement {
           </template>
         </dom-repeat>
       </div>
+
+      <!-- Artist search ajax -->
+      <iron-ajax
+        id="ajaxSearchArtist"
+        {{ajaxauto}}
+        url="http://localhost:8080/test/artist/{{searchTerm}}"
+        handle-as="json"
+        last-response="{{artistResults}}">
+      </iron-ajax>
+      
+      <!-- Artist search results -->
+      <div id="artistResults" class="card" hidden>
+        <h1>Artists</h1>
+        <dom-repeat items="{{artistResults}}" as="artist">
+          <template>
+            <div style="display:flex;">
+              <paper-icon-button icon="av:queue"></paper-icon-button>
+              <track-info
+                  track-id="{{artist.id}}"
+                  track-name="{{artist.title}}"
+                  track-artist="{{artist.artist}}">
+              </track-info>
+            </div>
+          </template>
+        </dom-repeat>
+      </div>
       
     `;
   }
 
-  test(e){
-    alert('test');
-    this.$.ajaxSearchTrack.setAttribute('auto', 'hahahahahaa');
-    this.$.ajaxSearchTrack.generateRequest();
-    this.ajaxauto = "auto";
-  }
+  //Toggles ajax auto attribute and hide/show results according to checkbox value
+  setAjaxAuto(e){
+    //Select iron ajax ID by checkbox data-ajax || data-ajax == iron ajax id
+    var ajaxElement = this.shadowRoot.getElementById(e.target.dataset.ajax);
+    //Select result div ID by checkbox data-results || data-results == result div id
+    var ajaxResults = this.shadowRoot.getElementById(e.target.dataset.results);
 
-  static get properties(){
-    return {
-      ajaxauto: {
-        type: String,
-        value: ""
-      }
-    };
+    if(e.target.checked){
+      ajaxElement.setAttribute('auto', '');
+      ajaxResults.hidden = false;
+    }
+    else{
+      ajaxElement.removeAttribute('auto');
+      ajaxResults.hidden = true;
+    }
   }
 }
 
