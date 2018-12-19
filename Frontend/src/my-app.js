@@ -92,6 +92,7 @@ class MyApp extends PolymerElement {
             <a name="tracks" href="[[rootPath]]tracks">Tracks</a>
             <a name="playlists" href="[[rootPath]]playlists">Playlists</a>
             <a name="playlist" href="[[rootPath]]playlist">Single Playlist</a>
+            <a name="search" href="[[rootPath]]search">Search</a>
           </iron-selector>
         </app-drawer>
 
@@ -109,6 +110,7 @@ class MyApp extends PolymerElement {
             <all-tracks name="tracks"></all-tracks>
             <all-playlists name="playlists"></all-playlists>
             <single-playlist name="playlist"></single-playlist>
+            <search-tracks name="search"></search-tracks>
             <my-view404 name="view404"></my-view404>
           </iron-pages>
           
@@ -150,7 +152,7 @@ class MyApp extends PolymerElement {
      // Show 'tracks' in that case. And if the page doesn't exist, show 'view404'.
     if (!page) {
       this.page = 'tracks';
-    } else if (['tracks', 'playlists', 'playlist'].indexOf(page) !== -1) {
+    } else if (['tracks', 'playlists', 'playlist', 'search'].indexOf(page) !== -1) {
       this.page = page;
     } else {
       this.page = 'view404';
@@ -177,6 +179,9 @@ class MyApp extends PolymerElement {
       case 'playlist':
         import('./single-playlist.js');
         break;
+      case 'search':
+        import('./search-tracks.js');
+        break;  
       case 'view404':
         import('./my-view404.js');
         break;
