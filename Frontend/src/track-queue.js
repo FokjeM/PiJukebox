@@ -7,6 +7,7 @@ import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
+import './elements/sortable-list.js';
 
 class TrackQueue extends GestureEventListeners(PolymerElement) {
   static get template() {
@@ -32,6 +33,17 @@ class TrackQueue extends GestureEventListeners(PolymerElement) {
           font-size: 12px;
         }
         
+        .item {
+        background: #ddd;
+        display: inline-block;
+        float: left;
+        height: 100px;
+        margin: 10px 10px 0 0;
+        text-align: center;
+        vertical-align: top;
+        width: 150px;
+      }
+      
       </style>
       
       <iron-ajax
@@ -46,6 +58,16 @@ class TrackQueue extends GestureEventListeners(PolymerElement) {
           
           <h1>Queue</h1>
 
+          <sortable-list sortable=".item">
+            <dom-repeat items="{{response}}" id="domRepeat">
+              <template>
+                <div class="item">
+                  [[item.name]]
+                </div>
+              </template>
+            </dom-repeat>
+          </sortable-list>
+          
           <dom-repeat items="{{response}}" as="track">
             <template>
               <div on-track="handleTrack" class="trackLink">
