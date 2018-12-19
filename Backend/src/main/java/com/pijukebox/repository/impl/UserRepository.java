@@ -21,11 +21,7 @@ import java.util.List;
 @Transactional
 public class UserRepository implements IUserRepository {
 
-    /**
-     * This gives us an EntityManager.
-     * Or, well, a proxy to one. Which gives or creates a thread-safe EntityManager for us
-     * every time we use it.
-     */
+    /* This gives us an EntityManager proxy, which gives or creates a thread-safe EntityManager for us every time we use it. */
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager em;
 
@@ -38,7 +34,6 @@ public class UserRepository implements IUserRepository {
 
         return em.createQuery(query).getResultList();
     }
-
 
     @Override
     public User getById(Long id) {

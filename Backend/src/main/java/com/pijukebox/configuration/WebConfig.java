@@ -2,6 +2,7 @@ package com.pijukebox.configuration;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 // This is a configuration class
@@ -12,5 +13,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @ComponentScan(basePackages = "com.pijukebox")
 // We're telling the application to read properties from application.properties,
 // which we have placed in the resources directory
+@PropertySource("classpath:application.properties")
 public class WebConfig {
 }

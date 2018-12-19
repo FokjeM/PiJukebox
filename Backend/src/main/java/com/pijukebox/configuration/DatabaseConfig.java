@@ -61,8 +61,8 @@ public class DatabaseConfig {
      * it also gives a lot of control, which can be useful for certain applications.
      * Think of having to make very complex queries for very specific situations.
      *
-     * @param dataSource
-     * @return
+     * @param dataSource The data source
+     * @return the a {@link JdbcTemplate} template
      */
     @Bean
     public JdbcTemplate jdbcTemplate(DataSource dataSource) {
