@@ -5,7 +5,8 @@
     <artifactId>PiJukebox</artifactId>
     <version>1.0</version>
     <!-- We're building a web application; namely a REST API. Web apps need to be WAR instead of JAR -->
-    <packaging>war</packaging>
+    <!-- Although for testing, JAR is fine -->
+    <packaging>jar</packaging>
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
