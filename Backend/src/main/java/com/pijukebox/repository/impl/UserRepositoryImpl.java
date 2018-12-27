@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Transactional
-public class UserRepository implements IUserRepository {
+public class UserRepositoryImpl implements IUserRepository {
 
     /* This gives us an EntityManager proxy, which gives or creates a thread-safe EntityManager for us every time we use it. */
     @PersistenceContext(unitName = "entityManagerFactory")
@@ -29,8 +29,8 @@ public class UserRepository implements IUserRepository {
     public List<User> findAll() {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
-        Root<User> from = query.from(User.class);
-        query.select(from);
+        Root<User> userTable = query.from(User.class);
+        query.select(userTable);
 
         return em.createQuery(query).getResultList();
     }
@@ -39,9 +39,9 @@ public class UserRepository implements IUserRepository {
     public User getById(Long id) {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
-        Root<User> from = query.from(User.class);
+        Root<User> userTable = query.from(User.class);
         ParameterExpression<Long> parameter = criteriaBuilder.parameter(Long.class);
-        query.select(from).where(criteriaBuilder.equal(from.get("id"), parameter));
+        query.select(userTable).where(criteriaBuilder.equal(userTable.get("id"), parameter));
 
         return em.createQuery(query).setParameter(parameter, id).getSingleResult();
     }
@@ -50,9 +50,9 @@ public class UserRepository implements IUserRepository {
     public User getByName(String name) {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
-        Root<User> from = query.from(User.class);
+        Root<User> userTable = query.from(User.class);
         ParameterExpression<String> parameter = criteriaBuilder.parameter(String.class);
-        query.select(from).where(criteriaBuilder.equal(from.get("name"), parameter));
+        query.select(userTable).where(criteriaBuilder.equal(userTable.get("name"), parameter));
 
         return em.createQuery(query).setParameter(parameter, name).getSingleResult();
     }

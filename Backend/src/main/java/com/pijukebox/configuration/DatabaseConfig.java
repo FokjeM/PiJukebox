@@ -28,7 +28,7 @@ public class DatabaseConfig {
      * @return The connection to the database
      */
     private final String DRIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
-    private final String URL = "jdbc:mysql://localhost:3306/db_example?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private final String URL = "jdbc:mysql://localhost:3306/pijukebox?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     private final String USER_NAME = "root";
     private final String PASSWORD = "root";
 
@@ -45,12 +45,6 @@ public class DatabaseConfig {
         dataSource.setMaxIdle(5);
         dataSource.setInitialSize(5);
         dataSource.setValidationQuery("SELECT 1");
-        //    return new EmbeddedDatabaseBuilder()
-//            .setType(EmbeddedDatabaseType.H2)
-//            .addScript("classpath:schema.sql")
-//            .addScript("classpath:insert-data.sql")
-//            .build();
-//    return new EmbeddedDatabaseBuilder().setType()
         return dataSource;
     }
 

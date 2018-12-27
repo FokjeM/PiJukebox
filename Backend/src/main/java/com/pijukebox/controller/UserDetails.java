@@ -1,6 +1,5 @@
 package com.pijukebox.controller;
 
-import com.pijukebox.model.Role;
 import com.pijukebox.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,11 +18,10 @@ public class UserDetails implements org.springframework.security.core.userdetail
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-//        for (Role role : user.getRoles()) {
+        //        for (Role role : user.getRoles()) {
 //            authorities.add(new SimpleGrantedAuthority(role.getCode()));
 //        }
-        return authorities;
+        return new ArrayList<SimpleGrantedAuthority>();
     }
 
     @Override
@@ -33,7 +31,8 @@ public class UserDetails implements org.springframework.security.core.userdetail
 
     @Override
     public String getUsername() {
-        return user.getName();
+
+        return String.format("%s %s", user.getFirstname(), user.getLastname());
     }
 
     @Override
