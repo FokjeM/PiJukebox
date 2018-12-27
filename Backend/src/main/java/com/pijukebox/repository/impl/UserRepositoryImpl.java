@@ -27,32 +27,32 @@ public class UserRepositoryImpl implements IUserRepository {
 
     @Override
     public List<User> findAll() {
-        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
-        Root<User> userTable = query.from(User.class);
-        query.select(userTable);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<User> query = cb.createQuery(User.class);
+        Root<User> table = query.from(User.class);
+        query.select(table);
 
         return em.createQuery(query).getResultList();
     }
 
     @Override
     public User getById(Long id) {
-        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
-        Root<User> userTable = query.from(User.class);
-        ParameterExpression<Long> parameter = criteriaBuilder.parameter(Long.class);
-        query.select(userTable).where(criteriaBuilder.equal(userTable.get("id"), parameter));
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<User> query = cb.createQuery(User.class);
+        Root<User> table = query.from(User.class);
+        ParameterExpression<Long> parameter = cb.parameter(Long.class);
+        query.select(table).where(cb.equal(table.get("id"), parameter));
 
         return em.createQuery(query).setParameter(parameter, id).getSingleResult();
     }
 
     @Override
     public User getByName(String name) {
-        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
-        Root<User> userTable = query.from(User.class);
-        ParameterExpression<String> parameter = criteriaBuilder.parameter(String.class);
-        query.select(userTable).where(criteriaBuilder.equal(userTable.get("name"), parameter));
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<User> query = cb.createQuery(User.class);
+        Root<User> table = query.from(User.class);
+        ParameterExpression<String> parameter = cb.parameter(String.class);
+        query.select(table).where(cb.equal(table.get("name"), parameter));
 
         return em.createQuery(query).setParameter(parameter, name).getSingleResult();
     }

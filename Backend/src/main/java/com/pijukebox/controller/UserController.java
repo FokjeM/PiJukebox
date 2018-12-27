@@ -35,8 +35,6 @@ public class UserController {
 //    @PreAuthorize("hasRole('ROLE_USER')")
     public List<User> users(@RequestParam(required = false) String role) {
 
-        System.out.println("TEST");
-
         if (role != null) {
             return userService.findByRole(roleService.findByName(role));
         }
