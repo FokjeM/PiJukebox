@@ -5,15 +5,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
-import java.time.LocalDateTime;
-import javax.sound.sampled.*;
 
+/**
+ * This class is supposed to handle the playing of files.
+ * It exposes a few methods that leave little to no room for external mutation,
+ * while allowing normal media player behavior.
+*/
 public class Player {
-    
-    /*
-     * This class is supposed to handle the playing of files.
-     * It exposes a few methods that leave little to no room for external mutations.
-    */
     
     private final Path queueFile = FileSystems.getDefault().getPath("stateful_queue.out");
     private List playlist;
@@ -25,7 +23,7 @@ public class Player {
      * @param rep Sets initial repeat on/off
      * @param shuffle Sets wether or not to shuffle the playlist initially
      * @param list the playlist to play. This moves into a list to prevent
-     *      accidentally messing up the DB entry for the Playlist
+     *      accidentally messing up the DB or source object for the Playlist
     */
     public Player(boolean rep, boolean repOne, boolean shuffle, Playlist list, ErrorLogger log) {
         if(checkQueueFile()) {
@@ -53,6 +51,7 @@ public class Player {
         try {
             //We need to double check this, as calling create on a file that
             //already exists *will* throw an IOException.
+            //However, the file might be removed during runtime.
             if(!checkQueueFile()) {
                 Files.write(queueFile, new byte[0], StandardOpenOption.CREATE);
             }

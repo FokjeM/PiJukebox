@@ -27,14 +27,13 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- *
- * @author Riven
+ * 
  */
 public class ErrorLogger {
     
     private static Path logFile;
     private LocalDateTime ldt;
-    private List<String> errorLines;
+    private final List<String> errorLines;
     
     public ErrorLogger(LocalDateTime ldtInit) {
         this.errorLines = new ArrayList<>();
