@@ -49,6 +49,12 @@ class VolumeControl extends PolymerElement {
         }
       </style>
       
+      <iron-ajax
+        id="changeVolume"
+        method="POST"
+        url="http://localhost:8080/api/v1/laptops/">
+      </iron-ajax>
+
       <div class="container">  
         <div class="controlsContainer">
           
@@ -60,7 +66,7 @@ class VolumeControl extends PolymerElement {
           
           <div class="controls">
             <iron-icon icon="[[volumeIcon]]"></iron-icon>
-            <paper-slider id="volumeSlider" max="10" step="1" value="2" on-change="changeVolumeIcon"></paper-slider>
+            <paper-slider id="volumeSlider" max="10" step="1" value="2" on-change="changeVolume"></paper-slider>
           </div>
           
         </div>
@@ -77,20 +83,40 @@ class VolumeControl extends PolymerElement {
     };
   }
 
+  /**
+   * This method calls the changeVolumeIcon and changeVolumeLevel methods 
+   */
+  changeVolume(e) {
+    this.changeVolumeIcon();
+    this.changeVolumeLevel(e);
+  }
+  
+  /**
+   * This method changes the volume icon according to the volume
+   */
   changeVolumeIcon() {
-    let volume = this.$.volumeSlider;
-    let volumeLevel = volume.value;
-
+    let volumeLevel = this.$.volumeSlider.value;
+    
     if (volumeLevel >= 1 && volumeLevel <= 5) {
       // low / medium
       this.volumeIcon = "av:volume-down";
     } else if (volumeLevel >= 6 && volumeLevel <= 10) {
-      //high
+      // High
       this.volumeIcon = "av:volume-up";
     } else {
-      // mute
+      // Mute
       this.volumeIcon = "av:volume-off";
     }
+  }
+
+  /**
+   * This method sends the request to the backend to change the volume level
+   */
+  changeVolumeLevel(e) {
+    let volumeLevel = this.$.volumeSlider.value;
+    
+    this.$.changeVolume.setAttribute('body', '{"volume":' + volumeLevel + '}');
+    this.$.changeVolume.generateRequest();
   }
 
 }
