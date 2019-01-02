@@ -1,7 +1,7 @@
 package com.pijukebox.controller;
 
 import com.pijukebox.model.Track;
-import com.pijukebox.service.TrackService;
+import com.pijukebox.service.ITrackService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -11,21 +11,21 @@ import java.util.List;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/tracks")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TrackController {
 
-    private TrackService trackService;
+    private ITrackService trackService;
 
-    public TrackController(TrackService trackService) {
+    public TrackController(ITrackService trackService) {
         this.trackService = trackService;
     }
 
-    @GetMapping("/tracks?amount={amount}")
+    @GetMapping()
     @ApiOperation(value = "Get all tracks in the application or limit results when the 'amount' parameter is specified")
-    public List<Track> tracks(@PathVariable Long amount) {
+    public List<Track> tracks(@RequestParam Long amount) {
         if (amount == null || amount <= 0) {
-            return trackService.findMany(amount);
+            return trackService.findAll(amount);
         }
         return trackService.findAll();
     }

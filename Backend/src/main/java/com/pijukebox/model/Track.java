@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Data
@@ -18,14 +19,33 @@ public class Track implements Serializable {
     private Long id;
 
     @NotNull
+    @Column(nullable = false)
     private String name;
 
     @NotNull
+    @Column(nullable = false)
     private String description;
 
     @NotNull
-    private String Genre;
+    @Column(nullable = false)
+    private String filename;
 
+    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
     @NotNull
-    private String Extension;
+    @JoinTable
+    @OneToMany
+    List<Album> albums;
+
+    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
+    @NotNull
+    @JoinTable
+    @OneToMany
+    List<Artist> artists;
+
+    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
+    @NotNull
+    @JoinTable
+    @OneToMany
+    List<Genre> genres;
+
 }

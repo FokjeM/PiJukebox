@@ -4,7 +4,7 @@ import com.pijukebox.model.Role;
 
 import java.util.List;
 
-public interface RoleService {
+public interface IRoleService {
     List<Role> findAll();
 
     Role findByName(String name);

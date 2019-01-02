@@ -5,7 +5,7 @@ import com.pijukebox.model.Role;
 
 import java.util.List;
 
-public interface UserService {
+public interface IUserService {
     List<User> findAll();
 
     List<User> findByRole(Role role);
