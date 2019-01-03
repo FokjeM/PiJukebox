@@ -41,17 +41,15 @@ class TrackControl extends PolymerElement {
         <div class="controlsContainer">
          
           <div class="controls">
-            <paper-icon-button icon="av:shuffle"></paper-icon-button>
+            <paper-icon-button on-tap="shuffle" icon="av:shuffle"></paper-icon-button>
 
-            <paper-icon-button icon="av:skip-previous"></paper-icon-button>
+            <paper-icon-button on-tap="previousTrack" icon="av:skip-previous"></paper-icon-button>
 
-            <paper-icon-button icon="[[playPauseIcon]]"
-                on-tap="changePlayPauseIcon">
-            </paper-icon-button>
+            <paper-icon-button on-tap="playPause" icon="[[playPauseIcon]]"></paper-icon-button>
             
-            <paper-icon-button icon="av:skip-next"></paper-icon-button>
+            <paper-icon-button on-tap="nextTrack" icon="av:skip-next"></paper-icon-button>
 
-            <paper-icon-button icon="av:repeat"></paper-icon-button>
+            <paper-icon-button on-tap="repeat" icon="av:repeat"></paper-icon-button>
           </div>
           
         </div>
@@ -68,6 +66,24 @@ class TrackControl extends PolymerElement {
     };
   }
 
+  playPause() {
+    
+    // try {
+    //   //todo: decide how this will be handled by backend
+    //   this.$.playPauseTrack.setAttribute('body', '{"playPause":' + volumeLevel + '}');
+    //   this.$.playPauseTrack.generateRequest();
+    // } catch(e) {
+    //   alert('Error');
+    // }
+
+    this.changePlayPauseIcon();
+  }
+
+  // TODO: maybe change the method in a way that the icon will be changed according 
+  //       to a param instead of checking what the current icon is and change on that. 
+  /**
+   * Change the play/pause icon to the current play / pause state
+   */
   changePlayPauseIcon() {
     if (this.playPauseIcon === "av:play-arrow") {
       this.playPauseIcon = "av:pause";
