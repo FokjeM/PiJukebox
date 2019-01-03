@@ -1,4 +1,6 @@
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
+import '@polymer/iron-ajax/iron-ajax.js';
+
 import './../shared-styles.js';
 
 class CurrentTrack extends PolymerElement {
@@ -20,14 +22,26 @@ class CurrentTrack extends PolymerElement {
           align-items: center;
         }
       </style>
-      
+
+      <iron-ajax
+        auto
+        url="http://localhost:8080/api/v1/laptops/"
+        handle-as="json"
+        last-response="{{currentTrack}}">
+      </iron-ajax>
+
       <div class="container">
         
         <div class="trackInfo">
-          <p>[[trackName]]</p>
-          <p>[[trackArtist]]</p>
+          <p>[[currentTrack.trackName]]</p>
+          <p>[[currentTrack.trackArtist]]</p>
         </div>
-          
+
+        <!-- <div class="trackInfo"> -->
+          <!-- <p>[[trackName]]</p> -->
+          <!-- <p>[[trackArtist]]</p> -->
+        <!-- </div> -->
+
       </div>
     `;
   }
