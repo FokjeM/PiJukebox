@@ -21,11 +21,14 @@ import '@polymer/app-route/app-route.js';
 import '@polymer/iron-pages/iron-pages.js';
 import '@polymer/iron-selector/iron-selector.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
+import '@polymer/paper-dialog/paper-dialog.js';
+
 import './my-icons.js';
 
 import './elements/current-track.js';
 import './elements/track-control.js';
 import './elements/volume-control.js';
+import './elements/dialog-element.js';
 
 
 // Gesture events like tap and track generated from touch will not be
@@ -115,11 +118,14 @@ class MyApp extends PolymerElement {
             <search-tracks name="search"></search-tracks>
             <my-view404 name="view404"></my-view404>
           </iron-pages>
-          
+
+          <dialog-element id="mainDialog">
+          </dialog-element>
+
           <current-track
-              track-id="1"
-              track-name="The current track"
-              track-artist="Artist of the track">
+            track-id="1"
+            track-name="The current track"
+            track-artist="Artist of the track">
           </current-track>
           <track-control>
           </track-control>
@@ -127,6 +133,20 @@ class MyApp extends PolymerElement {
         </app-header-layout>
       </app-drawer-layout>
     `;
+  }
+
+  ready(){
+    super.ready();
+    window.addEventListener('open-dialog-event', function(e) {
+      this.openDialog(e);
+    }.bind(this));
+  }
+
+  openDialog(e){
+    var dialog = this.shadowRoot.getElementById('mainDialog');
+    dialog.dialogTitle = e.detail.title;
+    dialog.dialogText = e.detail.text;
+    dialog.open();
   }
 
   static get properties() {

@@ -42,46 +42,39 @@ class SingleArtist extends PolymerElement {
         <h1>[[artist.name]]</h1>
       </div>
 
-      <!-- Get all artist tracks -->
+      <!-- Get all artist info -->
       <iron-ajax
         auto
-        url="http://localhost:8080/test/artist/[[routeData.artistId]]/tracks"
+        url="http://localhost:8000/artist/[[routeData.artistId]]"
         handle-as="json"
-        last-response="{{artistTracks}}">
+        last-response="{{artist}}">
       </iron-ajax>
-      
+
       <!-- Artist tracks -->
       <div id="artistTracks" class="card">
         <h1>Tracks</h1>
 
-        <template is="dom-repeat" items="{{artistTracks}}" as="track" rendered-item-count="{{renderedCount}}">
+        <template is="dom-repeat" items="{{artist.tracks}}" as="track" rendered-item-count="{{trackCount}}">
           <div style="display:flex;">          
               <result-row-track
                   track-id="{{track.id}}"
                   track-name="{{track.title}}"
-                  track-artist="{{track.artist}}">
+                  track-artist="{{track.artist}}"
+                  exclude-artist="true">
               </result-row-track>
             </div>
         </template>
 
-        <template is="dom-if" if="{{!renderedCount}}">
+        <template is="dom-if" if="{{!trackCount}}">
           No tracks.
         </template> 
       </div>
 
-      <!-- Get all artist albums -->
-      <iron-ajax
-        auto
-        url="http://localhost:8080/test/artist/[[routeData.artistId]]/albums"
-        handle-as="json"
-        last-response="{{artistAlbums}}">
-      </iron-ajax>
-      
       <!-- Artist Album -->
       <div id="artistAlbums" class="card">
         <h1>Albums</h1>
 
-        <template is="dom-repeat" items="{{artistAlbums}}" as="album" rendered-item-count="{{renderedCount}}">
+        <template is="dom-repeat" items="{{artist.albums}}" as="album" rendered-item-count="{{albumCount}}">
           <div style="display:flex;">
               <result-row-album
                 album-id="{{album.id}}"
@@ -90,7 +83,7 @@ class SingleArtist extends PolymerElement {
             </div>
         </template>
 
-        <template is="dom-if" if="{{!renderedCount}}">
+        <template is="dom-if" if="{{!albumCount}}">
           No Albums.
         </template> 
       </div>

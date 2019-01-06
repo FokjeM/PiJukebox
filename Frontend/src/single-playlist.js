@@ -38,18 +38,35 @@ class SinglePlaylist extends PolymerElement {
         tail="{{subroute}}">
       </app-route>
 
+      <div class="card">
+        <h1>[[playlist.title]]</h1>
+      </div>
+
+      <!-- Get all playlist info -->
       <iron-ajax
         auto
-        url="http://localhost:8080/api/v1/laptops/[[routeData.playlistId]]"
+        url="http://localhost:8000/playlist/[[routeData.playlistId]]"
         handle-as="json"
         last-response="{{playlist}}">
       </iron-ajax>
-      
-      <div class="card">
-        <h1>Playlist: [[playlist.name]]</h1>
-        
-        PLACE SONGS HERE
-        
+
+      <!-- Artist tracks -->
+      <div id="artistTracks" class="card">
+        <h1>Tracks</h1>
+
+        <template is="dom-repeat" items="{{playlist.tracks}}" as="track" rendered-item-count="{{playlistTrackCount}}">
+          <div style="display:flex;">          
+              <result-row-track
+                  track-id="{{track.id}}"
+                  track-name="{{track.title}}"
+                  track-artist="{{track.artist}}">
+              </result-row-track>
+            </div>
+        </template>
+
+        <template is="dom-if" if="{{!playlistTrackCount}}">
+          No tracks.
+        </template> 
       </div>
     `;
   }

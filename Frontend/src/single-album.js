@@ -39,23 +39,23 @@ class SingleAlbum extends PolymerElement {
       </app-route>
 
       <div class="card">
-        <h1>[[album.name]]</h1>
+        <h1>[[album.title]]</h1>
         <h1>[[album.artist]]</h1>
       </div>
 
-      <!-- Get all artist tracks -->
+      <!-- Get all album info -->
       <iron-ajax
         auto
-        url="http://localhost:8080/test/album/[[routeData.albumID]]"
+        url="http://localhost:8000/album/[[routeData.albumId]]"
         handle-as="json"
-        last-response="{{albumTracks}}">
+        last-response="{{album}}">
       </iron-ajax>
       
       <!-- Album tracks -->
       <div id="albumTracks" class="card">
         <h1>Tracks</h1>
 
-        <template is="dom-repeat" items="{{albumTracks}}" as="track" rendered-item-count="{{renderedCount}}">
+        <template is="dom-repeat" items="{{album.tracks}}" as="track" rendered-item-count="{{trackCount}}">
           <div style="display:flex;">          
               <result-row-track
                   track-id="{{track.id}}"
@@ -65,7 +65,7 @@ class SingleAlbum extends PolymerElement {
             </div>
         </template>
 
-        <template is="dom-if" if="{{!renderedCount}}">
+        <template is="dom-if" if="{{!trackCount}}">
           No tracks.
         </template> 
       </div>

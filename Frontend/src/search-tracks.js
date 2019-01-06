@@ -58,7 +58,7 @@ class SearchTracks extends PolymerElement {
       <iron-ajax
         id="ajaxSearchTrack"
         auto
-        url="http://localhost:8080/test/test/{{searchTerm}}"
+        url="http://localhost:8000/search/track/{{searchTerm}}"
         handle-as="json"
         last-response="{{trackResults}}">
       </iron-ajax>
@@ -67,7 +67,7 @@ class SearchTracks extends PolymerElement {
       <div id="trackResults" class="card">
         <h1>Tracks</h1>
 
-        <template is="dom-repeat" items="{{trackResults}}" as="track" rendered-item-count="{{renderedCount}}">
+        <template is="dom-repeat" items="{{trackResults}}" as="track" rendered-item-count="{{trackResultCount}}">
           <div style="display:flex;">          
               <result-row-track
                   track-id="{{track.id}}"
@@ -77,7 +77,7 @@ class SearchTracks extends PolymerElement {
             </div>
         </template>
 
-        <template is="dom-if" if="{{!renderedCount}}">
+        <template is="dom-if" if="{{!trackResultCount}}">
           No results.
         </template> 
       </div>
@@ -85,7 +85,7 @@ class SearchTracks extends PolymerElement {
       <!-- Artist search ajax -->
       <iron-ajax
         id="ajaxSearchArtist"
-        url="http://localhost:8080/test/artist/{{searchTerm}}"
+        url="http://localhost:8000/search/artist/{{searchTerm}}"
         handle-as="json"
         last-response="{{artistResults}}">
       </iron-ajax>
@@ -94,16 +94,16 @@ class SearchTracks extends PolymerElement {
       <div id="artistResults" class="card" hidden>
         <h1>Artists</h1>
 
-        <template is="dom-repeat" items="{{artistResults}}" as="artist" rendered-item-count="{{renderedCount}}">
+        <template is="dom-repeat" items="{{artistResults}}" as="artist" rendered-item-count="{{artistResultCount}}">
           <div style="display:flex;">
               <result-row-artist
                   artist-id="{{artist.id}}"
-                  artist-name="{{artist.title}}">
+                  artist-name="{{artist.name}}">
               </result-row-artist>
             </div>
         </template>
 
-        <template is="dom-if" if="{{!renderedCount}}">
+        <template is="dom-if" if="{{!artistResultCount}}">
           No results.
         </template> 
       </div>
@@ -111,7 +111,7 @@ class SearchTracks extends PolymerElement {
       <!-- Album search ajax -->
       <iron-ajax
         id="ajaxSearchAlbum"
-        url="http://localhost:8080/test/artist/{{searchTerm}}"
+        url="http://localhost:8000/search/album/{{searchTerm}}"
         handle-as="json"
         last-response="{{albumResults}}">
       </iron-ajax>
@@ -120,7 +120,7 @@ class SearchTracks extends PolymerElement {
       <div id="albumResults" class="card" hidden>
         <h1>Albums</h1>
 
-        <template is="dom-repeat" items="{{albumResults}}" as="album" rendered-item-count="{{renderedCount}}">
+        <template is="dom-repeat" items="{{albumResults}}" as="album" rendered-item-count="{{albumResultCount}}">
           <div style="display:flex;">
               <result-row-album
                 album-id="{{album.id}}"
@@ -129,7 +129,7 @@ class SearchTracks extends PolymerElement {
             </div>
         </template>
 
-        <template is="dom-if" if="{{!renderedCount}}">
+        <template is="dom-if" if="{{!albumResultCount}}">
           No results.
         </template> 
       </div>
@@ -137,7 +137,7 @@ class SearchTracks extends PolymerElement {
       <!-- Playlist search ajax -->
       <iron-ajax
         id="ajaxSearchPlaylist"
-        url="http://localhost:8080/test/artist/{{searchTerm}}"
+        url="http://localhost:8000/search/playlist/{{searchTerm}}"
         handle-as="json"
         last-response="{{playlistResults}}">
       </iron-ajax>
@@ -146,7 +146,7 @@ class SearchTracks extends PolymerElement {
       <div id="playlistResults" class="card" hidden>
         <h1>Playlists</h1>
 
-        <template is="dom-repeat" items="{{playlistResults}}" as="playlist" rendered-item-count="{{renderedCount}}">
+        <template is="dom-repeat" items="{{playlistResults}}" as="playlist" rendered-item-count="{{playlistResultCount}}">
           <div style="display:flex;">
               <result-row-playlist
                 playlist-id="{{playlist.id}}"
@@ -155,7 +155,7 @@ class SearchTracks extends PolymerElement {
             </div>
         </template>
 
-        <template is="dom-if" if="{{!renderedCount}}">
+        <template is="dom-if" if="{{!playlistResultCount}}">
           No results.
         </template> 
       </div>
