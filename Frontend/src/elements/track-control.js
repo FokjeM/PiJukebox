@@ -68,7 +68,7 @@ class TrackControl extends PolymerElement {
         value: "av:repeat"
       },
       repeatState: {
-        type: Integer,
+        type: String,
         value: 0
       },
       shuffleIsActive: {
