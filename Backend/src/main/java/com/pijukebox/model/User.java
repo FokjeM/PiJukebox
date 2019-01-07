@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @AllArgsConstructor
-@Table(name = "user")
+@Table(schema = "pijukebox", name = "user")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class User {
 

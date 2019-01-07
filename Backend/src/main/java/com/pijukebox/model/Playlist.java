@@ -18,7 +18,7 @@ import java.util.function.Predicate;
 
 @Entity
 @AllArgsConstructor
-@Table(name = "playlist")
+@Table(schema = "pijukebox", name = "playlist")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Playlist extends BeanUtils {
 

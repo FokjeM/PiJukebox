@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Data
 @AllArgsConstructor
-@Table(name = "track")
+@Table(schema = "pijukebox", name = "track")
 public class Track implements Serializable {
 
     @Id
