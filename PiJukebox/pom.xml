@@ -36,25 +36,25 @@
             <version>2.9.7</version>
         </dependency>
         <!-- MP3agic for reading metadata -->
+        <!-- am I missing anything? -->
         <dependency>
             <groupId>com.mpatric</groupId>
             <artifactId>mp3agic</artifactId>
             <version>0.9.1</version>
             <type>jar</type>
         </dependency>
-        <!-- am I missing anything? -->
     </dependencies>
     
     <build>
         <plugins>
-            <plugin>
+            <!--<plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-war-plugin</artifactId>
                     <version>${maven-war-plugin.version}</version>
                     <configuration>
                         <failOnMissingWebXml>false</failOnMissingWebXml>
                     </configuration>
-            </plugin>
+            </plugin>-->
             <plugin>
                 <!-- Alternate way of setting the target and source versions to compile with -->
                 <groupId>org.apache.maven.plugins</groupId>
