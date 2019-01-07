@@ -45,4 +45,15 @@ public class ArtistRepositoryImpl implements IArtistRepository {
 
         return em.createQuery(query).setParameter(parameter, id).getSingleResult();
     }
+
+    @Override
+    public List<Artist> findByName(String name) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Artist> query = cb.createQuery(Artist.class); // SELECT
+        Root<Artist> table = query.from(Artist.class); // FROM TABLE
+        ParameterExpression<String> parameter = cb.parameter(String.class); //PARAMETER
+        query.select(table).where(cb.equal(table.get("name"), parameter)); // "SELECT * FROM artist WHERE name = '{parameter}'" preparing the query
+
+        return em.createQuery(query).setParameter(parameter, name).getResultList(); // sending the query where paramter is name
+    }
 }
