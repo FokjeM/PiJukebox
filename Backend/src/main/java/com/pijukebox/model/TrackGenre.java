@@ -11,14 +11,13 @@ import javax.persistence.Table;
 @Entity
 @Data
 @AllArgsConstructor
-@Table(schema = "pijukebox", name = "track_genre")
+@Table(name = "track_genre")
 public class TrackGenre {
 
     @Id
     @Column(name="genreId")
     private Long genre_id;
 
-    @Id
     @Column(name="trackId")
     private Long track_id;
 }

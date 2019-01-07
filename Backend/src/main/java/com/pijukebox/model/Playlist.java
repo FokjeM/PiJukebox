@@ -18,7 +18,7 @@ import java.util.function.Predicate;
 
 @Entity
 @AllArgsConstructor
-@Table(schema = "pijukebox", name = "playlist")
+@Table(name = "playlist")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Playlist extends BeanUtils {
 
@@ -32,8 +32,8 @@ public class Playlist extends BeanUtils {
     private String description;
 
     @NotNull
-    @OneToMany(mappedBy = "track_playlist")
-    @JoinTable(name="track_id")
+    @JoinTable(name="track_playlist")
+    @OneToMany
     private List<TrackPlaylist> trackPlaylists;
 //    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
 //    @JoinTable
