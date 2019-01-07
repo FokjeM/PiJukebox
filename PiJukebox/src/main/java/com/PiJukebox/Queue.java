@@ -10,17 +10,17 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * Playlist class to hold a collection of Tracks in a specific order. Builds
+ * Queue class to hold a collection of Tracks in a specific order. Builds
  * upon a Map<Integer, Track> and thus Map.Entry<Integer,Track>
  */
-public class Playlist implements Map<Integer, Track>, Cloneable, Serializable {
+public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
 
     /**
-     * The array holding the actual PlaylistEntry objects
+     * The array holding the actual QueueEntry objects
      */
-    private PlaylistEntry<Integer, Track>[] entries;
+    private QueueEntry<Integer, Track>[] entries;
     /**
-     * The current size of this Playlist
+     * The current size of this Queue
      */
     private int size;
 
@@ -29,14 +29,14 @@ public class Playlist implements Map<Integer, Track>, Cloneable, Serializable {
      *
      * @param list MUST be iterable
      */
-    public Playlist(Iterable<?> list) {
+    public Queue(Iterable<?> list) {
         int length = 0;
         Iterator li = list.iterator();
         while (li.hasNext()) {
             length++;
             li.next();
         }
-        this.entries = new PlaylistEntry[length];
+        this.entries = new QueueEntry[length];
         this.size = length;
     }
 
@@ -44,7 +44,7 @@ public class Playlist implements Map<Integer, Track>, Cloneable, Serializable {
     /**
      * This implementation of size() for the Map
      *
-     * @return returns the amount of PlaylistEntry objects in this Playlist
+     * @return returns the amount of QueueEntry objects in this Queue
      */
     @Override
     public int size() {
@@ -54,7 +54,7 @@ public class Playlist implements Map<Integer, Track>, Cloneable, Serializable {
     /**
      * This implementation of isEmpty() for the Map
      *
-     * @return false if any PlaylistEntry objects are present, true otherwise
+     * @return false if any QueueEntry objects are present, true otherwise
      */
     @Override
     public boolean isEmpty() {
@@ -68,7 +68,7 @@ public class Playlist implements Map<Integer, Track>, Cloneable, Serializable {
      * @return true if the key is present at least once, false otherwise
      */
     public boolean containsKey(Integer key) {
-        for (PlaylistEntry e : this.entries) {
+        for (QueueEntry e : this.entries) {
             if (e.getKey().equals(key)) {
                 return true;
             }
@@ -83,7 +83,7 @@ public class Playlist implements Map<Integer, Track>, Cloneable, Serializable {
      * @return true if the value is present at least once, false otherwise
      */
     public boolean containsValue(Track value) {
-        for (PlaylistEntry e : this.entries) {
+        for (QueueEntry e : this.entries) {
             if (e.getValue().equals(value)) {
                 return true;
             }
@@ -94,11 +94,11 @@ public class Playlist implements Map<Integer, Track>, Cloneable, Serializable {
     /**
      * Get the value belonging to an Integer key object
      *
-     * @param key the key to search for in this Playlist
+     * @param key the key to search for in this Queue
      * @return the value associated with this key
      */
     public Track get(Integer key) {
-        for (PlaylistEntry e : this.entries) {
+        for (QueueEntry e : this.entries) {
             if (e.getKey().equals(key)) {
                 //Cast to Track due to IDE errors; test without cast later
                 return (Track) e.getValue();
@@ -108,30 +108,30 @@ public class Playlist implements Map<Integer, Track>, Cloneable, Serializable {
     }
 
     /**
-     * Edits or adds a PlaylistEntry in the Playlist containing the specified
-     * key-value pair
+     * Edits or adds a QueueEntry in the Queue containing the specified
+ key-value pair
      *
-     * @param key the Integer key object for the PlaylistEntry
-     * @param value the Track for the PlaylistEntry
+     * @param key the Integer key object for the QueueEntry
+     * @param value the Track for the QueueEntry
      * @return The previous value for this key, or null if it didn't exist yet
      */
     @Override
     public Track put(Integer key, Track value) {
         if (this.containsKey(key)) { //If the key is present, return the result of setValue(value)
-            for (PlaylistEntry e : this.entries) {
+            for (QueueEntry e : this.entries) {
                 if (e.getKey().equals(key)) {
                     //Cast to Track due to IDE errors; test without cast later
                     return (Track) e.setValue(value);
                 }
             }
         } else { //Else, create a new array with the necessary Length
-            PlaylistEntry<Integer, Track>[] newEntries = new PlaylistEntry[key];
+            QueueEntry<Integer, Track>[] newEntries = new QueueEntry[key];
             //copy the current array into it
-            for (PlaylistEntry e : entries) {
+            for (QueueEntry e : entries) {
                 newEntries[(Integer) e.getKey()] = e;
             }
             //Add the new entry
-            newEntries[key] = new PlaylistEntry(key, value);
+            newEntries[key] = new QueueEntry(key, value);
             //and change the reference pointer of entries
             this.entries = newEntries;
             this.size = key;
@@ -141,14 +141,14 @@ public class Playlist implements Map<Integer, Track>, Cloneable, Serializable {
     }
 
     /**
-     * Remove an item from this Playlist specified by a key
+     * Remove an item from this Queue specified by a key
      *
      * @param key The key for the item to be removed
      * @return Returns the value of the item to be removed
      */
     public Track remove(Integer key) {
         Track val = null;
-        for (PlaylistEntry e : this.entries) {
+        for (QueueEntry e : this.entries) {
             if (e.getKey().equals(key)) {
                 val = (Track) e.getValue();
                 e = null;
@@ -158,15 +158,15 @@ public class Playlist implements Map<Integer, Track>, Cloneable, Serializable {
     }
 
     /**
-     * Add an entire map to to this Playlist, as long as the map shares the same
-     * data types for its key-value pairs
+     * Add an entire map to to this Queue, as long as the map shares the same
+ data types for its key-value pairs
      *
      * @param m the map to add
      */
     @Override
     public void putAll(Map<? extends Integer, ? extends Track> m) {
         int newSize = this.size + m.size();
-        PlaylistEntry<Integer, Track>[] newEntries = new PlaylistEntry[newSize];
+        QueueEntry<Integer, Track>[] newEntries = new QueueEntry[newSize];
         //copy the current array into it, ensuring equal indices
         System.arraycopy(this.entries, 0, newEntries, 0, this.entries.length);
         //Add the new entries
@@ -181,26 +181,26 @@ public class Playlist implements Map<Integer, Track>, Cloneable, Serializable {
      */
     @Override
     public void clear() {
-        this.entries = new PlaylistEntry[0];
+        this.entries = new QueueEntry[0];
         this.size = 0;
     }
 
     /**
      * Get a set containing all of the keys
      *
-     * @return a TreeSet with the keys in this Playlist
+     * @return a TreeSet with the keys in this Queue
      */
     @Override
     public Set<Integer> keySet() {
         Set<Integer> set = new TreeSet<>();
-        for (PlaylistEntry e : entries) {
+        for (QueueEntry e : entries) {
             set.add((Integer) e.getKey());
         }
         return set;
     }
 
     /**
-     * Get a collection containing all of the values in this Playlist
+     * Get a collection containing all of the values in this Queue
      *
      * @return an ArrayList with all of the Tracks
      */
@@ -215,9 +215,9 @@ public class Playlist implements Map<Integer, Track>, Cloneable, Serializable {
     }
 
     /**
-     * Get the PlaylistEntry objects in this Playlist as a Set
+     * Get the QueueEntry objects in this Queue as a Set
      *
-     * @return a TreeSet containing all of the PlaylistEntry objects
+     * @return a TreeSet containing all of the QueueEntry objects
      */
     @Override
     public Set<Entry<Integer, Track>> entrySet() {
@@ -296,7 +296,7 @@ public class Playlist implements Map<Integer, Track>, Cloneable, Serializable {
      * @param <Track> The value to map to the key; location path for the music
      * file
      */
-    public class PlaylistEntry<Integer, Track> implements Map.Entry<Integer, Track> {
+    public class QueueEntry<Integer, Track> implements Map.Entry<Integer, Track> {
         
         private final Integer key;
         private Track value;
@@ -307,13 +307,13 @@ public class Playlist implements Map<Integer, Track>, Cloneable, Serializable {
          * @param key The Integer key object
          * @param value the Track path to the music file
          */
-        public PlaylistEntry(Integer key, Track value) {
+        public QueueEntry(Integer key, Track value) {
             this.key = key;
             this.value = value;
         }
         
         /**
-         * Get the key for this PlaylistEntry
+         * Get the key for this QueueEntry
          *
          * @return returns the key as an Integer object
          */
@@ -323,7 +323,7 @@ public class Playlist implements Map<Integer, Track>, Cloneable, Serializable {
         }
         
         /**
-         * Get the value of this PlaylistEntry
+         * Get the value of this QueueEntry
          *
          * @return The Track to play
          */
@@ -333,7 +333,7 @@ public class Playlist implements Map<Integer, Track>, Cloneable, Serializable {
         }
         
         /**
-         * Set the value of this PlaylistEntry
+         * Set the value of this QueueEntry
          *
          * @param value The value to set it to. Must be a Track
          * @return Returns the old value for this key

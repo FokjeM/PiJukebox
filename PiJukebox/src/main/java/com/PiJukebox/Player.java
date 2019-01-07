@@ -15,18 +15,18 @@ import java.util.*;
 public class Player {
     
     private final Path queueFile = FileSystems.getDefault().getPath("stateful_queue.out");
-    private List playlist;
+    private List queue;
     public ErrorLogger log;
     private boolean repeat;
     private boolean repeatOne;
     
     /*
      * @param rep Sets initial repeat on/off
-     * @param shuffle Sets wether or not to shuffle the playlist initially
-     * @param list the playlist to play. This moves into a list to prevent
-     *      accidentally messing up the DB or source object for the Playlist
+     * @param shuffle Sets wether or not to shuffle the queue initially
+     * @param list the queue to play. This moves into a list to prevent
+     *      accidentally messing up the DB or source object for the Queue
     */
-    public Player(boolean rep, boolean repOne, boolean shuffle, Playlist list, ErrorLogger log) {
+    public Player(boolean rep, boolean repOne, boolean shuffle, Queue list, ErrorLogger log) {
         if(checkQueueFile()) {
             restoreQueue();
         } else {
@@ -40,7 +40,7 @@ public class Player {
             }
         }
         if(shuffle) {
-            this.playlist = shuffle();
+            this.queue = shuffle();
         }
     }
     
@@ -57,7 +57,7 @@ public class Player {
                 Files.write(queueFile, new byte[0], StandardOpenOption.CREATE);
             }
             //WRITE without saving previous data.
-            Files.write(queueFile, playlist, StandardOpenOption.WRITE);
+            Files.write(queueFile, queue, StandardOpenOption.WRITE);
             return true;
         } catch (IOException ex) {
             writeLog(ex, false);
@@ -68,8 +68,8 @@ public class Player {
     
     private void restoreQueue() {
         try {
-            Playlist pl = new Playlist(Files.readAllLines(queueFile));
-            playlist = (List)pl.values();
+            Queue pl = new Queue(Files.readAllLines(queueFile));
+            queue = (List)pl.values();
         } catch (IOException ex) {
             writeLog(ex, false);
         }
@@ -80,7 +80,7 @@ public class Player {
     }
     
     private List<String> shuffle() {
-        //TODO: Shuffle the playlist
-        return playlist;
+        //TODO: Shuffle the queue
+        return queue;
     }
 }
