@@ -31,5 +31,9 @@ It'll run on the current Raspbian Lite build (No GUI by default, no useless soft
 ## This is the README.md for Martin, this covers the components:
   - Media from this branch
   - Diagrams made for this branch
-  - the Player class
-    - Any classes and components needed for a Player
+  - The Player class to play music
+  - The ErrorLogger class to track and write errors to a file
+  - Fatal Exception so we can check when to kill the Player due to an error
+  - NonFatal Exception so we know when we can keep going
+  - Queue class so we can keep playing and follow what tracks we have left
+  - Track class to store a pointer to the actual song
