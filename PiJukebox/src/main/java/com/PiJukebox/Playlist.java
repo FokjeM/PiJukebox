@@ -1,20 +1,3 @@
-/*
- * Copyright (C) 2018 Riven
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- */
 package com.PiJukebox;
 
 import java.io.Serializable;
@@ -29,15 +12,13 @@ import java.util.TreeSet;
 /**
  * Playlist class to hold a collection of Tracks in a specific order. Builds
  * upon a Map<Integer, Track> and thus Map.Entry<Integer,Track>
- *
- * --REPLACE String VALUE WITH Track VALUE ONCE IMPLEMENTED--
  */
-public class Playlist implements Map<Integer, String>, Cloneable, Serializable {
+public class Playlist implements Map<Integer, Track>, Cloneable, Serializable {
 
     /**
      * The array holding the actual PlaylistEntry objects
      */
-    private PlaylistEntry<Integer, String>[] entries;
+    private PlaylistEntry<Integer, Track>[] entries;
     /**
      * The current size of this Playlist
      */
@@ -98,10 +79,10 @@ public class Playlist implements Map<Integer, String>, Cloneable, Serializable {
     /**
      * This implementation of containsValue() for the Map
      *
-     * @param value the String FILEPATH to search for
+     * @param value the Track to search for
      * @return true if the value is present at least once, false otherwise
      */
-    public boolean containsValue(String value) {
+    public boolean containsValue(Track value) {
         for (PlaylistEntry e : this.entries) {
             if (e.getValue().equals(value)) {
                 return true;
@@ -116,11 +97,11 @@ public class Playlist implements Map<Integer, String>, Cloneable, Serializable {
      * @param key the key to search for in this Playlist
      * @return the value associated with this key
      */
-    public String get(Integer key) {
+    public Track get(Integer key) {
         for (PlaylistEntry e : this.entries) {
             if (e.getKey().equals(key)) {
-                //Cast to string due to IDE errors; test without cast later
-                return (String) e.getValue();
+                //Cast to Track due to IDE errors; test without cast later
+                return (Track) e.getValue();
             }
         }
         return null;
@@ -131,20 +112,20 @@ public class Playlist implements Map<Integer, String>, Cloneable, Serializable {
      * key-value pair
      *
      * @param key the Integer key object for the PlaylistEntry
-     * @param value the String FILEPATH for the PlaylistEntry
+     * @param value the Track for the PlaylistEntry
      * @return The previous value for this key, or null if it didn't exist yet
      */
     @Override
-    public String put(Integer key, String value) {
+    public Track put(Integer key, Track value) {
         if (this.containsKey(key)) { //If the key is present, return the result of setValue(value)
             for (PlaylistEntry e : this.entries) {
                 if (e.getKey().equals(key)) {
-                    //Cast to string due to IDE errors; test without cast later
-                    return (String) e.setValue(value);
+                    //Cast to Track due to IDE errors; test without cast later
+                    return (Track) e.setValue(value);
                 }
             }
         } else { //Else, create a new array with the necessary Length
-            PlaylistEntry<Integer, String>[] newEntries = new PlaylistEntry[key];
+            PlaylistEntry<Integer, Track>[] newEntries = new PlaylistEntry[key];
             //copy the current array into it
             for (PlaylistEntry e : entries) {
                 newEntries[(Integer) e.getKey()] = e;
@@ -165,11 +146,11 @@ public class Playlist implements Map<Integer, String>, Cloneable, Serializable {
      * @param key The key for the item to be removed
      * @return Returns the value of the item to be removed
      */
-    public String remove(Integer key) {
-        String val = null;
+    public Track remove(Integer key) {
+        Track val = null;
         for (PlaylistEntry e : this.entries) {
             if (e.getKey().equals(key)) {
-                val = (String) e.getValue();
+                val = (Track) e.getValue();
                 e = null;
             }
         }
@@ -183,20 +164,16 @@ public class Playlist implements Map<Integer, String>, Cloneable, Serializable {
      * @param m the map to add
      */
     @Override
-    public void putAll(Map<? extends Integer, ? extends String> m) {
+    public void putAll(Map<? extends Integer, ? extends Track> m) {
         int newSize = this.size + m.size();
-        PlaylistEntry<Integer, String>[] newEntries = new PlaylistEntry[newSize];
-        //copy the current array into it
-        for (PlaylistEntry e : this.entries) {
-            newEntries[(Integer) e.getKey()] = e;
-        }
+        PlaylistEntry<Integer, Track>[] newEntries = new PlaylistEntry[newSize];
+        //copy the current array into it, ensuring equal indices
+        System.arraycopy(this.entries, 0, newEntries, 0, this.entries.length);
         //Add the new entries
-        Set<? extends Entry<? extends Integer, ? extends String>> additions = m.entrySet();
-        additions.forEach((e) -> {
-            newEntries[e.getKey()] = (PlaylistEntry<Integer, String>) e;
-        });
-        //Update the pointer
+        System.arraycopy(m.values().toArray(), 0, newEntries, this.entries.length, newSize);
+        //Update the pointer and size
         this.entries = newEntries;
+        this.size = newSize;
     }
 
     /**
@@ -225,13 +202,14 @@ public class Playlist implements Map<Integer, String>, Cloneable, Serializable {
     /**
      * Get a collection containing all of the values in this Playlist
      *
-     * @return an ArrayList with all of the String FILEPATHS
+     * @return an ArrayList with all of the Tracks
      */
     @Override
-    public Collection<String> values() {
-        ArrayList<String> coll = new ArrayList<>();
-        for (PlaylistEntry e : entries) {
-            coll.add((String) e.getValue());
+    public Collection<Track> values() {
+        ArrayList<Track> coll = new ArrayList<>();
+        //Make sure the returned ArrayList uses the order specified by the user
+        for(int i = 1; i < size; i++) {
+            this.get(i);
         }
         return coll;
     }
@@ -242,8 +220,8 @@ public class Playlist implements Map<Integer, String>, Cloneable, Serializable {
      * @return a TreeSet containing all of the PlaylistEntry objects
      */
     @Override
-    public Set<Entry<Integer, String>> entrySet() {
-        Set<Entry<Integer, String>> set = new TreeSet<>();
+    public Set<Entry<Integer, Track>> entrySet() {
+        Set<Entry<Integer, Track>> set = new TreeSet<>();
         set.addAll(Arrays.asList(entries));
         return set;
     }
@@ -267,14 +245,14 @@ public class Playlist implements Map<Integer, String>, Cloneable, Serializable {
     /**
      * Alias for the required override of containsValue
      *
-     * @param value the String value to check for
-     * @return the result of the String variant of this method
+     * @param value the Track value to check for
+     * @return the result of the Track variant of this method
      */
     @Override
     public boolean containsValue(Object value) {
-        if (value.getClass() == String.class) {
+        if (value.getClass() == Track.class) {
             //Cast to ensure the correct variant of this method is called
-            return containsValue((String) value);
+            return containsValue((Track) value);
         } else {
             throw new UnsupportedOperationException("Whoops, we use Integer keys here!");
         }
@@ -284,10 +262,10 @@ public class Playlist implements Map<Integer, String>, Cloneable, Serializable {
      * Alias for the required override of get
      *
      * @param key the key to get the value from
-     * @return the String FILEPATH that belongs to this key
+     * @return the Track that belongs to this key
      */
     @Override
-    public String get(Object key) {
+    public Track get(Object key) {
         if (key.getClass() == Integer.class) {
             //Cast to ensure the correct variant of this method is called
             return get((Integer) key);
@@ -303,7 +281,7 @@ public class Playlist implements Map<Integer, String>, Cloneable, Serializable {
      * @return the removed value
      */
     @Override
-    public String remove(Object key) {
+    public Track remove(Object key) {
         if (key.getClass() == Integer.class) {
             //Cast to ensure the correct variant of this method is called
             return remove((Integer) key);
@@ -315,21 +293,21 @@ public class Playlist implements Map<Integer, String>, Cloneable, Serializable {
      * Internal class to return the matching implementation of Map.Entry
      *
      * @param <Integer> an Integer key (key must be an object)
-     * @param <String> The value to map to the key; location path for the music
+     * @param <Track> The value to map to the key; location path for the music
      * file
      */
-    public class PlaylistEntry<Integer, String> implements Map.Entry<Integer, String> {
+    public class PlaylistEntry<Integer, Track> implements Map.Entry<Integer, Track> {
         
         private final Integer key;
-        private String value;
+        private Track value;
         
         /**
          * Instantiate a PlaylistEntry
          *
          * @param key The Integer key object
-         * @param value the String path to the music file
+         * @param value the Track path to the music file
          */
-        public PlaylistEntry(Integer key, String value) {
+        public PlaylistEntry(Integer key, Track value) {
             this.key = key;
             this.value = value;
         }
@@ -347,22 +325,22 @@ public class Playlist implements Map<Integer, String>, Cloneable, Serializable {
         /**
          * Get the value of this PlaylistEntry
          *
-         * @return The FILEPATH for the target file
+         * @return The Track to play
          */
         @Override
-        public String getValue() {
+        public Track getValue() {
             return this.value;
         }
         
         /**
          * Set the value of this PlaylistEntry
          *
-         * @param value The value to set it to. Must be a FILEPATH
+         * @param value The value to set it to. Must be a Track
          * @return Returns the old value for this key
          */
         @Override
-        public String setValue(String value) {
-            String oldValue = this.value;
+        public Track setValue(Track value) {
+            Track oldValue = this.value;
             this.value = value;
             return oldValue;
         }

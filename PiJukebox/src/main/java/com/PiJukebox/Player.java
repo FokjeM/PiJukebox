@@ -1,4 +1,5 @@
 package com.PiJukebox;
+
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -51,7 +52,7 @@ public class Player {
         try {
             //We need to double check this, as calling create on a file that
             //already exists *will* throw an IOException.
-            //However, the file might be removed during runtime.
+            //However, the file might have been removed during runtime.
             if(!checkQueueFile()) {
                 Files.write(queueFile, new byte[0], StandardOpenOption.CREATE);
             }
@@ -67,7 +68,8 @@ public class Player {
     
     private void restoreQueue() {
         try {
-            playlist = Files.readAllLines(queueFile);
+            Playlist pl = new Playlist(Files.readAllLines(queueFile));
+            playlist = (List)pl.values();
         } catch (IOException ex) {
             writeLog(ex, false);
         }

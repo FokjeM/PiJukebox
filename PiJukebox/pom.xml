@@ -35,6 +35,13 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.9.7</version>
         </dependency>
+        <!-- MP3agic for reading metadata -->
+        <dependency>
+            <groupId>com.mpatric</groupId>
+            <artifactId>mp3agic</artifactId>
+            <version>0.9.1</version>
+            <type>jar</type>
+        </dependency>
         <!-- am I missing anything? -->
     </dependencies>
     
