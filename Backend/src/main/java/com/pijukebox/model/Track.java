@@ -30,22 +30,26 @@ public class Track implements Serializable {
     @Column(nullable = false)
     private String filename;
 
-    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
     @NotNull
-    @JoinTable
-    @OneToMany
-    List<Album> albums;
-
-    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
-    @NotNull
-    @JoinTable
-    @OneToMany
-    List<Artist> artists;
-
-    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
-    @NotNull
-    @JoinTable
-    @OneToMany
-    List<Genre> genres;
+    @OneToMany(mappedBy = "track_playlist")
+    @JoinTable(name="track_id")
+    private List<TrackPlaylist> trackPlaylists;
+//    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
+//    @NotNull
+//    @JoinTable
+//    @OneToMany
+//    List<Album> albums;
+//
+//    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
+//    @NotNull
+//    @JoinTable
+//    @OneToMany
+//    List<Artist> artists;
+//
+//    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
+//    @NotNull
+//    @JoinTable
+//    @OneToMany
+//    List<Genre> genres;
 
 }

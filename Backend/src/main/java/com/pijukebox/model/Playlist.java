@@ -31,10 +31,14 @@ public class Playlist extends BeanUtils {
 
     private String description;
 
-    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
-    @JoinTable
-    @OneToMany
-    private List<Track> tracks;
+    @NotNull
+    @OneToMany(mappedBy = "track_playlist")
+    @JoinTable(name="track_id")
+    private List<TrackPlaylist> trackPlaylists;
+//    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
+//    @JoinTable
+//    @OneToMany
+//    private List<Track> tracks;
 
     // https://codippa.com/skip-null-properties-spring-beanutils/
 

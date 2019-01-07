@@ -15,9 +15,10 @@ public class Artist implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id")
     private Long id;
 
     @NotNull
-    @Column(nullable = false)
+    @Column(name="name", nullable = false)
     private String name;
 }

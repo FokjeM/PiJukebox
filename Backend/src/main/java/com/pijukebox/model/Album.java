@@ -14,15 +14,22 @@ public class Album {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id")
     private Long id;
 
-    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
-    @JoinTable
-    @OneToMany
-    List<Artist> artists;
+    @Column(name="name")
+    private String name;
 
-    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
-    @JoinTable
-    @OneToMany
-    List<Genre> genres;
+    @Column(name="releaseDate")
+    private String releaseDate;
+    
+//    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
+//    @JoinTable
+//    @OneToMany
+//    List<Artist> artists;
+//
+//    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
+//    @JoinTable
+//    @OneToMany
+//    List<Genre> genres;
 }
