@@ -41,7 +41,7 @@ class TrackControl extends PolymerElement {
         <div class="controlsContainer">
          
           <div class="controls">
-            <paper-icon-button on-tap="shuffle" icon="av:shuffle"></paper-icon-button>
+            <paper-icon-button on-tap="shuffle" icon="av:shuffle" id="shuffleBtn"></paper-icon-button>
 
             <paper-icon-button on-tap="previousTrack" icon="av:skip-previous"></paper-icon-button>
 
@@ -49,7 +49,7 @@ class TrackControl extends PolymerElement {
             
             <paper-icon-button on-tap="nextTrack" icon="av:skip-next"></paper-icon-button>
 
-            <paper-icon-button on-tap="repeat" icon="av:repeat"></paper-icon-button>
+            <paper-icon-button on-tap="repeat" icon="[[repeatIcon]]" id="repeatBtn"></paper-icon-button>
           </div>
           
         </div>
@@ -62,12 +62,35 @@ class TrackControl extends PolymerElement {
       playPauseIcon: {
         type: String,
         value: "av:play-arrow"
+      },
+      repeatIcon: {
+        type: String,
+        value: "av:repeat"
+      },
+      repeatState: {
+        type: Integer,
+        value: 0
+      },
+      shuffleIsActive: {
+        type: Boolean,
+        value: false
       }
     };
   }
 
+  shuffle() {
+    let shuffleButton = this.$.shuffleBtn;
+
+    if(!this.shuffleIsActive) {
+      shuffleButton.style.color = "blue";
+      this.shuffleIsActive = true;
+    } else {
+      shuffleButton.style.color = "var(--paper-icon-button-ink-color, var(--primary-text-color))";
+      this.shuffleIsActive = false;
+    }
+  }
+
   playPause() {
-    
     // try {
     //   //todo: decide how this will be handled by backend
     //   this.$.playPauseTrack.setAttribute('body', '{"playPause":' + volumeLevel + '}');
@@ -89,6 +112,21 @@ class TrackControl extends PolymerElement {
       this.playPauseIcon = "av:pause";
     } else {
       this.playPauseIcon = "av:play-arrow"
+    }
+  }
+
+  repeat() {
+    let repeatButton = this.$.repeatBtn;
+
+    if(!this.repeatIsActive) {
+      repeatButton.style.color = "blue";
+      this.repeatIcon = "av:repeat-one"; // repeat-one icon
+      this.repeatIsActive = true;
+
+    } else {
+      repeatButton.style.color = "var(--paper-icon-button-ink-color, var(--primary-text-color))";
+      this.repeatIcon = "av:repeat";
+      this.repeatIsActive = false;
     }
   }
 
