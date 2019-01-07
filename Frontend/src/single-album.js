@@ -15,7 +15,7 @@ import '@polymer/app-route/app-location.js';
 import '@polymer/app-route/app-route.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 
-class SinglePlaylist extends PolymerElement {
+class SingleAlbum extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -33,28 +33,29 @@ class SinglePlaylist extends PolymerElement {
 
       <app-route 
         route="{{route}}" 
-        pattern="[[rootPath]]playlist/:playlistId"
+        pattern="[[rootPath]]album/:albumId"
         data="{{routeData}}" 
         tail="{{subroute}}">
       </app-route>
 
       <div class="card">
-        <h1>[[playlist.title]]</h1>
+        <h1>[[album.title]]</h1>
+        <h1>[[album.artist]]</h1>
       </div>
 
-      <!-- Get all playlist info -->
+      <!-- Get all album info -->
       <iron-ajax
         auto
-        url="http://localhost:8000/playlist/[[routeData.playlistId]]"
+        url="http://localhost:8000/album/[[routeData.albumId]]"
         handle-as="json"
-        last-response="{{playlist}}">
+        last-response="{{album}}">
       </iron-ajax>
-
-      <!-- Artist tracks -->
-      <div id="artistTracks" class="card">
+      
+      <!-- Album tracks -->
+      <div id="albumTracks" class="card">
         <h1>Tracks</h1>
 
-        <template is="dom-repeat" items="{{playlist.tracks}}" as="track" rendered-item-count="{{playlistTrackCount}}">
+        <template is="dom-repeat" items="{{album.tracks}}" as="track" rendered-item-count="{{trackCount}}">
           <div style="display:flex;">          
               <result-row-track
                   track-id="{{track.id}}"
@@ -64,7 +65,7 @@ class SinglePlaylist extends PolymerElement {
             </div>
         </template>
 
-        <template is="dom-if" if="{{!playlistTrackCount}}">
+        <template is="dom-if" if="{{!trackCount}}">
           No tracks.
         </template> 
       </div>
@@ -72,4 +73,4 @@ class SinglePlaylist extends PolymerElement {
   }
 }
 
-window.customElements.define('single-playlist', SinglePlaylist);
+window.customElements.define('single-album', SingleAlbum);

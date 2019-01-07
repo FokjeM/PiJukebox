@@ -21,11 +21,14 @@ import '@polymer/app-route/app-route.js';
 import '@polymer/iron-pages/iron-pages.js';
 import '@polymer/iron-selector/iron-selector.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
+import '@polymer/paper-dialog/paper-dialog.js';
+
 import './my-icons.js';
 
 import './elements/current-track.js';
 import './elements/track-control.js';
 import './elements/volume-control.js';
+import './elements/dialog-element.js';
 
 
 // Gesture events like tap and track generated from touch will not be
@@ -93,6 +96,7 @@ class MyApp extends PolymerElement {
             <a name="playlists" href="[[rootPath]]playlists">Playlists</a>
             <a name="playlist" href="[[rootPath]]playlist">Single Playlist</a>
             <a name="queue" href="[[rootPath]]queue">Queue</a>
+            <a name="search" href="[[rootPath]]search">Search</a>
           </iron-selector>
         </app-drawer>
 
@@ -111,19 +115,39 @@ class MyApp extends PolymerElement {
             <all-playlists name="playlists"></all-playlists>
             <single-playlist name="playlist"></single-playlist>
             <track-queue name="queue"></track-queue>
+            <single-artist name="artist"></single-artist>
+            <single-album name="album"></single-album>
+            <search-tracks name="search"></search-tracks>
             <my-view404 name="view404"></my-view404>
           </iron-pages>
-          
+
+          <dialog-element id="mainDialog">
+          </dialog-element>
+
           <current-track
-              track-id="1"
-              track-name="The current track"
-              track-artist="Artist of the track">
+            track-id="1"
+            track-name="The current track"
+            track-artist="Artist of the track">
           </current-track>
           <track-control></track-control>
           <volume-control></volume-control>
         </app-header-layout>
       </app-drawer-layout>
     `;
+  }
+
+  ready(){
+    super.ready();
+    window.addEventListener('open-dialog-event', function(e) {
+      this.openDialog(e);
+    }.bind(this));
+  }
+
+  openDialog(e){
+    var dialog = this.shadowRoot.getElementById('mainDialog');
+    dialog.dialogTitle = e.detail.title;
+    dialog.dialogText = e.detail.text;
+    dialog.open();
   }
 
   static get properties() {
@@ -151,7 +175,7 @@ class MyApp extends PolymerElement {
      // Show 'tracks' in that case. And if the page doesn't exist, show 'view404'.
     if (!page) {
       this.page = 'tracks';
-    } else if (['tracks', 'playlists', 'playlist', 'queue'].indexOf(page) !== -1) {
+    } else if (['tracks', 'playlists', 'playlist', 'queue', 'search', 'artist', 'album'].indexOf(page) !== -1) {
       this.page = page;
     } else {
       this.page = 'view404';
@@ -180,6 +204,15 @@ class MyApp extends PolymerElement {
         break;
       case 'queue':
         import('./track-queue.js');
+      case 'artist':
+        import('./single-artist.js');
+        break;  
+      case 'album':
+        import('./single-album.js');
+        break;    
+      case 'search':
+        import('./search-tracks.js');
+        break;  
       case 'view404':
         import('./my-view404.js');
         break;
