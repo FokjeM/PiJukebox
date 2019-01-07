@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @AllArgsConstructor
-@Table(schema = "pijukebox", name = "genre")
+@Table(name = "genre")
 public class Genre {
 
     @Id

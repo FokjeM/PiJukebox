@@ -8,13 +8,12 @@ import javax.persistence.*;
 @Entity
 @Data
 @AllArgsConstructor
-@Table(schema = "pijukebox", name = "track_playlist")
+@Table(name = "track_playlist")
 public class TrackPlaylist {
     @Id
     @Column(name="playlist_id")
     private Long playlist_id;
 
-    @Id
     @Column(name="track_id")
     private Long track_id;
 

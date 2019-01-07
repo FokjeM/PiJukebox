@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Data
 @AllArgsConstructor
-@Table(schema = "pijukebox", name = "track")
+@Table(name = "track")
 public class Track implements Serializable {
 
     @Id
@@ -31,8 +31,8 @@ public class Track implements Serializable {
     private String filename;
 
     @NotNull
-    @OneToMany(mappedBy = "track_playlist")
-    @JoinTable(name="track_id")
+    @JoinTable(name="track_playlist")
+    @OneToMany
     private List<TrackPlaylist> trackPlaylists;
 //    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
 //    @NotNull

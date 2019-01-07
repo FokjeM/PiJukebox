@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Entity
 @Data
 @AllArgsConstructor
-@Table(schema = "pijukebox", name = "artist")
+@Table(name = "artist")
 public class Artist implements Serializable {
 
     @Id

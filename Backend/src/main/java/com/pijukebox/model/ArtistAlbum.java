@@ -11,13 +11,12 @@ import javax.persistence.Table;
 @Entity
 @Data
 @AllArgsConstructor
-@Table(schema = "pijukebox", name = "artist_album")
+@Table(name = "artist_album")
 public class ArtistAlbum {
     @Id
     @Column(name="album_id")
     private Long album_id;
 
-    @Id
     @Column(name="artist_id")
     private Long artist_id;
 

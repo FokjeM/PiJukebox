@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Entity
 @Data
 @AllArgsConstructor
-@Table(schema = "pijukebox", name = "role")
+@Table(name = "role")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Role implements Serializable {
 

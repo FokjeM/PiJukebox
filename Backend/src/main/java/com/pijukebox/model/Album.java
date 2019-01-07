@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 @Data
 @AllArgsConstructor
-@Table(schema = "pijukebox", name = "album")
+@Table(name = "album")
 public class Album {
 
     @Id
