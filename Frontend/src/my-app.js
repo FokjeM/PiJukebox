@@ -25,9 +25,7 @@ import '@polymer/paper-dialog/paper-dialog.js';
 
 import './my-icons.js';
 
-import './elements/current-track.js';
 import './elements/track-control.js';
-import './elements/volume-control.js';
 import './elements/dialog-element.js';
 
 
@@ -123,14 +121,7 @@ class MyApp extends PolymerElement {
 
           <dialog-element id="mainDialog">
           </dialog-element>
-
-          <current-track
-            track-id="1"
-            track-name="The current track"
-            track-artist="Artist of the track">
-          </current-track>
           <track-control></track-control>
-          <volume-control></volume-control>
         </app-header-layout>
       </app-drawer-layout>
     `;
