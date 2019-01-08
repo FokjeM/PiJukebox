@@ -78,6 +78,7 @@ class QueueItem extends PolymerElement {
   handleQueueResponseUp(e,r){
     if(r.status == 200){
       this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: this.trackName + ' has been moved up.'}, bubbles: true,composed: true, }));
+      this.dispatchEvent(new CustomEvent('refresh-queue-event', { bubbles: true,composed: true }));
     }
     else{
       this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true, }));
@@ -87,6 +88,7 @@ class QueueItem extends PolymerElement {
   handleQueueResponseDown(e,r){
     if(r.status == 200){
       this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: this.trackName + ' has been moved down.'}, bubbles: true,composed: true, }));
+      this.dispatchEvent(new CustomEvent('refresh-queue-event', { bubbles: true,composed: true }));
     }
     else{
       this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true, }));

@@ -22,6 +22,7 @@ class TrackQueue extends PolymerElement {
       </style>
       
       <iron-ajax
+        id="getCurrentQueue"
         auto
         url="http://localhost:8000/search/track/k"
         handle-as="json"
@@ -30,7 +31,6 @@ class TrackQueue extends PolymerElement {
 
       <div class="card">  
         <div class="container">
-          
           <h1>Current queue</h1>
           <dom-repeat items="{{response}}" as="track">
             <template>
@@ -41,12 +41,19 @@ class TrackQueue extends PolymerElement {
               </queue-item>
             </template>
           </dom-repeat>
-
         </div>
       </div>
 
     `;
   }
+
+  ready(){
+    super.ready();
+    window.addEventListener('refresh-queue-event', function(e) {
+      this.$.getCurrentQueue.generateRequest();
+    }.bind(this));
+  }
+
 }
 
 customElements.define('track-queue', TrackQueue);
