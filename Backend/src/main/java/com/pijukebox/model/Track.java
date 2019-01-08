@@ -6,7 +6,9 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -31,25 +33,11 @@ public class Track implements Serializable {
     private String filename;
 
     @NotNull
-    @JoinTable(name="track_playlist")
+    @JoinTable(name = "track_playlist")
     @OneToMany
-    private List<TrackPlaylist> trackPlaylists;
-//    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
-//    @NotNull
-//    @JoinTable
-//    @OneToMany
-//    List<Album> albums;
-//
-//    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
-//    @NotNull
-//    @JoinTable
-//    @OneToMany
-//    List<Artist> artists;
-//
-//    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
-//    @NotNull
-//    @JoinTable
-//    @OneToMany
-//    List<Genre> genres;
+    private List<TrackPlaylist> playlists;
 
+    @NotNull
+    @ManyToMany(mappedBy = "tracks")
+    private Set<Album> tracks = new HashSet<>();
 }

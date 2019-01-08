@@ -6,6 +6,8 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -21,4 +23,8 @@ public class Artist implements Serializable {
     @NotNull
     @Column(name="name", nullable = false)
     private String name;
+
+    @NotNull
+    @ManyToMany(mappedBy = "artists")
+    private Set<Album> artists = new HashSet<>();
 }

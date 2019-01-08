@@ -8,4 +8,6 @@ public interface IAlbumRepository {
     List<Album> findAll();
 
     Album getById(Long id);
+
+    Album getAlbumDetails(Long id);
 }
