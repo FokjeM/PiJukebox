@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Entity
 @Data
 @AllArgsConstructor
-@Table(name = "album_genre")
+@Table(schema = "pijukebox", name = "album_genre")
 public class AlbumGenre implements Serializable {
     @Id
     @Column(name = "album_id")

@@ -1,11 +1,14 @@
 package com.pijukebox.model;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,7 +16,8 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @Table(schema = "pijukebox", name = "genre")
-public class Genre {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class Genre implements Serializable {
 
     // https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
 
