@@ -37,7 +37,7 @@ class AllPlaylists extends PolymerElement {
       
       <iron-ajax
         auto
-        url="http://localhost:8080/api/v1/laptops/"
+        url="http://localhost:8000/playlists"
         handle-as="json"
         last-response="{{response}}">
       </iron-ajax>
@@ -62,14 +62,6 @@ class AllPlaylists extends PolymerElement {
       </div>
     `;
   }
-
-  // static get properties() {
-  //   return {
-  //     playlistId: {
-  //       type: Number
-  //     }
-  //   };
-  // }
 
 }
 
