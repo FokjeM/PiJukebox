@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AlbumServiceImpl implements IAlbumService {
@@ -20,16 +21,16 @@ public class AlbumServiceImpl implements IAlbumService {
 
     @Override
     public List<Album> findAll() {
-        return albumRepository.getAll();
+        return albumRepository.findAll();
     }
 
     @Override
-    public Album findById(Long id) {
-        return albumRepository.getById(id);
+    public Optional<Album> findById(Long id) {
+        return albumRepository.findById(id);
     }
 
     @Override
-    public Album findDetails(long id) {
-        return albumRepository.getDetails(id);
+    public Album findByName(String name) {
+        return albumRepository.findByName(name);
     }
 }

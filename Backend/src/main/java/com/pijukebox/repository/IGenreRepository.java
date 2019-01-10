@@ -1,12 +1,15 @@
 package com.pijukebox.repository;
 
-import com.pijukebox.model.Artist;
 import com.pijukebox.model.Genre;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface IGenreRepository {
+@Repository
+public interface IGenreRepository extends JpaRepository<Genre, Long> {
     List<Genre> findAll();
 
-    Genre getById(Long id);
+    Optional<Genre> findById(Long id);
 }

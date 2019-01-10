@@ -5,6 +5,7 @@ import com.pijukebox.service.ITrackService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/tracks")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Transactional
 public class TrackController {
 
     private ITrackService trackService;

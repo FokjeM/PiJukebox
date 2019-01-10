@@ -1,13 +1,18 @@
 package com.pijukebox.repository;
 
 import com.pijukebox.model.Album;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface IAlbumRepository {
-    List<Album> getAll();
+@Repository
+public interface IAlbumRepository extends JpaRepository<Album, Long> {
 
-    Album getById(Long id);
+    List<Album> findAll();
 
-    Album getDetails(Long id);
+    Optional<Album> findById(Long id);
+
+    Album findByName(String name);
 }
