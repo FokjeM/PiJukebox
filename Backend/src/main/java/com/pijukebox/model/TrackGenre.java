@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Data
 @AllArgsConstructor
-@Table(name = "track_genre")
+@Table(schema = "pijukebox", name = "track_genre")
 public class TrackGenre {
 
     @Id

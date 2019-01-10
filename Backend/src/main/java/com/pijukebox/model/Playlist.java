@@ -31,10 +31,10 @@ public class Playlist extends BeanUtils {
 
     private String description;
 
-    @NotNull
-    @JoinTable(name="track_playlist")
-    @OneToMany
-    private List<TrackPlaylist> trackPlaylists;
+//    @NotNull
+//    @JoinTable(name="track_playlist")
+//    @OneToMany
+//    private List<TrackPlaylist> trackPlaylists;
 //    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
 //    @JoinTable
 //    @OneToMany

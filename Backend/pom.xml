@@ -43,6 +43,11 @@
             <version>${spring-data-jpa.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+            <version>5.3.5.Final</version>
+        </dependency>
         <!--Necessary for writing our initialization code-->
         <dependency>
             <groupId>javax.servlet</groupId>

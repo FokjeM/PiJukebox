@@ -1,16 +1,21 @@
 package com.pijukebox.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
+import java.util.ArrayList;
+//import java.util.Set;
 
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "album")
-public class Album {
+public class Album implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,14 +27,22 @@ public class Album {
 
     @Column(name="releaseDate")
     private String releaseDate;
+
+
+//    @OneToMany(cascade= CascadeType.ALL)
+//    @JoinTable(name="album_genre", catalog = "pijukebox", joinColumns = {
+//            @JoinColumn(name="album_id", nullable = false)},//, updatable = false
+//            inverseJoinColumns = {
+//            @JoinColumn(name="genre_id", nullable = false)})//, updatable = false
+//    private List<AlbumGenre> albumGenres;
     
-//    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
-//    @JoinTable
-//    @OneToMany
-//    List<Artist> artists;
-//
-//    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
-//    @JoinTable
-//    @OneToMany
-//    List<Genre> genres;
+
+//    @ManyToMany(cascade= CascadeType.ALL)
+//    @JoinTable(name="album_genre", catalog = "pijukebox", joinColumns = {
+//            @JoinColumn(name="album_id", nullable = false)},//, updatable = false
+//            inverseJoinColumns = {
+//            @JoinColumn(name="genre_id", nullable = false)})//, updatable = false
+    @Transient
+    private ArrayList<Genre> genres = new ArrayList<>();
+
 }
