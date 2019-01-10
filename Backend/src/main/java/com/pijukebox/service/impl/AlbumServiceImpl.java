@@ -5,7 +5,6 @@ import com.pijukebox.repository.IAlbumRepository;
 import com.pijukebox.service.IAlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class AlbumServiceImpl implements IAlbumService {
 
     @Override
     public List<Album> findAll() {
-        return albumRepository.findAll();
+        return albumRepository.getAll();
     }
 
     @Override
@@ -30,7 +29,7 @@ public class AlbumServiceImpl implements IAlbumService {
     }
 
     @Override
-    public Album findAlbumDetails(long id) {
-        return albumRepository.getAlbumDetails(id);
+    public Album findDetails(long id) {
+        return albumRepository.getDetails(id);
     }
 }

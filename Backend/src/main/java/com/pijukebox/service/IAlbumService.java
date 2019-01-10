@@ -9,5 +9,5 @@ public interface IAlbumService {
 
     Album findById(Long id);
 
-    Album findAlbumDetails(long id);
+    Album findDetails(long id);
 }

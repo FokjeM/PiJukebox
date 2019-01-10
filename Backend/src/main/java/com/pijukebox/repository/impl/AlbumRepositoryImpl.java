@@ -27,7 +27,7 @@ public class AlbumRepositoryImpl implements IAlbumRepository {
     private EntityManager em;
 
     @Override
-    public List<Album> findAll() {
+    public List<Album> getAll() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Album> query = cb.createQuery(Album.class);
         Root<Album> table = query.from(Album.class);
@@ -46,7 +46,7 @@ public class AlbumRepositoryImpl implements IAlbumRepository {
     }
 
     @Override
-    public Album getAlbumDetails(Long id) {
+    public Album getDetails(Long id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Album> query = cb.createQuery(Album.class);
         Root<Album> table = query.from(Album.class);
