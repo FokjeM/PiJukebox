@@ -14,6 +14,14 @@ import './shared-styles.js';
 import '@polymer/polymer/lib/elements/dom-repeat.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 
+import '@polymer/paper-button/paper-button.js';
+import '@polymer/paper-icon-button/paper-icon-button.js';
+import '@polymer/paper-item/paper-item.js';
+import '@polymer/iron-icon/iron-icon.js';
+import '@polymer/iron-icons/iron-icons.js';
+import '@polymer/iron-icons/av-icons.js';
+import '@polymer/iron-form/iron-form.js';
+
 class AllPlaylists extends PolymerElement {
   static get template() {
     return html`
@@ -33,11 +41,17 @@ class AllPlaylists extends PolymerElement {
           display: flex;
           flex-direction: column;
         }
+        
+        .playlist-form {
+          display: flex;
+          flex-direction: row;
+          margin-top: 10px;
+        }
       </style>
       
       <iron-ajax
         auto
-        url="http://localhost:8000/playlists"
+        url="http://localhost:8080/api/v1/laptops"
         handle-as="json"
         last-response="{{response}}">
       </iron-ajax>
@@ -57,10 +71,32 @@ class AllPlaylists extends PolymerElement {
               </div>
             </template>
           </dom-repeat>
-          
+
+          <div class="playlist-form">
+            <iron-form id="playlistForm">
+              <!-- <form action="http://localhost:8000/playlists/create" method="get"> -->
+              <form action="http://localhost:8000/playlists/create" method="post">
+                <paper-input type="text" name="name" label="Name" id="playlistName" 
+                            error-message="Please enter a name" required></paper-input>
+                <paper-icon-button on-tap="_submitForm" icon="icons:add-circle-outline"></paper-icon-button>
+                <!-- <paper-button raised on-tap="_submitForm">Add new playlist</paper-button> -->
+              </form>
+            </iron-form>
+            
+          </div>
         </div>
       </div>
     `;
+  }
+
+  _submitForm() {
+    let pForm = this.$.playlistForm;
+
+    let isValid = pForm.validate();
+    if(isValid) {
+      this.$.playlistForm.submit();
+      console.log("submitted");
+    }
   }
 
 }
