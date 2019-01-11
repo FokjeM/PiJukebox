@@ -21,6 +21,9 @@ public class Album implements Serializable {
     // https://en.wikibooks.org/wiki/Java_Persistence/ManyToMany
     // https://vladmihalcea.com/jpa-hibernate-synchronize-bidirectional-entity-associations/
 
+    // https://stackoverflow.com/questions/37243159/mappedby-in-bi-directional-manytomany-what-is-the-reason/37312213#37312213
+    // https://stackoverflow.com/questions/10968536/jpa-difference-in-the-use-of-the-mappedby-property-to-define-the-owning-entity
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -32,6 +35,7 @@ public class Album implements Serializable {
 
     @Column(name = "releaseDate")
     private String releaseDate;
+
 
     @ManyToMany(targetEntity = Track.class, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 //    @JoinTable(name = "album_track", joinColumns = @JoinColumn(name = "album_id", referencedColumnName = "id", nullable = false, updatable = false), inverseJoinColumns = @JoinColumn(name = "track_id", referencedColumnName = "id", nullable = false, updatable = false))
