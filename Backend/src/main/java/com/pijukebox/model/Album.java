@@ -19,6 +19,7 @@ public class Album implements Serializable {
 
     // https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
     // https://en.wikibooks.org/wiki/Java_Persistence/ManyToMany
+    // https://vladmihalcea.com/jpa-hibernate-synchronize-bidirectional-entity-associations/
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

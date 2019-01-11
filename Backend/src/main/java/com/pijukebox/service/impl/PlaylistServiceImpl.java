@@ -3,10 +3,12 @@ package com.pijukebox.service.impl;
 import com.pijukebox.model.Playlist;
 import com.pijukebox.service.IPlaylistService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class PlaylistServiceImpl implements IPlaylistService {
 
     @Override
