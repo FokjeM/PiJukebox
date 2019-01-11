@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -23,13 +22,16 @@ public class AlbumController {
 
     @GetMapping("/albums")
     @ApiOperation(value = "Get all albums")
-    public List<Album> albumDetails() {
+    public List<Album> albums() {
         return albumService.findAll();
     }
 
-    @GetMapping("/albums/{albumId}")
+    @GetMapping("/albums/{id}")
     @ApiOperation(value = "Get all information pertaining to an album")
-    public Optional<Album> albumDetails(@PathVariable Long albumId) {
-        return albumService.findById(albumId);
+    public Album albumDetails(@PathVariable Long id) {
+        if (!albumService.findById(id).isPresent()) {
+            return null;
+        }
+        return albumService.findById(id).get();
     }
 }

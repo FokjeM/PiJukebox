@@ -2,11 +2,11 @@ package com.pijukebox.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -21,10 +21,10 @@ public class Artist implements Serializable {
     private Long id;
 
     @NotNull
+    @NaturalId
     @Column(name="name", nullable = false)
     private String name;
 
-    @NotNull
-    @ManyToMany(mappedBy = "artists")
-    private Set<Album> artists = new HashSet<>();
+    @ManyToMany(mappedBy = "artists", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Album> albums;
 }

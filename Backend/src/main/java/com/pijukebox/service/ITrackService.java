@@ -1,20 +1,13 @@
 package com.pijukebox.service;
 
-import com.pijukebox.model.Album;
-import com.pijukebox.model.Genre;
 import com.pijukebox.model.Track;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ITrackService {
 
     List<Track> findAll();
 
-    List<Track> findAll(Long limit);
-
-    Track findById(Long id);
-
-    List<Album> findAlbums();
-
-    List<Genre> findGenres();
+    Optional<Track> findById(Long id);
 }

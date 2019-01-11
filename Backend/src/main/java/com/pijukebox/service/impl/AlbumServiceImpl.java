@@ -5,11 +5,13 @@ import com.pijukebox.repository.IAlbumRepository;
 import com.pijukebox.service.IAlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class AlbumServiceImpl implements IAlbumService {
 
     private final IAlbumRepository albumRepository;
@@ -27,10 +29,5 @@ public class AlbumServiceImpl implements IAlbumService {
     @Override
     public Optional<Album> findById(Long id) {
         return albumRepository.findById(id);
-    }
-
-    @Override
-    public Album findByName(String name) {
-        return albumRepository.findByName(name);
     }
 }

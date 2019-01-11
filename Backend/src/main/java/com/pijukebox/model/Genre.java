@@ -9,7 +9,6 @@ import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -30,7 +29,6 @@ public class Genre implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @NotNull
-    @ManyToMany(mappedBy = "genres")
-    private Set<Album> albums = new HashSet<>();
+    @ManyToMany(mappedBy = "genres", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Album> albums;
 }

@@ -10,6 +10,4 @@ public interface IAlbumService {
     List<Album> findAll();
 
     Optional<Album> findById(Long id);
-
-    Album findByName(String name);
 }
