@@ -2,6 +2,7 @@ package com.pijukebox.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @Table(name = "track")
+@NoArgsConstructor
 public class Track implements Serializable {
 
     @Id

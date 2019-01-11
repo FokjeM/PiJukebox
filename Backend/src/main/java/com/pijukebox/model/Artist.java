@@ -2,6 +2,7 @@ package com.pijukebox.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @Table(name = "artist")
+@NoArgsConstructor
 public class Artist implements Serializable {
 
     @Id

@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -25,7 +27,7 @@ public class Genre  implements Serializable {
 //    @OneToMany(targetEntity = AlbumGenre.class, mappedBy = "genre_id", fetch = FetchType.LAZY)
 //    private List<AlbumGenre> albumGenres;
 //     @ManyToMany(mappedBy = "genres")
-//     private List<Album> albums;
+//     private Set<Album> albums = new HashSet<>();
 //    @OneToMany(cascade= CascadeType.ALL)
 //    @JoinTable(name="album_genre", catalog = "pijukebox", joinColumns = {
 //            @JoinColumn(name="album_id", nullable = false)},//, updatable = false

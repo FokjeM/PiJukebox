@@ -37,4 +37,9 @@ public class AlbumServiceImpl implements IAlbumService {
         return albumRepository.getAlbumGenre(id);
     }
 
+    @Override
+    public List<Album> findAlbumsDetails() {
+        return albumRepository.getAlbumsDetails();
+    }
+
 }

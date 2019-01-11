@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 //import java.util.Set;
 
 @Entity
@@ -37,12 +39,30 @@ public class Album implements Serializable {
 //    private List<AlbumGenre> albumGenres;
     
 
-//    @ManyToMany(cascade= CascadeType.ALL)
-//    @JoinTable(name="album_genre", catalog = "pijukebox", joinColumns = {
-//            @JoinColumn(name="album_id", nullable = false)},//, updatable = false
-//            inverseJoinColumns = {
-//            @JoinColumn(name="genre_id", nullable = false)})//, updatable = false
-    @Transient
-    private ArrayList<Genre> genres = new ArrayList<>();
+    @ManyToMany(cascade= CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinTable(name="album_genre", catalog = "pijukebox", joinColumns = {
+            @JoinColumn(name="album_id", nullable = false)},//, updatable = false
+            inverseJoinColumns = {
+            @JoinColumn(name="genre_id", nullable = false)})//, updatable = false
+//    @Transient
+    private Set<Genre> genres = new HashSet<>();
+
+
+    @ManyToMany(cascade= CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name="album_track", catalog = "pijukebox", joinColumns = {
+            @JoinColumn(name="album_id", nullable = false)},//, updatable = false
+            inverseJoinColumns = {
+                    @JoinColumn(name="track_id", nullable = false)})//, updatable = false
+//    @Transient
+    private Set<Track> tracks = new HashSet<>();
+
+
+    @ManyToMany(cascade= CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name="artist_album", catalog = "pijukebox", joinColumns = {
+            @JoinColumn(name="album_id", nullable = false)},//, updatable = false
+            inverseJoinColumns = {
+                    @JoinColumn(name="artist_id", nullable = false)})//, updatable = false
+//    @Transient
+    private Set<Artist> artists = new HashSet<>();
 
 }

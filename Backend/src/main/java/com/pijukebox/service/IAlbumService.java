@@ -13,4 +13,6 @@ public interface IAlbumService {
     Album findById(Long id);
 
     Album findAlbumGenre(Long id);
+
+    List<Album> findAlbumsDetails();
 }

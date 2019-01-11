@@ -47,5 +47,11 @@ public class AlbumController {
         return albumService.findById(albumId);
     }
 
+    @GetMapping("albums/details")
+    public List<Album> getAlbumDetails()
+    {
+        return albumService.findAlbumsDetails();
+    }
+
 //
 }

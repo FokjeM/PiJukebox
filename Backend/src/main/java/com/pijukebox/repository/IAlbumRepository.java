@@ -19,4 +19,5 @@ public interface IAlbumRepository{
 
     Album getAlbumGenre(Long id);
 
+    List<Album> getAlbumsDetails();
 }
