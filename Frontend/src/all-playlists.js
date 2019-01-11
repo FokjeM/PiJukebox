@@ -41,26 +41,34 @@ class AllPlaylists extends PolymerElement {
           display: flex;
           flex-direction: column;
         }
-        
-        .playlist-form {
+                
+        .formInput {
           display: flex;
           flex-direction: row;
+          align-items:flex-end;
+          justify-content: flex-start;
           margin-top: 10px;
         }
+
+        #playlistName {
+          width: 350px;
+        }
+
       </style>
       
       <iron-ajax
         auto
+        id="getPlaylists"
         url="http://localhost:8080/api/v1/laptops"
         handle-as="json"
-        last-response="{{response}}">
+        last-response="{{playlists}}">
       </iron-ajax>
         
       <div class="card">
         <div class="container">
             
           <h1>Playlists</h1>
-          <dom-repeat items="{{response}}" as="playlist">
+          <dom-repeat items="{{playlists}}" as="playlist">
             <template>
               <div>
                 <a class="playlistLink" href="[[rootPath]]playlist/[[playlist.id]]">
@@ -72,14 +80,15 @@ class AllPlaylists extends PolymerElement {
             </template>
           </dom-repeat>
 
-          <div class="playlist-form">
+          <div class="playlist-container">
             <iron-form id="playlistForm">
               <!-- <form action="http://localhost:8000/playlists/create" method="get"> -->
-              <form action="http://localhost:8000/playlists/create" method="post">
-                <paper-input type="text" name="name" label="Name" id="playlistName" 
-                            error-message="Please enter a name" required></paper-input>
-                <paper-icon-button on-tap="_submitForm" icon="icons:add-circle-outline"></paper-icon-button>
-                <!-- <paper-button raised on-tap="_submitForm">Add new playlist</paper-button> -->
+              <form action="http://localhost:8000/playlists/create" method="post" on-response="formResponse">
+                <div class="formInput">
+                  <paper-input type="text" name="name" label="Name" id="playlistName" 
+                  error-message="Please enter a name" required></paper-input>
+                  <paper-icon-button id="submitBtn" on-tap="_submitForm" icon="icons:add-circle-outline"></paper-icon-button>
+                </div>
               </form>
             </iron-form>
             
@@ -95,10 +104,32 @@ class AllPlaylists extends PolymerElement {
     let isValid = pForm.validate();
     if(isValid) {
       this.$.playlistForm.submit();
-      console.log("submitted");
+      
     }
   }
 
+  formResponse(e,response) {
+    if(response == 200) {
+      updatePlaylists();
+    } else {
+      this.throwEvent('open-dialog-event', {title: 'Queue', text: 'Something went wrong, please try again'});
+    }
+  }
+
+  updatePlaylists() {
+    this.$.getPlaylists.generateRequest();
+  }
+  
+
+  throwEvent(name, detail){
+    this.dispatchEvent(new CustomEvent(name, 
+      { 
+          detail: detail, 
+          bubbles: true,
+          composed: true, 
+      }
+    ));
+  }
 }
 
 window.customElements.define('all-playlists', AllPlaylists);

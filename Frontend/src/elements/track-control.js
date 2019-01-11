@@ -136,8 +136,8 @@ class TrackControl extends PolymerElement {
             <iron-icon icon="[[volumeIcon]]"></iron-icon>
             <paper-slider id="volumeSlider" max="10" step="1" value="[[volumeLevel]]" on-change="changeVolume"></paper-slider>
           </div>
-          
         </div>
+
       </div>
     `;
   }
