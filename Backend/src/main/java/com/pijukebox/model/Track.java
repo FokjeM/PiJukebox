@@ -34,10 +34,4 @@ public class Track implements Serializable {
     @NotNull
     @Column(nullable = false)
     private String filename;
-
-    //    @OneToMany
-    //    private List<TrackPlaylist> playlists;
-
-    @ManyToMany(mappedBy = "tracks", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<Album> albums;
 }

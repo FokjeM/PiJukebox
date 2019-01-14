@@ -1,20 +1,19 @@
 package com.pijukebox.model;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Data
 @AllArgsConstructor
-@Table(schema = "pijukebox", name = "album")
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@Table(name = "album")
 public class Album implements Serializable {
 
     // https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
@@ -29,23 +28,21 @@ public class Album implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @NaturalId
     @Column(name = "name")
     private String name;
 
     @Column(name = "releaseDate")
     private String releaseDate;
 
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @JoinTable(name = "album_genre", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "album_id", nullable = false)}, inverseJoinColumns = {@JoinColumn(name = "genre_id", nullable = false)})
+    private Set<Genre> genres = new HashSet<>();
 
-    @ManyToMany(targetEntity = Track.class, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//    @JoinTable(name = "album_track", joinColumns = @JoinColumn(name = "album_id", referencedColumnName = "id", nullable = false, updatable = false), inverseJoinColumns = @JoinColumn(name = "track_id", referencedColumnName = "id", nullable = false, updatable = false))
-    private Set<Track> tracks;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @JoinTable(name = "album_track", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "album_id", nullable = false)}, inverseJoinColumns = {@JoinColumn(name = "track_id", nullable = false)})
+    private Set<Track> tracks = new HashSet<>();
 
-    @ManyToMany(targetEntity = Genre.class, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//    @JoinTable(name = "album_genre", joinColumns = @JoinColumn(name = "album_id", referencedColumnName = "id", nullable = false, updatable = false), inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "id", nullable = false, updatable = false))
-    private Set<Genre> genres;
-
-    @ManyToMany(targetEntity = Artist.class, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//    @JoinTable(name = "artist_album", joinColumns = @JoinColumn(name = "album_id", referencedColumnName = "id", nullable = false, updatable = false), inverseJoinColumns = @JoinColumn(name = "artist_id", referencedColumnName = "id", nullable = false, updatable = false))
-    private Set<Artist> artists;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @JoinTable(name = "artist_album", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "album_id", nullable = false)}, inverseJoinColumns = {@JoinColumn(name = "artist_id", nullable = false)})
+    private Set<Artist> artists = new HashSet<>();
 }

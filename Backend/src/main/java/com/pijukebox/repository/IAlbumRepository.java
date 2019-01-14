@@ -14,5 +14,5 @@ public interface IAlbumRepository extends JpaRepository<Album, Long> {
 
     Optional<Album> findById(Long id);
 
-    Album findByName(String name);
+    Optional<List<Album>> findAlbumsByNameContaining(String name);
 }

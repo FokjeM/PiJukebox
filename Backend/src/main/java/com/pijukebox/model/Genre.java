@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -17,8 +17,6 @@ import java.util.Set;
 @Table(schema = "pijukebox", name = "genre")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Genre implements Serializable {
-
-    // https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,6 +27,7 @@ public class Genre implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "genres", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<Album> albums;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @JoinTable(name = "album_genre", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "genre_id", nullable = false)}, inverseJoinColumns = {@JoinColumn(name = "album_id", nullable = false)})
+    private Set<Album> albums = new HashSet<>();
 }

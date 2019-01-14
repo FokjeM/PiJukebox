@@ -12,4 +12,7 @@ public interface IGenreRepository extends JpaRepository<Genre, Long> {
     List<Genre> findAll();
 
     Optional<Genre> findById(Long id);
+
+    Optional<List<Genre>> findGenresByNameContaining(String name);
+
 }

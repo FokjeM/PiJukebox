@@ -1,12 +1,14 @@
 package com.pijukebox.service;
 
 import com.pijukebox.model.Genre;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IGenreService {
     List<Genre> findAll();
 
-    Genre findByName(String name);
+    Optional<Genre> findById(Long id);
+
+    Optional<List<Genre>> findGenresByNameContaining(String name);
 }
