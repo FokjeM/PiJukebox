@@ -61,4 +61,11 @@ public class ErrorLogger {
             return false;
         }
     }
+    
+    public boolean writeFFPlayLog(String msg){
+        errorLines.add("+--------------+");
+        errorLines.add("FFPlay output:");
+        errorLines.add(msg);
+        return writeLogLines();
+    }
 }

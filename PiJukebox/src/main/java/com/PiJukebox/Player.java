@@ -1,51 +1,74 @@
 package com.PiJukebox;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.*;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * The Player object will create an ErrorLogger,
      * Queue and PlayerTrack from the components within its own package.
      * It requires 0, 2 or 3 Boolean values for setting the options
-     *      3: Repeat, Repeat One and Shuffle.
-     *      2: Repeat, Repeat One=>false, Shuffle.
-     *      0: Repeat=>false, Repeat One=>false, Shuffle=>false.
-     * 
-     * If the application closes and a StatefulQueue has been saved, this will
-     * be marked as not-shuffled. This is not a bug, it is intended behavior
-     * designed to allow the backend to attempt recovering in the fastest manner
-     * possible. This means Repeat and Repeat One will be given by Front-End.
-     * The Shuffle state DOES NOT CHANGE.
+     * <ul>
+     * <li>2: Repeat and Repeat One.</li>
+     * <li>1: Repeat and Repeat One=>false</li>
+     * <li>0: Repeat=>false and Repeat One=>false</li>
+     * </ul>
  * @author Martin
  */
 
 public class Player {
     
     private final static Path QUEUEFILE = FileSystems.getDefault().getPath("stateful_queue.out");
-    private final Queue playQueue;
-    private List queue;
+    private final Queue queue;
+    private List statefulQueue;
     public ErrorLogger log;
     private Track currentTrack;
+    private int trackNum;
     private boolean repeat;
     private boolean repeatOne;
+    private Process proc;
+    private final Thread procOutput = new Thread(new Runnable() {
+        InputStream in = proc.getInputStream();
+
+        @Override
+        public void run() {
+            Scanner scan = new Scanner(new InputStreamReader(in));
+            //FFPlay doesn't output to stdout (this InputStream)
+            //FFPlay does output to stderr (this InputStream because error is redirected)
+            while(scan.hasNextLine()){
+                log.writeFFPlayLog(scan.next());
+            }
+        }
+    });
+    private final Thread procInput = new Thread(new Runnable() {
+        OutputStream out = proc.getOutputStream();
+        
+        @Override
+        public void run() {
+            
+        }
+    });
     
     /**
      * Instantiate a new Player. This constructor sets no default options.
      * <ul>
      * <li>Repeat: ON (true) or OFF (false) depending on rep</li>
      * <li>Repeat One: ON (true) or OFF (false) depending on repOne</li>
-     * <li>Shuffle: ON (true) or OFF (false) depending on shuffle</li>
      * </ul>
      * @param rep Set repeating the entire Queue indefinitely.
      * @param repOne Set repeating this Track indefinitely.
-     * @param shuffle Shuffle the Queue when populating, modifying or loading it.
      */
-    public Player(boolean rep, boolean repOne, boolean shuffle) {
-        playQueue = new Queue();
+    public Player(boolean rep, boolean repOne) {
+        queue = new Queue();
+        currentTrack = null;
+        trackNum = 0;
         if(checkQueueFile()) {
             restoreQueue();
         } else {
@@ -57,9 +80,6 @@ public class Player {
                 this.repeatOne = repOne;
             }
         }
-        if(shuffle) {
-            this.queue = shuffle();
-        }
     }
     
     /**
@@ -67,13 +87,11 @@ public class Player {
      * <ul>
      * <li>Repeat: ON (true) or OFF (false) depending on rep</li>
      * <li>Repeat One: OFF (false)</li>
-     * <li>Shuffle: ON (true) or OFF (false) depending on shuffle</li>
      * </ul>
      * @param rep Set repeating the entire Queue indefinitely.
-     * @param shuffle Shuffle the Queue when populating, modifying or loading it.
      */
-    public Player(boolean rep, boolean shuffle){
-        this(rep, false, shuffle);
+    public Player(boolean rep){
+        this(rep, false);
     }
     
     /**
@@ -81,11 +99,10 @@ public class Player {
      * <ul>
      * <li>Repeat: OFF (false)</li>
      * <li>Repeat One: OFF (false)</li>
-     * <li>Shuffle: OFF (false)</li>
      * </ul>
      */
     public Player(){
-        this(false, false, false);
+        this(false, false);
     }
     
     /**
@@ -115,7 +132,7 @@ public class Player {
                 Files.write(QUEUEFILE, new byte[0], StandardOpenOption.CREATE);
             }
             //WRITE without saving previous data.
-            Files.write(QUEUEFILE, queue, StandardOpenOption.WRITE);
+            Files.write(QUEUEFILE, statefulQueue, StandardOpenOption.WRITE);
             return true;
         } catch (IOException ex) {
             writeLog(new NonFatalException("Could not save the Stateful Queue to file.", ex));
@@ -130,11 +147,11 @@ public class Player {
      */
     private void restoreQueue() {
         try {
-            playQueue.putAll(new Queue(Files.readAllLines(QUEUEFILE)));
+            queue.putAll(new Queue(Files.readAllLines(QUEUEFILE)));
         } catch (IOException ex) {
             writeLog(new NonFatalException("Queuefile exists, but access was not granted. Will continue as if the queuefile didn't exist", ex));
         }
-        this.queue = (List) this.playQueue.valueStrings();
+        this.statefulQueue = (List) this.queue.valueStrings();
     }
     
     /**
@@ -152,20 +169,37 @@ public class Player {
     }
     
     /**
-     * Shuffles the current queue List.
-     * @return The shuffled list.
+     * Plays the next song in queue using {@link #play(com.PiJukebox.Track) play}.
      */
-    public List<String> shuffle() {
-        //TODO: Shuffle the queue
-        
-        return queue;
+    public void play() throws FatalException{
+        if(currentTrack == null || trackNum == 0){
+            //As long as there is still a track in there, we'll play it.
+            while(!queue.containsKey(trackNum) && trackNum <= queue.size()){
+                trackNum++;
+            }
+            currentTrack = queue.get(trackNum);
+            play(currentTrack);
+        }
     }
     
     /**
-     * Undo Shuffling by reading the original Queue back into the application.
-     * @return The original list provided by playQueue.
+     * Plays the specified Track
+     * @param t 
      */
-    public List<String> unShuffle(){
-        return (List)playQueue.valueStrings();
+    public void play(Track t) throws FatalException{
+        StringBuilder cmd = new StringBuilder();
+        cmd.append("-nostats -autoexit -nodisp -vn -sn ");
+        if(repeatOne){
+            cmd.append("-loop 0 ");
+        }
+        cmd.append("-codec:a "); cmd.append(t.getStreamType());
+        cmd.append(" -t "); cmd.append(t.getDuration());
+        cmd.append(" -i "); cmd.append(t.getPath().toAbsolutePath().toString());
+        try {
+            proc = new ProcessBuilder("ffplay", cmd.toString()).redirectErrorStream(true).start();
+        } catch (IOException ex) {
+            throw new FatalException("Could not start FFMPEG!", ex);
+        }
     }
+    
 }

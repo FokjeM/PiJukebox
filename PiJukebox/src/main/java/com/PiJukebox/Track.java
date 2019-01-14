@@ -26,6 +26,7 @@ class Track {
     private final String title;
     private final int bitrate;
     private final String streamType;
+    private final String duration;
 
     /**
      * Create a Track object with info from the DB and file metadata
@@ -61,10 +62,16 @@ class Track {
                     title = mp3file.getId3v1Tag().getTitle();
                 }
                 bitrate = mp3file.getBitrate();
+                StringBuilder dur = new StringBuilder();
+                dur.append(Long.toString(mp3file.getLengthInSeconds()));
+                dur.append(".");
+                long millis = mp3file.getLengthInMilliseconds() - (mp3file.getLengthInSeconds()*1000);
+                dur.append(Long.toString(millis));
+                duration = dur.toString();
             } else {
                 title = ffprobe("-show-entries stream_tags=title");
-                bitrate = 0;
-                ffprobe("-show-entries stream=bit_rate");
+                bitrate = Integer.parseInt(ffprobe("-show-entries stream=bit_rate"));
+                duration = "-show-entries stream=duration";
             }
         } catch (IOException io) {
             throw new NonFatalException("The file could not be read and/or processed and an exception was thrown.", io);
@@ -165,6 +172,7 @@ class Track {
         while ((extChar = ffprobe.read()) != -1) {
             ext.append((char) extChar);
         }
+        ffprobe.close();
         return ext.toString();
     }
 
@@ -176,8 +184,6 @@ class Track {
         return this.title;
     }
 
-    
-
     /**
      * Get the bitrate for this Track as specified in its metadata.
      * @return The Integer bitrate for this Track
@@ -186,8 +192,6 @@ class Track {
         return this.bitrate;
     }
 
-    
-
     /**
      * Get the Stream Type / encoding for this Track as specified in its metadata.
      * @return The String Stream Type for this Track
@@ -195,8 +199,14 @@ class Track {
     public String getStreamType() {
         return this.streamType;
     }
-
     
+    /**
+     * Get the duration for this Track as probed by FFProbe.
+     * @return the String Duration for this Track.
+     */
+    public String getDuration() {
+        return this.duration;
+    }
 
     /**
      * Get the FILEPATH for this Track as specified during instantiation.
@@ -205,8 +215,6 @@ class Track {
     public Path getPath() {
         return this.filepath;
     }
-
-    
 
     /**
      * Get the default Media path for music for this OS.
