@@ -1,5 +1,5 @@
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
-import './../shared-styles.js';
+import '../shared-styles.js';
 
 import '@polymer/polymer/lib/elements/dom-repeat.js';
 import '@polymer/iron-ajax/iron-ajax.js';
@@ -10,7 +10,7 @@ import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-icons/av-icons.js';
 import '@polymer/paper-dialog/paper-dialog.js';
 
-class TracklistRow extends PolymerElement {
+class PlaylistTrackRow extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -68,7 +68,7 @@ class TracklistRow extends PolymerElement {
         url="http://localhost:8000/playlists/addTrack"
         content-type="application/json"
         handle-as="json"
-        on-response="getStatus">
+        on-response="addedTrack">
       </iron-ajax>
 
       <div class="trackLink">
@@ -123,6 +123,16 @@ class TracklistRow extends PolymerElement {
     this.$.addToPlaylist.generateRequest();
   }
 
+  addedTrack(e, response) {
+    if(response==200) {
+      this.throwEvent('open-dialog-event', {title: 'Playlist', text: 'Song is successfully added to the playlist'});
+    }
+    else {
+      this.throwEvent('open-dialog-event', {title: 'Playlist', text: 'Something went wrong, please try again'});
+    }
+  }
+
+
   throwEvent(name, detail){
     this.dispatchEvent(new CustomEvent(name, 
       { 
@@ -135,4 +145,4 @@ class TracklistRow extends PolymerElement {
 
 }
 
-customElements.define('tracklist-row', TracklistRow);
+customElements.define('playlist-track-row', PlaylistTrackRow);

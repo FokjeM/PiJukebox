@@ -49,7 +49,8 @@ class TrackQueue extends PolymerElement {
       <iron-ajax
         id="changeQueue"
         method="POST"
-        url="http://localhost:8080/api/v1/laptops/">
+        url="http://localhost:8080/api/v1/laptops/"
+        on-response="queueChanged">
       </iron-ajax>
 
       <div class="card">  
@@ -91,9 +92,17 @@ class TrackQueue extends PolymerElement {
  
   oneDown(e) {
     let trackToChange = e.target.dataset.trackId;
-    console.log("up: " + e.target.dataset.trackId);
+    console.log("down: " + e.target.dataset.trackId);
     this.$.changeQueue.setAttribute('body', '{"id":' + trackToChange + ', "direction":"down"}');
     this.$.changeQueue.generateRequest();
+  }
+
+  queueChanged(e, response) {
+    if(response == 200) {
+      this.throwEvent('open-dialog-event', {title: 'Queue', text: 'The queue changed successfully'});
+    } else {
+      this.throwEvent('open-dialog-event', {title: 'Queue', text: 'Something went wrong, please try again'});
+    }
   }
 
   // static get properties() {

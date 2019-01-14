@@ -112,7 +112,7 @@ class AllPlaylists extends PolymerElement {
     if(response == 200) {
       updatePlaylists();
     } else {
-      this.throwEvent('open-dialog-event', {title: 'Queue', text: 'Something went wrong, please try again'});
+      this.throwEvent('open-dialog-event', {title: 'Playlist', text: 'Something went wrong, please try again'});
     }
   }
 

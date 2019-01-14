@@ -4,7 +4,7 @@ import './../shared-styles.js';
 import '@polymer/polymer/lib/elements/dom-repeat.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 
-import './tracklist-row.js';
+import './playlist-track-row.js';
 
 class TrackList extends PolymerElement {
   static get template() {
@@ -27,9 +27,9 @@ class TrackList extends PolymerElement {
         <h1>Tracks</h1>
         <dom-repeat items="{{response}}" as="track">
           <template>
-            <tracklist-row 
+            <playlist-track-row 
                 track="[[track]]">
-            </tracklist-row>
+            </playlist-track-row>
           </template>
         </dom-repeat>
         

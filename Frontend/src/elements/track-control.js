@@ -185,7 +185,7 @@ class TrackControl extends PolymerElement {
       this.updateStates();
       this.updateControls();
     } else {
-      this.throwEvent('open-dialog-event', {title: 'Queue', text: 'Something went wrong, please try again'});
+      this.throwEvent('open-dialog-event', {title: 'Player', text: 'Something went wrong, please try again'});
     }
   }
 
