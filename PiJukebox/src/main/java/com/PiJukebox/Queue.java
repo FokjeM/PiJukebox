@@ -25,11 +25,11 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
     private int size;
 
     /**
-     * Instantiates a playlist using an iterable object
+     * Instantiates a Queue using an iterable object.
      *
-     * @param list MUST be iterable
+     * @param list the Iterable collection of Tracks to populate the Queue with.
      */
-    public Queue(Iterable<?> list) {
+    public Queue(Iterable list) {
         int length = 0;
         Iterator li = list.iterator();
         while (li.hasNext()) {
@@ -39,7 +39,57 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
         this.entries = new QueueEntry[length];
         this.size = length;
     }
+    
+    /**
+     * Instantiates a Queue using another Map with the same base types.
+     * @param m the Map<? extends Integer, ? extends Track> to use.
+     */
+    public Queue(Map<? extends Integer, ? extends Track> m){
+        this.entries = new QueueEntry[1];
+        this.putAll(m);
+    }
+    
+    /**
+     * Cannibalistic Queue; it consumes another Queue.
+     * @param q the Queue to consume.
+     */
+    public Queue(Queue q){
+        this(q.values());
+    }
+    
+    /**
+     * Build a Queue with a single Track.
+     * @param t the Track to populate the Queue with.
+     */
+    public Queue(Track t){
+        this.entries = new QueueEntry[1];
+        this.put(1, t);
+    }
+    
+    /**
+     * Create an empty Queue; use this if there is no remaining Queue and the
+     * application was not requested to play anything before requiring a Queue.
+     */
+    public Queue(){
+        this.entries = new QueueEntry[1];
+        this.size = 0;
+    }
 
+    /**
+     * Remove all entries that hold null values and shift all Integer keys up.
+     */
+    private void reset() {
+        int index = 0;
+        Collection<Track> values = this.values();
+        this.clear();
+        for(Track t : values){
+            if(t != null){
+                index++;
+                this.put(index, t);
+            }
+        }
+        this.size = index;
+    }
 
     /**
      * This implementation of size() for the Map
@@ -139,6 +189,56 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
         //If nothing was returned yet, the key did not exist
         return null;
     }
+    
+    /**
+     * Add a Track to the Queue, independent of it being present.
+     * This function should not be implemented without first checking
+     * containsValue() and asking the user about adding duplicate Tracks.
+     * @param t the Track object to add to the Queue.
+     * @throws FatalException when a result other than null is returned, as this
+     *          should never happen when adding a new QueueEntry. The return of
+     *          the implemented put(Integer, Track) should only return the old
+     *          Track value associated with Integer key in the Map.
+     */
+    public void enqueue(Track t) throws FatalException {
+        if(t == null){
+            return;
+        }
+        //A new entry should be created, thus put should return null.
+        if(this.put(this.size+1, t) != null){
+            //If it doesn't, something VERY wrong is happening.
+            throw new FatalException("Unexpected return type encountered! Expected null and got something!", new UnsupportedOperationException());
+        }
+    }
+    
+    /**
+     * Removes a Track from the Queue
+     * @param t The Track to remove
+     * @return The dequeued Track if it was present, null otherwise
+     */
+    public Track dequeue(Track t) {
+        int key = 0;
+        for(QueueEntry e : this.entries){
+            if(e.getValue().equals(t)){
+                key = (int) e.getKey();
+            }
+        }
+        if(key > 0){
+            this.remove(key);
+            this.reset();
+            return t;
+        }
+        return null;
+    }
+    
+    /**
+     * Move an item to the back of the queue by removing and then putting it.
+     * @param t the Track to requeue.
+     * @throws FatalException Propagated from enqueue(). EMERGENCY!
+     */
+    public void requeue(Track t) throws FatalException{
+        this.enqueue(this.dequeue(t));
+    }
 
     /**
      * Remove an item from this Queue specified by a key
@@ -154,6 +254,7 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
                 e = null;
             }
         }
+        reset();
         return val;
     }
 
@@ -165,15 +266,26 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
      */
     @Override
     public void putAll(Map<? extends Integer, ? extends Track> m) {
-        int newSize = this.size + m.size();
-        QueueEntry<Integer, Track>[] newEntries = new QueueEntry[newSize];
-        //copy the current array into it, ensuring equal indices
-        System.arraycopy(this.entries, 0, newEntries, 0, this.entries.length);
-        //Add the new entries
-        System.arraycopy(m.values().toArray(), 0, newEntries, this.entries.length, newSize);
-        //Update the pointer and size
-        this.entries = newEntries;
-        this.size = newSize;
+        //copy the current array into it, keeping the order and removing nulls
+        int index = 0;
+        Collection<? extends Track> tracks = this.values();
+        this.clear();
+        for(Track t : tracks){
+            if(t != null){
+                index++;
+                this.put(index, t);
+            }
+        }
+        //Add the new entries. Right order, no nulls
+        tracks = m.values();
+        for (Track t : tracks){
+            if(t != null){
+                index++;
+                this.put(index, t);
+            }
+        }
+        //Update the size
+        this.size = index;
     }
 
     /**
@@ -208,8 +320,18 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
     public Collection<Track> values() {
         ArrayList<Track> coll = new ArrayList<>();
         //Make sure the returned ArrayList uses the order specified by the user
-        for(int i = 1; i < size; i++) {
-            this.get(i);
+        for(int i = 0; i < size; i++) {
+            coll.add(i, this.get(i));
+        }
+        return coll;
+    }
+    
+    public Collection<String> valueStrings() {
+        ArrayList<String> coll = new ArrayList<>();
+        int index = 0;
+        for(Track t : values()){
+            coll.add(index, t.getPath().toAbsolutePath().toString());
+            index++;
         }
         return coll;
     }

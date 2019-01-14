@@ -18,7 +18,7 @@ class NonFatalException extends Exception {
      * @param writableStackTrace Whether or not we can write the StackTrace
      */
     protected NonFatalException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+        super("NON-FATAL: " + message, cause, enableSuppression, writableStackTrace);
     }
     
     /**
