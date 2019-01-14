@@ -47,21 +47,11 @@ class ResultRowTrack extends PolymerElement {
 
   handleQueueResponse(e,r){
     if(r.status == 200){
-      this.throwEvent('open-dialog-event', {title: 'Queue', text: this.trackName + ' has been added to the queue.'});
+      this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: this.trackName + ' has been added to the queue.'}, bubbles: true,composed: true, }));
     }
     else{
-      this.throwEvent('open-dialog-event', {title: 'Queue', text: 'Something went wrong.'});
+      this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true, }));
     }
-  }
-
-  throwEvent(name, detail){
-    this.dispatchEvent(new CustomEvent(name, 
-      { 
-          detail: detail, 
-          bubbles: true,
-          composed: true, 
-      }
-    ));
   }
 
   static get properties() {
