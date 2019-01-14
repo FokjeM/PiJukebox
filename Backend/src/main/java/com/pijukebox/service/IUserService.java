@@ -1,7 +1,6 @@
 package com.pijukebox.service;
 
 import com.pijukebox.model.User;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
