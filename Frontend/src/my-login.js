@@ -55,6 +55,7 @@ class MyLogin extends PolymerElement {
   }
 
   submitLogin(){
+    localStorage.setItem("token", "r.response.token");
     this.$.loginForm.generateRequest();
   }
 
