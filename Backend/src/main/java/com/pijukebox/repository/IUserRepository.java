@@ -1,13 +1,17 @@
 package com.pijukebox.repository;
 
 import com.pijukebox.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface IUserRepository {
+@Repository
+public interface IUserRepository extends JpaRepository<User, Long> {
     List<User> findAll();
 
-    User getById(Long id);
+    Optional<User> findById(Long id);
 
-    User getByName(String name);
+    User findByFirstnameAndLastname(String firstname, String lastname);
 }

@@ -1,28 +1,27 @@
-package com.pijukebox.model;
+package com.pijukebox.model.simple;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(schema = "pijukebox", name = "artist")
-public class Artist implements Serializable {
+@Table(name = "album")
+public class SimpleAlbum implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
-    @NotNull
-    @NaturalId
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "releaseDate")
+    private String releaseDate;
 }
