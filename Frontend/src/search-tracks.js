@@ -30,6 +30,9 @@ class SearchTracks extends PolymerElement {
         :host {
           display: block;
           padding: 10px;
+          --paper-checkbox-unchecked-background-color: var(--app-primary-color);
+          --paper-checkbox-checked-color: var(--app-primary-color);
+          --paper-checkbox-unchecked-color: var(--app-primary-color);
         }
       
         paper-checkbox {

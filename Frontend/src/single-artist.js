@@ -47,6 +47,7 @@ class SingleArtist extends PolymerElement {
         auto
         url="http://localhost:8000/artist/[[routeData.artistId]]"
         handle-as="json"
+        headers="{Authorization: [[token]]}"
         last-response="{{artist}}">
       </iron-ajax>
 
@@ -87,6 +88,10 @@ class SingleArtist extends PolymerElement {
           No Albums.
         </template> 
       </div>
+
+      <get-token token="{{token}}"></get-token>
+      {{token}}
+
     `;
   }
 }
