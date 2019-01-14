@@ -1,6 +1,5 @@
-package com.pijukebox.model;
+package com.pijukebox.model.simple;
 
-import com.pijukebox.model.simple.SimpleAlbum;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(schema = "pijukebox", name = "genre")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class Genre implements Serializable {
+public class SimpleGenre implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
