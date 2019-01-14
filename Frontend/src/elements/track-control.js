@@ -233,7 +233,7 @@ class TrackControl extends PolymerElement {
     let shuffleButton = this.$.shuffleBtn;
 
     if(!this.shuffleIsActive) {
-      shuffleButton.style.color = "var(--app-primary-color)";
+      shuffleButton.style.color = "var(--app-primary-color-light)";
       this.shuffleIsActive = true;
     } else {
       shuffleButton.style.color = "var(--paper-icon-button-ink-color, var(--primary-text-color))";
@@ -256,12 +256,12 @@ class TrackControl extends PolymerElement {
     let repeatButton = this.$.repeatBtn;
     // no repeat
     if(this.repeatState === 0) {
-      repeatButton.style.color = "var(--app-primary-color)";
+      repeatButton.style.color = "var(--app-primary-color-light)";
       this.repeatIcon = "av:repeat-one";
     }
     // repeat one track
     else if(this.repeatState === 1) {
-      repeatButton.style.color = "var(--app-primary-color)";
+      repeatButton.style.color = "var(--app-primary-color-light)";
       this.repeatIcon = "av:repeat";
     }
     // repeat queue
