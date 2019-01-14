@@ -31,16 +31,6 @@ public class Playlist extends BeanUtils {
 
     private String description;
 
-//    @NotNull
-//    @JoinTable(name="track_playlist")
-//    @OneToMany
-//    private List<TrackPlaylist> trackPlaylists;
-//    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
-//    @JoinTable
-//    @OneToMany
-//    private List<Track> tracks;
-
-    // https://codippa.com/skip-null-properties-spring-beanutils/
 
     public void CopyNonNullProperties(Playlist target) throws Exception {
         BeanUtils.copyProperties(this, target, getNullProperties());

@@ -24,14 +24,4 @@ public class Genre  implements Serializable {
     @Column(name="name")
     private String name;
 
-//    @OneToMany(targetEntity = AlbumGenre.class, mappedBy = "genre_id", fetch = FetchType.LAZY)
-//    private List<AlbumGenre> albumGenres;
-//     @ManyToMany(mappedBy = "genres")
-//     private Set<Album> albums = new HashSet<>();
-//    @OneToMany(cascade= CascadeType.ALL)
-//    @JoinTable(name="album_genre", catalog = "pijukebox", joinColumns = {
-//            @JoinColumn(name="album_id", nullable = false)},//, updatable = false
-//            inverseJoinColumns = {
-//                    @JoinColumn(name="genre_id", nullable = false)})//, updatable = false
-//    private List<AlbumGenre> genreAlbums;
 }

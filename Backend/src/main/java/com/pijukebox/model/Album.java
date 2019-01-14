@@ -1,16 +1,13 @@
 package com.pijukebox.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-//import java.util.Set;
 
 @Entity
 @Data
@@ -64,5 +61,12 @@ public class Album implements Serializable {
                     @JoinColumn(name="artist_id", nullable = false)})//, updatable = false
 //    @Transient
     private Set<Artist> artists = new HashSet<>();
+
+
+//    @OneToMany(cascade= CascadeType.ALL, fetch = FetchType.EAGER)
+//    @JoinTable(name="artist_album", catalog = "pijukebox", joinColumns = {
+//            @JoinColumn(name="album_id", nullable = false)})//, updatable = false
+//    @Transient
+//    private Set<AlbumArtist> albumArtists = new HashSet<>();
 
 }

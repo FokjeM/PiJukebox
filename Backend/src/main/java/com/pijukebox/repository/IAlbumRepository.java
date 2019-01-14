@@ -2,6 +2,7 @@ package com.pijukebox.repository;
 
 import com.pijukebox.model.Album;
 import com.pijukebox.model.Genre;
+import com.pijukebox.model.SimpleAlbum;
 //import com.pijukebox.model.Genre;
 //import org.springframework.data.jpa.repository.JpaRepository;
 //import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -13,11 +14,9 @@ import java.util.Optional;
 
 public interface IAlbumRepository{
 
-    Optional<Album> findById(Long id);
+    Optional<SimpleAlbum> findById(Long id);
 
-    List<Album> findAll();
-
-    Album getAlbumGenre(Long id);
+    List<SimpleAlbum> findAll();
 
     List<Album> getAlbumsDetails();
 }

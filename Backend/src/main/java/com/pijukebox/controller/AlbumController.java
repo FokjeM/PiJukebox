@@ -2,6 +2,7 @@ package com.pijukebox.controller;
 
 import com.pijukebox.model.Album;
 import com.pijukebox.model.Genre;
+import com.pijukebox.model.SimpleAlbum;
 import com.pijukebox.service.IAlbumService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AccessLevel;
@@ -29,25 +30,19 @@ public class AlbumController {
     @GetMapping("/albums")
     @ApiOperation(value = "Get all albums")
 //    @PreAuthorize("hasRole('ROLE_USER')")
-    public List<Album> albumDetails() {
+    public List<SimpleAlbum> albumDetails() {
         return albumService.findAll();
     }
 
-    @GetMapping("/albums/{albumId}")
-    @ApiOperation(value = "Get all information pertaining to an album")
-    public Album albumDetails(@PathVariable Long albumId) {
-        System.out.println(albumId);
-        return albumService.findAlbumGenre(albumId);
-    }
 
     @GetMapping("/album/{albumId}")
     @ApiOperation(value = "Get all information pertaining to an album")
-    public Album getById(@PathVariable Long albumId) {
+    public SimpleAlbum getById(@PathVariable Long albumId) {
         System.out.println(albumId);
         return albumService.findById(albumId);
     }
 
-    @GetMapping("albums/details")
+    @GetMapping("/albumsDetails")
     public List<Album> getAlbumDetails()
     {
         return albumService.findAlbumsDetails();
