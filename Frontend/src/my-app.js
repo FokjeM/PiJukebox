@@ -46,9 +46,12 @@ class MyApp extends PolymerElement {
     return html`
       <style>
         :host {
-          --app-primary-color: #4285f4;
-          --app-secondary-color: black;
-
+          --app-primary-color: #00796B;
+          --app-primary-color-light: #b2dfdb;
+          --app-secondary-color: #757575;
+          --paper-slider-knob-color: var(--app-primary-color);
+          --paper-slider-active-color: var(--app-primary-color);
+          color:var(--app-primary-color);
           display: block;
         }
 
@@ -81,6 +84,7 @@ class MyApp extends PolymerElement {
           color: black;
           font-weight: bold;
         }
+        
       </style>
 
       <app-location route="{{route}}" url-space-regex="^[[rootPath]]">
@@ -128,16 +132,17 @@ class MyApp extends PolymerElement {
           <dialog-element id="mainDialog">
           </dialog-element>
 
-          <current-track
-            track-id="1"
-            track-name="The current track"
-            track-artist="Artist of the track">
-          </current-track>
-          <track-control></track-control>
-          <volume-control></volume-control>
+          <template is="dom-if" if="[[!isLogin(page)]]">
+            <track-control></track-control>
+          </template>
+
         </app-header-layout>
       </app-drawer-layout>
     `;
+  }
+
+  isLogin(page){
+    return page == 'login';
   }
 
   ready(){
@@ -177,7 +182,11 @@ class MyApp extends PolymerElement {
      //
      // If no page was found in the route data, page will be an empty string.
      // Show 'tracks' in that case. And if the page doesn't exist, show 'view404'.
-    if (!page) {
+    var token = localStorage.getItem('token');
+    if(token == null){
+      this.page = 'login';
+    }
+    else if (!page) {
       this.page = 'tracks';
     } 
     else if (['tracks', 'playlists', 'playlist', 'queue', 'search', 'artist', 'album', 'login'].indexOf(page) !== -1) {

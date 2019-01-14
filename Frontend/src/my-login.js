@@ -25,13 +25,19 @@ class MyLogin extends PolymerElement {
 
           padding: 10px;
         }
+        .loginButton{
+          background-color: #00796B;
+          color: white;
+          width:100%;
+          margin-top:20px;
+        }
       </style>
       
       <div>
-        <div>
+        <div style="padding:20px; 40px 20px 20px;">
           <paper-input label="Username" value="{{username}}"></paper-input>
           <paper-input label="Password" value="{{password}}"></paper-input>
-          <button on-click="submitLogin">Login</button>
+          <paper-button id="loginButton" raised on-click="submitLogin">Login</paper-button>
         </div>
 
         <!-- Post credentials -->
@@ -54,7 +60,7 @@ class MyLogin extends PolymerElement {
   setToken(e,r){
     if(r.status == 200){
       localStorage.setItem("token", r.response.token);
-      window.location.href = "/";
+      // window.location.href = "/";
     }
     else{
       this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Login', text: 'Invalid credentials'}, bubbles: true,composed: true, }));
