@@ -21,12 +21,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Transactional
-public class GenreRepositoryImpl implements IGenreRepository {
+public class GenreRepositoryImpl{
     /* This gives us an EntityManager proxy, which gives or creates a thread-safe EntityManager for us every time we use it. */
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager em;
 
-    @Override
+    
     public List<Genre> findAll() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Genre> query = cb.createQuery(Genre.class);
@@ -36,7 +36,7 @@ public class GenreRepositoryImpl implements IGenreRepository {
         return em.createQuery(query).getResultList();
     }
 
-    @Override
+    
     public Genre getById(Long id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Genre> query = cb.createQuery(Genre.class);

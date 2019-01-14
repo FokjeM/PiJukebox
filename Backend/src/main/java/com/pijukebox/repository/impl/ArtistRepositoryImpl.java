@@ -20,12 +20,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Transactional
-public class ArtistRepositoryImpl implements IArtistRepository {
+public class ArtistRepositoryImpl {
     /* This gives us an EntityManager proxy, which gives or creates a thread-safe EntityManager for us every time we use it. */
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager em;
 
-    @Override
     public List<Artist> findAll() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Artist> query = cb.createQuery(Artist.class);
@@ -35,7 +34,6 @@ public class ArtistRepositoryImpl implements IArtistRepository {
         return em.createQuery(query).getResultList();
     }
 
-    @Override
     public Artist getById(Long id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Artist> query = cb.createQuery(Artist.class);
@@ -46,7 +44,6 @@ public class ArtistRepositoryImpl implements IArtistRepository {
         return em.createQuery(query).setParameter(parameter, id).getSingleResult();
     }
 
-    @Override
     public List<Artist> findByName(String name) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Artist> query = cb.createQuery(Artist.class); // SELECT

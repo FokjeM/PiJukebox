@@ -10,11 +10,11 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
 import java.util.Map;
 
-public class PlaylistRepositoryImpl implements IPlaylistRepository {
+public class PlaylistRepositoryImpl {
 
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager em;
-    @Override
+    
     public Map<Playlist, Track> getAllPlaylistTracks(Long id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Playlist> query = cb.createQuery(Playlist.class);

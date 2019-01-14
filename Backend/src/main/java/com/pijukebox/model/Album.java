@@ -1,5 +1,6 @@
 package com.pijukebox.model;
 
+import com.pijukebox.model.interfaces.IAlbum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "album")
-public class Album implements Serializable {
+public class Album extends IAlbum implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

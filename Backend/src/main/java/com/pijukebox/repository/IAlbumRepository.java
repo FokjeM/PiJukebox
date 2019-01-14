@@ -4,19 +4,20 @@ import com.pijukebox.model.Album;
 import com.pijukebox.model.Genre;
 import com.pijukebox.model.SimpleAlbum;
 //import com.pijukebox.model.Genre;
-//import org.springframework.data.jpa.repository.JpaRepository;
-//import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import com.pijukebox.model.interfaces.IAlbum;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.util.List;
 //import java.util.Map;
 import java.util.Map;
 import java.util.Optional;
 
-public interface IAlbumRepository{
+public interface IAlbumRepository implements JpaRepository<Album, Long>{
 
-    Optional<SimpleAlbum> findById(Long id);
+    Optional<Album> findById(Long id);
 
-    List<SimpleAlbum> findAll();
+    List<Album> findAll();
 
     List<Album> getAlbumsDetails();
 }

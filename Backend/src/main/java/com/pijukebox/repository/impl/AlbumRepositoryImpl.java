@@ -19,12 +19,11 @@ import java.util.Optional;
 @AllArgsConstructor
 @NoArgsConstructor
 @Transactional
-public class AlbumRepositoryImpl implements IAlbumRepository {
+public class AlbumRepositoryImpl {
     /* This gives us an EntityManager proxy, which gives or creates a thread-safe EntityManager for us every time we use it. */
     @PersistenceContext(unitName = "entityManagerFactory")
     private EntityManager em;
 
-    @Override
     public Optional<SimpleAlbum> findById(Long id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<SimpleAlbum> query = cb.createQuery(SimpleAlbum.class);
@@ -33,7 +32,6 @@ public class AlbumRepositoryImpl implements IAlbumRepository {
         query.select(table).where(cb.equal(table.get("id"), parameter));
         return Optional.of(em.createQuery(query).setParameter(parameter, id).getSingleResult());
     }
-    @Override
     public List<SimpleAlbum> findAll() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<SimpleAlbum> query = cb.createQuery(SimpleAlbum.class);
@@ -42,8 +40,6 @@ public class AlbumRepositoryImpl implements IAlbumRepository {
         return simpleAlbums;
     }
 
-
-    @Override
     public List<Album> getAlbumsDetails() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Album> query = cb.createQuery(Album.class);
