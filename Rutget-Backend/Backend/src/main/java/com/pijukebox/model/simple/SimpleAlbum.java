@@ -1,6 +1,5 @@
 package com.pijukebox.model.simple;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,5 +24,4 @@ public class SimpleAlbum implements Serializable {
 
     @Column(name = "releaseDate")
     private String releaseDate;
-
 }
