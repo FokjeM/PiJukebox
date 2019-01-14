@@ -1,6 +1,5 @@
-package com.pijukebox.model;
+package com.pijukebox.model.simple;
 
-import com.pijukebox.model.simple.SimpleAlbum;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,15 +8,13 @@ import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Data
 @AllArgsConstructor
 @Table(schema = "pijukebox", name = "genre")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class Genre implements Serializable {
+public class SimpleGenre implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,8 +24,4 @@ public class Genre implements Serializable {
     @NaturalId
     @Column(name = "name")
     private String name;
-
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "album_genre", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "genre_id", nullable = false)}, inverseJoinColumns = {@JoinColumn(name = "album_id", nullable = false)})
-    private Set<SimpleAlbum> albums = new HashSet<>();
 }

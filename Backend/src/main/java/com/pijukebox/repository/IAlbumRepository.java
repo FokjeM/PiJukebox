@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public interface IAlbumRepository implements JpaRepository<Album, Long>{
+public interface IAlbumRepository extends JpaRepository<Album, Long>{
 
     Optional<Album> findById(Long id);
 
