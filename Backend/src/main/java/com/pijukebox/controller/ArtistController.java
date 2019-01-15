@@ -1,6 +1,6 @@
 package com.pijukebox.controller;
 
-import com.pijukebox.model.Artist;
+import com.pijukebox.model.artist.Artist;
 import com.pijukebox.service.IArtistService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

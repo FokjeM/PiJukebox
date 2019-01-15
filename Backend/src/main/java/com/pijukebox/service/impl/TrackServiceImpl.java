@@ -1,6 +1,6 @@
 package com.pijukebox.service.impl;
 
-import com.pijukebox.model.Track;
+import com.pijukebox.model.track.Track;
 import com.pijukebox.repository.ITrackRepository;
 import com.pijukebox.service.ITrackService;
 import org.springframework.beans.factory.annotation.Autowired;

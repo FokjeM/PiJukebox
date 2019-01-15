@@ -1,6 +1,6 @@
 package com.pijukebox.service;
 
-import com.pijukebox.model.Artist;
+import com.pijukebox.model.artist.Artist;
 
 import java.util.List;
 import java.util.Optional;

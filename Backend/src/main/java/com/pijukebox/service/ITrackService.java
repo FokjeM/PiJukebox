@@ -1,6 +1,6 @@
 package com.pijukebox.service;
 
-import com.pijukebox.model.Track;
+import com.pijukebox.model.track.Track;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

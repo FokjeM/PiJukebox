@@ -1,6 +1,6 @@
 package com.pijukebox.controller;
 
-import com.pijukebox.model.Playlist;
+import com.pijukebox.model.playlist.PlaylistTrack;
 import com.pijukebox.service.IPlaylistService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +23,9 @@ public class PlaylistController {
         this.playlistService = playlistService;
     }
 
-    @GetMapping("/playlists/details")
+    @GetMapping("/details/playlists")
     @ApiOperation(value = "Retrieve all playlists in full detail, with full track info")
-    public ResponseEntity<List<Playlist>> playlists() {
+    public ResponseEntity<List<PlaylistTrack>> playlists() {
         try {
             return new ResponseEntity<>(playlistService.findAll(), HttpStatus.OK);
         } catch (Exception ex) {
@@ -35,7 +35,7 @@ public class PlaylistController {
 
     @GetMapping("/playlists/{id}")
     @ApiOperation(value = "Get all from a single playlist by its ID")
-    public ResponseEntity<Playlist> playlistDetails(@PathVariable Long id) {
+    public ResponseEntity<PlaylistTrack> playlistDetails(@PathVariable Long id) {
         try {
             if (!playlistService.findById(id).isPresent()){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);

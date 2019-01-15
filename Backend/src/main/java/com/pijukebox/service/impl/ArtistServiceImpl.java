@@ -1,6 +1,6 @@
 package com.pijukebox.service.impl;
 
-import com.pijukebox.model.Artist;
+import com.pijukebox.model.artist.Artist;
 import com.pijukebox.repository.IArtistRepository;
 import com.pijukebox.service.IArtistService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.pijukebox.controller;
 
-import com.pijukebox.model.Playlist;
-import com.pijukebox.model.User;
+import com.pijukebox.model.playlist.PlaylistTrack;
+import com.pijukebox.model.user.User;
 import com.pijukebox.service.IPlaylistService;
 import com.pijukebox.service.IUserService;
 import io.swagger.annotations.ApiOperation;
@@ -59,7 +59,7 @@ public class UserController {
 
     @GetMapping("/users/{userID}/playlists")
     @ApiOperation(value = "Retrieve playlists from the logged in user.")
-    public ResponseEntity<List<Playlist>> playlistsByUser(@PathVariable Long userID) {
+    public ResponseEntity<List<PlaylistTrack>> playlistsByUser(@PathVariable Long userID) {
         try {
             if (!userService.findById(userID).isPresent()){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);

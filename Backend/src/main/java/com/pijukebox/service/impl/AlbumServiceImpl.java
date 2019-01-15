@@ -1,7 +1,7 @@
 package com.pijukebox.service.impl;
 
-import com.pijukebox.model.Album;
-import com.pijukebox.model.Genre;
+import com.pijukebox.model.album.Album;
+import com.pijukebox.model.genre.Genre;
 import com.pijukebox.repository.IAlbumRepository;
 import com.pijukebox.service.IAlbumService;
 import org.springframework.beans.factory.annotation.Autowired;

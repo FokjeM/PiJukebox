@@ -1,6 +1,6 @@
 package com.pijukebox.repository;
 
-import com.pijukebox.model.Track;
+import com.pijukebox.model.track.Track;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

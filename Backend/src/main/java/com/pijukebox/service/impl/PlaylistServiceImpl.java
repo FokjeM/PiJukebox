@@ -1,6 +1,6 @@
 package com.pijukebox.service.impl;
 
-import com.pijukebox.model.Playlist;
+import com.pijukebox.model.playlist.PlaylistTrack;
 import com.pijukebox.repository.IPlaylistRepository;
 import com.pijukebox.service.IPlaylistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +22,17 @@ public class PlaylistServiceImpl implements IPlaylistService {
     }
 
     @Override
-    public List<Playlist> findAll() {
+    public List<PlaylistTrack> findAll() {
         return playlistRepository.findAll();
     }
 
     @Override
-    public Optional<Playlist> findById(Long id) {
+    public Optional<PlaylistTrack> findById(Long id) {
         return playlistRepository.findById(id);
     }
 
     @Override
-    public Optional<List<Playlist>> findAllByUserID(Long userID) {
+    public Optional<List<PlaylistTrack>> findAllByUserID(Long userID) {
         return playlistRepository.findAllByUserID(userID);
     }
 }
