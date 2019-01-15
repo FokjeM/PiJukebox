@@ -11,22 +11,20 @@ class ResultRowTrack extends PolymerElement {
         .track-info {
           display: flex;
         }
+
+        .artist {
+          display: flex;
+        }
+
+        .artist:not(:last-of-type)::after {
+          content: ", ";
+          position: relative;
+          display: block;
+          right: 0;
+          width: 10px;
+        }
+        
       </style>
-
-      <div>
-        <div class="track-info">
-          <paper-icon-button icon="av:queue" on-click="addToQueue"></paper-icon-button>
-          <div style="display:flex; padding:8px;">
-            <div>[[trackName]]</div>
-          
-            <template is="dom-if" if="[[!excludeArtist]]">
-              <div style="margin:0 10px;"> - </div>
-              <div>[[trackArtist]]</div>
-            </template>
-
-          </div>  
-        </div>
-      </div>
 
       <iron-ajax
         id="addToQueue"
@@ -37,10 +35,33 @@ class ResultRowTrack extends PolymerElement {
         handle-as="json"
         on-response="handleQueueResponse">
       </iron-ajax>
+      
+      <div>
+        <div class="track-info">
+          <paper-icon-button icon="av:queue" on-click="addToQueue"></paper-icon-button>
+          <div style="display:flex; padding:8px;">
+            <div>[[trackName]]</div>
+          
+            <template is="dom-if" if="[[!excludeArtist]]">
+              <div style="margin:0 10px;"> - </div>
+              <template is="dom-repeat" items="{{trackArtist}}" as="artist" rendered-item-count="{{artistCount}}">
+                <div class="artist">
+                  {{artist.name}}
+                </div>
+              </template>
+            </template>
+
+            <template is="dom-if" if="{{!artistCount}}">
+              No Artists.
+            </template>
+            
+          </div>  
+        </div>
+      </div>
 
     `;
   }
-  
+
   addToQueue(e){
     this.shadowRoot.getElementById('addToQueue').generateRequest();
   }
@@ -63,7 +84,7 @@ class ResultRowTrack extends PolymerElement {
         type: String
       },
       trackArtist: {
-        type: String
+        type: Object
       },
       excludeArtist:{
         type: Boolean,
