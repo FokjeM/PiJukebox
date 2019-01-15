@@ -1,6 +1,10 @@
 package com.pijukebox.controller;
 
-import com.pijukebox.model.Track;
+import com.pijukebox.model.SqlElement;
+import com.pijukebox.model.artist.ArtistTrack;
+import com.pijukebox.model.genre.GenreTrack;
+import com.pijukebox.model.simple.SimpleTrack;
+import com.pijukebox.model.track.Track;
 import com.pijukebox.service.ITrackService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -22,25 +27,115 @@ public class TrackController {
         this.trackService = trackService;
     }
 
-    @GetMapping("/tracks")
+    @GetMapping("/simple/tracks")
     @ApiOperation(value = "Get all tracks in the application")
-    public List<Track> tracks() {
+    public List<SimpleTrack> simpleTracks(@RequestParam(name="name", required = false) String name) {
         try {
-            return trackService.findAll();
+            if(name != null && !name.isEmpty())
+            {
+                if(!trackService.findAllSimpleTrackByName(name).isPresent())
+                {
+                    return null;
+                }
+                return trackService.findAllSimpleTrackByName(name).get();
+            }
+            if (!trackService.findAllSimpleTrack().isPresent()) {
+                return null;
+            }
+            return trackService.findAllSimpleTrack().get();
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No tracks found", ex);
         }
     }
 
-    @GetMapping("/tracks/{id}")
+    @GetMapping("/details/tracks")
+    @ApiOperation(value = "Get all tracks in the application")
+    public List<Track> detailTracks(@RequestParam(name="name", required = false) String name) {
+        try {if(name != null && !name.isEmpty())
+        {
+            if(!trackService.findAllTrackByName(name).isPresent())
+            {
+                return null;
+            }
+            return trackService.findAllTrackByName(name).get();
+        }
+            if (!trackService.findAllSimpleTrack().isPresent()) {
+                return null;
+            }
+            return trackService.findAllTracksWithDetails();
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No tracks found", ex);
+        }
+    }
+
+
+    @GetMapping("/details/tracks/{id}")
     @ApiOperation(value = "Get all information pertaining to a track")
     public Track trackDetails(@PathVariable Long id) {
         try {
-            if (!trackService.findById(id).isPresent()) {
+            if (!trackService.findTrackDetailsById(id).isPresent()) {
                 return null;
             }
-            return trackService.findById(id).get();
+            return trackService.findTrackDetailsById(id).get();
         } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Track with ID {id} Not Found", ex);
+        }
+    }
+
+    @GetMapping("/simple/tracks/{id}")
+    @ApiOperation(value = "Get all information pertaining to a track")
+    public SimpleTrack simpleTrack(@PathVariable Long id) {
+        try {
+            if (!trackService.findTrackDetailsById(id).isPresent()) {
+                return null;
+            }
+            return trackService.findSimpleTrackById(id).get();
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Track with ID {id} Not Found", ex);
+        }
+    }
+
+    @GetMapping("/tracks/byGenre")
+    public List<GenreTrack> getTracksByGenreName(@RequestParam(name="name") String name)
+    {
+        try{
+
+            if(name != null && !name.isEmpty()) {
+                if (!trackService.findAllTracksByGenreName(name).isPresent()) {
+                    return null;
+                }
+                return trackService.findAllTracksByGenreName(name).get();
+            }
+            return null;
+        }catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Track with ID {id} Not Found", ex);
+        }
+    }
+
+    @GetMapping("/tracks/byArtist")
+    public List<ArtistTrack> getTracksByArtistName(@RequestParam(name="name") String name)
+    {
+        try{
+
+            if(name != null && !name.isEmpty()) {
+                if (!trackService.findAllTracksByArtistName(name).isPresent()) {
+                    return null;
+                }
+                return trackService.findAllTracksByArtistName(name).get();
+            }
+            return null;
+        }catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Track with ID {id} Not Found", ex);
+        }
+    }
+
+    @PostMapping("/simple/tracks")
+    public Object addSimpleTrack(@RequestBody SimpleTrack simpleTrack)
+    {
+
+        try{
+            return trackService.addSimpleTrack(simpleTrack);
+        }catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Track with ID {id} Not Found", ex);
         }
     }

@@ -1,6 +1,6 @@
 package com.pijukebox.repository;
 
-import com.pijukebox.model.User;
+import com.pijukebox.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

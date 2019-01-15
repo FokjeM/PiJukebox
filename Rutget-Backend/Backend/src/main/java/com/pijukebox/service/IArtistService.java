@@ -1,7 +1,6 @@
 package com.pijukebox.service;
 
-import com.pijukebox.model.Artist;
-import org.springframework.transaction.annotation.Transactional;
+import com.pijukebox.model.artist.Artist;
 
 import java.util.List;
 

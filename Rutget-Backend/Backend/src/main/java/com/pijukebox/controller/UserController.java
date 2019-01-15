@@ -1,6 +1,6 @@
 package com.pijukebox.controller;
 
-import com.pijukebox.model.User;
+import com.pijukebox.model.user.User;
 import com.pijukebox.service.IUserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AccessLevel;

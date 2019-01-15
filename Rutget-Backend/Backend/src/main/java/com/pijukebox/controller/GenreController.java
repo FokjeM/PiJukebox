@@ -1,6 +1,6 @@
 package com.pijukebox.controller;
 
-import com.pijukebox.model.Genre;
+import com.pijukebox.model.genre.Genre;
 import com.pijukebox.service.IGenreService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

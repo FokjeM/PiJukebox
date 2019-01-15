@@ -1,5 +1,6 @@
 package com.pijukebox.model;
 
+import com.pijukebox.model.simple.SimpleAlbum;
 import com.pijukebox.model.simple.SimpleArtist;
 import com.pijukebox.model.simple.SimpleGenre;
 import com.pijukebox.model.simple.SimpleTrack;

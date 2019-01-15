@@ -1,6 +1,6 @@
 package com.pijukebox.service.impl;
 
-import com.pijukebox.model.Genre;
+import com.pijukebox.model.genre.Genre;
 import com.pijukebox.repository.IGenreRepository;
 import com.pijukebox.service.IGenreService;
 import org.springframework.beans.factory.annotation.Autowired;

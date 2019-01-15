@@ -1,6 +1,6 @@
 package com.pijukebox.controller;
 
-import com.pijukebox.model.Playlist;
+import com.pijukebox.model.playlist.Playlist;
 import com.pijukebox.service.IPlaylistService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AccessLevel;

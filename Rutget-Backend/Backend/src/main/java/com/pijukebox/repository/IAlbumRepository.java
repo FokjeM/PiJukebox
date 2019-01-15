@@ -1,6 +1,6 @@
 package com.pijukebox.repository;
 
-import com.pijukebox.model.Album;
+import com.pijukebox.model.album.Album;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,5 +1,6 @@
 package com.pijukebox.model.simple;
 
+import com.pijukebox.model.SqlElement;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,7 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(schema = "pijukebox", name = "genre")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class SimpleGenre implements Serializable {
+public class SimpleGenre extends SqlElement implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

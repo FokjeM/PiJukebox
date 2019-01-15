@@ -1,6 +1,6 @@
 package com.pijukebox.service;
 
-import com.pijukebox.model.Genre;
+import com.pijukebox.model.genre.Genre;
 
 import java.util.List;
 import java.util.Optional;
