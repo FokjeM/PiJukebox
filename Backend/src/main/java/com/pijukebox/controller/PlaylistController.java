@@ -1,6 +1,6 @@
 package com.pijukebox.controller;
 
-import com.pijukebox.model.Playlist;
+import com.pijukebox.model.playlist.Playlist;
 import com.pijukebox.service.IPlaylistService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AccessLevel;
@@ -37,17 +37,17 @@ public class PlaylistController {
         return playlistService.save(playlist);
     }
 
-    @PatchMapping()
-    @ApiOperation(value = "Update a playlist.")
-    public Playlist updatePlaylist(@RequestParam long playlistId, Long userId, @RequestBody Playlist playlist) throws Exception {
-        Playlist existing = playlistService.findById(playlistId);
-        playlist.CopyNonNullProperties(existing);
-        return playlistService.save(existing);
-    }
-
-    @DeleteMapping()
-    @ApiOperation(value = "Delete a playlists of a user.")
-    public Playlist deletePlaylist(@RequestParam long playlistId, Long userId) {
-        return playlistService.delete(userId, playlistId);
-    }
+//    @PatchMapping()
+//    @ApiOperation(value = "Update a playlist.")
+//    public Playlist updatePlaylist(@RequestParam long playlistId, Long userId, @RequestBody Playlist playlist) throws Exception {
+//        Playlist existing = playlistService.findById(playlistId);
+//        playlist.CopyNonNullProperties(existing);
+//        return playlistService.save(existing);
+//    }
+//
+//    @DeleteMapping()
+//    @ApiOperation(value = "Delete a playlists of a user.")
+//    public Playlist deletePlaylist(@RequestParam long playlistId, Long userId) {
+//        return playlistService.delete(userId, playlistId);
+//    }
 }

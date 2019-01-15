@@ -1,7 +1,6 @@
 package com.pijukebox.service;
 
-import com.pijukebox.model.Playlist;
-import org.springframework.transaction.annotation.Transactional;
+import com.pijukebox.model.playlist.Playlist;
 
 import java.util.List;
 
