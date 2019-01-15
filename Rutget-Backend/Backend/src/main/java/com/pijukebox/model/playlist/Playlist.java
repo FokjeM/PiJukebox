@@ -41,32 +41,4 @@ public class Playlist extends SqlElement implements Serializable {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "track_playlist", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "playlist_id", nullable = false)}, inverseJoinColumns = {@JoinColumn(name = "track_id", nullable = false)})
     private Set<SimpleTrack> tracks = new HashSet<>();
-//    // https://stackoverflow.com/questions/5478328/jpa-jointable-annotation
-//    @JoinTable
-//    @OneToMany
-//    private List<Track> tracks;
-
-    // https://codippa.com/skip-null-properties-spring-beanutils/
-
-//    public void CopyNonNullProperties(Playlist target) throws Exception {
-//        BeanUtils.copyProperties(this, target, getNullProperties());
-//    }
-//
-//    private String[] getNullProperties() throws Exception {
-//        PropertyDescriptor[] propDescArr = Introspector.getBeanInfo(this.getClass(), Object.class).getPropertyDescriptors();
-//        return Arrays.stream(propDescArr).filter(getNullPredicate()).map(PropertyDescriptor::getName).toArray(String[]::new);
-//    }
-//
-//    private Predicate<PropertyDescriptor> getNullPredicate() {
-//        return pd -> {
-//            boolean result = false;
-//            try {
-//                Method getterMethod = pd.getReadMethod();
-//                result = (getterMethod != null && getterMethod.invoke(this) == null);
-//            } catch (Exception e) {
-//                LoggerFactory.getLogger(this.getClass()).error("Error invoking getter method");
-//            }
-//            return result;
-//        };
-//    }
 }

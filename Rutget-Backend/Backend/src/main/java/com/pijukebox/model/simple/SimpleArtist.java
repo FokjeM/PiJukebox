@@ -23,7 +23,6 @@ public class SimpleArtist extends SqlElement implements Serializable {
     private Long id;
 
     @NotNull
-    @NaturalId
     @Column(name = "name", nullable = false)
     private String name;
 }

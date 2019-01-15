@@ -27,7 +27,6 @@ public class Track extends SqlElement implements Serializable {
     private Long id;
 
     @NotNull
-    @NaturalId
     @Column(nullable = false)
     private String name;
 

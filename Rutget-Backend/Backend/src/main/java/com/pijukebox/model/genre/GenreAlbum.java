@@ -26,7 +26,6 @@ public class GenreAlbum extends SqlElement implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @NaturalId
     @Column(name = "name")
     private String name;
 

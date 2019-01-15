@@ -62,7 +62,7 @@ public class TrackServiceImpl implements ITrackService {
 
     @Override
     public Optional<List<Track>> findAllTrackByName(String name) {
-        return trackRepository.findTrakcsByNameContaining(name);
+        return trackRepository.findTracksByNameContaining(name);
     }
 
     @Override
@@ -79,4 +79,5 @@ public class TrackServiceImpl implements ITrackService {
     public SimpleTrack addSimpleTrack(SimpleTrack simpleTrack) {
         return simpleTrackRepository.save(simpleTrack);
     }
+
 }

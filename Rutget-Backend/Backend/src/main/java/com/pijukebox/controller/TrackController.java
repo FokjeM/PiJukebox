@@ -135,6 +135,28 @@ public class TrackController {
         try{
             return trackService.addSimpleTrack(simpleTrack);
         }catch (Exception ex) {
+            ex.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Track with ID {id} Not Found", ex);
+        }
+    }
+    @PatchMapping("/simple/tracks")
+    public SimpleTrack updateSimpleTrack(@RequestBody SimpleTrack simpleTrack)
+    {
+        try{
+            if(simpleTrack.getId()!= null && !simpleTrack.getId().toString().isEmpty())
+            {
+                if (!trackService.findTrackDetailsById(simpleTrack.getId()).isPresent()) {
+                    return null;
+                }
+                SimpleTrack simpleTrack1 = trackService.findSimpleTrackById(simpleTrack.getId()).get();
+                simpleTrack1.setName(simpleTrack.getName());
+                simpleTrack1.setDescription(simpleTrack.getDescription());
+                simpleTrack1.setFilename(simpleTrack.getFilename());
+                return trackService.addSimpleTrack(simpleTrack1);
+            }
+            return null;
+        }catch (Exception ex) {
+            ex.printStackTrace();
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Track with ID {id} Not Found", ex);
         }
     }
