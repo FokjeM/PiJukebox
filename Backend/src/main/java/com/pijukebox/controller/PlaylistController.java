@@ -33,9 +33,16 @@ public class PlaylistController {
         }
     }
 
-//    @ApiOperation(value = "Retrieve all playlists of a user.")
-//    public List<Playlist> getPlaylists(@RequestParam("userID") Long userID) {
-//        return playlistService.findAllByUserID(userID);
-//    }
-
+    @GetMapping("/playlists/{id}")
+    @ApiOperation(value = "Get all from a single playlist by its ID")
+    public ResponseEntity<Playlist> playlistDetails(@PathVariable Long id) {
+        try {
+            if (!playlistService.findById(id).isPresent()){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(playlistService.findById(id).get(), HttpStatus.OK);
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Playlist with ID {id} not found", ex);
+        }
+    }
 }
