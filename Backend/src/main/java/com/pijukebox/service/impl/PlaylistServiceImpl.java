@@ -1,33 +1,38 @@
 package com.pijukebox.service.impl;
 
 import com.pijukebox.model.Playlist;
+import com.pijukebox.repository.IPlaylistRepository;
 import com.pijukebox.service.IPlaylistService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
 public class PlaylistServiceImpl implements IPlaylistService {
 
-    @Override
-    public List<Playlist> findAllByUserId(Long id) {
-        return null;
+    private final IPlaylistRepository playlistRepository;
+
+    @Autowired
+    public PlaylistServiceImpl(IPlaylistRepository playlistRepository) {
+        this.playlistRepository = playlistRepository;
     }
 
     @Override
-    public Playlist findById(Long id) {
-        return null;
+    public List<Playlist> findAll() {
+        return playlistRepository.findAll();
     }
 
     @Override
-    public Playlist save(Playlist playlist) {
-        return null;
+    public Optional<Playlist> findById(Long id) {
+        return playlistRepository.findById(id);
     }
 
     @Override
-    public Playlist delete(Long userId, long playlistId) {
-        return null;
+    public Optional<List<Playlist>> findAllByUserID(Long userID) {
+        return playlistRepository.findAllByUserID(userID);
     }
 }
