@@ -3,12 +3,13 @@ package com.pijukebox.service;
 import com.pijukebox.model.Artist;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IArtistService {
 
     List<Artist> findAll();
 
-    List<Artist> findMany(Long amount);
+    Optional<Artist> findById(Long id);
 
-    Artist findByName(String name);
+    Optional<List<Artist>> findGenresByNameContaining(String name);
 }

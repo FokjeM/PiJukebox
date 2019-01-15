@@ -1,19 +1,18 @@
 package com.pijukebox.service.impl;
 
-import com.pijukebox.model.Role;
 import com.pijukebox.model.User;
 import com.pijukebox.repository.IUserRepository;
 import com.pijukebox.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserDetailsService, IUserService {
+@Transactional
+public class UserServiceImpl implements IUserService {
 
     private final IUserRepository userRepository;
 
@@ -28,17 +27,12 @@ public class UserServiceImpl implements UserDetailsService, IUserService {
     }
 
     @Override
-    public List<User> findByRole(Role role) {
-        return null;
+    public User findByName(String firstname, String lastname) {
+        return userRepository.findByFirstnameAndLastname(firstname, lastname);
     }
 
     @Override
-    public User findById(Long id) {
-        return userRepository.getById(id);
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
     }
 }

@@ -3,23 +3,22 @@ package com.pijukebox.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Data
 @AllArgsConstructor
 @Table(schema = "pijukebox", name = "artist_album")
-public class ArtistAlbum {
+public class ArtistAlbum implements Serializable {
     @Id
-    @Column(name="album_id")
+    @Column(name = "album_id")
     private Long album_id;
 
-    @Column(name="artist_id")
+    @Id
+    @Column(name = "artist_id")
     private Long artist_id;
 
-    @Column(name="artist_main")
+    @Column(name = "artist_main")
     private String mainArtist;
 }

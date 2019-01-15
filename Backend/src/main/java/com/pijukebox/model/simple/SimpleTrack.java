@@ -1,10 +1,9 @@
-package com.pijukebox.model;
+package com.pijukebox.model.simple;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,15 +14,14 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Table(schema = "pijukebox", name = "track")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class Track implements Serializable {
+public class SimpleTrack implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
 
-    @NotNull
-    @NaturalId
-    @Column(nullable = false)
+    @Column(name = "name")
     private String name;
 
     @NotNull
