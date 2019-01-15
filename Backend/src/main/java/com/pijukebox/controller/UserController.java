@@ -29,8 +29,9 @@ public class UserController {
     private IPlaylistService playlistService;
 
     @Autowired
-    public UserController(IUserService userService) {
+    public UserController(IUserService userService, IPlaylistService playlistService) {
         this.userService = userService;
+        this.playlistService = playlistService;
     }
 
     @GetMapping("/users")
@@ -58,7 +59,7 @@ public class UserController {
 
     @GetMapping("/users/{userID}/playlists")
     @ApiOperation(value = "Retrieve playlists from the logged in user.")
-    public ResponseEntity<List<Playlist>> playlistsFromUser(@PathVariable Long userID) {
+    public ResponseEntity<List<Playlist>> playlistsByUser(@PathVariable Long userID) {
         try {
             if (!userService.findById(userID).isPresent()){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);

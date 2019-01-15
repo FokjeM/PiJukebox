@@ -23,8 +23,8 @@ public class PlaylistController {
         this.playlistService = playlistService;
     }
 
-    @GetMapping("/playlists")
-    @ApiOperation(value = "Retrieve all playlists")
+    @GetMapping("/playlists/details")
+    @ApiOperation(value = "Retrieve all playlists in full detail, with full track info")
     public ResponseEntity<List<Playlist>> playlists() {
         try {
             return new ResponseEntity<>(playlistService.findAll(), HttpStatus.OK);
@@ -45,4 +45,6 @@ public class PlaylistController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Playlist with ID {id} not found", ex);
         }
     }
+
+//    @GetMapping("/playlists")
 }
