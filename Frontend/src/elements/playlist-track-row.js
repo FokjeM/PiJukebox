@@ -65,7 +65,7 @@ class PlaylistTrackRow extends PolymerElement {
       <iron-ajax
         id="addToPlaylist"
         method="POST"
-        url="http://localhost:8000/playlists/addTrack"
+        url="http://localhost:8080/api/v1/playlists/addTrack"
         content-type="application/json"
         handle-as="json"
         on-response="addedTrack">

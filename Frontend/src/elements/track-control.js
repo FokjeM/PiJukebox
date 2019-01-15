@@ -51,7 +51,7 @@ class TrackControl extends PolymerElement {
       <iron-ajax
         auto
         id="getStatus"
-        url="http://localhost:8000/player/status"
+        url="http://localhost:8080/api/v1/player/status"
         content-type="application/json"  
         handle-as="json"
         last-response="{{playerStatus}}"
@@ -61,7 +61,7 @@ class TrackControl extends PolymerElement {
       <iron-ajax
         id="shuffle"
         method="POST"
-        url="http://localhost:8000/player/shuffle"
+        url="http://localhost:8080/api/v1/player/shuffle"
         content-type="application/json"
         handle-as="json"
         on-response="getStatus">
@@ -70,7 +70,7 @@ class TrackControl extends PolymerElement {
       <iron-ajax
         id="playPause"
         method="POST"
-        url="http://localhost:8000/player/playpause"
+        url="http://localhost:8080/api/v1/player/playpause"
         content-type="application/json"
         handle-as="json"
         on-response="getStatus">
@@ -79,7 +79,7 @@ class TrackControl extends PolymerElement {
       <iron-ajax
         id="repeat"
         method="POST"
-        url="http://localhost:8000/player/repeat"
+        url="http://localhost:8080/api/v1/player/repeat"
         content-type="application/json"
         handle-as="json"
         on-response="getStatus">
@@ -88,7 +88,7 @@ class TrackControl extends PolymerElement {
       <iron-ajax
         id="nextTrack"
         method="POST"
-        url="http://localhost:8000/player/next"
+        url="http://localhost:8080/api/v1/player/next"
         content-type="application/json"
         handle-as="json"
         on-response="getStatus">
@@ -97,7 +97,7 @@ class TrackControl extends PolymerElement {
       <iron-ajax
         id="previousTrack"
         method="POST"
-        url="http://localhost:8000/player/previous"
+        url="http://localhost:8080/api/v1/player/previous"
         content-type="application/json"
         handle-as="json"
         on-response="getStatus">
@@ -106,7 +106,7 @@ class TrackControl extends PolymerElement {
       <iron-ajax
         id="changeVolume"
         method="POST"
-        url="http://localhost:8000/player/volume"
+        url="http://localhost:8080/api/v1/player/volume"
         content-type="application/json"
         handle-as="json"
         on-response="getStatus">

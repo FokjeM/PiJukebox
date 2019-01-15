@@ -59,7 +59,7 @@ class AllPlaylists extends PolymerElement {
       <iron-ajax
         auto
         id="getPlaylists"
-        url="http://localhost:8080/api/v1/laptops"
+        url="http://localhost:8080/api/v1/playlists"
         handle-as="json"
         last-response="{{playlists}}">
       </iron-ajax>
@@ -73,7 +73,7 @@ class AllPlaylists extends PolymerElement {
               <div>
                 <a class="playlistLink" href="[[rootPath]]playlist/[[playlist.id]]">
                   <div class="playlistTrack">
-                    [[playlist.id]]: [[playlist.name]]
+                    [[playlist.title]] - [[playlist.description]]
                   </div>
                 </a>
               </div>
@@ -82,8 +82,8 @@ class AllPlaylists extends PolymerElement {
 
           <div class="playlist-container">
             <iron-form id="playlistForm">
-              <!-- <form action="http://localhost:8000/playlists/create" method="get"> -->
-              <form action="http://localhost:8000/playlists/create" method="post" on-response="formResponse">
+              <!-- <form action="http://localhost:8080/api/v1/playlists/create" method="get"> -->
+              <form action="http://localhost:8080/api/v1/playlists/create" method="post" on-response="formResponse">
                 <div class="formInput">
                   <paper-input type="text" name="name" label="Name" id="playlistName" 
                   error-message="Please enter a name" required></paper-input>

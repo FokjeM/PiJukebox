@@ -45,7 +45,7 @@ class SinglePlaylist extends PolymerElement {
       <!-- Get all playlist info -->
       <iron-ajax
         auto
-        url="http://localhost:8000/playlist/[[routeData.playlistId]]"
+        url="http://localhost:8080/api/v1/details/playlists/[[routeData.playlistId]]"
         handle-as="json"
         last-response="{{playlist}}">
       </iron-ajax>
@@ -55,11 +55,11 @@ class SinglePlaylist extends PolymerElement {
         <h1>Tracks</h1>
 
         <template is="dom-repeat" items="{{playlist.tracks}}" as="track" rendered-item-count="{{playlistTrackCount}}">
-          <div style="display:flex;">          
+          <div style="display:flex;">
               <result-row-track
                   track-id="{{track.id}}"
-                  track-name="{{track.title}}"
-                  track-artist="{{track.artist}}">
+                  track-name="{{track.name}}"
+                  track-artist="testartist">
               </result-row-track>
             </div>
         </template>

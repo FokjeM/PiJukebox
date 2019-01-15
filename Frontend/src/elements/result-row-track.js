@@ -31,7 +31,7 @@ class ResultRowTrack extends PolymerElement {
       <iron-ajax
         id="addToQueue"
         method="post"
-        url="http://localhost:8000/queue/add"
+        url="http://localhost:8080/api/v1/queue/add"
         body='[{"trackId": [[trackId]]}]'
         content-type="application/json"
         handle-as="json"

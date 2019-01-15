@@ -44,7 +44,7 @@ class MyLogin extends PolymerElement {
         <!-- Post credentials -->
         <iron-ajax
           id="loginForm"
-          url="http://localhost:8000/login"
+          url="http://localhost:8080/api/v1/login"
           handle-as="json"
           body="{username: {{username}}, password: {{password}}}"
           on-response="setToken">
