@@ -1,7 +1,9 @@
 package com.pijukebox.service.impl;
 
 import com.pijukebox.model.playlist.PlaylistTrack;
+import com.pijukebox.model.simple.SimplePlaylist;
 import com.pijukebox.repository.IPlaylistRepository;
+import com.pijukebox.repository.ISimplePlaylistRepository;
 import com.pijukebox.service.IPlaylistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,10 +17,12 @@ import java.util.Optional;
 public class PlaylistServiceImpl implements IPlaylistService {
 
     private final IPlaylistRepository playlistRepository;
+    private final ISimplePlaylistRepository simplePlaylistRepository;
 
     @Autowired
-    public PlaylistServiceImpl(IPlaylistRepository playlistRepository) {
+    public PlaylistServiceImpl(IPlaylistRepository playlistRepository, ISimplePlaylistRepository simplePlaylistRepository) {
         this.playlistRepository = playlistRepository;
+        this.simplePlaylistRepository = simplePlaylistRepository;
     }
 
     @Override
@@ -32,7 +36,13 @@ public class PlaylistServiceImpl implements IPlaylistService {
     }
 
     @Override
-    public Optional<List<PlaylistTrack>> findAllByUserID(Long userID) {
-        return playlistRepository.findAllByUserID(userID);
+    public List<SimplePlaylist> findAllSimplePlaylists() {
+        return simplePlaylistRepository.findAll();
     }
+
+    @Override
+    public Optional<SimplePlaylist> findSimplePlaylistById(Long id) {
+        return simplePlaylistRepository.findById(id);
+    }
+
 }
