@@ -1,5 +1,6 @@
-package com.pijukebox.model;
+package com.pijukebox.model.artist;
 
+import com.pijukebox.model.SqlElement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(schema = "pijukebox", name = "artist")
-public class Artist implements Serializable {
+public class Artist extends SqlElement implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

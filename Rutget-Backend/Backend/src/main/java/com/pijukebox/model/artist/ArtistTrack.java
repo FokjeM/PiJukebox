@@ -1,25 +1,37 @@
-package com.pijukebox.model;
+package com.pijukebox.model.artist;
 
+import com.pijukebox.model.SqlElement;
+import com.pijukebox.model.simple.SimpleAlbum;
+import com.pijukebox.model.simple.SimpleTrack;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.NaturalId;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
 @AllArgsConstructor
 @Table(schema = "pijukebox", name = "artist_track")
-public class ArtistTrack {
+public class ArtistTrack extends SqlElement implements Serializable {
+
     @Id
-    @Column(name="track_id")
-    private Long track_id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
 
-    @Column(name="artist_id")
-    private Long artist_id;
+    @NotNull
+    @NaturalId
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    @Column(name="artist_main")
-    private String mainArtist;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "artist_track", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "artist_id", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "track_id", nullable = false)})
+    private Set<SimpleTrack> albums = new HashSet<>();
 }

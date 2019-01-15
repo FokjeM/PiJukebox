@@ -1,5 +1,6 @@
-package com.pijukebox.model;
+package com.pijukebox.model.genre;
 
+import com.pijukebox.model.SqlElement;
 import com.pijukebox.model.simple.SimpleAlbum;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(schema = "pijukebox", name = "genre")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class Genre implements Serializable {
+public class Genre extends SqlElement implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,8 +28,4 @@ public class Genre implements Serializable {
     @NaturalId
     @Column(name = "name")
     private String name;
-
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "album_genre", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "genre_id", nullable = false)}, inverseJoinColumns = {@JoinColumn(name = "album_id", nullable = false)})
-    private Set<SimpleAlbum> albums = new HashSet<>();
 }

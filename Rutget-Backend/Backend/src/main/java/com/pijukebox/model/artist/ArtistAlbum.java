@@ -1,24 +1,38 @@
-package com.pijukebox.model;
+package com.pijukebox.model.artist;
 
+import com.pijukebox.model.SqlElement;
+import com.pijukebox.model.simple.SimpleAlbum;
+import com.pijukebox.model.simple.SimpleGenre;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
 @AllArgsConstructor
-@Table(schema = "pijukebox", name = "artist_album")
-public class ArtistAlbum implements Serializable {
-    @Id
-    @Column(name = "album_id")
-    private Long album_id;
+@Table(schema = "pijukebox", name = "artist")
+public class ArtistAlbum extends SqlElement implements Serializable {
 
     @Id
-    @Column(name = "artist_id")
-    private Long artist_id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
 
-    @Column(name = "artist_main")
-    private String mainArtist;
+    @NotNull
+    @NaturalId
+    @Column(name = "name", nullable = false)
+    private String name;
+
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "artist_album", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "artist_id", nullable = false)},
+               inverseJoinColumns = {@JoinColumn(name = "album_id", nullable = false)})
+    private Set<SimpleAlbum> albums = new HashSet<>();
 }
+

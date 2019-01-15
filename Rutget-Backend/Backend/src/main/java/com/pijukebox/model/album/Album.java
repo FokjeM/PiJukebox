@@ -1,5 +1,6 @@
-package com.pijukebox.model;
+package com.pijukebox.model.album;
 
+import com.pijukebox.model.SqlElement;
 import com.pijukebox.model.simple.SimpleAlbum;
 import com.pijukebox.model.simple.SimpleArtist;
 import com.pijukebox.model.simple.SimpleGenre;
@@ -19,7 +20,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "album")
-public class Album implements Serializable {
+public class Album extends SqlElement implements Serializable {
 
     // https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
     // https://en.wikibooks.org/wiki/Java_Persistence/ManyToMany

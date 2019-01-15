@@ -1,5 +1,7 @@
-package com.pijukebox.model;
+package com.pijukebox.model.track;
 
+import com.pijukebox.model.SqlElement;
+import com.pijukebox.model.simple.SimpleArtist;
 import com.pijukebox.model.simple.SimpleGenre;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -18,7 +20,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(schema = "pijukebox", name = "track")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class Track implements Serializable {
+public class Track extends SqlElement implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,6 +41,10 @@ public class Track implements Serializable {
 
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "album_genre", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "album_id", nullable = false)}, inverseJoinColumns = {@JoinColumn(name = "genre_id", nullable = false)})
+    @JoinTable(name = "track_genre", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "trackId", nullable = false)}, inverseJoinColumns = {@JoinColumn(name = "genreId", nullable = false)})
     private Set<SimpleGenre> genres = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "artist_track", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "track_id", nullable = false)}, inverseJoinColumns = {@JoinColumn(name = "artist_id", nullable = false)})
+    private Set<SimpleArtist> artists = new HashSet<>();
 }
