@@ -28,7 +28,4 @@ public class SimpleGenre extends SqlElement implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "album_genre", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "genre_id", nullable = false)}, inverseJoinColumns = {@JoinColumn(name = "album_id", nullable = false)})
-    private Set<SimpleAlbum> albums = new HashSet<>();
 }

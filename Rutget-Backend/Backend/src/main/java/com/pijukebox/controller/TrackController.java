@@ -130,9 +130,8 @@ public class TrackController {
     }
 
     @PostMapping("/simple/tracks")
-    public Object addSimpleTrack(@RequestBody SimpleTrack simpleTrack)
+    public SimpleTrack addSimpleTrack(@RequestBody SimpleTrack simpleTrack)
     {
-
         try{
             return trackService.addSimpleTrack(simpleTrack);
         }catch (Exception ex) {

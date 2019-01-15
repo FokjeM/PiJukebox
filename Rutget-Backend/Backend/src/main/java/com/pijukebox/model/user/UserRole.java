@@ -44,6 +44,6 @@ public class UserRole extends SqlElement implements Serializable {
 
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "role", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "role_id", nullable = false)})
+    @JoinTable(name = "role", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "id", nullable = false)})
     private Role role;
 }

@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface IGenreTrackRepository extends JpaRepository<GenreTrack, Long> {
     List<GenreTrack> findAll();
 
-    Optional<GenreTrack> findById();
+    Optional<GenreTrack> findById(Long id);
 
     Optional<List<GenreTrack>> findGenreTracksByNameContaining(String name);
 }

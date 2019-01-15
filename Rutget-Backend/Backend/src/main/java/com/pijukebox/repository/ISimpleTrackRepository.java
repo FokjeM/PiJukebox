@@ -15,5 +15,5 @@ public interface ISimpleTrackRepository extends JpaRepository<SimpleTrack, Long>
 
     Optional<List<SimpleTrack>> findSimpleTracksByNameContaining(String name);
 
-    Object save(SimpleTrack simpleTrack);
+    SimpleTrack save(SimpleTrack simpleTrack);
 }

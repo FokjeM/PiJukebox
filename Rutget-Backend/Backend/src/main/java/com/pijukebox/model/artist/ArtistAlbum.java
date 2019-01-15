@@ -5,6 +5,7 @@ import com.pijukebox.model.simple.SimpleAlbum;
 import com.pijukebox.model.simple.SimpleGenre;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(schema = "pijukebox", name = "artist")
 public class ArtistAlbum extends SqlElement implements Serializable {
 

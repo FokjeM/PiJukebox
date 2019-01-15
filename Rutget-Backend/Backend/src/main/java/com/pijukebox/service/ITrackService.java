@@ -26,5 +26,5 @@ public interface ITrackService {
 
     Optional<List<GenreTrack>> findAllTracksByGenreName(String name);
 
-    Object addSimpleTrack(SimpleTrack simpleTrack);
+    SimpleTrack addSimpleTrack(SimpleTrack simpleTrack);
 }

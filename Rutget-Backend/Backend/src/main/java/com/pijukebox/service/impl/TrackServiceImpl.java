@@ -76,7 +76,7 @@ public class TrackServiceImpl implements ITrackService {
     }
 
     @Override
-    public Object addSimpleTrack(SimpleTrack simpleTrack) {
+    public SimpleTrack addSimpleTrack(SimpleTrack simpleTrack) {
         return simpleTrackRepository.save(simpleTrack);
     }
 }
