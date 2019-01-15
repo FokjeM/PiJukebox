@@ -49,6 +49,7 @@ public class ErrorLogger {
                     String s = it.next();
                     System.err.print(s);
                 }
+                //Mortal Kombat voice: FATALITY!
                 System.exit(1);
             }
             errorLines.clear();
@@ -64,7 +65,7 @@ public class ErrorLogger {
     
     public boolean writeFFPlayLog(String msg){
         errorLines.add("+--------------+");
-        errorLines.add("FFPlay output:");
+        errorLines.add("FFPlay only outputs on stderr;\r\n\tOutput:");
         errorLines.add(msg);
         return writeLogLines();
     }
