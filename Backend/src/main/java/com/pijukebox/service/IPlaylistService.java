@@ -16,4 +16,9 @@ public interface IPlaylistService {
 
     Optional<SimplePlaylist> findSimplePlaylistById(Long id);
 
+    SimplePlaylist addNewPlaylist(SimplePlaylist simplePlaylist);
+
+    PlaylistTrack addTrackToPlaylist(PlaylistTrack playlistTrack);
+
+    PlaylistTrack deleteTrackFromPlaylist(PlaylistTrack playlistTrack);
 }

@@ -45,4 +45,19 @@ public class PlaylistServiceImpl implements IPlaylistService {
         return simplePlaylistRepository.findById(id);
     }
 
+    @Override
+    public SimplePlaylist addNewPlaylist(SimplePlaylist simplePlaylist) {
+        return simplePlaylistRepository.save(simplePlaylist);
+    }
+
+    @Override
+    public PlaylistTrack addTrackToPlaylist(PlaylistTrack playlistTrack) {
+        return playlistRepository.save(playlistTrack);
+    }
+
+    @Override
+    public PlaylistTrack deleteTrackFromPlaylist(PlaylistTrack playlistTrack) {
+        return playlistRepository.save(playlistTrack);
+    }
+
 }
