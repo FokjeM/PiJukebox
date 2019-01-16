@@ -14,7 +14,5 @@ public interface IArtistRepository extends JpaRepository<SimpleArtist, Long> {
 
     Optional<SimpleArtist> findById(Long id);
 
-    List<SimpleArtist> findMany(Long amount);
-
     SimpleArtist findByName(String name);
 }

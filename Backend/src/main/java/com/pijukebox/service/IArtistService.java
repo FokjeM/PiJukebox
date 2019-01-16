@@ -8,7 +8,6 @@ public interface IArtistService {
 
     List<SimpleArtist> findAll();
 
-    List<SimpleArtist> findMany(Long amount);
 
     SimpleArtist findByName(String name);
 }

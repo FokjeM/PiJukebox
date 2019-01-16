@@ -25,10 +25,6 @@ public class ArtistServiceImpl implements IArtistService {
         return artistRepository.findAll();
     }
 
-    @Override
-    public List<SimpleArtist> findMany(Long amount) {
-        return artistRepository.findMany(amount);
-    }
 
     @Override
     public SimpleArtist findByName(String name) {
