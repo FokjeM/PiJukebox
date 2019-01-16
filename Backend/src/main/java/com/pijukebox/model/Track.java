@@ -1,30 +1,36 @@
-package com.pijukebox.model.simple;
+package com.pijukebox.model;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-
 @Entity
+@Data
 @AllArgsConstructor
-@Table(schema = "pijukebox", name = "playlist")
+@Table(schema = "pijukebox", name = "track")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class SimplePlaylist implements Serializable {
+public class Track implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
     private Long id;
 
     @NotNull
-    @Column(name="name")
+    @NaturalId
+    @Column(nullable = false)
     private String name;
 
-    @Column(name="description")
+    @NotNull
+    @Column(nullable = false)
     private String description;
 
+    @NotNull
+    @Column(nullable = false)
+    private String filename;
 }

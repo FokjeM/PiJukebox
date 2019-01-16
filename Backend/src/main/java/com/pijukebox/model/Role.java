@@ -14,7 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Table(name = "role")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class Role extends SqlElement implements Serializable {
+public class Role implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

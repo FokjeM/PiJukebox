@@ -1,6 +1,6 @@
 package com.pijukebox.service.impl;
 
-import com.pijukebox.model.playlist.Playlist;
+import com.pijukebox.model.Playlist;
 import com.pijukebox.service.IPlaylistService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

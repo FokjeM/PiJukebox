@@ -1,6 +1,6 @@
 package com.pijukebox.service.impl;
 
-import com.pijukebox.model.simple.SimpleGenre;
+import com.pijukebox.model.Genre;
 import com.pijukebox.repository.IGenreRepository;
 import com.pijukebox.service.IGenreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +22,17 @@ public class GenreServiceImpl implements IGenreService {
     }
 
     @Override
-    public List<SimpleGenre> findAll() {
+    public List<Genre> findAll() {
         return genreRepository.findAll();
     }
 
     @Override
-    public Optional<SimpleGenre> findById(Long id) {
+    public Optional<Genre> findById(Long id) {
         return genreRepository.findById(id);
     }
 
     @Override
-    public Optional<List<SimpleGenre>> findGenresByNameContaining(String name) {
+    public Optional<List<Genre>> findGenresByNameContaining(String name) {
         return genreRepository.findGenresByNameContaining(name);
     }
 }

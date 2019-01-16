@@ -1,6 +1,6 @@
 package com.pijukebox.service.impl;
 
-import com.pijukebox.model.user.User;
+import com.pijukebox.model.User;
 import com.pijukebox.repository.IUserRepository;
 import com.pijukebox.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;

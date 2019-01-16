@@ -1,21 +1,19 @@
-package com.pijukebox.model.user;
+package com.pijukebox.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.pijukebox.model.SqlElement;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Data
 @AllArgsConstructor
 @Table(schema = "pijukebox", name = "user")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class User extends SqlElement implements Serializable {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

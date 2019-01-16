@@ -1,28 +1,27 @@
 package com.pijukebox.model.simple;
 
-import com.pijukebox.model.SqlElement;
-import lombok.*;
-import org.hibernate.annotations.NaturalId;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @AllArgsConstructor
-@Table(name = "track")
+@Table(schema = "pijukebox", name = "track")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class SimpleTrack extends SqlElement implements Serializable {
+public class SimpleTrack implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
-    @NotNull
-    @Column(nullable = false, name="name")
+    @Column(name = "name")
     private String name;
 
     @NotNull
@@ -30,6 +29,6 @@ public class SimpleTrack extends SqlElement implements Serializable {
     private String description;
 
     @NotNull
-    @Column(nullable = false, name="fileName")
+    @Column(nullable = false)
     private String filename;
 }
