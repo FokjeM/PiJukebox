@@ -35,5 +35,5 @@ public class ArtistTrack extends SqlElement implements Serializable {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "artist_track", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "artist_id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "track_id", nullable = false)})
-    private Set<SimpleTrack> albums = new HashSet<>();
+    private Set<SimpleTrack> tracks = new HashSet<>();
 }

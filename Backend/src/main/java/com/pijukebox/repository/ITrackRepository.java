@@ -13,4 +13,6 @@ public interface ITrackRepository extends JpaRepository<Track, Long> {
     List<Track> findAll();
 
     Optional<Track> findById(Long id);
+
+    Optional<List<Track>> findTracksByNameContaining(String name);
 }

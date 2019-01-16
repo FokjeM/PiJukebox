@@ -2,6 +2,7 @@ package com.pijukebox.service;
 
 import com.pijukebox.model.playlist.PlaylistTrack;
 import com.pijukebox.model.simple.SimplePlaylist;
+import com.pijukebox.model.simple.SimpleTrack;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,4 +22,5 @@ public interface IPlaylistService {
     PlaylistTrack addTrackToPlaylist(PlaylistTrack playlistTrack);
 
     PlaylistTrack deleteTrackFromPlaylist(PlaylistTrack playlistTrack);
+
 }
