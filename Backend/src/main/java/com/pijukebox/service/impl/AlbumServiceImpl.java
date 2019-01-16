@@ -1,6 +1,7 @@
 package com.pijukebox.service.impl;
 
 import com.pijukebox.model.album.Album;
+import com.pijukebox.model.simple.SimpleAlbum;
 import com.pijukebox.repository.IAlbumRepository;
 import com.pijukebox.service.IAlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +23,17 @@ public class AlbumServiceImpl implements IAlbumService {
     }
 
     @Override
-    public List<Album> findAll() {
+    public List<SimpleAlbum> findAll() {
         return albumRepository.findAll();
     }
 
     @Override
-    public Optional<Album> findById(Long id) {
+    public Optional<SimpleAlbum> findById(Long id) {
         return albumRepository.findById(id);
     }
 
     @Override
-    public Optional<List<Album>> findAlbumsByNameContaining(String name) {
+    public Optional<List<SimpleAlbum>> findAlbumsByNameContaining(String name) {
         return albumRepository.findAlbumsByNameContaining(name);
     }
 }

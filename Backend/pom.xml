@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>Pijukebox</groupId>
-    <artifactId>web</artifactId>
+    <artifactId>pi-jukebox</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
     <properties>
@@ -176,7 +176,7 @@
                         <!--The part of the project to deploy, in our case, this whole project-->
                         <deployable>
                             <groupId>Pijukebox</groupId>
-                            <artifactId>web</artifactId>
+                            <artifactId>pi-jukebox</artifactId>
                             <type>war</type>
                             <properties>
                                 <!--We listen to the root path-->
