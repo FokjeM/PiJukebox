@@ -1,6 +1,7 @@
 package com.pijukebox.controller;
 
 import com.pijukebox.model.album.Album;
+import com.pijukebox.model.artist.ArtistAlbum;
 import com.pijukebox.model.genre.GenreAlbum;
 import com.pijukebox.model.simple.SimpleAlbum;
 import com.pijukebox.service.IAlbumService;
@@ -54,6 +55,22 @@ public class AlbumController {
             return null;
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Albums with a genre name %s Not Found", name), ex);
+        }
+    }
+
+    @GetMapping("/albums/byArtist")
+    public ResponseEntity<List<ArtistAlbum>> getAlbumsByArtistName(@RequestParam(name = "name") String name) {
+        try {
+
+            if (name != null && !name.isEmpty()) {
+                if (!albumService.findSimpleAlbumsByArtistName(name).isPresent()) {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+                return new ResponseEntity<>(albumService.findSimpleAlbumsByArtistName(name).get(), HttpStatus.OK);
+            }
+            return null;
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Albums with an artist name %s Not Found", name), ex);
         }
     }
 

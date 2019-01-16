@@ -1,11 +1,12 @@
 package com.pijukebox.service.impl;
 
 import com.pijukebox.model.album.Album;
+import com.pijukebox.model.artist.ArtistAlbum;
 import com.pijukebox.model.genre.GenreAlbum;
 import com.pijukebox.model.simple.SimpleAlbum;
 import com.pijukebox.repository.IAlbumRepository;
+import com.pijukebox.repository.IArtistAlbumRepository;
 import com.pijukebox.repository.IGenreAlbumRepository;
-import com.pijukebox.repository.IGenreRepository;
 import com.pijukebox.repository.ISimpleAlbumRepository;
 import com.pijukebox.service.IAlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,14 @@ public class AlbumServiceImpl implements IAlbumService {
     private final IAlbumRepository albumRepository;
     private final ISimpleAlbumRepository simpleAlbumRepository;
     private final IGenreAlbumRepository genreAlbumRepository;
+    private final IArtistAlbumRepository artistAlbumRepository;
 
     @Autowired
-    public AlbumServiceImpl(IAlbumRepository albumRepository, ISimpleAlbumRepository simpleAlbumRepository, IGenreAlbumRepository genreAlbumRepository) {
+    public AlbumServiceImpl(IAlbumRepository albumRepository, ISimpleAlbumRepository simpleAlbumRepository, IGenreAlbumRepository genreAlbumRepository, IArtistAlbumRepository artistAlbumRepository) {
         this.albumRepository = albumRepository;
         this.simpleAlbumRepository = simpleAlbumRepository;
         this.genreAlbumRepository = genreAlbumRepository;
+        this.artistAlbumRepository = artistAlbumRepository;
     }
 
     @Override
@@ -63,5 +66,10 @@ public class AlbumServiceImpl implements IAlbumService {
     @Override
     public Optional<List<GenreAlbum>> findSimpleAlbumsByGenreName(String name) {
         return genreAlbumRepository.findGenreAlbumsByNameContaining(name);
+    }
+
+    @Override
+    public Optional<List<ArtistAlbum>> findSimpleAlbumsByArtistName(String name) {
+        return artistAlbumRepository.findArtistAlbumsByNameContaining(name);
     }
 }

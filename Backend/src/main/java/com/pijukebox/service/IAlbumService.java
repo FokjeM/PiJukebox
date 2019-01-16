@@ -1,6 +1,7 @@
 package com.pijukebox.service;
 
 import com.pijukebox.model.album.Album;
+import com.pijukebox.model.artist.ArtistAlbum;
 import com.pijukebox.model.genre.GenreAlbum;
 import com.pijukebox.model.simple.SimpleAlbum;
 
@@ -23,4 +24,6 @@ public interface IAlbumService {
     Optional<List<SimpleAlbum>> findSimpleAlbumsByNameContaining(String name);
 
     Optional<List<GenreAlbum>> findSimpleAlbumsByGenreName(String name);
+
+    Optional<List<ArtistAlbum>> findSimpleAlbumsByArtistName(String name);
 }
