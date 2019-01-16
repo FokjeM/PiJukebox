@@ -41,7 +41,7 @@ public class AlbumController {
         return new ResponseEntity<>(albumService.findAllSimpleAlbums(), HttpStatus.OK);
     }
 
-    @GetMapping("/simple/albums/byGenre")
+    @GetMapping("/albums/byGenre")
     public ResponseEntity<List<GenreAlbum>> getAlbumsByGenreName(@RequestParam(name = "name") String name) {
         try {
 
