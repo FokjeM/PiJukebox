@@ -2,14 +2,12 @@ package com.pijukebox.model.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pijukebox.model.SqlElement;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @AllArgsConstructor

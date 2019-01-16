@@ -2,7 +2,6 @@ package com.pijukebox.model.simple;
 
 import com.pijukebox.model.SqlElement;
 import lombok.*;
-import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

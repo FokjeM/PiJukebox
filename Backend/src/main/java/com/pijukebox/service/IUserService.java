@@ -1,5 +1,7 @@
 package com.pijukebox.service;
 
+import com.pijukebox.model.playlist.PlaylistTrack;
+import com.pijukebox.model.simple.SimplePlaylist;
 import com.pijukebox.model.user.User;
 
 import java.util.List;
@@ -11,4 +13,9 @@ public interface IUserService {
     User findByName(String firstname, String lastname);
 
     Optional<User> findById(Long id);
+
+    Optional<List<PlaylistTrack>> findPlaylistsByUser(Long userID);
+
+    Optional<List<SimplePlaylist>> findSimplePlaylistsByUser(Long userID);
+
 }
