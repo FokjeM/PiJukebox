@@ -48,10 +48,6 @@ public class UserServiceImpl implements IUserService {
         return userRepository.save(user);
     }
 
-    @Override
-    public void deleteUser(Long id) {
-       userRepository.deleteById(id);
-    }
 
     @Override
     public Optional<User> findById(Long id) {

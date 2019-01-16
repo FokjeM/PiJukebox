@@ -18,5 +18,4 @@ public interface IUserService {
 
     User saveUser(User user);
 
-    void deleteUser(Long id);
 }

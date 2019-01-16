@@ -76,7 +76,7 @@ public class UserController {
             //Save token
             User user = userService.findByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword()).get();
             user.setToken(token);
-
+            userService.saveUser(user);
             return "{\"token\":\"" + token + "\"}";
         }
         catch (Exception ex) {
