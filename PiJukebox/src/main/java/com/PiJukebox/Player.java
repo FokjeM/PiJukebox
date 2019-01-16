@@ -41,18 +41,7 @@ public class Player {
     private boolean procKill;
     private boolean playing = false;
     private final Thread procExitCode;
-    private final Thread procOutput = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            InputStream in = proc.getInputStream();
-            Scanner scan = new Scanner(new InputStreamReader(in));
-            //FFPlay doesn't output to stdout (this InputStream)
-            //FFPlay does output to stderr (this InputStream because error is redirected)
-            while(scan.hasNextLine() && !procKill){
-                log.writeFFPlayLog(scan.next());
-            }
-        }
-    });
+    private final Thread procOutput;
     private final OutputStreamWriter procInput = new OutputStreamWriter(proc.getOutputStream());
     
     /**
@@ -85,7 +74,7 @@ public class Player {
                 } else {
                     try {
                         this.onSongEnd();
-                    } catch (NonFatalException | FatalException ex) {
+                    } catch(NonFatalException | FatalException ex) {
                         this.writeLog(ex);
                     }
                 }
@@ -93,6 +82,22 @@ public class Player {
                 writeLog(new NonFatalException("FFPlay exit code listener was interrupted waiting for an exit code!", ie));
             }
         });
+        
+        procOutput = new Thread(() -> {
+            InputStream in = proc.getInputStream();
+            Scanner scan = new Scanner(new InputStreamReader(in));
+            //FFPlay doesn't output to stdout (this InputStream)
+            //FFPlay does output to stderr (this InputStream because error is redirected)
+            while((scan.hasNextLine() || playing || proc.isAlive()) && !procKill){
+                log.writeFFPlayLog(scan.next());
+            }   try {
+                Player.this.onSongEnd();
+            } catch (NonFatalException | FatalException ex) {
+                this.writeLog(ex);
+            }
+        });
+        
+        
     }
     
     public Player(boolean rep, boolean repOne){
@@ -197,8 +202,9 @@ public class Player {
     
     /**
      * Plays the next song in queue using {@link #playTrack(com.PiJukebox.Track) playTrack}.
+     * @throws FatalException propagated from {@link  #playTrack(com.PiJukebox.Track) playTrack}
      */
-    public void next() throws FatalException, NonFatalException{
+    public void next() throws FatalException{
         if(trackNum == 0){
             //As long as there is still a track in there, we'll play it.
             while(!queue.containsKey(trackNum) && trackNum <= queue.size()){
@@ -236,9 +242,11 @@ public class Player {
     
     /**
      * Plays the specified Track
-     * @param t 
+     * @param t the Track to play
+     * @throws com.PiJukebox.FatalException When FFPlay can't be started
      */
     public void playTrack(Track t) throws FatalException{
+        procKill = true;
         updateStatefulQueue();
         StringBuilder cmd = new StringBuilder();
         cmd.append("-nostats -autoexit -nodisp -vn -sn ");
@@ -302,11 +310,11 @@ public class Player {
             return;
         }
         playing = false;
+        procKill = true;
         try{
             procInput.write("q");
         } catch (IOException ex) {
             proc.destroy();
-            procKill = true;
             throw new NonFatalException("Could not stop FFPlay; Force-quit it", ex);
         }
         proc.destroy();
