@@ -23,23 +23,23 @@ public class AlbumServiceImpl implements IAlbumService {
 
     private final IAlbumRepository albumRepository;
     private final ISimpleAlbumRepository simpleAlbumRepository;
-    private final IGenreWithAlbumsRepository genreAlbumRepository;
-    private final IArtistWithAlbumsRepository artistAlbumRepository;
-    private final IAlbumWithTracksRepository albumTrackRepository;
+    private final IGenreWithAlbumsRepository genreWithAlbumsRepository;
+    private final IArtistWithAlbumsRepository artistWithAlbumsRepository;
+    private final IAlbumWithTracksRepository albumWithTracksRepository;
     private final ISimpleTrackRepository simpleTrackRepository;
     private final ISimpleArtistRepository simpleArtistRepository;
-    private final IAlbumWithArtistsRepository albumArtistRepository;
+    private final IAlbumWithArtistsRepository albumWithArtistsRepository;
 
     @Autowired
-    public AlbumServiceImpl(IAlbumRepository albumRepository, ISimpleAlbumRepository simpleAlbumRepository, IGenreWithAlbumsRepository genreAlbumRepository, IArtistWithAlbumsRepository artistAlbumRepository, IAlbumWithTracksRepository albumTrackRepository, ISimpleTrackRepository simpleTrackRepository, ISimpleArtistRepository simpleArtistRepository, IAlbumWithArtistsRepository albumArtistRepository) {
+    public AlbumServiceImpl(IAlbumRepository albumRepository, ISimpleAlbumRepository simpleAlbumRepository, IGenreWithAlbumsRepository genreWithAlbumsRepository, IArtistWithAlbumsRepository artistWithAlbumsRepository, IAlbumWithTracksRepository albumWithTracksRepository, ISimpleTrackRepository simpleTrackRepository, ISimpleArtistRepository simpleArtistRepository, IAlbumWithArtistsRepository albumWithArtistsRepository) {
         this.albumRepository = albumRepository;
         this.simpleAlbumRepository = simpleAlbumRepository;
-        this.genreAlbumRepository = genreAlbumRepository;
-        this.artistAlbumRepository = artistAlbumRepository;
-        this.albumTrackRepository = albumTrackRepository;
+        this.genreWithAlbumsRepository = genreWithAlbumsRepository;
+        this.artistWithAlbumsRepository = artistWithAlbumsRepository;
+        this.albumWithTracksRepository = albumWithTracksRepository;
         this.simpleTrackRepository = simpleTrackRepository;
         this.simpleArtistRepository = simpleArtistRepository;
-        this.albumArtistRepository = albumArtistRepository;
+        this.albumWithArtistsRepository = albumWithArtistsRepository;
     }
 
     @Override
@@ -74,12 +74,12 @@ public class AlbumServiceImpl implements IAlbumService {
 
     @Override
     public Optional<List<GenreWithAlbums>> findSimpleAlbumsByGenreName(String name) {
-        return genreAlbumRepository.findGenreAlbumsByNameContaining(name);
+        return genreWithAlbumsRepository.findGenreAlbumsByNameContaining(name);
     }
 
     @Override
     public Optional<List<ArtistWithAlbums>> findSimpleAlbumsByArtistName(String name) {
-        return artistAlbumRepository.findArtistAlbumsByNameContaining(name);
+        return artistWithAlbumsRepository.findArtistAlbumsByNameContaining(name);
     }
 
     @Override
@@ -89,12 +89,12 @@ public class AlbumServiceImpl implements IAlbumService {
 
     @Override
     public Optional<AlbumWithTracks> findTrackByAlbumId(Long id) {
-        return albumTrackRepository.findById(id);
+        return albumWithTracksRepository.findById(id);
     }
 
     @Override
     public AlbumWithTracks addTrackToAlbum(AlbumWithTracks track) {
-        return albumTrackRepository.save(track);
+        return albumWithTracksRepository.save(track);
     }
 
     @Override
@@ -104,11 +104,11 @@ public class AlbumServiceImpl implements IAlbumService {
 
     @Override
     public Optional<AlbumWithArtists> findArtistByAlbumId(Long id) {
-        return albumArtistRepository.findById(id);
+        return albumWithArtistsRepository.findById(id);
     }
 
     @Override
     public AlbumWithArtists addArtistToAlbum(AlbumWithArtists album) {
-        return albumArtistRepository.save(album);
+        return albumWithArtistsRepository.save(album);
     }
 }

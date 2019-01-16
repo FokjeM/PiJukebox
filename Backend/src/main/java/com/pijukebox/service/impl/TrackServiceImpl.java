@@ -20,18 +20,15 @@ import java.util.Optional;
 @Transactional
 public class TrackServiceImpl implements ITrackService {
     private final ITrackRepository trackRepository;
-    private final IArtistWithTracksRepository artistTrackRepository;
-    private final IGenreWithTracksRepository genreTrackRepository;
+    private final IArtistWithTracksRepository artistWithTracksRepository;
+    private final IGenreWithTracksRepository genreWithTracksRepository;
     private final ISimpleTrackRepository simpleTrackRepository;
 
     @Autowired
-    public TrackServiceImpl(ITrackRepository trackRepository,
-                            IArtistWithTracksRepository artistTrackRepository,
-                            IGenreWithTracksRepository genreTrackRepository,
-                            ISimpleTrackRepository simpleTrackRepository) {
+    public TrackServiceImpl(ITrackRepository trackRepository, IArtistWithTracksRepository artistWithTracksRepository, IGenreWithTracksRepository genreWithTracksRepository, ISimpleTrackRepository simpleTrackRepository) {
         this.trackRepository = trackRepository;
-        this.artistTrackRepository = artistTrackRepository;
-        this.genreTrackRepository = genreTrackRepository;
+        this.artistWithTracksRepository = artistWithTracksRepository;
+        this.genreWithTracksRepository = genreWithTracksRepository;
         this.simpleTrackRepository = simpleTrackRepository;
     }
 
@@ -67,12 +64,12 @@ public class TrackServiceImpl implements ITrackService {
 
     @Override
     public Optional<List<ArtistWithTracks>> findAllTracksByArtistName(String name) {
-        return artistTrackRepository.findArtistTracksByNameContaining(name);
+        return artistWithTracksRepository.findArtistTracksByNameContaining(name);
     }
 
     @Override
     public Optional<List<GenreWithTracks>> findAllTracksByGenreName(String name) {
-        return genreTrackRepository.findGenreTracksByNameContaining(name);
+        return genreWithTracksRepository.findGenreTracksByNameContaining(name);
     }
 
     @Override
@@ -82,22 +79,22 @@ public class TrackServiceImpl implements ITrackService {
 
     @Override
     public ArtistWithTracks addArtistToTrack(ArtistWithTracks artistWithTracks) {
-        return artistTrackRepository.save(artistWithTracks);
+        return artistWithTracksRepository.save(artistWithTracks);
     }
 
     @Override
     public GenreWithTracks addGenreToTrack(GenreWithTracks genreWithTracks) {
-        return genreTrackRepository.save(genreWithTracks);
+        return genreWithTracksRepository.save(genreWithTracks);
     }
 
     @Override
     public Optional<GenreWithTracks> findTrackByGenreId(Long id) {
-        return genreTrackRepository.findById(id);
+        return genreWithTracksRepository.findById(id);
     }
 
     @Override
     public Optional<ArtistWithTracks> findTrackByArtistId(Long id) {
-        return artistTrackRepository.findById(id);
+        return artistWithTracksRepository.findById(id);
     }
 
 }
