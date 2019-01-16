@@ -3,22 +3,17 @@ package com.pijukebox.controller;
 import com.pijukebox.model.user.User;
 import com.pijukebox.service.IUserService;
 import io.swagger.annotations.ApiOperation;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1")
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@Transactional
 public class UserController {
 
     private IUserService userService;
@@ -30,9 +25,9 @@ public class UserController {
 
     @GetMapping("/users")
     @ApiOperation(value = "Get all users in the application including their role.")
-    public List<User> users() {
+    public ResponseEntity<List<User>> users() {
         try {
-            return userService.findAll();
+            return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No users found", ex);
         }
@@ -40,12 +35,12 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     @ApiOperation(value = "Retrieve the currently logged in user.")
-    public Optional<User> users(@PathVariable Long id) {
+    public ResponseEntity<User> users(@PathVariable Long id) {
         try {
             if (!userService.findById(id).isPresent()) {
-                return Optional.empty();
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            return Optional.of(userService.findById(id).get());
+            return new ResponseEntity<>(userService.findById(id).get(), HttpStatus.OK);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with ID {id} Not Found", ex);
         }

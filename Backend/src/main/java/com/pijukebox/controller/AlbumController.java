@@ -1,6 +1,5 @@
 package com.pijukebox.controller;
 
-import com.pijukebox.model.album.Album;
 import com.pijukebox.model.simple.SimpleAlbum;
 import com.pijukebox.service.IAlbumService;
 import io.swagger.annotations.ApiOperation;

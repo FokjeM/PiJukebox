@@ -48,7 +48,6 @@ public class GenreController {
             }
             return new ResponseEntity<>(genreService.findById(id).get(), HttpStatus.OK);
         } catch (Exception ex) {
-            ex.printStackTrace();
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Genre with ID {id} Not Found", ex);
         }
     }
