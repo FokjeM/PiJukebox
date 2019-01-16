@@ -1,6 +1,7 @@
 package com.pijukebox.service;
 
 import com.pijukebox.model.album.Album;
+import com.pijukebox.model.genre.GenreAlbum;
 import com.pijukebox.model.simple.SimpleAlbum;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface IAlbumService {
     Optional<SimpleAlbum> findSimpleAlbumById(Long id);
 
     Optional<List<SimpleAlbum>> findSimpleAlbumsByNameContaining(String name);
+
+    Optional<List<GenreAlbum>> findSimpleAlbumsByGenreName(String name);
 }
