@@ -2,11 +2,13 @@ package com.pijukebox.service;
 
 import com.pijukebox.model.album.Album;
 import com.pijukebox.model.album.AlbumWithArtists;
+import com.pijukebox.model.album.AlbumWithGenres;
 import com.pijukebox.model.album.AlbumWithTracks;
 import com.pijukebox.model.artist.ArtistWithAlbums;
 import com.pijukebox.model.genre.GenreWithAlbums;
 import com.pijukebox.model.simple.SimpleAlbum;
 import com.pijukebox.model.simple.SimpleArtist;
+import com.pijukebox.model.simple.SimpleGenre;
 import com.pijukebox.model.simple.SimpleTrack;
 
 import java.util.List;
@@ -41,4 +43,10 @@ public interface IAlbumService {
     Optional<AlbumWithArtists> findArtistByAlbumId(Long id);
 
     AlbumWithArtists addArtistToAlbum(AlbumWithArtists album);
+
+    Optional<AlbumWithGenres> findGenreByAlbumId(Long id);
+
+    Optional<SimpleGenre> findGenreById(Long id);
+
+    AlbumWithGenres addGenreToAlbum(AlbumWithGenres album);
 }

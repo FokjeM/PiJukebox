@@ -2,11 +2,13 @@ package com.pijukebox.service.impl;
 
 import com.pijukebox.model.album.Album;
 import com.pijukebox.model.album.AlbumWithArtists;
+import com.pijukebox.model.album.AlbumWithGenres;
 import com.pijukebox.model.album.AlbumWithTracks;
 import com.pijukebox.model.artist.ArtistWithAlbums;
 import com.pijukebox.model.genre.GenreWithAlbums;
 import com.pijukebox.model.simple.SimpleAlbum;
 import com.pijukebox.model.simple.SimpleArtist;
+import com.pijukebox.model.simple.SimpleGenre;
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.repository.*;
 import com.pijukebox.service.IAlbumService;
@@ -28,10 +30,12 @@ public class AlbumServiceImpl implements IAlbumService {
     private final IAlbumWithTracksRepository albumWithTracksRepository;
     private final ISimpleTrackRepository simpleTrackRepository;
     private final ISimpleArtistRepository simpleArtistRepository;
+    private final ISimpleGenreRepository simpleGenreRepository;
     private final IAlbumWithArtistsRepository albumWithArtistsRepository;
+    private final IAlbumWithGenreRepository albumWithGenreRepository;
 
     @Autowired
-    public AlbumServiceImpl(IAlbumRepository albumRepository, ISimpleAlbumRepository simpleAlbumRepository, IGenreWithAlbumsRepository genreWithAlbumsRepository, IArtistWithAlbumsRepository artistWithAlbumsRepository, IAlbumWithTracksRepository albumWithTracksRepository, ISimpleTrackRepository simpleTrackRepository, ISimpleArtistRepository simpleArtistRepository, IAlbumWithArtistsRepository albumWithArtistsRepository) {
+    public AlbumServiceImpl(IAlbumRepository albumRepository, ISimpleAlbumRepository simpleAlbumRepository, IGenreWithAlbumsRepository genreWithAlbumsRepository, IArtistWithAlbumsRepository artistWithAlbumsRepository, IAlbumWithTracksRepository albumWithTracksRepository, ISimpleTrackRepository simpleTrackRepository, ISimpleArtistRepository simpleArtistRepository, ISimpleGenreRepository simpleGenreRepository, IAlbumWithArtistsRepository albumWithArtistsRepository, IAlbumWithGenreRepository albumWithGenreRepository) {
         this.albumRepository = albumRepository;
         this.simpleAlbumRepository = simpleAlbumRepository;
         this.genreWithAlbumsRepository = genreWithAlbumsRepository;
@@ -39,7 +43,9 @@ public class AlbumServiceImpl implements IAlbumService {
         this.albumWithTracksRepository = albumWithTracksRepository;
         this.simpleTrackRepository = simpleTrackRepository;
         this.simpleArtistRepository = simpleArtistRepository;
+        this.simpleGenreRepository = simpleGenreRepository;
         this.albumWithArtistsRepository = albumWithArtistsRepository;
+        this.albumWithGenreRepository = albumWithGenreRepository;
     }
 
     @Override
@@ -110,5 +116,20 @@ public class AlbumServiceImpl implements IAlbumService {
     @Override
     public AlbumWithArtists addArtistToAlbum(AlbumWithArtists album) {
         return albumWithArtistsRepository.save(album);
+    }
+
+    @Override
+    public Optional<AlbumWithGenres> findGenreByAlbumId(Long id) {
+        return albumWithGenreRepository.findById(id);
+    }
+
+    @Override
+    public Optional<SimpleGenre> findGenreById(Long id) {
+        return simpleGenreRepository.findById(id);
+    }
+
+    @Override
+    public AlbumWithGenres addGenreToAlbum(AlbumWithGenres album) {
+        return albumWithGenreRepository.save(album);
     }
 }

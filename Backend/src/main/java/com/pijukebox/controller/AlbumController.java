@@ -2,11 +2,13 @@ package com.pijukebox.controller;
 
 import com.pijukebox.model.album.Album;
 import com.pijukebox.model.album.AlbumWithArtists;
+import com.pijukebox.model.album.AlbumWithGenres;
 import com.pijukebox.model.album.AlbumWithTracks;
 import com.pijukebox.model.artist.ArtistWithAlbums;
 import com.pijukebox.model.genre.GenreWithAlbums;
 import com.pijukebox.model.simple.SimpleAlbum;
 import com.pijukebox.model.simple.SimpleArtist;
+import com.pijukebox.model.simple.SimpleGenre;
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.service.IAlbumService;
 import io.swagger.annotations.ApiOperation;
@@ -177,6 +179,35 @@ public class AlbumController {
             }
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Album with ID %s or/and Artist with ID %s  Not Found", albumId, artistId), ex);
+        }
+    }
+
+    @PostMapping("/extended/albums/{albumId}/genres/{genreId}")
+    @ApiOperation(value = "Add a new track to an existing album")
+    public ResponseEntity<AlbumWithGenres> addGenreToAlbum(@PathVariable Long albumId, @PathVariable Long genreId) {
+        try {
+            if (!albumService.findGenreByAlbumId(albumId).isPresent()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            if (!albumService.findGenreById(genreId).isPresent()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            AlbumWithGenres album = albumService.findGenreByAlbumId(albumId).get();
+            boolean ArtistExistsInAlbum = false;
+            for (SimpleGenre simpleGenre : album.getGenres()) {
+                if (simpleGenre.getId().equals(genreId)) {
+                    ArtistExistsInAlbum = true;
+                }
+            }
+            if (!ArtistExistsInAlbum) {
+                album.getGenres().add(albumService.findGenreById(genreId).get());
+                return new ResponseEntity<>(albumService.addGenreToAlbum(album), HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Album with ID %s or/and Genre with ID %s  Not Found", albumId, genreId), ex);
         }
     }
 }
