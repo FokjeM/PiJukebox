@@ -1,6 +1,6 @@
 package com.pijukebox.controller;
 
-import com.pijukebox.model.Genre;
+import com.pijukebox.model.simple.SimpleGenre;
 import com.pijukebox.service.IGenreService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class GenreController {
 
     @GetMapping("/genres")
     @ApiOperation(value = "Get all information pertaining to an genre via its name")
-    public ResponseEntity<List<Genre>> genres(@RequestParam(name = "name", required = false) String name) {
+    public ResponseEntity<List<SimpleGenre>> genres(@RequestParam(name = "name", required = false) String name) {
         try {
             if (name != null && !name.isEmpty()) {
                 if (!genreService.findGenresByNameContaining(name).isPresent()) {
@@ -41,7 +41,7 @@ public class GenreController {
 
     @GetMapping("/genres/{id}")
     @ApiOperation(value = "Get all information pertaining to an genre via its ID")
-    public ResponseEntity<Genre> genreDetails(@PathVariable Long id) {
+    public ResponseEntity<SimpleGenre> genreDetails(@PathVariable Long id) {
         try {
             if (!genreService.findById(id).isPresent()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);

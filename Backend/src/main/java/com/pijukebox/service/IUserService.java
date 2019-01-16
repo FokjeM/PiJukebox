@@ -1,6 +1,6 @@
 package com.pijukebox.service;
 
-import com.pijukebox.model.User;
+import com.pijukebox.model.user.User;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,25 +1,28 @@
 package com.pijukebox.model.simple;
 
-import lombok.AccessLevel;
+import com.pijukebox.model.SqlElement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(schema = "pijukebox", name = "artist")
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class SimpleArtist implements Serializable {
+public class SimpleArtist extends SqlElement implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
+    @NotNull
+    @Column(name = "name", nullable = false)
     private String name;
 }
