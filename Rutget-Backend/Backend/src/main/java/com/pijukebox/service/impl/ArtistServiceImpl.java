@@ -37,9 +37,4 @@ public class ArtistServiceImpl implements IArtistService {
     public Optional<List<SimpleArtist>> findByName(String name) {
         return artistRepository.findArtistsByNameContaining(name);
     }
-
-    @Override
-    public Optional<ArtistTrack> findTracksByArtistId(Long id) {
-        return Optional.empty();
-    }
 }

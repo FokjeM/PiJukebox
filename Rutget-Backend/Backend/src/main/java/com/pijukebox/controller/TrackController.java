@@ -24,12 +24,10 @@ import java.util.Optional;
 public class TrackController {
 
     private final ITrackService trackService;
-    private final IGenreService genreService;
 
     @Autowired
-    public TrackController(ITrackService trackService, IGenreService genreService) {
+    public TrackController(ITrackService trackService) {
         this.trackService = trackService;
-        this.genreService = genreService;
     }
 
     @GetMapping("/simple/tracks")
