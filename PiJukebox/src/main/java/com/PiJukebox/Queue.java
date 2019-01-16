@@ -326,6 +326,14 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
         return coll;
     }
     
+    /**
+     * Get all of the String FILEPATHS for this Queue
+     * 
+     * These are created by the {@link java.nio.file.Path Path} implemented in
+     * this {@link java.nio.file.FileSystems#getDefault() FileSystems.getDefault()}
+     * {@link java.nio.file.FileSystem#getPath(java.lang.String, java.lang.String...) getPath()} method
+     * @return a {@link java.util.List} List of FILEPATHS.
+     */
     public Collection<String> valueStrings() {
         ArrayList<String> coll = new ArrayList<>();
         int index = 0;

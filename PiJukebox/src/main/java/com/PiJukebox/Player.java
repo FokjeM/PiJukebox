@@ -8,7 +8,6 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -25,8 +24,12 @@ import java.util.Scanner;
  */
 
 public class Player {
+    /**
+     * The QUEUE_FILE "stateful_queue.out" which should be located in the same
+     * directory as this class or its corresponding jar/war file
+     */
+    private final static Path QUEUE_FILE = FileSystems.getDefault().getPath("stateful_queue.out");
     
-    private final static Path QUEUEFILE = FileSystems.getDefault().getPath("stateful_queue.out");
     private final Queue queue;
     private List statefulQueue;
     public ErrorLogger log;
@@ -37,22 +40,7 @@ public class Player {
     private Process proc;
     private boolean procKill;
     private boolean playing = false;
-    private final Thread procExitCode = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            int exitCode;
-            try {
-                exitCode= proc.waitFor();
-                if(exitCode != 0){
-                    writeLog(new NonFatalException("FFPlay returned a non-zero exit code!", new IOException()));
-                } else {
-                    
-                }
-            } catch(InterruptedException ie) {
-                writeLog(new NonFatalException("FFPlay exit code listener was interrupted waiting for an exit code!", ie));
-            }
-        }
-    });
+    private final Thread procExitCode;
     private final Thread procOutput = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -86,12 +74,25 @@ public class Player {
         } else {
             updateStatefulQueue();
         }
-        if(rep) {
-            this.repeat = rep;
-            if(repOne) {
-                this.repeatOne = repOne;
+        this.repeat = rep;
+        this.repeatOne = repOne;
+        procExitCode = new Thread(() -> {
+            int exitCode;
+            try {
+                exitCode= proc.waitFor();
+                if(exitCode != 0){
+                    writeLog(new NonFatalException("FFPlay returned a non-zero exit code!", new IOException()));
+                } else {
+                    try {
+                        this.onSongEnd();
+                    } catch (NonFatalException | FatalException ex) {
+                        this.writeLog(ex);
+                    }
+                }
+            } catch(InterruptedException ie) {
+                writeLog(new NonFatalException("FFPlay exit code listener was interrupted waiting for an exit code!", ie));
             }
-        }
+        });
     }
     
     public Player(boolean rep, boolean repOne){
@@ -122,12 +123,12 @@ public class Player {
     }
     
     /**
-     * Checks whether or not the QUEUEFILE exists so the stateful queue can be
-     * restored in this iteration of the application.
+     * Checks whether or not the QUEUE_FILE exists so the stateful queue can be
+ restored in this iteration of the application.
      * @return 
      */
     private boolean checkQueueFile() {
-        return Files.exists(QUEUEFILE);
+        return Files.exists(QUEUE_FILE);
     }
     
     /**
@@ -145,14 +146,12 @@ public class Player {
             //already exists *will* throw an IOException.
             //However, the file might have been removed during runtime.
             if(!checkQueueFile()) {
-                Files.write(QUEUEFILE, new byte[0], StandardOpenOption.CREATE);
+                Files.write(QUEUE_FILE, new byte[0], StandardOpenOption.CREATE);
             }
             //Save current track number
-            List<String> trackString = new ArrayList<>();
-            trackString.add(Integer.toString(trackNum));
+            statefulQueue.add(0, Integer.toString(trackNum));
             //WRITE without saving previous data.
-            Files.write(QUEUEFILE, trackString, StandardOpenOption.WRITE);
-            Files.write(QUEUEFILE, statefulQueue, StandardOpenOption.APPEND);
+            Files.write(QUEUE_FILE, statefulQueue, StandardOpenOption.WRITE);
             return true;
         } catch (IOException ex) {
             writeLog(new NonFatalException("Could not save the Stateful Queue to file.", ex));
@@ -162,15 +161,18 @@ public class Player {
     }
     
     /**
-     * Restores the stateful queue, assuming the file specified in QUEUEFILE
-     * exists. Please only call this function after calling {@link #checkQueueFile() checkQueueFile}
+     * Restores the stateful queue, assuming the file specified in QUEUE_FILE
+ exists. Please only call this function after calling {@link #checkQueueFile() checkQueueFile}
      */
     private void restoreQueue() {
         try {
-            List<String> qf = Files.readAllLines(QUEUEFILE);
-            trackNum = Integer.parse(qf.remove(0));
+            List<String> qf = Files.readAllLines(QUEUE_FILE);
+            //Sets trackNum to the previous state and shifts the tracks back up.
+            trackNum = Integer.parseInt(qf.remove(0));
+            //Restores the queue
             queue.putAll(new Queue(qf));
         } catch (IOException ex) {
+            //Immediately handle the the exception so we don't have to throw stuff
             writeLog(new NonFatalException("Queuefile exists, but access was not granted. Will continue as if the queuefile didn't exist", ex));
         }
         this.statefulQueue = (List) this.queue.valueStrings();
@@ -196,25 +198,40 @@ public class Player {
     /**
      * Plays the next song in queue using {@link #playTrack(com.PiJukebox.Track) playTrack}.
      */
-    public void next() throws FatalException{
-        if(currentTrack == null || trackNum == 0){
+    public void next() throws FatalException, NonFatalException{
+        if(trackNum == 0){
             //As long as there is still a track in there, we'll play it.
             while(!queue.containsKey(trackNum) && trackNum <= queue.size()){
                 trackNum++;
             }
         } else {
             //If this was the last Track in the Queue
-            if(!queue.containsKey(trackNum++)){
+            //pre-increment. Forces the JVM to increment before anything else
+            if(!queue.containsKey(++trackNum) && repeat){
                 //Go back to 0
                 trackNum = 0;
-                //And prevent accidentally causing errors or playing null
+                //And prevent causing errors, playing null or duplicating code
                 next();
                 //Also, prevent calling playTrack twice
+                return;
+            } else {
+                trackNum = 0;
+                queue.clear();
+                updateStatefulQueue();
                 return;
             }
         }
         currentTrack = queue.get(trackNum);
         playTrack(currentTrack);
+    }
+    
+    public void previous() throws FatalException {
+        if(trackNum > 0) {
+            //pre-decrement. Forces the JVM to decrement before doing anything else
+            currentTrack = queue.get(--trackNum);
+            updateStatefulQueue();
+            playTrack(currentTrack);
+        }
     }
     
     /**
@@ -293,5 +310,13 @@ public class Player {
             throw new NonFatalException("Could not stop FFPlay; Force-quit it", ex);
         }
         proc.destroy();
+    }
+    
+    protected void onSongEnd() throws FatalException, NonFatalException{
+        if(repeatOne){
+            this.playTrack(currentTrack);
+        } else {
+            next();
+        }
     }
 }
