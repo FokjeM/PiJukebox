@@ -11,8 +11,31 @@ class ResultRowTrack extends PolymerElement {
         .track-info {
           display: flex;
         }
+
+        .artist {
+          display: flex;
+        }
+
+        .artist:not(:last-of-type)::after {
+          content: ", ";
+          position: relative;
+          display: block;
+          right: 0;
+          width: 10px;
+        }
+        
       </style>
 
+      <iron-ajax
+        id="addToQueue"
+        method="post"
+        url="http://localhost:8080/api/v1/queue/add"
+        body='[{"trackId": [[trackId]]}]'
+        content-type="application/json"
+        handle-as="json"
+        on-response="handleQueueResponse">
+      </iron-ajax>
+      
       <div>
         <div class="track-info">
           <paper-icon-button icon="av:queue" on-click="addToQueue"></paper-icon-button>
@@ -21,47 +44,35 @@ class ResultRowTrack extends PolymerElement {
           
             <template is="dom-if" if="[[!excludeArtist]]">
               <div style="margin:0 10px;"> - </div>
-              <div>[[trackArtist]]</div>
+              <template is="dom-repeat" items="{{trackArtist}}" as="artist" rendered-item-count="{{artistCount}}">
+                <div class="artist">
+                  {{artist.name}}
+                </div>
+              </template>
             </template>
 
+            <template is="dom-if" if="{{!artistCount}}">
+              No Artists.
+            </template>
+            
           </div>  
         </div>
       </div>
 
-      <iron-ajax
-        id="addToQueue"
-        method="post"
-        url="http://localhost:8000/queue/add"
-        body='[{"trackId": [[trackId]]}]'
-        content-type="application/json"
-        handle-as="json"
-        on-response="handleQueueResponse">
-      </iron-ajax>
-
     `;
   }
-  
+
   addToQueue(e){
     this.shadowRoot.getElementById('addToQueue').generateRequest();
   }
 
   handleQueueResponse(e,r){
     if(r.status == 200){
-      this.throwEvent('open-dialog-event', {title: 'Queue', text: this.trackName + ' has been added to the queue.'});
+      this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: this.trackName + ' has been added to the queue.'}, bubbles: true,composed: true, }));
     }
     else{
-      this.throwEvent('open-dialog-event', {title: 'Queue', text: 'Something went wrong.'});
+      this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true, }));
     }
-  }
-
-  throwEvent(name, detail){
-    this.dispatchEvent(new CustomEvent(name, 
-      { 
-          detail: detail, 
-          bubbles: true,
-          composed: true, 
-      }
-    ));
   }
 
   static get properties() {
@@ -73,7 +84,7 @@ class ResultRowTrack extends PolymerElement {
         type: String
       },
       trackArtist: {
-        type: String
+        type: Object
       },
       excludeArtist:{
         type: Boolean,

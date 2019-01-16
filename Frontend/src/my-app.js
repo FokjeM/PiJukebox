@@ -25,10 +25,10 @@ import '@polymer/paper-dialog/paper-dialog.js';
 
 import './my-icons.js';
 
-import './elements/current-track.js';
 import './elements/track-control.js';
-import './elements/volume-control.js';
 import './elements/dialog-element.js';
+
+import './elements/get-token.js';
 
 
 // Gesture events like tap and track generated from touch will not be
@@ -44,9 +44,12 @@ class MyApp extends PolymerElement {
     return html`
       <style>
         :host {
-          --app-primary-color: #4285f4;
-          --app-secondary-color: black;
-
+          --app-primary-color: #00796B;
+          --app-primary-color-light: #b2dfdb;
+          --app-secondary-color: #757575;
+          --paper-slider-knob-color: var(--app-primary-color);
+          --paper-slider-active-color: var(--app-primary-color);
+          color:var(--app-primary-color);
           display: block;
         }
 
@@ -79,6 +82,7 @@ class MyApp extends PolymerElement {
           color: black;
           font-weight: bold;
         }
+        
       </style>
 
       <app-location route="{{route}}" url-space-regex="^[[rootPath]]">
@@ -96,6 +100,7 @@ class MyApp extends PolymerElement {
             <a name="playlists" href="[[rootPath]]playlists">Playlists</a>
             <a name="playlist" href="[[rootPath]]playlist">Single Playlist</a>
             <a name="queue" href="[[rootPath]]queue">Queue</a>
+            <a name="login" href="[[rootPath]]login">Login</a>
             <a name="search" href="[[rootPath]]search">Search</a>
           </iron-selector>
         </app-drawer>
@@ -118,22 +123,24 @@ class MyApp extends PolymerElement {
             <single-artist name="artist"></single-artist>
             <single-album name="album"></single-album>
             <search-tracks name="search"></search-tracks>
+            <my-login name="login"></my-login>
             <my-view404 name="view404"></my-view404>
           </iron-pages>
 
           <dialog-element id="mainDialog">
           </dialog-element>
 
-          <current-track
-            track-id="1"
-            track-name="The current track"
-            track-artist="Artist of the track">
-          </current-track>
-          <track-control></track-control>
-          <volume-control></volume-control>
+          <template is="dom-if" if="[[!isLogin(page)]]">
+            <track-control></track-control>
+          </template>
+
         </app-header-layout>
       </app-drawer-layout>
     `;
+  }
+
+  isLogin(page){
+    return page == 'login';
   }
 
   ready(){
@@ -173,11 +180,17 @@ class MyApp extends PolymerElement {
      //
      // If no page was found in the route data, page will be an empty string.
      // Show 'tracks' in that case. And if the page doesn't exist, show 'view404'.
-    if (!page) {
+    var token = localStorage.getItem('token');
+    if(token == null){
+      this.page = 'login';
+    }
+    else if (!page) {
       this.page = 'tracks';
-    } else if (['tracks', 'playlists', 'playlist', 'queue', 'search', 'artist', 'album'].indexOf(page) !== -1) {
+    } 
+    else if (['tracks', 'playlists', 'playlist', 'queue', 'search', 'artist', 'album', 'login'].indexOf(page) !== -1) {
       this.page = page;
-    } else {
+    } 
+    else {
       this.page = 'view404';
     }
 
@@ -212,6 +225,9 @@ class MyApp extends PolymerElement {
         break;    
       case 'search':
         import('./search-tracks.js');
+        break;  
+      case 'login':
+        import('./my-login.js');
         break;  
       case 'view404':
         import('./my-view404.js');
