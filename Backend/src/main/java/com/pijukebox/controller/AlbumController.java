@@ -54,7 +54,7 @@ public class AlbumController {
             }
             return null;
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Albums with a genre name %s Not Found", name), ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Albums with genre name %s Not Found", name), ex);
         }
     }
 
@@ -70,7 +70,7 @@ public class AlbumController {
             }
             return null;
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Albums with an artist name %s Not Found", name), ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Albums with artist name %s Not Found", name), ex);
         }
     }
 
