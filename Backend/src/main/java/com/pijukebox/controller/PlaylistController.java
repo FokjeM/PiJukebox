@@ -52,9 +52,9 @@ public class PlaylistController {
 
     @PostMapping("/playlists")
     @ApiOperation(value = "Create a new empty Playlist")
-    public SimplePlaylist addSimplePlaylist(@RequestBody SimplePlaylist simplePlaylist) {
+    public ResponseEntity<SimplePlaylist> addSimplePlaylist(@RequestBody SimplePlaylist simplePlaylist) {
         try {
-            return playlistService.addNewPlaylist(simplePlaylist);
+            return new ResponseEntity<>(playlistService.addNewPlaylist(simplePlaylist), HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Playlist not created", ex);
