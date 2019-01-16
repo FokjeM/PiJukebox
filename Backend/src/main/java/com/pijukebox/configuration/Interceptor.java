@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 public class Interceptor extends HandlerInterceptorAdapter {
     private static Logger log = LoggerFactory.getLogger(Interceptor.class);
 
-
     private IUserService userService;
 
     @Autowired
@@ -26,18 +25,25 @@ public class Interceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request,HttpServletResponse response, Object handler) throws Exception
     {
-        //Check if token exists
-        String token = request.getHeader("Authorization");
-        User user = userService.findByToken(token).get();
-        if(user == null){
+        try{
+            //Check if token exists
+            String token = request.getHeader("Authorization");
+            User user = userService.findByToken(token).get();
+            if(user == null){
+                response.setStatus(403);
+                return false;
+            }
+            else{
+                //Add user?
+                //https://stackoverflow.com/questions/3806255/spring-web-mvc-pass-an-object-from-handler-interceptor-to-controller
+                return true;
+            }
+        }
+        catch (Exception e) {
             response.setStatus(403);
             return false;
         }
-        else{
-            //Add user?
-            //https://stackoverflow.com/questions/3806255/spring-web-mvc-pass-an-object-from-handler-interceptor-to-controller
-            return true;
-        }
+
     }
 }
 

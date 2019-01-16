@@ -25,10 +25,14 @@ class CurrentTrack extends PolymerElement {
 
       <iron-ajax
         auto
-        url="http://localhost:8080/api/v1/laptops/1/"
+        method="post"
+        url="localhost:8080/api/v1/player/current"
         handle-as="json"
+        headers="{Authorization: [[token]]}"
         last-response="{{currentTrack}}">
       </iron-ajax>
+
+      <get-token token="{{token}}"></get-token>
 
       <div class="container">
         
@@ -40,6 +44,16 @@ class CurrentTrack extends PolymerElement {
       </div>
     `;
   }
+  // static get properties() {
+  //   return {
+  //     trackName: {
+  //       type: String,
+  //     },
+  //     trackArtist: {
+  //       type: String,
+  //     }
+  //   };
+  // }
 
 }
 
