@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface IArtistTrackRepository extends JpaRepository<ArtistWithTracks, Long> {
+public interface IArtistWithTracksRepository extends JpaRepository<ArtistWithTracks, Long> {
     List<ArtistWithTracks> findAll();
 
     Optional<ArtistWithTracks> findById(Long id);

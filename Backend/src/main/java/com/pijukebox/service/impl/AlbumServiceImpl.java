@@ -23,15 +23,15 @@ public class AlbumServiceImpl implements IAlbumService {
 
     private final IAlbumRepository albumRepository;
     private final ISimpleAlbumRepository simpleAlbumRepository;
-    private final IGenreAlbumRepository genreAlbumRepository;
-    private final IArtistAlbumRepository artistAlbumRepository;
-    private final IAlbumTrackRepository albumTrackRepository;
+    private final IGenreWithAlbumsRepository genreAlbumRepository;
+    private final IArtistWithAlbumsRepository artistAlbumRepository;
+    private final IAlbumWithTracksRepository albumTrackRepository;
     private final ISimpleTrackRepository simpleTrackRepository;
     private final ISimpleArtistRepository simpleArtistRepository;
-    private final IAlbumArtistRepository albumArtistRepository;
+    private final IAlbumWithArtistsRepository albumArtistRepository;
 
     @Autowired
-    public AlbumServiceImpl(IAlbumRepository albumRepository, ISimpleAlbumRepository simpleAlbumRepository, IGenreAlbumRepository genreAlbumRepository, IArtistAlbumRepository artistAlbumRepository, IAlbumTrackRepository albumTrackRepository, ISimpleTrackRepository simpleTrackRepository, ISimpleArtistRepository simpleArtistRepository, IAlbumArtistRepository albumArtistRepository) {
+    public AlbumServiceImpl(IAlbumRepository albumRepository, ISimpleAlbumRepository simpleAlbumRepository, IGenreWithAlbumsRepository genreAlbumRepository, IArtistWithAlbumsRepository artistAlbumRepository, IAlbumWithTracksRepository albumTrackRepository, ISimpleTrackRepository simpleTrackRepository, ISimpleArtistRepository simpleArtistRepository, IAlbumWithArtistsRepository albumArtistRepository) {
         this.albumRepository = albumRepository;
         this.simpleAlbumRepository = simpleAlbumRepository;
         this.genreAlbumRepository = genreAlbumRepository;

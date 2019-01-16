@@ -4,8 +4,8 @@ import com.pijukebox.model.artist.ArtistWithTracks;
 import com.pijukebox.model.genre.GenreWithTracks;
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.model.track.Track;
-import com.pijukebox.repository.IArtistTrackRepository;
-import com.pijukebox.repository.IGenreTrackRepository;
+import com.pijukebox.repository.IArtistWithTracksRepository;
+import com.pijukebox.repository.IGenreWithTracksRepository;
 import com.pijukebox.repository.ISimpleTrackRepository;
 import com.pijukebox.repository.ITrackRepository;
 import com.pijukebox.service.ITrackService;
@@ -20,14 +20,14 @@ import java.util.Optional;
 @Transactional
 public class TrackServiceImpl implements ITrackService {
     private final ITrackRepository trackRepository;
-    private final IArtistTrackRepository artistTrackRepository;
-    private final IGenreTrackRepository genreTrackRepository;
+    private final IArtistWithTracksRepository artistTrackRepository;
+    private final IGenreWithTracksRepository genreTrackRepository;
     private final ISimpleTrackRepository simpleTrackRepository;
 
     @Autowired
     public TrackServiceImpl(ITrackRepository trackRepository,
-                            IArtistTrackRepository artistTrackRepository,
-                            IGenreTrackRepository genreTrackRepository,
+                            IArtistWithTracksRepository artistTrackRepository,
+                            IGenreWithTracksRepository genreTrackRepository,
                             ISimpleTrackRepository simpleTrackRepository) {
         this.trackRepository = trackRepository;
         this.artistTrackRepository = artistTrackRepository;

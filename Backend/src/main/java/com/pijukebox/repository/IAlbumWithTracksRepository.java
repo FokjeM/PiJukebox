@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface IAlbumTrackRepository extends JpaRepository<AlbumWithTracks, Long> {
+public interface IAlbumWithTracksRepository extends JpaRepository<AlbumWithTracks, Long> {
 
     List<AlbumWithTracks> findAll();
 
