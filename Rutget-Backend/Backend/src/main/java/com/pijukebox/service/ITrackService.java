@@ -28,4 +28,11 @@ public interface ITrackService {
 
     SimpleTrack addSimpleTrack(SimpleTrack simpleTrack);
 
+    ArtistTrack addArtistToTrack(ArtistTrack artistTrack);
+
+    GenreTrack addGenreToTrack(GenreTrack genreTrack);
+
+    Optional<GenreTrack> findTrackByGenreId(Long id);
+
+    Optional<ArtistTrack> findTrackByArtistId(Long id);
 }

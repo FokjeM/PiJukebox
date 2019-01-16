@@ -13,4 +13,6 @@ public interface IArtistRepository extends JpaRepository<SimpleArtist, Long> {
     List<SimpleArtist> findAll();
 
     Optional<SimpleArtist> findById(Long id);
+
+    Optional<List<SimpleArtist>> findArtistsByNameContaining(String name);
 }

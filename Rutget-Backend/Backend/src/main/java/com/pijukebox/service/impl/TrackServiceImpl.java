@@ -80,4 +80,24 @@ public class TrackServiceImpl implements ITrackService {
         return simpleTrackRepository.save(simpleTrack);
     }
 
+    @Override
+    public ArtistTrack addArtistToTrack(ArtistTrack artistTrack) {
+        return artistTrackRepository.save(artistTrack);
+    }
+
+    @Override
+    public GenreTrack addGenreToTrack(GenreTrack genreTrack) {
+        return genreTrackRepository.save(genreTrack);
+    }
+
+    @Override
+    public Optional<GenreTrack> findTrackByGenreId(Long id) {
+        return genreTrackRepository.findById(id);
+    }
+
+    @Override
+    public Optional<ArtistTrack> findTrackByArtistId(Long id) {
+        return artistTrackRepository.findById(id);
+    }
+
 }
