@@ -1,20 +1,38 @@
 package com.pijukebox.service;
 
-import com.pijukebox.model.Album;
-import com.pijukebox.model.Genre;
-import com.pijukebox.model.Track;
+import com.pijukebox.model.artist.ArtistTrack;
+import com.pijukebox.model.genre.GenreTrack;
+import com.pijukebox.model.simple.SimpleTrack;
+import com.pijukebox.model.track.Track;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ITrackService {
 
-    List<Track> findAll();
+    List<Track> findAllTracksWithDetails();
 
-    List<Track> findAll(Long limit);
+    Optional<Track> findTrackDetailsById(Long id);
 
-    Track findById(Long id);
+    Optional<List<SimpleTrack>> findAllSimpleTrack();
 
-    List<Album> findAlbums();
+    Optional<SimpleTrack> findSimpleTrackById(Long id);
 
-    List<Genre> findGenres();
+    Optional<List<SimpleTrack>> findAllSimpleTrackByName(String name);
+
+    Optional<List<Track>> findAllTrackByName(String name);
+
+    Optional<List<ArtistTrack>> findAllTracksByArtistName(String name);
+
+    Optional<List<GenreTrack>> findAllTracksByGenreName(String name);
+
+    SimpleTrack addSimpleTrack(SimpleTrack simpleTrack);
+
+    ArtistTrack addArtistToTrack(ArtistTrack artistTrack);
+
+    GenreTrack addGenreToTrack(GenreTrack genreTrack);
+
+    Optional<GenreTrack> findTrackByGenreId(Long id);
+
+    Optional<ArtistTrack> findTrackByArtistId(Long id);
 }

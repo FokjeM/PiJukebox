@@ -1,11 +1,14 @@
 package com.pijukebox.service;
 
-import com.pijukebox.model.Genre;
+import com.pijukebox.model.simple.SimpleGenre;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IGenreService {
-    List<Genre> findAll();
+    List<SimpleGenre> findAll();
 
-    Genre findByName(String name);
+    Optional<SimpleGenre> findById(Long id);
+
+    Optional<List<SimpleGenre>> findGenresByNameContaining(String name);
 }

@@ -1,11 +1,9 @@
 package com.pijukebox.repository;
 
-import com.pijukebox.model.Playlist;
-import com.pijukebox.model.Track;
+import com.pijukebox.model.playlist.Playlist;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.Map;
-
-public interface IPlaylistRepository {
-
-    Map<Playlist, Track> getAllPlaylistTracks(Long id);
+@Repository
+public interface IPlaylistRepository extends JpaRepository<Playlist, Long> {
 }

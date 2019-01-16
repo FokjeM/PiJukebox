@@ -1,6 +1,6 @@
 package com.pijukebox.service;
 
-import com.pijukebox.model.Playlist;
+import com.pijukebox.model.playlist.Playlist;
 
 import java.util.List;
 

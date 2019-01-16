@@ -1,20 +1,18 @@
 package com.pijukebox.service.impl;
 
-import com.pijukebox.model.Album;
-import com.pijukebox.model.Genre;
-import com.pijukebox.model.SimpleAlbum;
+import com.pijukebox.model.album.Album;
 import com.pijukebox.repository.IAlbumRepository;
 import com.pijukebox.service.IAlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class AlbumServiceImpl implements IAlbumService {
-
 
     private final IAlbumRepository albumRepository;
 
@@ -24,19 +22,17 @@ public class AlbumServiceImpl implements IAlbumService {
     }
 
     @Override
-    public List<SimpleAlbum> findAll() {
+    public List<Album> findAll() {
         return albumRepository.findAll();
     }
 
     @Override
-    public SimpleAlbum findById(Long id) {
-        return albumRepository.findById(id).get();
+    public Optional<Album> findById(Long id) {
+        return albumRepository.findById(id);
     }
-
 
     @Override
-    public List<Album> findAlbumsDetails() {
-        return albumRepository.getAlbumsDetails();
+    public Optional<List<Album>> findAlbumsByNameContaining(String name) {
+        return albumRepository.findAlbumsByNameContaining(name);
     }
-
 }

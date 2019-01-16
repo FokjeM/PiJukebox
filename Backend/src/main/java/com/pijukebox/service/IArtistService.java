@@ -1,14 +1,15 @@
 package com.pijukebox.service;
 
-import com.pijukebox.model.Artist;
+import com.pijukebox.model.simple.SimpleArtist;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IArtistService {
 
-    List<Artist> findAll();
+    List<SimpleArtist> findAll();
 
-    List<Artist> findMany(Long amount);
+    Optional<SimpleArtist> findById(Long id);
 
-    Artist findByName(String name);
+    Optional<List<SimpleArtist>> findByName(String name);
 }

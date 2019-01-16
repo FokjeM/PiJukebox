@@ -1,14 +1,15 @@
 package com.pijukebox.service;
 
-import com.pijukebox.model.Album;
-import com.pijukebox.model.SimpleAlbum;
+import com.pijukebox.model.album.Album;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IAlbumService {
-    List<SimpleAlbum> findAll();
 
-    SimpleAlbum findById(Long id);
+    List<Album> findAll();
 
-    List<Album> findAlbumsDetails();
+    Optional<Album> findById(Long id);
+
+    Optional<List<Album>> findAlbumsByNameContaining(String name);
 }

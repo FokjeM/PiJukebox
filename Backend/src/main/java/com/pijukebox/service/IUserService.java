@@ -1,14 +1,14 @@
 package com.pijukebox.service;
 
-import com.pijukebox.model.User;
-import com.pijukebox.model.Role;
+import com.pijukebox.model.user.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IUserService {
     List<User> findAll();
 
-    List<User> findByRole(Role role);
+    User findByName(String firstname, String lastname);
 
-    User findById(Long id);
+    Optional<User> findById(Long id);
 }

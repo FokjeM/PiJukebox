@@ -1,14 +1,18 @@
 package com.pijukebox.repository;
 
 
-import com.pijukebox.model.Artist;
+import com.pijukebox.model.simple.SimpleArtist;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface IArtistRepository {
-    List<Artist> findAll();
+@Repository
+public interface IArtistRepository extends JpaRepository<SimpleArtist, Long> {
+    List<SimpleArtist> findAll();
 
-    Artist getById(Long id);
+    Optional<SimpleArtist> findById(Long id);
 
-    List<Artist> findByName(String name);
+    Optional<List<SimpleArtist>> findArtistsByNameContaining(String name);
 }
