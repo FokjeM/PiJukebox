@@ -1,6 +1,8 @@
 package com.pijukebox.controller;
 
+import com.pijukebox.model.LoginForm;
 import com.pijukebox.model.User;
+import com.pijukebox.repository.IUserRepository;
 import com.pijukebox.service.IUserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AccessLevel;
@@ -11,8 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpServletResponse;
+import java.security.SecureRandom;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -47,6 +53,34 @@ public class UserController {
             }
             return Optional.of(userService.findById(id).get());
         } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with ID {id} Not Found", ex);
+        }
+    }
+
+    @PostMapping(value = "/login", produces = "application/json")
+    @ApiOperation(value = "Login by username and password.")
+    public String login(@RequestBody LoginForm loginForm, HttpServletResponse response){
+
+        try {
+            if (!userService.findByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword()).isPresent()) {
+                response.setStatus(403);
+                return Optional.empty().toString();
+            }
+
+            //Generate random token
+            SecureRandom random = new SecureRandom();
+            byte bytes[] = new byte[20];
+            random.nextBytes(bytes);
+            String token = bytes.toString();
+
+            //Save token
+            User user = userService.findByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword()).get();
+            user.setToken(token);
+
+            return "{\"token\":\"" + token + "\"}";
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with ID {id} Not Found", ex);
         }
     }

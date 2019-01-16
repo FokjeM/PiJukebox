@@ -3,6 +3,7 @@ package com.pijukebox.service.impl;
 import com.pijukebox.model.User;
 import com.pijukebox.repository.IUserRepository;
 import com.pijukebox.service.IUserService;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+@Data
 @Service
 @Transactional
 public class UserServiceImpl implements IUserService {
@@ -27,8 +29,28 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User findByName(String firstname, String lastname) {
+    public Optional<User> findByName(String firstname, String lastname) {
         return userRepository.findByFirstnameAndLastname(firstname, lastname);
+    }
+
+    @Override
+    public Optional<User> findByToken(String token) {
+        return userRepository.findByToken(token);
+    }
+
+    @Override
+    public Optional<User> findByEmailAndPassword(String email, String password) {
+        return userRepository.findByEmailAndPassword(email, password);
+    }
+
+    @Override
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+       userRepository.deleteById(id);
     }
 
     @Override
