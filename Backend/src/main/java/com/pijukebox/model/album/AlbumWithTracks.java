@@ -17,7 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "album")
-public class AlbumTrack extends SqlElement implements Serializable {
+public class AlbumWithTracks extends SqlElement implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -1,10 +1,12 @@
 package com.pijukebox.controller;
 
 import com.pijukebox.model.album.Album;
-import com.pijukebox.model.album.AlbumTrack;
+import com.pijukebox.model.album.AlbumWithArtists;
+import com.pijukebox.model.album.AlbumWithTracks;
 import com.pijukebox.model.artist.ArtistAlbum;
 import com.pijukebox.model.genre.GenreAlbum;
 import com.pijukebox.model.simple.SimpleAlbum;
+import com.pijukebox.model.simple.SimpleArtist;
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.service.IAlbumService;
 import io.swagger.annotations.ApiOperation;
@@ -120,34 +122,61 @@ public class AlbumController {
         }
     }
 
-    @PostMapping("/extended/albums/{id}/tracks/{trackId}")
-    public ResponseEntity<AlbumTrack> addTrackToAlbum(@PathVariable Long id, @PathVariable Long trackId) {
-
+    @PostMapping("/extended/albums/{albumId}/tracks/{trackId}")
+    @ApiOperation(value = "Add a new track to an existing album")
+    public ResponseEntity<AlbumWithTracks> addTrackToAlbum(@PathVariable Long albumId, @PathVariable Long trackId) {
         try {
-            if (!albumService.findAlbumTrackById(id).isPresent()) {
+            if (!albumService.findTrackByAlbumId(albumId).isPresent()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             if (!albumService.findTrackById(trackId).isPresent()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            AlbumTrack albumWithTracks = albumService.findAlbumTrackById(id).get();
-            SimpleTrack track = albumService.findTrackById(trackId).get();
 
+            AlbumWithTracks album = albumService.findTrackByAlbumId(albumId).get();
             boolean trackExistsInAlbum = false;
-            for (SimpleTrack albumTrack : albumWithTracks.getTracks()) {
+            for (SimpleTrack albumTrack : album.getTracks()) {
                 if (albumTrack.getId().equals(trackId)) {
                     trackExistsInAlbum = true;
                 }
             }
             if (!trackExistsInAlbum) {
-                albumWithTracks.getTracks().add(track);
-                return new ResponseEntity<>(albumService.addTrackToAlbum(albumWithTracks), HttpStatus.CREATED);
+                album.getTracks().add(albumService.findTrackById(trackId).get());
+                return new ResponseEntity<>(albumService.addTrackToAlbum(album), HttpStatus.CREATED);
             } else {
                 return new ResponseEntity<>(HttpStatus.CONFLICT);
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Track with ID {id} Not Found", ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Album with ID %s or/and Track with ID %s  Not Found", albumId, trackId), ex);
+        }
+    }
+
+    @PostMapping("/extended/albums/{albumId}/artists/{artistId}")
+    @ApiOperation(value = "Add a new track to an existing album")
+    public ResponseEntity<AlbumWithArtists> addArtistToAlbum(@PathVariable Long albumId, @PathVariable Long artistId) {
+        try {
+            if (!albumService.findArtistByAlbumId(albumId).isPresent()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            if (!albumService.findArtistById(artistId).isPresent()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            AlbumWithArtists album = albumService.findArtistByAlbumId(albumId).get();
+            boolean ArtistExistsInAlbum = false;
+            for (SimpleArtist artistAlbum : album.getArtists()) {
+                if (artistAlbum.getId().equals(artistId)) {
+                    ArtistExistsInAlbum = true;
+                }
+            }
+            if (!ArtistExistsInAlbum) {
+                album.getArtists().add(albumService.findArtistById(artistId).get());
+                return new ResponseEntity<>(albumService.addArtistToAlbum(album), HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Album with ID %s or/and Artist with ID %s  Not Found", albumId, artistId), ex);
         }
     }
 }

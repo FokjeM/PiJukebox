@@ -1,10 +1,12 @@
 package com.pijukebox.service.impl;
 
 import com.pijukebox.model.album.Album;
-import com.pijukebox.model.album.AlbumTrack;
+import com.pijukebox.model.album.AlbumWithArtists;
+import com.pijukebox.model.album.AlbumWithTracks;
 import com.pijukebox.model.artist.ArtistAlbum;
 import com.pijukebox.model.genre.GenreAlbum;
 import com.pijukebox.model.simple.SimpleAlbum;
+import com.pijukebox.model.simple.SimpleArtist;
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.repository.*;
 import com.pijukebox.service.IAlbumService;
@@ -25,15 +27,19 @@ public class AlbumServiceImpl implements IAlbumService {
     private final IArtistAlbumRepository artistAlbumRepository;
     private final IAlbumTrackRepository albumTrackRepository;
     private final ISimpleTrackRepository simpleTrackRepository;
+    private final ISimpleArtistRepository simpleArtistRepository;
+    private final IAlbumArtistRepository albumArtistRepository;
 
     @Autowired
-    public AlbumServiceImpl(IAlbumRepository albumRepository, ISimpleAlbumRepository simpleAlbumRepository, IGenreAlbumRepository genreAlbumRepository, IArtistAlbumRepository artistAlbumRepository, IAlbumTrackRepository albumTrackRepository, ISimpleTrackRepository simpleTrackRepository) {
+    public AlbumServiceImpl(IAlbumRepository albumRepository, ISimpleAlbumRepository simpleAlbumRepository, IGenreAlbumRepository genreAlbumRepository, IArtistAlbumRepository artistAlbumRepository, IAlbumTrackRepository albumTrackRepository, ISimpleTrackRepository simpleTrackRepository, ISimpleArtistRepository simpleArtistRepository, IAlbumArtistRepository albumArtistRepository) {
         this.albumRepository = albumRepository;
         this.simpleAlbumRepository = simpleAlbumRepository;
         this.genreAlbumRepository = genreAlbumRepository;
         this.artistAlbumRepository = artistAlbumRepository;
         this.albumTrackRepository = albumTrackRepository;
         this.simpleTrackRepository = simpleTrackRepository;
+        this.simpleArtistRepository = simpleArtistRepository;
+        this.albumArtistRepository = albumArtistRepository;
     }
 
     @Override
@@ -82,12 +88,27 @@ public class AlbumServiceImpl implements IAlbumService {
     }
 
     @Override
-    public Optional<AlbumTrack> findAlbumTrackById(Long trackId) {
-        return albumTrackRepository.findById(trackId);
+    public Optional<AlbumWithTracks> findTrackByAlbumId(Long id) {
+        return albumTrackRepository.findById(id);
     }
 
     @Override
-    public AlbumTrack addTrackToAlbum(AlbumTrack track) {
+    public AlbumWithTracks addTrackToAlbum(AlbumWithTracks track) {
         return albumTrackRepository.save(track);
+    }
+
+    @Override
+    public Optional<SimpleArtist> findArtistById(Long id) {
+        return simpleArtistRepository.findById(id);
+    }
+
+    @Override
+    public Optional<AlbumWithArtists> findArtistByAlbumId(Long id) {
+        return albumArtistRepository.findById(id);
+    }
+
+    @Override
+    public AlbumWithArtists addArtistToAlbum(AlbumWithArtists album) {
+        return albumArtistRepository.save(album);
     }
 }

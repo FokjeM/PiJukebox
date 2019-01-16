@@ -1,10 +1,12 @@
 package com.pijukebox.service;
 
 import com.pijukebox.model.album.Album;
-import com.pijukebox.model.album.AlbumTrack;
+import com.pijukebox.model.album.AlbumWithArtists;
+import com.pijukebox.model.album.AlbumWithTracks;
 import com.pijukebox.model.artist.ArtistAlbum;
 import com.pijukebox.model.genre.GenreAlbum;
 import com.pijukebox.model.simple.SimpleAlbum;
+import com.pijukebox.model.simple.SimpleArtist;
 import com.pijukebox.model.simple.SimpleTrack;
 
 import java.util.List;
@@ -18,7 +20,6 @@ public interface IAlbumService {
 
     Optional<List<Album>> findAlbumsByNameContaining(String name);
 
-
     List<SimpleAlbum> findAllSimpleAlbums();
 
     Optional<SimpleAlbum> findSimpleAlbumById(Long id);
@@ -29,10 +30,15 @@ public interface IAlbumService {
 
     Optional<List<ArtistAlbum>> findSimpleAlbumsByArtistName(String name);
 
+    Optional<SimpleTrack> findTrackById(Long id);
 
-    Optional<SimpleTrack> findTrackById(Long trackId);
+    Optional<AlbumWithTracks> findTrackByAlbumId(Long id);
 
-    Optional<AlbumTrack> findAlbumTrackById(Long trackId);
+    AlbumWithTracks addTrackToAlbum(AlbumWithTracks track);
 
-    AlbumTrack addTrackToAlbum(AlbumTrack track);
+    Optional<SimpleArtist> findArtistById(Long id);
+
+    Optional<AlbumWithArtists> findArtistByAlbumId(Long id);
+
+    AlbumWithArtists addArtistToAlbum(AlbumWithArtists album);
 }
