@@ -1,5 +1,6 @@
 package com.pijukebox.controller;
 
+import com.pijukebox.model.album.Album;
 import com.pijukebox.model.simple.SimpleAlbum;
 import com.pijukebox.service.IAlbumService;
 import io.swagger.annotations.ApiOperation;
@@ -23,9 +24,39 @@ public class AlbumController {
         this.albumService = albumService;
     }
 
-    @GetMapping("/albums")
-    @ApiOperation(value = "Get all information pertaining to an album via its name")
-    public ResponseEntity<List<SimpleAlbum>> albums(@RequestParam(name = "name", required = false) String name) {
+    @GetMapping("/simple/albums")
+    @ApiOperation(value = "Get all information pertaining to an album (without relations)")
+    public ResponseEntity<List<SimpleAlbum>> getSimpleAlbums(@RequestParam(name = "name", required = false) String name) {
+        try {
+            if (name != null && !name.isEmpty()) {
+                if (!albumService.findSimpleAlbumsByNameContaining(name).isPresent()) {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+                return new ResponseEntity<>(albumService.findSimpleAlbumsByNameContaining(name).get(), HttpStatus.OK);
+            }
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Albums with name %s Not Found", name), ex);
+        }
+        return new ResponseEntity<>(albumService.findAllSimpleAlbums(), HttpStatus.OK);
+    }
+
+    @GetMapping("/simple/albums/{id}")
+    @ApiOperation(value = "Get all information pertaining to an album")
+    public ResponseEntity<SimpleAlbum> getSimpleAlbum(@PathVariable Long id) {
+        try {
+            if (!albumService.findSimpleAlbumById(id).isPresent()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<>(albumService.findSimpleAlbumById(id).get(), HttpStatus.OK);
+            }
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Album with ID %s Not Found", id), ex);
+        }
+    }
+
+    @GetMapping("/extended/albums")
+    @ApiOperation(value = "Get all information pertaining to an album (with relations)")
+    public ResponseEntity<List<Album>> getExtendedAlbums(@RequestParam(name = "name", required = false) String name) {
         try {
             if (name != null && !name.isEmpty()) {
                 if (!albumService.findAlbumsByNameContaining(name).isPresent()) {
@@ -33,22 +64,23 @@ public class AlbumController {
                 }
                 return new ResponseEntity<>(albumService.findAlbumsByNameContaining(name).get(), HttpStatus.OK);
             }
-            return new ResponseEntity<>(albumService.findAll(), HttpStatus.OK);
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Album with ID {id} Not Found", ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Album with name %s Not Found", name), ex);
         }
+        return new ResponseEntity<>(albumService.findAllExtendedAlbums(), HttpStatus.OK);
     }
 
-    @GetMapping("/albums/{id}")
-    @ApiOperation(value = "Get all information pertaining to an album via its ID")
-    public ResponseEntity<SimpleAlbum> albumDetails(@PathVariable Long id) {
+    @GetMapping("/extended/albums/{id}")
+    @ApiOperation(value = "Get all information pertaining to an album")
+    public ResponseEntity<Album> getExtendedAlbum(@PathVariable Long id) {
         try {
-            if (!albumService.findById(id).isPresent()) {
+            if (!albumService.findExtendedAlbumById(id).isPresent()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<>(albumService.findExtendedAlbumById(id).get(), HttpStatus.OK);
             }
-            return new ResponseEntity<>(albumService.findById(id).get(), HttpStatus.OK);
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Album with ID {id} Not Found", ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Album with ID %s Not Found", id), ex);
         }
     }
 }

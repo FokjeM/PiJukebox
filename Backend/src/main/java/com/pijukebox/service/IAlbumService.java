@@ -8,9 +8,16 @@ import java.util.Optional;
 
 public interface IAlbumService {
 
-    List<SimpleAlbum> findAll();
+    List<Album> findAllExtendedAlbums();
 
-    Optional<SimpleAlbum> findById(Long id);
+    Optional<Album> findExtendedAlbumById(Long id);
 
-    Optional<List<SimpleAlbum>> findAlbumsByNameContaining(String name);
+    Optional<List<Album>> findAlbumsByNameContaining(String name);
+
+
+    List<SimpleAlbum> findAllSimpleAlbums();
+
+    Optional<SimpleAlbum> findSimpleAlbumById(Long id);
+
+    Optional<List<SimpleAlbum>> findSimpleAlbumsByNameContaining(String name);
 }
