@@ -3,7 +3,9 @@ package com.pijukebox.model.playlist;
 import com.pijukebox.model.SqlElement;
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.model.track.Track;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,8 +14,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-@EqualsAndHashCode(callSuper = true)
-@Data
 @Entity
 @AllArgsConstructor
 @Table(schema = "pijukebox", name = "playlist")

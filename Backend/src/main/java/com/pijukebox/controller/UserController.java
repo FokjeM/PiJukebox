@@ -79,16 +79,4 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No playlists found for user " + userID, ex);
         }
     }
-
-    /*
-        @GetMapping("/playlists")
-        @ApiOperation(value = "Retrieve all playlists")
-        public ResponseEntity<List<Playlist>> playlists() {
-            try {
-                return new ResponseEntity<>(playlistService.findAll(), HttpStatus.OK);
-            } catch (Exception ex) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No playlists found", ex);
-            }
-        }
-    */
 }
