@@ -1,9 +1,11 @@
 package com.pijukebox.controller;
 
 import com.pijukebox.model.album.Album;
+import com.pijukebox.model.album.AlbumTrack;
 import com.pijukebox.model.artist.ArtistAlbum;
 import com.pijukebox.model.genre.GenreAlbum;
 import com.pijukebox.model.simple.SimpleAlbum;
+import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.service.IAlbumService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,6 +117,37 @@ public class AlbumController {
             }
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Album with ID %s Not Found", id), ex);
+        }
+    }
+
+    @PostMapping("/extended/albums/{id}/tracks/{trackId}")
+    public ResponseEntity<AlbumTrack> addTrackToAlbum(@PathVariable Long id, @PathVariable Long trackId) {
+
+        try {
+            if (!albumService.findAlbumTrackById(id).isPresent()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            if (!albumService.findTrackById(trackId).isPresent()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            AlbumTrack albumWithTracks = albumService.findAlbumTrackById(id).get();
+            SimpleTrack track = albumService.findTrackById(trackId).get();
+
+            boolean trackExistsInAlbum = false;
+            for (SimpleTrack albumTrack : albumWithTracks.getTracks()) {
+                if (albumTrack.getId().equals(trackId)) {
+                    trackExistsInAlbum = true;
+                }
+            }
+            if (!trackExistsInAlbum) {
+                albumWithTracks.getTracks().add(track);
+                return new ResponseEntity<>(albumService.addTrackToAlbum(albumWithTracks), HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Track with ID {id} Not Found", ex);
         }
     }
 }

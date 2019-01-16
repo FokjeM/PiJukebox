@@ -4,7 +4,6 @@ import com.pijukebox.model.SqlElement;
 import com.pijukebox.model.simple.SimpleArtist;
 import com.pijukebox.model.simple.SimpleGenre;
 import lombok.*;
-import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -25,7 +24,6 @@ public class Track extends SqlElement implements Serializable {
     private Long id;
 
     @NotNull
-    @NaturalId
     @Column(nullable = false)
     private String name;
 
