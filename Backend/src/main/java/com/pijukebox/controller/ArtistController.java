@@ -1,19 +1,18 @@
 package com.pijukebox.controller;
 
-import com.pijukebox.model.Artist;
 import com.pijukebox.service.IArtistService;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1")
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Transactional
 public class ArtistController {
 
     private final IArtistService artistService;
@@ -22,7 +21,7 @@ public class ArtistController {
     public ArtistController(IArtistService artistService) {
         this.artistService = artistService;
     }
-
+	
     @GetMapping("/artists")
     @ApiOperation(value = "Get all information pertaining to an artist via its name")
     public ResponseEntity<List<Artist>> artists(@RequestParam(name = "id", required = false) Long id, @RequestParam(name = "name", required = false) String name) {
@@ -59,5 +58,5 @@ public class ArtistController {
             ex.printStackTrace();
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artist with ID {id} Not Found", ex);
         }
-    }
+    }	
 }
