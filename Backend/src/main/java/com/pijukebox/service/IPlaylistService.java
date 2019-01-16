@@ -1,15 +1,24 @@
 package com.pijukebox.service;
 
-import com.pijukebox.model.playlist.Playlist;
+import com.pijukebox.model.playlist.PlaylistTrack;
+import com.pijukebox.model.simple.SimplePlaylist;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IPlaylistService {
-    List<Playlist> findAllByUserId(Long id);
 
-    Playlist findById(Long id);
+    List<PlaylistTrack> findAll();
 
-    Playlist save(Playlist playlist);
+    Optional<PlaylistTrack> findById(Long id);
 
-    Playlist delete(Long userId, long playlistId);
+    List<SimplePlaylist> findAllSimplePlaylists();
+
+    Optional<SimplePlaylist> findSimplePlaylistById(Long id);
+
+    SimplePlaylist addNewPlaylist(SimplePlaylist simplePlaylist);
+
+    PlaylistTrack addTrackToPlaylist(PlaylistTrack playlistTrack);
+
+    PlaylistTrack deleteTrackFromPlaylist(PlaylistTrack playlistTrack);
 }

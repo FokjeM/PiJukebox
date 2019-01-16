@@ -2,18 +2,15 @@ package com.pijukebox.model.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pijukebox.model.SqlElement;
-import com.pijukebox.model.playlist.Playlist;
 import com.pijukebox.model.simple.SimplePlaylist;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @AllArgsConstructor

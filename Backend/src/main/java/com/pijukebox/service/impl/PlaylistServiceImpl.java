@@ -1,33 +1,63 @@
 package com.pijukebox.service.impl;
 
-import com.pijukebox.model.playlist.Playlist;
+import com.pijukebox.model.playlist.PlaylistTrack;
+import com.pijukebox.model.simple.SimplePlaylist;
+import com.pijukebox.repository.IPlaylistRepository;
+import com.pijukebox.repository.ISimplePlaylistRepository;
 import com.pijukebox.service.IPlaylistService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
 public class PlaylistServiceImpl implements IPlaylistService {
 
-    @Override
-    public List<Playlist> findAllByUserId(Long id) {
-        return null;
+    private final IPlaylistRepository playlistRepository;
+    private final ISimplePlaylistRepository simplePlaylistRepository;
+
+    @Autowired
+    public PlaylistServiceImpl(IPlaylistRepository playlistRepository, ISimplePlaylistRepository simplePlaylistRepository) {
+        this.playlistRepository = playlistRepository;
+        this.simplePlaylistRepository = simplePlaylistRepository;
     }
 
     @Override
-    public Playlist findById(Long id) {
-        return null;
+    public List<PlaylistTrack> findAll() {
+        return playlistRepository.findAll();
     }
 
     @Override
-    public Playlist save(Playlist playlist) {
-        return null;
+    public Optional<PlaylistTrack> findById(Long id) {
+        return playlistRepository.findById(id);
     }
 
     @Override
-    public Playlist delete(Long userId, long playlistId) {
-        return null;
+    public List<SimplePlaylist> findAllSimplePlaylists() {
+        return simplePlaylistRepository.findAll();
     }
+
+    @Override
+    public Optional<SimplePlaylist> findSimplePlaylistById(Long id) {
+        return simplePlaylistRepository.findById(id);
+    }
+
+    @Override
+    public SimplePlaylist addNewPlaylist(SimplePlaylist simplePlaylist) {
+        return simplePlaylistRepository.save(simplePlaylist);
+    }
+
+    @Override
+    public PlaylistTrack addTrackToPlaylist(PlaylistTrack playlistTrack) {
+        return playlistRepository.save(playlistTrack);
+    }
+
+    @Override
+    public PlaylistTrack deleteTrackFromPlaylist(PlaylistTrack playlistTrack) {
+        return playlistRepository.save(playlistTrack);
+    }
+
 }
