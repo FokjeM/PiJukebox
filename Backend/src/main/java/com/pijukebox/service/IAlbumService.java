@@ -3,8 +3,8 @@ package com.pijukebox.service;
 import com.pijukebox.model.album.Album;
 import com.pijukebox.model.album.AlbumWithArtists;
 import com.pijukebox.model.album.AlbumWithTracks;
-import com.pijukebox.model.artist.ArtistAlbum;
-import com.pijukebox.model.genre.GenreAlbum;
+import com.pijukebox.model.artist.ArtistWithAlbums;
+import com.pijukebox.model.genre.GenreWithAlbums;
 import com.pijukebox.model.simple.SimpleAlbum;
 import com.pijukebox.model.simple.SimpleArtist;
 import com.pijukebox.model.simple.SimpleTrack;
@@ -26,9 +26,9 @@ public interface IAlbumService {
 
     Optional<List<SimpleAlbum>> findSimpleAlbumsByNameContaining(String name);
 
-    Optional<List<GenreAlbum>> findSimpleAlbumsByGenreName(String name);
+    Optional<List<GenreWithAlbums>> findSimpleAlbumsByGenreName(String name);
 
-    Optional<List<ArtistAlbum>> findSimpleAlbumsByArtistName(String name);
+    Optional<List<ArtistWithAlbums>> findSimpleAlbumsByArtistName(String name);
 
     Optional<SimpleTrack> findTrackById(Long id);
 

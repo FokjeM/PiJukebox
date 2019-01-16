@@ -16,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(schema = "pijukebox", name = "genre")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class GenreTrack extends SqlElement implements Serializable {
+public class GenreWithTracks extends SqlElement implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

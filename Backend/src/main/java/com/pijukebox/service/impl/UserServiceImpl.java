@@ -1,6 +1,6 @@
 package com.pijukebox.service.impl;
 
-import com.pijukebox.model.playlist.PlaylistTrack;
+import com.pijukebox.model.playlist.PlaylistWithTracks;
 import com.pijukebox.model.simple.SimplePlaylist;
 import com.pijukebox.model.user.User;
 import com.pijukebox.repository.IPlaylistRepository;
@@ -45,7 +45,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public Optional<List<PlaylistTrack>> findPlaylistsByUser(Long userID) {
+    public Optional<List<PlaylistWithTracks>> findPlaylistsByUser(Long userID) {
         return playlistRepository.findAllByUserID(userID);
     }
 

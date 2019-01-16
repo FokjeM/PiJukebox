@@ -3,8 +3,8 @@ package com.pijukebox.controller;
 import com.pijukebox.model.album.Album;
 import com.pijukebox.model.album.AlbumWithArtists;
 import com.pijukebox.model.album.AlbumWithTracks;
-import com.pijukebox.model.artist.ArtistAlbum;
-import com.pijukebox.model.genre.GenreAlbum;
+import com.pijukebox.model.artist.ArtistWithAlbums;
+import com.pijukebox.model.genre.GenreWithAlbums;
 import com.pijukebox.model.simple.SimpleAlbum;
 import com.pijukebox.model.simple.SimpleArtist;
 import com.pijukebox.model.simple.SimpleTrack;
@@ -47,7 +47,7 @@ public class AlbumController {
     }
 
     @GetMapping("/albums/byGenre")
-    public ResponseEntity<List<GenreAlbum>> getAlbumsByGenreName(@RequestParam(name = "name") String name) {
+    public ResponseEntity<List<GenreWithAlbums>> getAlbumsByGenreName(@RequestParam(name = "name") String name) {
         try {
 
             if (name != null && !name.isEmpty()) {
@@ -63,7 +63,7 @@ public class AlbumController {
     }
 
     @GetMapping("/albums/byArtist")
-    public ResponseEntity<List<ArtistAlbum>> getAlbumsByArtistName(@RequestParam(name = "name") String name) {
+    public ResponseEntity<List<ArtistWithAlbums>> getAlbumsByArtistName(@RequestParam(name = "name") String name) {
         try {
 
             if (name != null && !name.isEmpty()) {

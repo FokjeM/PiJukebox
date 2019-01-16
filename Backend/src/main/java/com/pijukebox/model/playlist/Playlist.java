@@ -1,22 +1,14 @@
 package com.pijukebox.model.playlist;
 
 import com.pijukebox.model.SqlElement;
-import com.pijukebox.model.simple.SimpleAlbum;
 import com.pijukebox.model.simple.SimpleTrack;
 import lombok.*;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Predicate;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -28,14 +20,14 @@ public class Playlist extends SqlElement implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
+    @Column(name = "id")
     private Long id;
 
     @NotNull
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name="description")
+    @Column(name = "description")
     private String description;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

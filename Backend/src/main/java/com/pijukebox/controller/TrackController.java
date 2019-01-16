@@ -1,8 +1,7 @@
 package com.pijukebox.controller;
 
-import com.pijukebox.model.SqlElement;
-import com.pijukebox.model.artist.ArtistTrack;
-import com.pijukebox.model.genre.GenreTrack;
+import com.pijukebox.model.artist.ArtistWithTracks;
+import com.pijukebox.model.genre.GenreWithTracks;
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.model.track.Track;
 import com.pijukebox.service.IGenreService;
@@ -14,9 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -101,7 +98,7 @@ public class TrackController {
     }
 
     @GetMapping("/tracks/byGenre")
-    public ResponseEntity<List<GenreTrack>> getTracksByGenreName(@RequestParam(name="name") String name)
+    public ResponseEntity<List<GenreWithTracks>> getTracksByGenreName(@RequestParam(name="name") String name)
     {
         try{
 
@@ -118,7 +115,7 @@ public class TrackController {
     }
 
     @GetMapping("/tracks/byArtist")
-    public ResponseEntity<List<ArtistTrack>> getTracksByArtistName(@RequestParam(name="name") String name)
+    public ResponseEntity<List<ArtistWithTracks>> getTracksByArtistName(@RequestParam(name="name") String name)
     {
         try{
 
@@ -168,7 +165,7 @@ public class TrackController {
     }
 
     @PatchMapping("/extended/tracks/{id}/genres/{genreId}")
-    public ResponseEntity<GenreTrack> addGenreToTrack(@PathVariable Long id, @PathVariable Long genreId)
+    public ResponseEntity<GenreWithTracks> addGenreToTrack(@PathVariable Long id, @PathVariable Long genreId)
     {
 
         try{
@@ -180,10 +177,10 @@ public class TrackController {
             {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            GenreTrack genreTrack = trackService.findTrackByGenreId(genreId).get();
+            GenreWithTracks genreWithTracks = trackService.findTrackByGenreId(genreId).get();
             SimpleTrack simpleTrack = trackService.findSimpleTrackById(id).get();
-            genreTrack.getTracks().add(simpleTrack);
-            return new ResponseEntity<>(trackService.addGenreToTrack(genreTrack), HttpStatus.CREATED);
+            genreWithTracks.getTracks().add(simpleTrack);
+            return new ResponseEntity<>(trackService.addGenreToTrack(genreWithTracks), HttpStatus.CREATED);
         }catch (Exception ex) {
             ex.printStackTrace();
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Track with ID {id} Not Found", ex);
@@ -191,7 +188,7 @@ public class TrackController {
     }
 
     @PatchMapping("/extended/tracks/{id}/artists/{artistId}")
-    public ResponseEntity<ArtistTrack> addArtistToTrack(@PathVariable Long id, @PathVariable Long artistId)
+    public ResponseEntity<ArtistWithTracks> addArtistToTrack(@PathVariable Long id, @PathVariable Long artistId)
     {
 
         try{
@@ -203,7 +200,7 @@ public class TrackController {
             {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            ArtistTrack genreTrack = trackService.findTrackByArtistId(artistId).get();
+            ArtistWithTracks genreTrack = trackService.findTrackByArtistId(artistId).get();
             SimpleTrack simpleTrack = trackService.findSimpleTrackById(id).get();
             genreTrack.getTracks().add(simpleTrack);
             return new ResponseEntity<>(trackService.addArtistToTrack(genreTrack), HttpStatus.CREATED);

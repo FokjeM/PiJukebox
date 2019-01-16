@@ -1,6 +1,6 @@
 package com.pijukebox.service;
 
-import com.pijukebox.model.playlist.PlaylistTrack;
+import com.pijukebox.model.playlist.PlaylistWithTracks;
 import com.pijukebox.model.simple.SimplePlaylist;
 
 import java.util.List;
@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface IPlaylistService {
 
-    List<PlaylistTrack> findAll();
+    List<PlaylistWithTracks> findAll();
 
-    Optional<PlaylistTrack> findById(Long id);
+    Optional<PlaylistWithTracks> findById(Long id);
 
     List<SimplePlaylist> findAllSimplePlaylists();
 
@@ -18,7 +18,7 @@ public interface IPlaylistService {
 
     SimplePlaylist addNewPlaylist(SimplePlaylist simplePlaylist);
 
-    PlaylistTrack addTrackToPlaylist(PlaylistTrack playlistTrack);
+    PlaylistWithTracks addTrackToPlaylist(PlaylistWithTracks playlistWithTracks);
 
-    PlaylistTrack deleteTrackFromPlaylist(PlaylistTrack playlistTrack);
+    PlaylistWithTracks deleteTrackFromPlaylist(PlaylistWithTracks playlistWithTracks);
 }

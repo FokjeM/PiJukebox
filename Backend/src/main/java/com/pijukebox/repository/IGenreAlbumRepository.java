@@ -1,6 +1,6 @@
 package com.pijukebox.repository;
 
-import com.pijukebox.model.genre.GenreAlbum;
+import com.pijukebox.model.genre.GenreWithAlbums;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface IGenreAlbumRepository extends JpaRepository<GenreAlbum, Long> {
+public interface IGenreAlbumRepository extends JpaRepository<GenreWithAlbums, Long> {
 
-    Optional<List<GenreAlbum>> findGenreAlbumsByNameContaining(String name);
+    Optional<List<GenreWithAlbums>> findGenreAlbumsByNameContaining(String name);
 }

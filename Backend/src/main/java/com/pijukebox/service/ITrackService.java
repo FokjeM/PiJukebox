@@ -1,7 +1,7 @@
 package com.pijukebox.service;
 
-import com.pijukebox.model.artist.ArtistTrack;
-import com.pijukebox.model.genre.GenreTrack;
+import com.pijukebox.model.artist.ArtistWithTracks;
+import com.pijukebox.model.genre.GenreWithTracks;
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.model.track.Track;
 
@@ -22,17 +22,17 @@ public interface ITrackService {
 
     Optional<List<Track>> findAllTrackByName(String name);
 
-    Optional<List<ArtistTrack>> findAllTracksByArtistName(String name);
+    Optional<List<ArtistWithTracks>> findAllTracksByArtistName(String name);
 
-    Optional<List<GenreTrack>> findAllTracksByGenreName(String name);
+    Optional<List<GenreWithTracks>> findAllTracksByGenreName(String name);
 
     SimpleTrack addSimpleTrack(SimpleTrack simpleTrack);
 
-    ArtistTrack addArtistToTrack(ArtistTrack artistTrack);
+    ArtistWithTracks addArtistToTrack(ArtistWithTracks artistWithTracks);
 
-    GenreTrack addGenreToTrack(GenreTrack genreTrack);
+    GenreWithTracks addGenreToTrack(GenreWithTracks genreWithTracks);
 
-    Optional<GenreTrack> findTrackByGenreId(Long id);
+    Optional<GenreWithTracks> findTrackByGenreId(Long id);
 
-    Optional<ArtistTrack> findTrackByArtistId(Long id);
+    Optional<ArtistWithTracks> findTrackByArtistId(Long id);
 }

@@ -1,7 +1,7 @@
 package com.pijukebox.service.impl;
 
-import com.pijukebox.model.artist.ArtistTrack;
-import com.pijukebox.model.genre.GenreTrack;
+import com.pijukebox.model.artist.ArtistWithTracks;
+import com.pijukebox.model.genre.GenreWithTracks;
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.model.track.Track;
 import com.pijukebox.repository.IArtistTrackRepository;
@@ -66,12 +66,12 @@ public class TrackServiceImpl implements ITrackService {
     }
 
     @Override
-    public Optional<List<ArtistTrack>> findAllTracksByArtistName(String name) {
+    public Optional<List<ArtistWithTracks>> findAllTracksByArtistName(String name) {
         return artistTrackRepository.findArtistTracksByNameContaining(name);
     }
 
     @Override
-    public Optional<List<GenreTrack>> findAllTracksByGenreName(String name) {
+    public Optional<List<GenreWithTracks>> findAllTracksByGenreName(String name) {
         return genreTrackRepository.findGenreTracksByNameContaining(name);
     }
 
@@ -81,22 +81,22 @@ public class TrackServiceImpl implements ITrackService {
     }
 
     @Override
-    public ArtistTrack addArtistToTrack(ArtistTrack artistTrack) {
-        return artistTrackRepository.save(artistTrack);
+    public ArtistWithTracks addArtistToTrack(ArtistWithTracks artistWithTracks) {
+        return artistTrackRepository.save(artistWithTracks);
     }
 
     @Override
-    public GenreTrack addGenreToTrack(GenreTrack genreTrack) {
-        return genreTrackRepository.save(genreTrack);
+    public GenreWithTracks addGenreToTrack(GenreWithTracks genreWithTracks) {
+        return genreTrackRepository.save(genreWithTracks);
     }
 
     @Override
-    public Optional<GenreTrack> findTrackByGenreId(Long id) {
+    public Optional<GenreWithTracks> findTrackByGenreId(Long id) {
         return genreTrackRepository.findById(id);
     }
 
     @Override
-    public Optional<ArtistTrack> findTrackByArtistId(Long id) {
+    public Optional<ArtistWithTracks> findTrackByArtistId(Long id) {
         return artistTrackRepository.findById(id);
     }
 

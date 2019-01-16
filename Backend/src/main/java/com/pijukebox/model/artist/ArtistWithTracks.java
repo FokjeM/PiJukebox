@@ -1,8 +1,7 @@
 package com.pijukebox.model.artist;
 
 import com.pijukebox.model.SqlElement;
-import com.pijukebox.model.simple.SimpleAlbum;
-import com.pijukebox.model.simple.SimpleGenre;
+import com.pijukebox.model.simple.SimpleTrack;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,7 +20,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(schema = "pijukebox", name = "artist")
-public class ArtistAlbum extends SqlElement implements Serializable {
+public class ArtistWithTracks extends SqlElement implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,8 +34,6 @@ public class ArtistAlbum extends SqlElement implements Serializable {
 
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "artist_album", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "artist_id", nullable = false)},
-               inverseJoinColumns = {@JoinColumn(name = "album_id", nullable = false)})
-    private Set<SimpleAlbum> albums = new HashSet<>();
+    @JoinTable(name = "artist_track", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "artist_id", nullable = false)}, inverseJoinColumns = {@JoinColumn(name = "track_id", nullable = false)})
+    private Set<SimpleTrack> tracks = new HashSet<>();
 }
-
