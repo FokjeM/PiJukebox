@@ -1,6 +1,6 @@
 package com.pijukebox.service.impl;
 
-import com.pijukebox.model.Artist;
+import com.pijukebox.model.simple.SimpleArtist;
 import com.pijukebox.repository.IArtistRepository;
 import com.pijukebox.service.IArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +22,22 @@ public class ArtistServiceImpl implements IArtistService {
     }
 
     @Override
-    public List<Artist> findAll() {
+    public List<SimpleArtist> findAll() {
         return null;
     }
 
     @Override
-    public Optional<Artist> findById(Long id) {
-        return Optional.empty();
+    public List<SimpleArtist> findMany(Long amount) {
+        return null;
     }
 
     @Override
-    public Optional<List<Artist>> findGenresByNameContaining(String name) {
+    public SimpleArtist findByName(String name) {
+        return null;
+    }
+
+    @Override
+    public Optional<SimpleArtist> findById(Long id) {
         return Optional.empty();
     }
 }
