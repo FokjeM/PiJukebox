@@ -58,7 +58,7 @@ class AllPlaylists extends PolymerElement {
       </style>
       
       <iron-ajax
-        method="get"
+        auto
         id="getPlaylists"
         url="http://localhost:8080/api/v1/details/playlists"  
         handle-as="json"
