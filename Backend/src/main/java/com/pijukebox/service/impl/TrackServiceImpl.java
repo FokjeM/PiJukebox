@@ -38,12 +38,6 @@ public class TrackServiceImpl implements ITrackService {
     }
 
     @Override
-    public Optional<List<Track>> findByNameContaining(String name) {
-        return trackRepository.findByNameContaining(name);
-    }
-
-    @Transactional
-    @Override
     public Optional<Track> findTrackDetailsById(Long id) {
         return trackRepository.findById(id);
     }
@@ -64,7 +58,7 @@ public class TrackServiceImpl implements ITrackService {
     }
 
     @Override
-    public Optional<List<Track>> findAllTrackByName(String name) {
+    public Optional<List<Track>> findAllTracksByName(String name) {
         return trackRepository.findTracksByNameContaining(name);
     }
 
