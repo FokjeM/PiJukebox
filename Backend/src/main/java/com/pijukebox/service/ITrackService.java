@@ -11,4 +11,6 @@ public interface ITrackService {
     List<Track> findAll();
 
     Optional<Track> findById(Long id);
+
+    Optional<List<Track>> findByNameContaining(String name);
 }

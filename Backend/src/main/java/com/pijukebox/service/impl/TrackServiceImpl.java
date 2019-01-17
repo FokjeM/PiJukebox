@@ -25,6 +25,11 @@ public class TrackServiceImpl implements ITrackService {
         return trackRepository.findAll();
     }
 
+    @Override
+    public Optional<List<Track>> findByNameContaining(String name) {
+        return trackRepository.findByNameContaining(name);
+    }
+
     @Transactional
     @Override
     public Optional<Track> findById(Long id) {

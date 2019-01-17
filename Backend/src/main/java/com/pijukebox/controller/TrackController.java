@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -44,4 +45,22 @@ public class TrackController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Track with ID {id} Not Found", ex);
         }
     }
+
+    @PostMapping("/tracks/search/{searchTerm}")
+    @ApiOperation(value = "Search Tracks")
+    public ResponseEntity<List<Track>> searchTracks(@PathVariable String searchTerm) {
+        try {
+            if (searchTerm != null && !searchTerm.isEmpty()) {
+                if (!trackService.findByNameContaining(searchTerm).isPresent()) {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+                return new ResponseEntity<>(trackService.findByNameContaining(searchTerm).get(), HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No tracks found.", ex);
+        }
+    }
+
 }
