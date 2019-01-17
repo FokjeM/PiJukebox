@@ -1,4 +1,4 @@
-package com.PiJukebox;
+package com.PiJukeboxPlayer;
 
 /**
  * Non-fatal exception to be thrown in the PiJukebox

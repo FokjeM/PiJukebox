@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.PiJukebox</groupId>
-    <artifactId>PiJukebox</artifactId>
-    <version>1.0</version>
+    <artifactId>PiJukeboxPlayer</artifactId>
+    <version>1.1</version>
     <!-- We're building a web application; namely a REST API. Web apps need to be WAR instead of JAR -->
-    <!-- Although for testing, JAR is fine -->
+    <!-- Although for testing or including in WAR, JAR is fine -->
     <packaging>jar</packaging>
     
     <properties>
@@ -23,18 +23,6 @@
     </properties>
     
     <dependencies>
-        <!-- We're using SPRING Framework -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <!-- Jackson for JSON (de)serialization -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.9.7</version>
-        </dependency>
         <!-- MP3agic for reading metadata -->
         <dependency>
             <groupId>com.mpatric</groupId>
@@ -68,4 +56,5 @@
             </plugin>
         </plugins>
     </build>
+    <name>PiJukebox</name>
 </project>

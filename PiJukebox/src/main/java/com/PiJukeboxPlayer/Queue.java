@@ -1,4 +1,4 @@
-package com.PiJukebox;
+package com.PiJukeboxPlayer;
 
 import java.io.Serializable;
 import java.util.ArrayList;

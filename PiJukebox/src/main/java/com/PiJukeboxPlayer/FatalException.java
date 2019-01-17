@@ -1,4 +1,4 @@
-package com.PiJukebox;
+package com.PiJukeboxPlayer;
 
 /**
  * An exception that poses a valid reason to halt execution of the program

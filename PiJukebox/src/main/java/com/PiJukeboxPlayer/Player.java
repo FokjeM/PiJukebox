@@ -1,4 +1,4 @@
-package com.PiJukebox;
+package com.PiJukeboxPlayer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -113,7 +113,7 @@ public class Player {
     /**
      * Instantiate a new Player. This constructor sets no default options.
      * 
-     * Creates a new instance of {@link com.PiJukebox.ErrorLogger ErrorLogger} to log this object.
+     * Creates a new instance of {@link com.PiJukeboxPlayer.ErrorLogger ErrorLogger} to log this object.
      * This logger should be retrieved by the instantiating class to pass to the
      * constructor in case of a recovery.
      * <ul>
@@ -240,7 +240,7 @@ public class Player {
     /**
      * Plays the next song in queue using {@link #playTrack(com.PiJukebox.Track) playTrack}.
      * @throws FatalException propagated from {@link  #playTrack(com.PiJukebox.Track) playTrack}
-     * @throws com.PiJukebox.NonFatalException propagated from {@link #playTrack(com.PiJukebox.Track) playTrack}
+     * @throws com.PiJukeboxPlayer.NonFatalException propagated from {@link #playTrack(com.PiJukebox.Track) playTrack}
      */
     public void next() throws FatalException, NonFatalException{
         if(trackNum == 0){
@@ -292,8 +292,8 @@ public class Player {
     /**
      * Plays the specified Track
      * @param t the Track to play
-     * @throws com.PiJukebox.FatalException When FFPlay can't be started
-     * @throws com.PiJukebox.NonFatalException propagated from {@link #stop() stop()}
+     * @throws com.PiJukeboxPlayer.FatalException When FFPlay can't be started
+     * @throws com.PiJukeboxPlayer.NonFatalException propagated from {@link #stop() stop()}
      */
     public void playTrack(Track t) throws FatalException, NonFatalException{
         stop(); //Make sure we stop playing so we can do our standard set of tasks
@@ -420,9 +420,9 @@ public class Player {
     }
     
     /**
-     * Get the {@link com.PiJukebox.ErrorLogger ErrorLogger} that belongs to this Player.
+     * Get the {@link com.PiJukeboxPlayer.ErrorLogger ErrorLogger} that belongs to this Player.
      * This method should be the first one called if planning to allow recovery
-     * from a {@link com.PiJukebox.FatalException FatalException}, to ensure retrieval.
+     * from a {@link com.PiJukeboxPlayer.FatalException FatalException}, to ensure retrieval.
      * @return 
      */
     public ErrorLogger getLogger(){
