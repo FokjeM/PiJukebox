@@ -10,10 +10,7 @@
 
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import './shared-styles.js';
-import './elements/current-track.js';
 import './elements/track-list.js';
-import './elements/track-control.js';
-import './elements/volume-control.js';
 
 class AllTracks extends PolymerElement {
   static get template() {

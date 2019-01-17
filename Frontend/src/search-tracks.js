@@ -10,10 +10,8 @@
 
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import './shared-styles.js';
-import './elements/current-track.js';
 import './elements/track-list.js';
 import './elements/track-control.js';
-import './elements/volume-control.js';
 import './elements/track-info.js';
 import './elements/result-row-track.js';
 import './elements/result-row-artist.js';
@@ -32,6 +30,9 @@ class SearchTracks extends PolymerElement {
         :host {
           display: block;
           padding: 10px;
+          --paper-checkbox-unchecked-background-color: var(--app-primary-color);
+          --paper-checkbox-checked-color: var(--app-primary-color);
+          --paper-checkbox-unchecked-color: var(--app-primary-color);
         }
       
         paper-checkbox {
@@ -58,7 +59,7 @@ class SearchTracks extends PolymerElement {
       <iron-ajax
         id="ajaxSearchTrack"
         auto
-        url="http://localhost:8000/search/track/{{searchTerm}}"
+        url="http://localhost:8080/api/v1/search/track/{{searchTerm}}"
         handle-as="json"
         last-response="{{trackResults}}">
       </iron-ajax>
@@ -85,7 +86,7 @@ class SearchTracks extends PolymerElement {
       <!-- Artist search ajax -->
       <iron-ajax
         id="ajaxSearchArtist"
-        url="http://localhost:8000/search/artist/{{searchTerm}}"
+        url="http://localhost:8080/api/v1/search/artist/{{searchTerm}}"
         handle-as="json"
         last-response="{{artistResults}}">
       </iron-ajax>
@@ -111,7 +112,7 @@ class SearchTracks extends PolymerElement {
       <!-- Album search ajax -->
       <iron-ajax
         id="ajaxSearchAlbum"
-        url="http://localhost:8000/search/album/{{searchTerm}}"
+        url="http://localhost:8080/api/v1/search/album/{{searchTerm}}"
         handle-as="json"
         last-response="{{albumResults}}">
       </iron-ajax>
@@ -137,7 +138,7 @@ class SearchTracks extends PolymerElement {
       <!-- Playlist search ajax -->
       <iron-ajax
         id="ajaxSearchPlaylist"
-        url="http://localhost:8000/search/playlist/{{searchTerm}}"
+        url="http://localhost:8080/api/v1/search/playlist/{{searchTerm}}"
         handle-as="json"
         last-response="{{playlistResults}}">
       </iron-ajax>

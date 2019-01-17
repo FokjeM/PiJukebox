@@ -1,16 +1,18 @@
 package com.pijukebox.model.simple;
 
+import com.pijukebox.model.SqlElement;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @AllArgsConstructor
-@Table(schema = "pijukebox", name = "genre")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class SimpleGenre implements Serializable {
+@Table(schema = "pijukebox", name = "genre")
+public class SimpleGenre extends SqlElement implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

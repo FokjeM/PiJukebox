@@ -1,8 +1,9 @@
-package com.pijukebox.model;
+package com.pijukebox.model.artist;
 
-import lombok.AccessLevel;
+import com.pijukebox.model.SqlElement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
 
@@ -10,27 +11,21 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @AllArgsConstructor
-@Table(schema = "pijukebox", name = "track")
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class Track implements Serializable {
+@NoArgsConstructor
+@Table(schema = "pijukebox", name = "artist")
+public class Artist extends SqlElement implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
     @NaturalId
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
-
-    @NotNull
-    @Column(nullable = false)
-    private String description;
-
-    @NotNull
-    @Column(nullable = false)
-    private String filename;
 }

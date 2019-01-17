@@ -1,29 +1,23 @@
-package com.pijukebox.model;
+package com.pijukebox.model.album;
 
-import com.pijukebox.model.simple.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.pijukebox.model.SqlElement;
+import com.pijukebox.model.simple.SimpleArtist;
+import com.pijukebox.model.simple.SimpleGenre;
+import com.pijukebox.model.simple.SimpleTrack;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@Table(schema = "pijukebox", name = "album")
-public class Album implements Serializable {
-
-    // https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
-    // https://en.wikibooks.org/wiki/Java_Persistence/ManyToMany
-    // https://vladmihalcea.com/jpa-hibernate-synchronize-bidirectional-entity-associations/
-
-    // https://stackoverflow.com/questions/37243159/mappedby-in-bi-directional-manytomany-what-is-the-reason/37312213#37312213
-    // https://stackoverflow.com/questions/10968536/jpa-difference-in-the-use-of-the-mappedby-property-to-define-the-owning-entity
+@Table(name = "album")
+public class Album extends SqlElement implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
