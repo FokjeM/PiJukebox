@@ -1,20 +1,18 @@
 package com.pijukebox.model;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @AllArgsConstructor
 @Table(name = "role")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class Role implements Serializable {
+public class Role extends SqlElement implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

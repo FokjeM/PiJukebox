@@ -1,6 +1,6 @@
 package com.pijukebox.configuration;
 
-import com.pijukebox.model.User;
+import com.pijukebox.model.user.User;
 import com.pijukebox.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,23 +23,19 @@ public class Interceptor extends HandlerInterceptorAdapter {
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request,HttpServletResponse response, Object handler) throws Exception
-    {
-        try{
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        try {
             //Check if token exists
             String token = request.getHeader("Authorization");
-            User user = userService.findByToken(token).get();
-            if(user == null){
+            if (!userService.findByToken(token).isPresent()) {
                 response.setStatus(403);
                 return false;
             }
-            else{
-                //Add user?
-                //https://stackoverflow.com/questions/3806255/spring-web-mvc-pass-an-object-from-handler-interceptor-to-controller
-                return true;
-            }
-        }
-        catch (Exception e) {
+            User user = userService.findByToken(token).get();
+            //Add user?
+            //https://stackoverflow.com/questions/3806255/spring-web-mvc-pass-an-object-from-handler-interceptor-to-controller
+            return true;
+        } catch (Exception e) {
             response.setStatus(403);
             return false;
         }

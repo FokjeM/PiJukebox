@@ -45,7 +45,7 @@ class SingleArtist extends PolymerElement {
       <!-- Get all artist info -->
       <iron-ajax
         auto
-        url="http://localhost:8000/artist/[[routeData.artistId]]"
+        url="http://localhost:8080/api/v1/artist/[[routeData.artistId]]"
         handle-as="json"
         headers="{Authorization: [[token]]}"
         last-response="{{artist}}">

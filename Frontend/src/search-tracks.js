@@ -10,10 +10,8 @@
 
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import './shared-styles.js';
-import './elements/current-track.js';
 import './elements/track-list.js';
 import './elements/track-control.js';
-import './elements/volume-control.js';
 import './elements/track-info.js';
 import './elements/result-row-track.js';
 import './elements/result-row-artist.js';

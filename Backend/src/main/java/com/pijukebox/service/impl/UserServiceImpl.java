@@ -1,6 +1,10 @@
 package com.pijukebox.service.impl;
 
-import com.pijukebox.model.User;
+import com.pijukebox.model.playlist.PlaylistWithTracks;
+import com.pijukebox.model.simple.SimplePlaylist;
+import com.pijukebox.model.user.User;
+import com.pijukebox.repository.IPlaylistRepository;
+import com.pijukebox.repository.ISimplePlaylistRepository;
 import com.pijukebox.repository.IUserRepository;
 import com.pijukebox.service.IUserService;
 import lombok.Data;
@@ -17,10 +21,14 @@ import java.util.Optional;
 public class UserServiceImpl implements IUserService {
 
     private final IUserRepository userRepository;
+    private final IPlaylistRepository playlistRepository;
+    private final ISimplePlaylistRepository simplePlaylistRepository;
 
     @Autowired
-    public UserServiceImpl(IUserRepository userRepository) {
+    public UserServiceImpl(IUserRepository userRepository, IPlaylistRepository playlistRepository, ISimplePlaylistRepository simplePlaylistRepository) {
         this.userRepository = userRepository;
+        this.playlistRepository = playlistRepository;
+        this.simplePlaylistRepository = simplePlaylistRepository;
     }
 
     @Override
@@ -52,5 +60,15 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
+    }
+
+    @Override
+    public Optional<List<PlaylistWithTracks>> findPlaylistsByUser(Long userID) {
+        return playlistRepository.findAllByUserID(userID);
+    }
+
+    @Override
+    public Optional<List<SimplePlaylist>> findSimplePlaylistsByUser(Long userID) {
+        return simplePlaylistRepository.findAllByUserID(userID);
     }
 }

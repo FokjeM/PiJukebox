@@ -46,7 +46,7 @@ class SingleAlbum extends PolymerElement {
       <!-- Get all album info -->
       <iron-ajax
         auto
-        url="http://localhost:8000/album/[[routeData.albumId]]"
+        url="http://localhost:8080/api/v1/album/[[routeData.albumId]]"
         handle-as="json"
         last-response="{{album}}">
       </iron-ajax>

@@ -25,9 +25,7 @@ import '@polymer/paper-dialog/paper-dialog.js';
 
 import './my-icons.js';
 
-import './elements/current-track.js';
 import './elements/track-control.js';
-import './elements/volume-control.js';
 import './elements/dialog-element.js';
 
 import './elements/get-token.js';

@@ -15,6 +15,7 @@ import '@polymer/app-route/app-location.js';
 import '@polymer/app-route/app-route.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/paper-input/paper-input.js';
+import '@polymer/paper-button/paper-button.js';
 
 class MyLogin extends PolymerElement {
   static get template() {
@@ -57,6 +58,7 @@ class MyLogin extends PolymerElement {
   }
 
   submitLogin(){
+    localStorage.setItem("token", "r.response.token");
     this.$.loginForm.generateRequest();
   }
 

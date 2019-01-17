@@ -14,6 +14,7 @@ import './shared-styles.js';
 import '@polymer/app-route/app-location.js';
 import '@polymer/app-route/app-route.js';
 import '@polymer/iron-ajax/iron-ajax.js';
+import './elements/result-row-track.js';
 
 class SinglePlaylist extends PolymerElement {
   static get template() {
@@ -38,28 +39,29 @@ class SinglePlaylist extends PolymerElement {
         tail="{{subroute}}">
       </app-route>
 
-      <div class="card">
-        <h1>[[playlist.title]]</h1>
-      </div>
-
       <!-- Get all playlist info -->
       <iron-ajax
         auto
-        url="http://localhost:8000/playlist/[[routeData.playlistId]]"
+        url="http://localhost:8080/api/v1/details/playlists/[[routeData.playlistId]]"
         handle-as="json"
         last-response="{{playlist}}">
       </iron-ajax>
+
+
+      <div class="card">
+        <h1>[[playlist.title]]</h1>
+      </div>
 
       <!-- Artist tracks -->
       <div id="artistTracks" class="card">
         <h1>Tracks</h1>
 
         <template is="dom-repeat" items="{{playlist.tracks}}" as="track" rendered-item-count="{{playlistTrackCount}}">
-          <div style="display:flex;">          
+          <div style="display:flex;">
               <result-row-track
                   track-id="{{track.id}}"
-                  track-name="{{track.title}}"
-                  track-artist="{{track.artist}}">
+                  track-name="{{track.name}}"
+                  track-artist="{{track.artists}}">
               </result-row-track>
             </div>
         </template>

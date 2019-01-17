@@ -47,7 +47,7 @@ class QueueItem extends PolymerElement {
       <iron-ajax
         id="queueUp"
         method="post"
-        url="http://localhost:8000/queue/moveup"
+        url="http://localhost:8080/api/v1/queue/moveup"
         body='[{"trackId": [[trackId]]}]'
         content-type="application/json"
         handle-as="json"
@@ -57,7 +57,7 @@ class QueueItem extends PolymerElement {
       <iron-ajax
         id="queueDown"
         method="post"
-        url="http://localhost:8000/queue/movedown"
+        url="http://localhost:8080/api/v1/queue/movedown"
         body='[{"trackId": [[trackId]]}]'
         content-type="application/json"
         handle-as="json"

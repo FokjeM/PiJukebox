@@ -24,9 +24,16 @@ class TrackQueue extends PolymerElement {
       <iron-ajax
         id="getCurrentQueue"
         auto
-        url="http://localhost:8000/search/track/k"
+        url="http://localhost:8080/api/v1/search/track/k"
         handle-as="json"
         last-response="{{response}}">
+      </iron-ajax>
+
+      <iron-ajax
+        id="changeQueue"
+        method="POST"
+        url="http://localhost:8080/api/v1/laptops/"
+        on-response="queueChanged">
       </iron-ajax>
 
       <div class="card">  
@@ -53,7 +60,22 @@ class TrackQueue extends PolymerElement {
       this.$.getCurrentQueue.generateRequest();
     }.bind(this));
   }
+ 
+  oneDown(e) {
+    let trackToChange = e.target.dataset.trackId;
+    console.log("down: " + e.target.dataset.trackId);
+    this.$.changeQueue.setAttribute('body', '{"id":' + trackToChange + ', "direction":"down"}');
+    this.$.changeQueue.generateRequest();
+  }
 
+  queueChanged(e, response) {
+    if(response == 200) {
+      this.throwEvent('open-dialog-event', {title: 'Queue', text: 'The queue changed successfully'});
+    } else {
+      this.throwEvent('open-dialog-event', {title: 'Queue', text: 'Something went wrong, please try again'});
+    }
+  }
+  
 }
 
 customElements.define('track-queue', TrackQueue);
