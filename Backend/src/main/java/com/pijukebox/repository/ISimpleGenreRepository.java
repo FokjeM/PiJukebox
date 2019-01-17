@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface IGenreRepository extends JpaRepository<SimpleGenre, Long> {
+public interface ISimpleGenreRepository extends JpaRepository<SimpleGenre, Long> {
     List<SimpleGenre> findAll();
 
     Optional<SimpleGenre> findById(Long id);
 
-    Optional<List<SimpleGenre>> findGenresByNameContaining(String name);
+    Optional<List<SimpleGenre>> findSimpleGenresByNameContaining(String name);
 }

@@ -1,11 +1,11 @@
 package com.pijukebox.service.impl;
 
-import com.pijukebox.model.artist.ArtistTrack;
-import com.pijukebox.model.genre.GenreTrack;
+import com.pijukebox.model.artist.ArtistWithTracks;
+import com.pijukebox.model.genre.GenreWithTracks;
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.model.track.Track;
-import com.pijukebox.repository.IArtistTrackRepository;
-import com.pijukebox.repository.IGenreTrackRepository;
+import com.pijukebox.repository.IArtistWithTracksRepository;
+import com.pijukebox.repository.IGenreWithTracksRepository;
 import com.pijukebox.repository.ISimpleTrackRepository;
 import com.pijukebox.repository.ITrackRepository;
 import com.pijukebox.service.ITrackService;
@@ -20,18 +20,15 @@ import java.util.Optional;
 @Transactional
 public class TrackServiceImpl implements ITrackService {
     private final ITrackRepository trackRepository;
-    private final IArtistTrackRepository artistTrackRepository;
-    private final IGenreTrackRepository genreTrackRepository;
+    private final IArtistWithTracksRepository artistWithTracksRepository;
+    private final IGenreWithTracksRepository genreWithTracksRepository;
     private final ISimpleTrackRepository simpleTrackRepository;
 
     @Autowired
-    public TrackServiceImpl(ITrackRepository trackRepository,
-                            IArtistTrackRepository artistTrackRepository,
-                            IGenreTrackRepository genreTrackRepository,
-                            ISimpleTrackRepository simpleTrackRepository) {
+    public TrackServiceImpl(ITrackRepository trackRepository, IArtistWithTracksRepository artistWithTracksRepository, IGenreWithTracksRepository genreWithTracksRepository, ISimpleTrackRepository simpleTrackRepository) {
         this.trackRepository = trackRepository;
-        this.artistTrackRepository = artistTrackRepository;
-        this.genreTrackRepository = genreTrackRepository;
+        this.artistWithTracksRepository = artistWithTracksRepository;
+        this.genreWithTracksRepository = genreWithTracksRepository;
         this.simpleTrackRepository = simpleTrackRepository;
     }
 
@@ -66,13 +63,13 @@ public class TrackServiceImpl implements ITrackService {
     }
 
     @Override
-    public Optional<List<ArtistTrack>> findAllTracksByArtistName(String name) {
-        return artistTrackRepository.findArtistTracksByNameContaining(name);
+    public Optional<List<ArtistWithTracks>> findAllTracksByArtistName(String name) {
+        return artistWithTracksRepository.findArtistTracksByNameContaining(name);
     }
 
     @Override
-    public Optional<List<GenreTrack>> findAllTracksByGenreName(String name) {
-        return genreTrackRepository.findGenreTracksByNameContaining(name);
+    public Optional<List<GenreWithTracks>> findAllTracksByGenreName(String name) {
+        return genreWithTracksRepository.findGenreTracksByNameContaining(name);
     }
 
     @Override
@@ -81,23 +78,23 @@ public class TrackServiceImpl implements ITrackService {
     }
 
     @Override
-    public ArtistTrack addArtistToTrack(ArtistTrack artistTrack) {
-        return artistTrackRepository.save(artistTrack);
+    public ArtistWithTracks addArtistToTrack(ArtistWithTracks artistWithTracks) {
+        return artistWithTracksRepository.save(artistWithTracks);
     }
 
     @Override
-    public GenreTrack addGenreToTrack(GenreTrack genreTrack) {
-        return genreTrackRepository.save(genreTrack);
+    public GenreWithTracks addGenreToTrack(GenreWithTracks genreWithTracks) {
+        return genreWithTracksRepository.save(genreWithTracks);
     }
 
     @Override
-    public Optional<GenreTrack> findTrackByGenreId(Long id) {
-        return genreTrackRepository.findById(id);
+    public Optional<GenreWithTracks> findTrackByGenreId(Long id) {
+        return genreWithTracksRepository.findById(id);
     }
 
     @Override
-    public Optional<ArtistTrack> findTrackByArtistId(Long id) {
-        return artistTrackRepository.findById(id);
+    public Optional<ArtistWithTracks> findTrackByArtistId(Long id) {
+        return artistWithTracksRepository.findById(id);
     }
 
 }

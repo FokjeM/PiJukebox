@@ -1,18 +1,17 @@
 package com.pijukebox.model.simple;
 
 import com.pijukebox.model.SqlElement;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-@Table(name = "album")
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Table(schema = "pijukebox", name = "album")
 public class SimpleAlbum extends SqlElement implements Serializable {
 
     @Id

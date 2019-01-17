@@ -1,35 +1,40 @@
-package com.pijukebox.model.genre;
+package com.pijukebox.model.artist;
 
 import com.pijukebox.model.SqlElement;
 import com.pijukebox.model.simple.SimpleAlbum;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @AllArgsConstructor
-@Table(schema = "pijukebox", name = "genre")
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class GenreAlbum extends SqlElement implements Serializable {
+@NoArgsConstructor
+@Table(schema = "pijukebox", name = "artist")
+public class ArtistWithAlbums extends SqlElement implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
+    @NotNull
+    @NaturalId
+    @Column(name = "name", nullable = false)
     private String name;
 
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "album_genre", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "genre_id", nullable = false)}, inverseJoinColumns = {@JoinColumn(name = "album_id", nullable = false)})
+    @JoinTable(name = "artist_album", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "artist_id", nullable = false)}, inverseJoinColumns = {@JoinColumn(name = "album_id", nullable = false)})
     private Set<SimpleAlbum> albums = new HashSet<>();
 }
+

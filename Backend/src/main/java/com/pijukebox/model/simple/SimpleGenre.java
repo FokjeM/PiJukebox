@@ -1,22 +1,17 @@
 package com.pijukebox.model.simple;
 
 import com.pijukebox.model.SqlElement;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.NaturalId;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @AllArgsConstructor
-@Table(schema = "pijukebox", name = "genre")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Table(schema = "pijukebox", name = "genre")
 public class SimpleGenre extends SqlElement implements Serializable {
 
     @Id

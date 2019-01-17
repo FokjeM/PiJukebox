@@ -2,24 +2,21 @@ package com.pijukebox.model.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pijukebox.model.SqlElement;
-import com.pijukebox.model.playlist.Playlist;
 import com.pijukebox.model.simple.SimplePlaylist;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @AllArgsConstructor
 @Table(schema = "pijukebox", name = "user")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class UserPlaylist extends SqlElement implements Serializable {
+public class UserWithPlaylists extends SqlElement implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -42,6 +39,7 @@ public class UserPlaylist extends SqlElement implements Serializable {
     private String roleId;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "playlist", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "user_id", nullable = false)})//, inverseJoinColumns = {@JoinColumn(name = "album_id", nullable = false)}
+    @JoinTable(name = "playlist", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "user_id", nullable = false)})
+//, inverseJoinColumns = {@JoinColumn(name = "album_id", nullable = false)}
     private Set<SimplePlaylist> playlists = new HashSet<>();
 }

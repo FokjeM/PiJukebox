@@ -2,7 +2,6 @@ package com.pijukebox.model.simple;
 
 import com.pijukebox.model.SqlElement;
 import lombok.*;
-import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,8 +11,8 @@ import java.io.Serializable;
 @Entity
 @Data
 @AllArgsConstructor
-@Table(name = "track")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Table(schema = "pijukebox", name = "track")
 public class SimpleTrack extends SqlElement implements Serializable {
 
     @Id
@@ -22,7 +21,7 @@ public class SimpleTrack extends SqlElement implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(nullable = false, name="name")
+    @Column(nullable = false, name = "name")
     private String name;
 
     @NotNull
@@ -30,6 +29,7 @@ public class SimpleTrack extends SqlElement implements Serializable {
     private String description;
 
     @NotNull
-    @Column(nullable = false, name="fileName")
+    @Column(nullable = false, name = "fileName")
     private String filename;
 }
+
