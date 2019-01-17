@@ -58,7 +58,7 @@ public class TrackServiceImpl implements ITrackService {
     }
 
     @Override
-    public Optional<List<Track>> findAllTrackByName(String name) {
+    public Optional<List<Track>> findAllTracksByName(String name) {
         return trackRepository.findTracksByNameContaining(name);
     }
 

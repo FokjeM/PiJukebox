@@ -100,7 +100,6 @@ class MyApp extends PolymerElement {
             <a name="playlists" href="[[rootPath]]playlists">Playlists</a>
             <a name="playlist" href="[[rootPath]]playlist">Single Playlist</a>
             <a name="queue" href="[[rootPath]]queue">Queue</a>
-            <a name="login" href="[[rootPath]]login">Login</a>
             <a name="search" href="[[rootPath]]search">Search</a>
           </iron-selector>
         </app-drawer>
