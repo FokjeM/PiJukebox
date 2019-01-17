@@ -14,4 +14,6 @@ public interface ISimpleTrackRepository extends JpaRepository<SimpleTrack, Long>
     Optional<SimpleTrack> findById(Long id);
 
     Optional<List<SimpleTrack>> findSimpleTracksByNameContaining(String name);
+
+
 }

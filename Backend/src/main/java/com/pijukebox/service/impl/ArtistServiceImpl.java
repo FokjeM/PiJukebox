@@ -1,6 +1,6 @@
 package com.pijukebox.service.impl;
 
-import com.pijukebox.model.artist.Artist;
+import com.pijukebox.model.artist.ArtistWithTracks;
 import com.pijukebox.model.simple.SimpleArtist;
 import com.pijukebox.repository.IArtistRepository;
 import com.pijukebox.service.IArtistService;
@@ -23,8 +23,8 @@ public class ArtistServiceImpl implements IArtistService {
     }
 
     @Override
-    public List<Artist> findAll() {
-        return null;
+    public List<SimpleArtist> findAll() {
+        return artistRepository.findAll();
     }
 
     @Override
@@ -33,7 +33,12 @@ public class ArtistServiceImpl implements IArtistService {
     }
 
     @Override
-    public Optional<List<SimpleArtist>> findGenresByNameContaining(String name) {
+    public Optional<List<SimpleArtist>> findByName(String name) {
+        return artistRepository.findArtistsByNameContaining(name);
+    }
+
+    @Override
+    public Optional<ArtistWithTracks> findTracksByArtistId(Long id) {
         return Optional.empty();
     }
 }

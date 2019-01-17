@@ -15,8 +15,8 @@ import java.util.Set;
 @Entity
 @Data
 @AllArgsConstructor
-@Table(schema = "pijukebox", name = "track")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Table(schema = "pijukebox", name = "track")
 public class Track extends SqlElement implements Serializable {
 
     @Id

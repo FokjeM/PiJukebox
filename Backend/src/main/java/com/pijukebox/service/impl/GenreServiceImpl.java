@@ -33,6 +33,6 @@ public class GenreServiceImpl implements IGenreService {
 
     @Override
     public Optional<List<SimpleGenre>> findGenresByNameContaining(String name) {
-        return genreRepository.findSimpleGenresByNameContaining(name);
+        return genreRepository.findGenresByNameContaining(name);
     }
 }

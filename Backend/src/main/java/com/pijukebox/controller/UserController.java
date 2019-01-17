@@ -44,7 +44,7 @@ public class UserController {
             }
             return new ResponseEntity<>(userService.findById(id).get(), HttpStatus.OK);
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with ID {id} Not Found", ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No user with ID %s found", id), ex);
         }
     }
 
@@ -60,7 +60,7 @@ public class UserController {
             }
             return new ResponseEntity<>(userService.findPlaylistsByUser(userID).get(), HttpStatus.OK);
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No playlists found for user " + userID, ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No user with ID %s found", userID), ex);
         }
     }
 
@@ -76,7 +76,7 @@ public class UserController {
             }
             return new ResponseEntity<>(userService.findSimplePlaylistsByUser(userID).get(), HttpStatus.OK);
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No playlists found for user " + userID, ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No user with ID %s found", userID), ex);
         }
     }
 }
