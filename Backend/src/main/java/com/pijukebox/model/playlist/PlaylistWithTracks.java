@@ -1,7 +1,7 @@
 package com.pijukebox.model.playlist;
 
 import com.pijukebox.model.SqlElement;
-import com.pijukebox.model.track.Track;
+import com.pijukebox.model.simple.SimpleTrack;
 import lombok.*;
 
 import javax.persistence.*;
@@ -35,5 +35,5 @@ public class PlaylistWithTracks extends SqlElement implements Serializable {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "track_playlist", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "playlist_id", nullable = false)}, inverseJoinColumns = {@JoinColumn(name = "track_id", nullable = false)})
-    private Set<Track> tracks = new HashSet<>();
+    private Set<SimpleTrack> tracks = new HashSet<>();
 }

@@ -2,8 +2,6 @@ package com.pijukebox.model.album;
 
 import com.pijukebox.model.SqlElement;
 import com.pijukebox.model.simple.SimpleArtist;
-import com.pijukebox.model.simple.SimpleGenre;
-import com.pijukebox.model.simple.SimpleTrack;
 import lombok.*;
 
 import javax.persistence.*;

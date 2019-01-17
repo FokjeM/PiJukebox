@@ -7,13 +7,12 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @AllArgsConstructor
-@Table(schema = "pijukebox", name = "playlist")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Table(schema = "pijukebox", name = "playlist")
 public class SimplePlaylist extends SqlElement implements Serializable {
 
     @Id
@@ -31,3 +30,4 @@ public class SimplePlaylist extends SqlElement implements Serializable {
     @Column(name = "user_id")
     private Long userID;
 }
+

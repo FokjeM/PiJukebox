@@ -2,7 +2,6 @@ package com.pijukebox.model.artist;
 
 import com.pijukebox.model.SqlElement;
 import com.pijukebox.model.simple.SimpleAlbum;
-import com.pijukebox.model.simple.SimpleGenre;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -35,8 +34,7 @@ public class ArtistWithAlbums extends SqlElement implements Serializable {
 
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "artist_album", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "artist_id", nullable = false)},
-               inverseJoinColumns = {@JoinColumn(name = "album_id", nullable = false)})
+    @JoinTable(name = "artist_album", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "artist_id", nullable = false)}, inverseJoinColumns = {@JoinColumn(name = "album_id", nullable = false)})
     private Set<SimpleAlbum> albums = new HashSet<>();
 }
 
