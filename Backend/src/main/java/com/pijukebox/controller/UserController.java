@@ -90,22 +90,24 @@ public class UserController {
     public String login(@RequestBody LoginForm loginForm, HttpServletResponse response) {
 
         try {
+
             if (!userService.findByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword()).isPresent()) {
                 response.setStatus(403);
                 return Optional.empty().toString();
             }
-
-            //Generate random token
-            SecureRandom random = new SecureRandom();
-            byte[] bytes = new byte[20];
-            random.nextBytes(bytes);
-            String token = bytes.toString();
-
-            //Save token
             User user = userService.findByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword()).get();
-            user.setToken(token);
-            userService.saveUser(user);
-            return "{\"token\":\"" + token + "\"}";
+            if(user.getToken() == null){
+                //Generate random token
+                SecureRandom random = new SecureRandom();
+                byte[] bytes = new byte[20];
+                random.nextBytes(bytes);
+                String token = bytes.toString();
+
+                //Save token
+                user.setToken(token);
+                userService.saveUser(user);
+            }
+            return "{\"token\":\"" + user.getToken() + "\"}";
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", ex);

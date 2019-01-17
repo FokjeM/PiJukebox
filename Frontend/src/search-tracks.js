@@ -60,6 +60,7 @@ class SearchTracks extends PolymerElement {
 
       <!-- Track search ajax -->
       <iron-ajax
+        method="post"
         id="ajaxSearchTrack"
         auto
         url="http://localhost:8080/api/v1/tracks/search/{{searchTerm}}"
