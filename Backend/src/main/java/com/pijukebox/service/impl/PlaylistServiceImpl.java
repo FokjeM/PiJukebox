@@ -1,6 +1,6 @@
 package com.pijukebox.service.impl;
 
-import com.pijukebox.model.playlist.PlaylistTrack;
+import com.pijukebox.model.playlist.PlaylistWithTracks;
 import com.pijukebox.model.simple.SimplePlaylist;
 import com.pijukebox.repository.IPlaylistRepository;
 import com.pijukebox.repository.ISimplePlaylistRepository;
@@ -26,12 +26,12 @@ public class PlaylistServiceImpl implements IPlaylistService {
     }
 
     @Override
-    public List<PlaylistTrack> findAll() {
+    public List<PlaylistWithTracks> findAll() {
         return playlistRepository.findAll();
     }
 
     @Override
-    public Optional<PlaylistTrack> findById(Long id) {
+    public Optional<PlaylistWithTracks> findById(Long id) {
         return playlistRepository.findById(id);
     }
 
@@ -51,13 +51,13 @@ public class PlaylistServiceImpl implements IPlaylistService {
     }
 
     @Override
-    public PlaylistTrack addTrackToPlaylist(PlaylistTrack playlistTrack) {
-        return playlistRepository.save(playlistTrack);
+    public PlaylistWithTracks addTrackToPlaylist(PlaylistWithTracks playlistWithTracks) {
+        return playlistRepository.save(playlistWithTracks);
     }
 
     @Override
-    public PlaylistTrack deleteTrackFromPlaylist(PlaylistTrack playlistTrack) {
-        return playlistRepository.save(playlistTrack);
+    public PlaylistWithTracks deleteTrackFromPlaylist(PlaylistWithTracks playlistWithTracks) {
+        return playlistRepository.save(playlistWithTracks);
     }
 
 }

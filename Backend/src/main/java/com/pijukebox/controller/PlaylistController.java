@@ -1,20 +1,19 @@
 package com.pijukebox.controller;
 
-import com.pijukebox.model.playlist.PlaylistTrack;
+import com.pijukebox.model.playlist.PlaylistWithTracks;
 import com.pijukebox.model.simple.SimplePlaylist;
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.service.IPlaylistService;
 import com.pijukebox.service.ITrackService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -49,7 +48,7 @@ public class PlaylistController {
             }
             return new ResponseEntity<>(playlistService.findSimplePlaylistById(id).get(), HttpStatus.OK);
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Playlist with ID {id} not found", ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Playlist with ID %s not found", id), ex);
         }
     }
 
@@ -66,7 +65,7 @@ public class PlaylistController {
 
     @GetMapping("/details/playlists")
     @ApiOperation(value = "Retrieve all playlists in full detail, with full track info")
-    public ResponseEntity<List<PlaylistTrack>> detailedPlaylists() {
+    public ResponseEntity<List<PlaylistWithTracks>> detailedPlaylists() {
         try {
             return new ResponseEntity<>(playlistService.findAll(), HttpStatus.OK);
         } catch (Exception ex) {
@@ -76,21 +75,20 @@ public class PlaylistController {
 
     @GetMapping("/details/playlists/{id}")
     @ApiOperation(value = "Get all from a single playlist by its ID")
-    public ResponseEntity<PlaylistTrack> playlistDetails(@PathVariable Long id) {
+    public ResponseEntity<PlaylistWithTracks> playlistDetails(@PathVariable Long id) {
         try {
             if (!playlistService.findById(id).isPresent()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(playlistService.findById(id).get(), HttpStatus.OK);
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Playlist with ID {id} not found", ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Playlist with ID %s not found", id), ex);
         }
     }
 
     @PatchMapping("/details/playlists/{playlistID}/tracks/{trackId}")
     @ApiOperation(value = "Add a track to a playlist")
-    public ResponseEntity<PlaylistTrack> addTrackToPlaylist(@PathVariable Long playlistID,
-                                                            @PathVariable Long trackId) {
+    public ResponseEntity<PlaylistWithTracks> addTrackToPlaylist(@PathVariable Long playlistID, @PathVariable Long trackId) {
         try {
             if (!playlistService.findById(playlistID).isPresent()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -98,21 +96,20 @@ public class PlaylistController {
             if (!trackService.findSimpleTrackById(trackId).isPresent()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            PlaylistTrack playlistTrack = playlistService.findById(playlistID).get();
+            PlaylistWithTracks playlistTrack = playlistService.findById(playlistID).get();
             Set<SimpleTrack> trackSet = playlistTrack.getTracks();
             trackSet.add(trackService.findSimpleTrackById(trackId).get());
             playlistTrack.setTracks(trackSet);
             playlistService.addTrackToPlaylist(playlistTrack);
             return new ResponseEntity<>(playlistTrack, HttpStatus.OK);
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Playlist with ID {playlistID} not found", ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Playlist ID %s or/and track ID %s not found", playlistID, trackId), ex);
         }
     }
 
     @PatchMapping("/details/playlists/remove/{playlistID}/tracks/{trackId}")
     @ApiOperation(value = "Remove a track from a playlist")
-    public ResponseEntity<PlaylistTrack> removeTrackFromPlaylist(@PathVariable Long playlistID,
-                                                                 @PathVariable Long trackId) {
+    public ResponseEntity<PlaylistWithTracks> removeTrackFromPlaylist(@PathVariable Long playlistID, @PathVariable Long trackId) {
         try {
             if (!playlistService.findById(playlistID).isPresent()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -120,16 +117,14 @@ public class PlaylistController {
             if (!trackService.findSimpleTrackById(trackId).isPresent()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            PlaylistTrack playlistTrack = playlistService.findById(playlistID).get();
+            PlaylistWithTracks playlistTrack = playlistService.findById(playlistID).get();
             Set<SimpleTrack> trackSet = playlistTrack.getTracks();
             trackSet.remove(trackService.findSimpleTrackById(trackId).get());
             playlistTrack.setTracks(trackSet);
             playlistService.deleteTrackFromPlaylist(playlistTrack);
             return new ResponseEntity<>(playlistTrack, HttpStatus.OK);
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Playlist with ID {playlistID} not found", ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Playlist ID %s or/and track ID %s not found", playlistID, trackId), ex);
         }
     }
-
-//    @GetMapping("/playlists")
 }

@@ -1,6 +1,5 @@
 package com.pijukebox.controller;
 
-import com.pijukebox.model.genre.Genre;
 import com.pijukebox.model.simple.SimpleGenre;
 import com.pijukebox.service.IGenreService;
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +35,7 @@ public class GenreController {
             }
             return new ResponseEntity<>(genreService.findAll(), HttpStatus.OK);
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Album with ID {id} Not Found", ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Genre with name %s Not Found", name), ex);
         }
     }
 
@@ -49,8 +48,7 @@ public class GenreController {
             }
             return new ResponseEntity<>(genreService.findById(id).get(), HttpStatus.OK);
         } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Genre with ID {id} Not Found", ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Genre with ID %s Not Found", id), ex);
         }
     }
 }

@@ -1,21 +1,19 @@
 package com.pijukebox.model.simple;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.pijukebox.model.SqlElement;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @AllArgsConstructor
-@Table(schema = "pijukebox", name = "playlist")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class SimplePlaylist implements Serializable {
+@Table(schema = "pijukebox", name = "playlist")
+public class SimplePlaylist extends SqlElement implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,5 +29,5 @@ public class SimplePlaylist implements Serializable {
 
     @Column(name = "user_id")
     private Long userID;
-
 }
+

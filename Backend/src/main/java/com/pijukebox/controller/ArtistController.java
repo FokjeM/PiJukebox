@@ -1,6 +1,5 @@
 package com.pijukebox.controller;
 
-import com.pijukebox.model.artist.Artist;
 import com.pijukebox.model.simple.SimpleArtist;
 import com.pijukebox.service.IArtistService;
 import io.swagger.annotations.ApiOperation;
@@ -44,7 +43,7 @@ public class ArtistController {
             }
             return new ResponseEntity<>(artistService.findAll(), HttpStatus.OK);
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Album with ID {id} Not Found", ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Artist with ID %s Not Found", id), ex);
         }
     }
 
@@ -58,7 +57,7 @@ public class ArtistController {
             return new ResponseEntity<>(artistService.findById(id).get(), HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artist with ID {id} Not Found", ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Artist with ID %s Not Found", id), ex);
         }
     }
 }

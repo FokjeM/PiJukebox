@@ -14,5 +14,4 @@ public interface IGenreRepository extends JpaRepository<SimpleGenre, Long> {
     Optional<SimpleGenre> findById(Long id);
 
     Optional<List<SimpleGenre>> findGenresByNameContaining(String name);
-
 }

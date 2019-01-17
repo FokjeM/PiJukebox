@@ -1,19 +1,17 @@
 package com.pijukebox.model.simple;
 
 import com.pijukebox.model.SqlElement;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.NaturalId;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(schema = "pijukebox", name = "artist")
 public class SimpleArtist extends SqlElement implements Serializable {
 
@@ -23,7 +21,6 @@ public class SimpleArtist extends SqlElement implements Serializable {
     private Long id;
 
     @NotNull
-    @NaturalId
     @Column(name = "name", nullable = false)
     private String name;
 }
