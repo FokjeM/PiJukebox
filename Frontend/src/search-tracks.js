@@ -62,7 +62,7 @@ class SearchTracks extends PolymerElement {
       <iron-ajax
         id="ajaxSearchTrack"
         auto
-        url="localhost:8080/api/v1/tracks/search/{{searchTerm}}"
+        url="http://localhost:8080/api/v1/tracks/search/{{searchTerm}}"
         headers="{Authorization: [[token]]}"
         handle-as="json"
         last-response="{{trackResults}}">
@@ -90,7 +90,7 @@ class SearchTracks extends PolymerElement {
       <!-- Artist search ajax -->
       <iron-ajax
         id="ajaxSearchArtist"
-        url="localhost:8080/api/v1/artist/search/{{searchTerm}}"
+        url="http://localhost:8080/api/v1/artist/search/{{searchTerm}}"
         headers="{Authorization: [[token]]}"
         handle-as="json"
         last-response="{{artistResults}}">

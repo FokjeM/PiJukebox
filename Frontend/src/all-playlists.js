@@ -21,6 +21,7 @@ import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-icons/av-icons.js';
 import '@polymer/iron-form/iron-form.js';
+import './elements/get-token.js';
 
 class AllPlaylists extends PolymerElement {
   static get template() {
@@ -57,10 +58,12 @@ class AllPlaylists extends PolymerElement {
       </style>
       
       <iron-ajax
-        auto
+        method="get"
         id="getPlaylists"
-        url="http://localhost:8080/api/v1/playlists"
+        url="http://localhost:8080/api/v1/details/playlists"  
         handle-as="json"
+        content-type='application/json'
+        headers="{Authorization: [[token]]}"
         last-response="{{playlists}}">
       </iron-ajax>
         
@@ -95,6 +98,9 @@ class AllPlaylists extends PolymerElement {
           </div>
         </div>
       </div>
+
+      <get-token token="{{token}}"></get-token>
+
     `;
   }
 

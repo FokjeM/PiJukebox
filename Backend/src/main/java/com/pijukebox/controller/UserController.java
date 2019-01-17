@@ -99,7 +99,7 @@ public class UserController {
             SecureRandom random = new SecureRandom();
             byte[] bytes = new byte[20];
             random.nextBytes(bytes);
-            String token = Arrays.toString(bytes);
+            String token = bytes.toString();
 
             //Save token
             User user = userService.findByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword()).get();
