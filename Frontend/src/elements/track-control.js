@@ -131,7 +131,7 @@ class TrackControl extends PolymerElement {
           </div>
 
           <div class="controls">
-            <paper-icon-button on-tap="shuffle" icon="av:shuffle" id="shuffleBtn"></paper-icon-button>
+            <!-- <paper-icon-button on-tap="shuffle" icon="av:shuffle" id="shuffleBtn"></paper-icon-button> -->
 
             <paper-icon-button on-tap="previousTrack" icon="av:skip-previous"></paper-icon-button>
 
