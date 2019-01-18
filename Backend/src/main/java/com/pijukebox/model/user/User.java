@@ -29,6 +29,9 @@ public class User extends SqlElement implements Serializable {
     @Column(name = "email", nullable = false)
     private String email;
 
+    @Column(name = "token")
+    private String token;
+
     @Column(name = "password", nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;

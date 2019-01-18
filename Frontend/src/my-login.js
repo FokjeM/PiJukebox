@@ -36,18 +36,21 @@ class MyLogin extends PolymerElement {
       
       <div>
         <div style="padding:20px; 40px 20px 20px;">
-          <paper-input label="Username" value="{{username}}"></paper-input>
+          <paper-input label="Email" value="{{email}}"></paper-input>
           <paper-input label="Password" value="{{password}}"></paper-input>
-          <paper-button id="loginButton" raised on-click="submitLogin">Login</paper-button>
+          <paper-button id="loginButton" style="background-color: #00796B; color: white; width:100%; margin-top:20px;" raised on-click="submitLogin">Login</paper-button>
         </div>
 
         <!-- Post credentials -->
         <iron-ajax
           id="loginForm"
+          method="post"
           url="http://localhost:8080/api/v1/login"
           handle-as="json"
-          body="{username: {{username}}, password: {{password}}}"
-          on-response="setToken">
+          body='{"email": "{{email}}", "password": "{{password}}"}'
+          content-type='application/json'
+          on-response="setToken"
+          on-error="handleError">
         </iron-ajax>
       </div>
 
@@ -55,18 +58,26 @@ class MyLogin extends PolymerElement {
   }
 
   submitLogin(){
-    localStorage.setItem("token", "r.response.token");
     this.$.loginForm.generateRequest();
   }
 
+  //Handle status code 200
   setToken(e,r){
     if(r.status == 200){
-      localStorage.setItem("token", r.response.token);
-      // window.location.href = "/";
+      //Store token in local storage
+      // var token = JSON.parse(r.response).token;
+      var token = r.response.token;
+      window.localStorage.setItem("token", token);
+
+      //Redirect to /search
+      window.history.pushState({}, null, '/search');
+      window.dispatchEvent(new CustomEvent('location-changed'));
     }
-    else{
-      this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Login', text: 'Invalid credentials'}, bubbles: true,composed: true, }));
-    }
+  }
+
+  //Anything but 200
+  handleError(e,r){
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Login', text: 'Invalid credentials'}, bubbles: true,composed: true, }));
   }
 }
 
