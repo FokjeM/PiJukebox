@@ -18,35 +18,48 @@
 package com.PiJukeboxPlayer;
 
 import java.io.IOException;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
 /**
  * Quick and dirty testing with a PiJukeboxPlayer class!
  * @author Riven
  */
-public class PiJukeboxPlayer {
+public class PiJukeboxPlayer extends Application {
     public static Player player;
     public static Queue queue;
     private static Track track;
     public static ErrorLogger log;
 
+    @Override
+    public void start(Stage stage) throws Exception {
+        Application.launch();
+    }
+
     public static void main(String[] args) throws IOException {
-        PiJukeboxPlayer m = new PiJukeboxPlayer();
+        PiJukeboxPlayer pjb = new PiJukeboxPlayer();
+        pjb.run();
+        
     }
     
-    public PiJukeboxPlayer() throws IOException {
+    public PiJukeboxPlayer() {
+        
+    }
+    
+    public void run(){
         try {
             queue = new Queue();
-            player = new Player(true, false, queue);//if this works, annoy the shit out of EVERYONE. Repeat=true, RepeatOne=false
+            player = new Player(true, false, queue);
             log = player.getLogger();
             track = new Track("", "Phyrnna - Shelter [piano ver].mp3");
             queue.put(1, track);
             player.addToQueue(new Track("D:\\School\\Advanced Java\\PiJukebox\\Player\\Music", "Phyrnna - Raindrops of a Dream.mp3"));
 	    player.playTrack(track);//Works, plays 1 track
             Thread.sleep(2000);
-	    //player.next();//Should handle automatically playing both from here, endlessly. Otherwise, the Thread has exited... But this should get logged
-            //Thread.sleep(2000);
+	    player.next();//Should handle automatically playing both from here, endlessly. Otherwise, the Thread has exited... But this should get logged
+            Thread.sleep(2000);
             player.pause();
-            /*Thread.sleep(2000);
+            Thread.sleep(2000);
             player.resume();
             Thread.sleep(2000);
             player.previous();
@@ -55,13 +68,13 @@ public class PiJukeboxPlayer {
             Thread.sleep(2000);
             player.next();
             Thread.sleep(2000);
-            player.stop();*/
+            player.stop();
         } catch(NonFatalException nfe) {
             log.writeLog(nfe, false);
         } catch(FatalException fe) {
             log.writeLog(fe, true);
-        } catch(InterruptedException ie) {
-            log.writeLog(new FatalException("Thread got interrupted, ABORT", ie), true);
+        } catch(Exception ex) {
+            log.writeLog(new FatalException("MediaPlayer crashed!", ex), true);
         }
     }
 }

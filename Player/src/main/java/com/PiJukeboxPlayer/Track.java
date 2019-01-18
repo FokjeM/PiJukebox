@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.io.InputStream;
 import java.nio.file.FileSystemNotFoundException;
 import java.util.Locale;
+import javafx.scene.media.Media;
 
 /**
  * Implementation of a Track Should just hold: - the filename of the track - the
@@ -26,6 +27,7 @@ final class Track {
     private final int bitrate;
     private final String streamType;
     private final String duration;
+    private final Media media;
 
     /**
      * Create a Track object with info from the DB and file metadata
@@ -44,7 +46,6 @@ final class Track {
     public Track(String mediaDir, String filename) throws NonFatalException, FatalException {
         if (mediaDir != null && !mediaDir.equals("") && filename != null && !filename.equals("")) {
             filepath = FileSystems.getDefault().getPath(mediaDir, filename).toAbsolutePath();
-            System.err.println(filepath.toString());
             ///TODO: Handle file according to filetype
         } else if (mediaDir == null || mediaDir.equals("")) {
             filepath = FileSystems.getDefault().getPath(getOSPath(), filename).toAbsolutePath();
@@ -55,6 +56,7 @@ final class Track {
         if(!Files.exists(filepath)) {
             throw new NonFatalException("An incorrect filename or -path was given, like '" + getOSPath() + "song.ext'\r\n\tInstead " + filename + " was given.", new java.nio.file.FileSystemException(mediaDir + filename), false, true);
         }
+        media = new Media(filepath.toUri().toString());
         streamType = checkFiletype();
         try {
             title = ffprobe("-show_entries format_tags=title").trim();
@@ -193,6 +195,10 @@ final class Track {
      */
     public Path getPath() {
         return this.filepath;
+    }
+    
+    public Media getMedia(){
+        return this.media;
     }
 
     /**

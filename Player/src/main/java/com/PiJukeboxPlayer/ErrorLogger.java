@@ -70,13 +70,6 @@ public class ErrorLogger {
         }
     }
     
-    public boolean writeFFPlayLog(String msg){
-        errorLines.add("+--------------+");
-        errorLines.add("FFPlay only outputs on stderr;\r\n\tOutput:");
-        errorLines.add(msg);
-        return writeLogLines();
-    }
-    
     public boolean debugLine(String msg){
         errorLines.add("-----" + msg);
         return writeLogLines();
