@@ -26,7 +26,7 @@ public class Interceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         try {
             //Check if token exists
-            String token = request.getHeader("Authorization");
+            String token = request.getParameter("Authorization");
             if (!userService.findByToken(token).isPresent()) {
                 response.setStatus(403);
                 return false;
