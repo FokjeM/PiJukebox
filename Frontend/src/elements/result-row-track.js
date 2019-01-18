@@ -39,7 +39,7 @@ class ResultRowTrack extends PolymerElement {
       
       <div>
         <div class="track-info">
-          <paper-icon-button icon="av:queue" on-click="addToQueue"></paper-icon-button>
+          <paper-icon-button icon="av:queue" on-tap="addToQueue"></paper-icon-button>
           <div style="display:flex; padding:8px;">
             <div>[[trackName]]</div>
           

@@ -31,8 +31,8 @@ class QueueItem extends PolymerElement {
 
       <div class="queueItem">
         <div class="controls">
-          <paper-icon-button on-click="oneUp" icon="arrow-upward"></paper-icon-button>
-          <paper-icon-button on-click="oneDown" icon="arrow-downward"></paper-icon-button>
+          <paper-icon-button on-tap="oneUp" icon="arrow-upward"></paper-icon-button>
+          <paper-icon-button on-tap="oneDown" icon="arrow-downward"></paper-icon-button>
         </div>
         <div class="trackLink">
         <div class="trackName">

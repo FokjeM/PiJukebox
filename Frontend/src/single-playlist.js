@@ -50,6 +50,7 @@ class SinglePlaylist extends PolymerElement {
 
       <div class="card">
         <h1>[[playlist.title]]</h1>
+        <p><i>[[playlist.description]]</i></p>
       </div>
 
       <!-- Artist tracks -->

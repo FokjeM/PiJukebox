@@ -25,7 +25,7 @@ class CurrentTrack extends PolymerElement {
 
       <iron-ajax
         auto
-        method="post"
+        method="POST"
         url="http://localhost:8080/api/v1/player/current"
         handle-as="json"
         params="{{header}}"
@@ -42,17 +42,23 @@ class CurrentTrack extends PolymerElement {
       </div>
     `;
   }
-  // static get properties() {
-  //   return {
-  //     trackName: {
-  //       type: String,
-  //     },
-  //     trackArtist: {
-  //       type: String,
-  //     }
-  //   };
-  // }
-
+  static get properties() {
+    return {
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
+      }
+    };
+  }
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
+  }
 }
 
 customElements.define('current-track', CurrentTrack);

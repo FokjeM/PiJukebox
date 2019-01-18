@@ -93,13 +93,15 @@ class MyApp extends PolymerElement {
         <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
           <app-toolbar>Menu</app-toolbar>
           <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-            <a name="tracks" href="[[rootPath]]tracks">Tracks</a>
-            <a name="playlists" href="[[rootPath]]playlists">Playlists</a>
-            <a name="playlist" href="[[rootPath]]playlist">Single Playlist</a>
-            <a name="queue" href="[[rootPath]]queue">Queue</a>
-            <a name="search" href="[[rootPath]]search">Search</a>
-          </iron-selector>
-        </app-drawer>
+              <template is="dom-if" if="[[!isLogin(page)]]">
+                <a name="tracks" href="[[rootPath]]tracks">Tracks</a>
+                <a name="playlists" href="[[rootPath]]playlists">Playlists</a>
+                <a name="queue" href="[[rootPath]]queue">Queue</a>
+                <a name="search" href="[[rootPath]]search">Search</a>
+                <a name="signout" on-tap="signOut" href="#">Sign out</a>
+              </template>
+            </iron-selector>
+          </app-drawer>
 
         <!-- Main content -->
         <app-header-layout has-scrolling-region="">
@@ -151,6 +153,14 @@ class MyApp extends PolymerElement {
     dialog.dialogTitle = e.detail.title;
     dialog.dialogText = e.detail.text;
     dialog.open();
+  }
+
+  signOut(){
+    window.localStorage.removeItem("token");
+ 
+    //Redirect to /login
+    window.history.pushState({}, null, '/login');
+    window.dispatchEvent(new CustomEvent('location-changed'));
   }
 
   static get properties() {
