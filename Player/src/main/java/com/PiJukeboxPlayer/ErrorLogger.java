@@ -1,6 +1,7 @@
 package com.PiJukeboxPlayer;
 
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -14,14 +15,17 @@ import java.util.List;
  */
 public class ErrorLogger {
     
-    private static Path logFile;
+    private final static Path logFile = FileSystems.getDefault().getPath("D:\\Logs\\error.out");;
     private LocalDateTime ldt;
     private final List<String> errorLines;
     
-    public ErrorLogger(LocalDateTime ldtInit) {
+    public ErrorLogger(LocalDateTime ldtInit) throws IOException {
+        if(!Files.exists(logFile)) {
+            Files.write(logFile, new byte[0], StandardOpenOption.CREATE);
+        }
         this.errorLines = new ArrayList<>();
         String firstLines = "**********New session started at: " + ldtInit.toString() + "**********";
-        errorLines.add(0, firstLines);
+        errorLines.add(firstLines);
         writeLogLines();
     }
     
@@ -42,8 +46,10 @@ public class ErrorLogger {
             if(!Files.exists(logFile)) {
                 Files.write(logFile, new byte[0], StandardOpenOption.CREATE);
             }
-            Files.write(logFile, errorLines, StandardOpenOption.WRITE);
-            if(errorLines.get(0).contains("~~~~~")){
+            Files.write(logFile, errorLines, StandardOpenOption.APPEND);
+            if(errorLines.isEmpty()) {
+                return false;
+            } else if(errorLines.get(0).contains("~~~~~")){
                 System.err.print("FATAL ERROR!");
                 for (Iterator<String> it = errorLines.iterator(); it.hasNext();) {
                     String s = it.next();
@@ -67,6 +73,11 @@ public class ErrorLogger {
         errorLines.add("+--------------+");
         errorLines.add("FFPlay only outputs on stderr;\r\n\tOutput:");
         errorLines.add(msg);
+        return writeLogLines();
+    }
+    
+    public boolean debugLine(String msg){
+        errorLines.add("-----" + msg);
         return writeLogLines();
     }
 }

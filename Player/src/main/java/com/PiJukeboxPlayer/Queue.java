@@ -118,6 +118,9 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
      * @return true if the key is present at least once, false otherwise
      */
     public boolean containsKey(Integer key) {
+        if(this.size == 0) {
+            return false;
+        }
         for (QueueEntry e : this.entries) {
             if (e.getKey().equals(key)) {
                 return true;
@@ -177,11 +180,13 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
         } else { //Else, create a new array with the necessary Length
             QueueEntry<Integer, Track>[] newEntries = new QueueEntry[key];
             //copy the current array into it
-            for (QueueEntry e : entries) {
-                newEntries[(Integer) e.getKey()] = e;
+            if(size > 0) {
+                for (QueueEntry e : entries) {
+                    newEntries[(Integer) e.getKey()] = e;
+                }
             }
             //Add the new entry
-            newEntries[key] = new QueueEntry(key, value);
+            newEntries[key-1] = new QueueEntry(key, value);
             //and change the reference pointer of entries
             this.entries = newEntries;
             this.size = key;
@@ -218,6 +223,9 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
      */
     public Track dequeue(Track t) {
         int key = 0;
+        if(this.size == 0) {
+            return null;
+        }
         for(QueueEntry e : this.entries){
             if(e.getValue().equals(t)){
                 key = (int) e.getKey();
@@ -248,13 +256,15 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
      */
     public Track remove(Integer key) {
         Track val = null;
-        for (QueueEntry e : this.entries) {
-            if (e.getKey().equals(key)) {
-                val = (Track) e.getValue();
-                e = null;
+        if(size > 0) {
+            for (QueueEntry e : this.entries) {
+                if (e.getKey().equals(key)) {
+                    val = (Track) e.getValue();
+                    e = null;
+                }
             }
+            reset();
         }
-        reset();
         return val;
     }
 

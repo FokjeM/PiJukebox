@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -29,7 +30,8 @@ public class Player {
      * The QUEUE_FILE "stateful_queue.out" which should be located in the same
      * directory as this class or its corresponding jar/war file
      */
-    private final static Path QUEUE_FILE = FileSystems.getDefault().getPath("stateful_queue.out");
+    //private final static Path QUEUE_FILE = FileSystems.getDefault().getPath("stateful_queue.out");
+    private final static Path QUEUE_FILE = FileSystems.getDefault().getPath("D:\\Logs\\queue.out");
     /**
      * The ErrorLogger object for this Player.
      * 
@@ -47,9 +49,9 @@ public class Player {
     private boolean procKill;
     //You can't be playing when you start
     private boolean playing = false;
-    private final Thread procExitCode;
-    private final Thread procOutput;
-    private final OutputStreamWriter procInput = new OutputStreamWriter(proc.getOutputStream());
+    private Thread procExitCode;
+    //Can't be final as it can only be instantiated AFTER proc.
+    private OutputStreamWriter procInput;
     
     /**
      * Instantiate a new Player. This constructor sets no default options.
@@ -70,6 +72,7 @@ public class Player {
         queue = new Queue(q);
         currentTrack = null;
         trackNum = 0;
+        this.statefulQueue = new ArrayList<>();
         if(checkQueueFile()) {
             restoreQueue();
         } else {
@@ -77,37 +80,6 @@ public class Player {
         }
         this.repeat = rep;
         this.repeatOne = repOne;
-        procExitCode = new Thread(() -> {
-            int exitCode;
-            try {
-                exitCode= proc.waitFor();
-                if(exitCode != 0){
-                    writeLog(new NonFatalException("FFPlay returned a non-zero exit code!", new IOException()));
-                } else {
-                    try {
-                        this.onSongEnd();
-                    } catch(NonFatalException | FatalException ex) {
-                        this.writeLog(ex);
-                    }
-                }
-            } catch(InterruptedException ie) {
-                writeLog(new NonFatalException("FFPlay exit code listener was interrupted waiting for an exit code!", ie));
-            }
-        });
-        
-        procOutput = new Thread(() -> {
-            InputStream in = proc.getInputStream();
-            Scanner scan = new Scanner(new InputStreamReader(in));
-            //FFPlay doesn't output to stdout (this InputStream)
-            //FFPlay does output to stderr (this InputStream because error is redirected)
-            while((scan.hasNextLine() || playing || proc.isAlive()) && !procKill){
-                log.writeFFPlayLog(scan.next());
-            }   try {
-                this.onSongEnd();
-            } catch (NonFatalException | FatalException ex) {
-                this.writeLog(ex);
-            }
-        });
     }
     
     /**
@@ -124,7 +96,7 @@ public class Player {
      * @param repOne Set repeating this Track indefinitely.
      * @param q The Queue to instantiate with.
      */
-    public Player(boolean rep, boolean repOne, Queue q) {
+    public Player(boolean rep, boolean repOne, Queue q) throws IOException {
         this(rep, repOne, q, new ErrorLogger(LocalDateTime.now()));
     }
     
@@ -137,7 +109,7 @@ public class Player {
      * @param rep Set repeating the entire Queue indefinitely.
      * @param repOne Set repeating this Track indefinitely.
      */
-    public Player(boolean rep, boolean repOne){
+    public Player(boolean rep, boolean repOne) throws IOException{
         this(rep, repOne, new Queue());
     }
     
@@ -149,7 +121,7 @@ public class Player {
      * </ul>
      * @param rep Set repeating the entire Queue indefinitely.
      */
-    public Player(boolean rep){
+    public Player(boolean rep) throws IOException{
         this(rep, false);
     }
     
@@ -160,7 +132,7 @@ public class Player {
      * <li>Repeat One: OFF (false)</li>
      * </ul>
      */
-    public Player(){
+    public Player() throws IOException{
         this(false, false);
     }
     
@@ -190,8 +162,10 @@ public class Player {
             if(!checkQueueFile()) {
                 Files.write(QUEUE_FILE, new byte[0], StandardOpenOption.CREATE);
             }
-            //Save current track number
-            statefulQueue.add(0, Integer.toString(trackNum));
+            if(!statefulQueue.isEmpty()) {
+                //Save current track number
+                statefulQueue.add(0, Integer.toString(trackNum));
+            }
             //WRITE without saving previous data.
             Files.write(QUEUE_FILE, statefulQueue, StandardOpenOption.WRITE);
             return true;
@@ -209,6 +183,9 @@ public class Player {
     private void restoreQueue() {
         try {
             List<String> qf = Files.readAllLines(QUEUE_FILE);
+            if(qf.isEmpty()) {
+                return;
+            }
             //Sets trackNum to the previous state and shifts the tracks back up.
             trackNum = Integer.parseInt(qf.remove(0));
             //Restores the queue
@@ -217,7 +194,7 @@ public class Player {
             //Immediately handle the the exception so we don't have to throw stuff
             writeLog(new NonFatalException("Queuefile exists, but access was not granted. Will continue as if the queuefile didn't exist", ex));
         }
-        this.statefulQueue = (List) this.queue.valueStrings();
+        this.statefulQueue.addAll(this.queue.valueStrings());
     }
     
     /**
@@ -300,6 +277,7 @@ public class Player {
         updateStatefulQueue();
         //Setup the arguments we need for this Track
         StringBuilder cmd = new StringBuilder();
+        cmd.append("ffplay ");
         //Don't print file info, exit when done and don't display anything
         cmd.append("-nostats -autoexit -nodisp ");
         //Disable video and subtitles
@@ -312,15 +290,36 @@ public class Player {
         cmd.append(t.getDuration());//Get the duration for this Track
         //Set the file we want to play
         cmd.append(" -i ");
+        cmd.append("\"");
         cmd.append(t.getPath().toAbsolutePath().toString()); //Get the full, absolute path
+        cmd.append("\"");
         try {
             //the process shouldn't get killed on starting
             procKill = false;
+            log.debugLine("ffplay " + cmd.toString());
             //ProcessBuilder expects the executable or command to be seperate from all arguments
-            proc = new ProcessBuilder("ffplay", cmd.toString()).redirectErrorStream(true).start();
+            proc = Runtime.getRuntime().exec(cmd.toString());
+            //proc = new ProcessBuilder("ffplay", cmd.toString()).redirectErrorStream(true).start();
+            procInput = new OutputStreamWriter(proc.getOutputStream());
             //start listening for the exit code and any output without hanging
-            procExitCode.start();
-            procOutput.start();
+            procExitCode = new Thread(() -> {
+            int exitCode;
+            try {
+                exitCode= proc.waitFor();
+                if(exitCode != 0){
+                    writeLog(new NonFatalException("FFPlay returned a non-zero exit code!", new IOException()));
+                } else {
+                    try {
+                        this.onSongEnd();
+                    } catch(NonFatalException | FatalException ex) {
+                        this.writeLog(ex);
+                    }
+                }
+            } catch(InterruptedException ie) {
+                writeLog(new NonFatalException("FFPlay exit code listener was interrupted waiting for an exit code!", ie));
+            }
+        });
+        procExitCode.start();
         } catch (IOException ex) {
             procKill = true; //Stop the threads again
             throw new FatalException("Could not start FFPlay!", ex);
@@ -387,8 +386,10 @@ public class Player {
      * @throws NonFatalException when FFPlay does not stop by itself
      */
     public void stop() throws NonFatalException {
-        if(!proc.isAlive()) {
-            //If the process has already exited, or FFPlay wasn't started yet
+        //If the process has already exited, or FFPlay wasn't started yet
+        if(proc == null) {
+            return;
+        } else if(!proc.isAlive()) {
             return;
         }
         //Try to leverage the threads to exit by themselves
