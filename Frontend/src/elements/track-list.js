@@ -17,7 +17,7 @@ class TrackList extends PolymerElement {
       
       <iron-ajax
         auto
-        url="http://localhost:8080/api/v1/laptops"
+        url="http://localhost:8080/api/v1/extended/tracks"
         handle-as="json"
         last-response="{{response}}">
       </iron-ajax>

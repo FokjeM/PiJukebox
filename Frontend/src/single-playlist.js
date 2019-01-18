@@ -61,7 +61,8 @@ class SinglePlaylist extends PolymerElement {
               <result-row-track
                   track-id="{{track.id}}"
                   track-name="{{track.name}}"
-                  track-artist="{{track.artists}}">
+                  exclude-artist="true">
+                  <!-- track-artist="{{track.artists}}" -->
               </result-row-track>
             </div>
         </template>

@@ -8,6 +8,7 @@ import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-icons/av-icons.js';
+import '@polymer/iron-icons/social-icons.js';
 import '@polymer/paper-dialog/paper-dialog.js';
 
 class PlaylistTrackRow extends PolymerElement {
@@ -22,6 +23,8 @@ class PlaylistTrackRow extends PolymerElement {
           display: flex;
           flex-direction: column;
           margin-bottom: 10px;
+          background-color: rgba(0,121,107,0.05);
+          border-radius: 5px;
         }
         
         .trackAddToPlaylist {
@@ -36,7 +39,27 @@ class PlaylistTrackRow extends PolymerElement {
           flex-direction: row;
           justify-content: space-between;
           flex-wrap: wrap;
-          padding-left: 25px;
+        }
+
+        .trackArtist {
+          display: flex;
+          align-items:center;
+        }
+
+        .artist {
+          display: flex;
+        }
+
+        .artist:not(:last-of-type)::after {
+          content: ", ";
+          position: relative;
+          display: block;
+          right: 0;
+          width: 10px;
+        }
+
+        .artistIcon {
+          color: var(--app-secondary-color);
         }
 
         .playlist {
@@ -71,10 +94,17 @@ class PlaylistTrackRow extends PolymerElement {
         </div>
         <div class="trackInfo">
           <div class="trackArtist">
-            artist
+          <template is="dom-if" if="[[hasArtist()]]">
+            <paper-icon-button disabled class="artistIcon" icon="social:person"></paper-icon-button>
+            <template is="dom-repeat" items="{{track.artists}}" as="artist" rendered-item-count="{{artistCount}}">
+              <div class="artist">
+                {{artist.name}}
+              </div>
+            </template>
+          </template>
           </div>
           <div class="trackTime">
-            time
+            <!-- time -->
           </div>
         </div>
       </div>
@@ -87,7 +117,6 @@ class PlaylistTrackRow extends PolymerElement {
                 on-tap="addTrack">[[playlist.name]]</label> <br>
           </template>
         </dom-repeat>
-
       </paper-dialog>
       
     `;
@@ -99,6 +128,10 @@ class PlaylistTrackRow extends PolymerElement {
         type: Object
       }
     };
+  }
+
+  hasArtist(){
+    return this.track.artists.length > 0;
   }
 
   openBy(element) {
