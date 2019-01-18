@@ -60,12 +60,14 @@ class SearchTracks extends PolymerElement {
 
       <!-- Track search ajax -->
       <iron-ajax
-      method="post"
-        id="ajaxSearchTrack"
+      method="GET"
         auto
-        url="http://localhost:8080/api/v1/tracks/search/{{searchTerm}}"
-        headers="{Authorization: [[token]]}"
+        id="ajaxSearchTrack"
+        url="http://localhost:8080/api/v1/extended/tracks?name={{searchTerm}}"
         handle-as="json"
+        params="{{header}}"
+        headers="{{header}}"
+        content-type="application/json"
         last-response="{{trackResults}}">
       </iron-ajax>
 
@@ -169,6 +171,28 @@ class SearchTracks extends PolymerElement {
         </template> 
       </div>
     `;
+  }
+  ready() {
+    super.ready();
+    console.log(this.header);
+  }
+
+  static get properties() {
+    return {
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
+      }
+    };
+  }
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
   }
 
   //Toggle ajax auto attribute and hide/show results according to checkbox value
