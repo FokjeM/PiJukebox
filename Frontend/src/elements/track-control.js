@@ -185,7 +185,7 @@ class TrackControl extends PolymerElement {
   }
 
   verifyStatus(e, response) {
-    if (response == 200) {
+    if (response.status == 200) {
       this.updateStates();
       this.updateControls();
     } else {

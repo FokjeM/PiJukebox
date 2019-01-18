@@ -78,11 +78,20 @@ class PlaylistTrackRow extends PolymerElement {
 
       <iron-ajax
         id="addToPlaylist"
-        method="POST"
-        url="http://localhost:8080/api/v1/playlists/addTrack"
+        method="PATCH"
+        url="http://localhost:8080/api/v1/details/playlists/{{playlistId}}/tracks/{{trackId}}"
         content-type="application/json"
         handle-as="json"
         on-response="addedTrack">
+      </iron-ajax>
+
+      <iron-ajax
+        auto
+        id="getPlaylists"
+        url="http://localhost:8080/api/v1/playlists"  
+        handle-as="json"
+        content-type="application/json"
+        last-response="{{playlists}}">
       </iron-ajax>
 
       <div class="trackLink">
@@ -103,9 +112,9 @@ class PlaylistTrackRow extends PolymerElement {
             </template>
           </template>
           </div>
-          <div class="trackTime">
+          <!-- <div class="trackTime"> -->
             <!-- time -->
-          </div>
+          <!-- </div> -->
         </div>
       </div>
 
@@ -114,7 +123,7 @@ class PlaylistTrackRow extends PolymerElement {
         <dom-repeat items="{{playlists}}" as="playlist">
           <template>
             <label class="playlist" data-playlist-id$="[[playlist.id]]" data-track-id$="[[track.id]]"
-                on-tap="addTrack">[[playlist.name]]</label> <br>
+                on-tap="addTrack">[[playlist.title]]</label> <br>
           </template>
         </dom-repeat>
       </paper-dialog>
@@ -126,6 +135,14 @@ class PlaylistTrackRow extends PolymerElement {
     return {
       track: {
         type: Object
+      },
+      trackId: {
+        type: Number,
+        value: null
+      },
+      playlistId: {
+        type: Number,
+        value: null
       }
     };
   }
@@ -141,14 +158,16 @@ class PlaylistTrackRow extends PolymerElement {
   }
 
   addTrack(e) {
-    let playlistId = e.target.dataset.playlistId;
-    let trackId = e.target.dataset.trackId;
-    this.$.addToPlaylist.setAttribute('body', '{"trackId":' + trackId + ', "playlistId":'+ playlistId +'}');
+    let playlist_Id = e.target.dataset.playlistId;
+    let track_Id = e.target.dataset.trackId;
+
+    this.playlistId = playlist_Id;
+    this.trackId = track_Id;
     this.$.addToPlaylist.generateRequest();
   }
 
   addedTrack(e, response) {
-    if(response==200) {
+    if(response.status == 200) {
       this.throwEvent('open-dialog-event', {title: 'Playlist', text: 'Song is successfully added to the playlist'});
     }
     else {

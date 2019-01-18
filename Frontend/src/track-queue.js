@@ -69,7 +69,7 @@ class TrackQueue extends PolymerElement {
   }
 
   queueChanged(e, response) {
-    if(response == 200) {
+    if(response.status == 200) {
       this.throwEvent('open-dialog-event', {title: 'Queue', text: 'The queue changed successfully'});
     } else {
       this.throwEvent('open-dialog-event', {title: 'Queue', text: 'Something went wrong, please try again'});
