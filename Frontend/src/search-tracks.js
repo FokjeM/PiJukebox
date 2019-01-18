@@ -55,9 +55,6 @@ class SearchTracks extends PolymerElement {
         </div>
       </div>
 
-      <!-- Get token and bind to all ajax calls -->
-      <get-token token="{{token}}"></get-token>
-
       <!-- Track search ajax -->
       <iron-ajax
       method="GET"

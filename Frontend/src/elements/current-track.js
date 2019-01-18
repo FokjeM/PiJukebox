@@ -32,8 +32,6 @@ class CurrentTrack extends PolymerElement {
         last-response="{{currentTrack}}">
       </iron-ajax>
 
-      <get-token token="{{token}}"></get-token>
-
       <div class="container">
         
         <div class="trackInfo">

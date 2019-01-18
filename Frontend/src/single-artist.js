@@ -92,8 +92,6 @@ class SingleArtist extends PolymerElement {
         </template> 
       </div>
 
-      <get-token token="{{token}}"></get-token>
-
     `;
   }
 
