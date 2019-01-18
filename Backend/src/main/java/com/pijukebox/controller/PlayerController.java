@@ -1,6 +1,7 @@
 package com.pijukebox.controller;
 
 import com.pijukebox.controller.player.StartPlayer;
+import io.swagger.annotations.ApiOperation;
 import javafx.embed.swing.JFXPanel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -85,5 +86,11 @@ public class PlayerController {
         }catch (Exception ex){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't play track"), ex);
         }
+    }
+
+    @GetMapping(value = "/status", produces = "application/json")
+    @ApiOperation(value = "Get player status")
+    public String status() {
+        return "{\"playPauseState\": true, \"volumeLevel\": 2}";
     }
 }

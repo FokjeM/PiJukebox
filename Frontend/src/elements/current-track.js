@@ -54,7 +54,7 @@ class CurrentTrack extends PolymerElement {
        <div class="trackInfo">
          <p>[[currentTrack.name]]</p>
          <template is="dom-if" if="{{!currentTrack.artists}}">
-           No Artist
+           <!-- No Artist -->
          </template>
 
          <div class="artistContainer">

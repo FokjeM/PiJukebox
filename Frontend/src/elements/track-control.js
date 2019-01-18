@@ -160,7 +160,7 @@ class TrackControl extends PolymerElement {
       },
       playPauseState: {
         type: Boolean,
-        value: 0
+        // value: false
       },
       repeatIcon: {
         type: String,
@@ -203,11 +203,11 @@ class TrackControl extends PolymerElement {
   }
 
   verifyStatus(e, response) {
-    var playerStatus = JSON.parse(response.response);
-
+    let playerStatus = JSON.parse(response.response);
+    console.log(playerStatus);
     if (response.status == 200) {
       this.updateStates(playerStatus);
-      this.updateControls();
+      // this.updateControls();
     } else {
       this.throwEvent('open-dialog-event', {title: 'Player', text: 'Something went wrong, please try again'});
     }
@@ -218,7 +218,7 @@ class TrackControl extends PolymerElement {
    */
   updateStates(playerStatus) {
     this.playPauseState = playerStatus.playPauseState;
-    this.repeatState = playerStatus.repeatState;
+    // this.repeatState = playerStatus.repeatState;
     this.volumeLevel = playerStatus.volumeLevel;
   }
 
@@ -227,7 +227,7 @@ class TrackControl extends PolymerElement {
    */
   updateControls () {
     this.changePlayPauseIcon();
-    this.changeRepeatIcon();
+    // this.changeRepeatIcon();
     this.changeVolumeIcon();
   }
 
@@ -262,7 +262,8 @@ class TrackControl extends PolymerElement {
   /**
    * Change the play/pause icon to the current play / pause state
    */
-  changePlayPauseIcon(state) {
+  changePlayPauseIcon() {
+    let state = this.playPauseState;
     if (!state) {
       this.playPauseIcon = "av:pause";
     } else if (state) {
