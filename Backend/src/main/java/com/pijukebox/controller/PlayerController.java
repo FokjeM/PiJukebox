@@ -1,72 +1,89 @@
 package com.pijukebox.controller;
 
-import com.pijukebox.model.track.Track;
-import com.pijukebox.service.ITrackService;
-import io.swagger.annotations.ApiOperation;
+import com.pijukebox.controller.player.StartPlayer;
+import javafx.embed.swing.JFXPanel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+
+import javax.swing.*;
+import java.sql.ResultSet;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1/player")
 public class PlayerController {
 
-    private final ITrackService trackService;
+    private StartPlayer sp;
+    public PlayerController()
+    {
 
-    @Autowired
-    public PlayerController(ITrackService trackService) {
-        this.trackService = trackService;
+        JFrame frame = new JFrame("FX");
+        JFXPanel fxPanel = new JFXPanel();
+        frame.add(fxPanel);
+        frame.setVisible(false);
+        this.sp = new StartPlayer();
     }
 
-    @PostMapping(value = "/current", produces = "application/json")
-    @ApiOperation(value = "Returns current track.")
-    public ResponseEntity<Track> current() {
-        try {
-            if (!trackService.findTrackDetailsById(1L).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(trackService.findTrackDetailsById(1L).get(), HttpStatus.OK);
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No current track", ex);
+    @GetMapping("/play")
+    public ResponseEntity<String> playCurrent()
+    {
+        try{
+            sp.play();
+            return new ResponseEntity<>("Playing...", HttpStatus.OK);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't play track"), ex);
         }
     }
 
-    @PostMapping(value = "/play", produces = "application/json")
-    @ApiOperation(value = "Play/pause the current song.")
-    public String play() {
-        return "play";
+    @GetMapping("/pause")
+    public ResponseEntity<String> pauseCurrent()
+    {
+        try{
+            sp.pause();
+            return new ResponseEntity<>("Playing...", HttpStatus.OK);
+        }catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't play track"), ex);
+        }
     }
 
-    @PostMapping(value = "/next", produces = "application/json")
-    @ApiOperation(value = "Play the next song in the queue.")
-    public String next() {
-        return "next";
+    @GetMapping("/stop")
+    public ResponseEntity<String> stopCurrent()
+    {
+        try{
+            sp.stop();
+            return new ResponseEntity<>("Playing...", HttpStatus.OK);
+        }catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't play track"), ex);
+        }
     }
 
-    @PostMapping(value = "/previous", produces = "application/json")
-    @ApiOperation(value = "Play the previous song in the queue.")
-    public String previous() {
-        return "previous";
+    @GetMapping("/next")
+    public ResponseEntity<String> nextTrack()
+    {
+        try{
+            sp.next();
+            sp.play();
+            return new ResponseEntity<>("Playing...", HttpStatus.OK);
+        }catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't play track"), ex);
+        }
     }
 
-    @PostMapping(value = "/shuffle", produces = "application/json")
-    @ApiOperation(value = "Toggle shuffle options.")
-    public String shuffle() {
-        return "shuffle";
-    }
-
-    @PostMapping(value = "/repeat", produces = "application/json")
-    @ApiOperation(value = "Toggle repeat.")
-    public String repeat() {
-        return "repeat";
-    }
-
-    @GetMapping(value = "/status", produces = "application/json")
-    @ApiOperation(value = "Get status")
-    public String status() {
-        return "{\"playPauseState\": false, \"repeatState\": 2, \"volumeLevel\": 5}";
+    @GetMapping("/prev")
+    public ResponseEntity<String> prevTrack()
+    {
+        try{
+            sp.next();
+            return new ResponseEntity<>("Playing...", HttpStatus.OK);
+        }catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't play track"), ex);
+        }
     }
 }
