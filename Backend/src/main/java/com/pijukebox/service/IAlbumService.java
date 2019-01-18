@@ -30,7 +30,7 @@ public interface IAlbumService {
 
     Optional<List<GenreWithAlbums>> findSimpleAlbumsByGenreName(String name);
 
-    Optional<List<ArtistWithAlbums>> findSimpleAlbumsByArtistName(String name);
+    Optional<List<ArtistWithAlbums>> findAlbumsByArtistName(String name);
 
     Optional<SimpleTrack> findTrackById(Long id);
 
