@@ -55,8 +55,8 @@ class TrackControl extends PolymerElement {
         id="getStatus"
         url="http://localhost:8080/api/v1/player/status"
         content-type="application/json"  
+        params="{{header}}"   
         handle-as="json"
-   
         on-response="verifyStatus">
       </iron-ajax>
 
@@ -65,6 +65,7 @@ class TrackControl extends PolymerElement {
         method="POST"
         url="http://localhost:8080/api/v1/player/shuffle"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
         on-response="getStatus">
       </iron-ajax>
@@ -74,6 +75,7 @@ class TrackControl extends PolymerElement {
         method="POST"
         url="http://localhost:8080/api/v1/player/play"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
         on-response="getStatus">
       </iron-ajax>
@@ -83,6 +85,7 @@ class TrackControl extends PolymerElement {
         method="POST"
         url="http://localhost:8080/api/v1/player/repeat"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
         on-response="getStatus">
       </iron-ajax>
@@ -92,6 +95,7 @@ class TrackControl extends PolymerElement {
         method="POST"
         url="http://localhost:8080/api/v1/player/next"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
         on-response="getStatus">
       </iron-ajax>
@@ -101,6 +105,7 @@ class TrackControl extends PolymerElement {
         method="POST"
         url="http://localhost:8080/api/v1/player/previous"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
         on-response="getStatus">
       </iron-ajax>
@@ -110,6 +115,7 @@ class TrackControl extends PolymerElement {
         method="POST"
         url="http://localhost:8080/api/v1/player/volume"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
         on-response="getStatus">
       </iron-ajax>
@@ -125,7 +131,7 @@ class TrackControl extends PolymerElement {
           </div>
 
           <div class="controls">
-            <paper-icon-button on-tap="shuffle" icon="av:shuffle" id="shuffleBtn"></paper-icon-button>
+            <!-- <paper-icon-button on-tap="shuffle" icon="av:shuffle" id="shuffleBtn"></paper-icon-button> -->
 
             <paper-icon-button on-tap="previousTrack" icon="av:skip-previous"></paper-icon-button>
 
@@ -133,7 +139,7 @@ class TrackControl extends PolymerElement {
             
             <paper-icon-button on-tap="nextTrack" icon="av:skip-next"></paper-icon-button>
 
-            <paper-icon-button on-tap="repeat" icon="[[repeatIcon]]" id="repeatBtn"></paper-icon-button>
+            <!-- <paper-icon-button on-tap="repeat" icon="[[repeatIcon]]" id="repeatBtn"></paper-icon-button> -->
           </div>
 
           <div class="controls">
@@ -175,17 +181,28 @@ class TrackControl extends PolymerElement {
       volumeLevel: {
         type: Number,
         value: 2
+      },
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
       }
     };
   }
-
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
+  }
 
   getStatus(e) {
     this.$.getStatus.generateRequest();
   }
 
   verifyStatus(e, response) {
-
     var playerStatus = JSON.parse(response.response);
 
     if (response.status == 200) {
@@ -194,9 +211,6 @@ class TrackControl extends PolymerElement {
     } else {
       this.throwEvent('open-dialog-event', {title: 'Player', text: 'Something went wrong, please try again'});
     }
-
-    console.log(this.volumeLevel);
-
   }
 
   /**

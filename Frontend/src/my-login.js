@@ -37,8 +37,8 @@ class MyLogin extends PolymerElement {
       <div>
         <div style="padding:20px; 40px 20px 20px;">
           <paper-input label="Email" value="{{email}}"></paper-input>
-          <paper-input label="Password" value="{{password}}"></paper-input>
-          <paper-button id="loginButton" style="background-color: #00796B; color: white; width:100%; margin-top:20px;" raised on-click="submitLogin">Login</paper-button>
+          <paper-input type="password" label="Password" value="{{password}}"></paper-input>
+          <paper-button id="loginButton" style="background-color: #00796B; color: white; width:100%; margin-top:20px;" raised on-tap="submitLogin">Login</paper-button>
         </div>
 
         <!-- Post credentials -->

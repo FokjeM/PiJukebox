@@ -32,13 +32,14 @@ class ResultRowTrack extends PolymerElement {
         url="http://localhost:8080/api/v1/queue/add"
         body='[{"trackId": [[trackId]]}]'
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
         on-response="handleQueueResponse">
       </iron-ajax>
       
       <div>
         <div class="track-info">
-          <paper-icon-button icon="av:queue" on-click="addToQueue"></paper-icon-button>
+          <paper-icon-button icon="av:queue" on-tap="addToQueue"></paper-icon-button>
           <div style="display:flex; padding:8px;">
             <div>[[trackName]]</div>
           
@@ -89,8 +90,21 @@ class ResultRowTrack extends PolymerElement {
       excludeArtist:{
         type: Boolean,
         value: false
+      },
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
       }
     };
+  }
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
   }
 
 }

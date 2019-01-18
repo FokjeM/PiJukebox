@@ -50,6 +50,7 @@ class SinglePlaylist extends PolymerElement {
 
       <div class="card">
         <h1>[[playlist.title]]</h1>
+        <p><i>[[playlist.description]]</i></p>
       </div>
 
       <!-- Artist tracks -->
@@ -61,8 +62,8 @@ class SinglePlaylist extends PolymerElement {
               <result-row-track
                   track-id="{{track.id}}"
                   track-name="{{track.name}}"
-                  track-artist="{{track.artists}}"
-                  exclude-artist=true>
+                  exclude-artist="true">
+                  <!-- track-artist="{{track.artists}}" -->
               </result-row-track>
             </div>
         </template>
@@ -73,6 +74,7 @@ class SinglePlaylist extends PolymerElement {
       </div>
     `;
   }
+  
   static get properties() {
     return {
       token: {

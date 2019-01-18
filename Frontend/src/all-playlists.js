@@ -50,7 +50,7 @@ class AllPlaylists extends PolymerElement {
           margin-top: 10px;
         }
 
-        #playlistName {
+        #playlistName, #playlistDescription {
           width: 350px;
         }
 
@@ -62,10 +62,23 @@ class AllPlaylists extends PolymerElement {
         url="http://localhost:8080/api/v1/details/playlists"  
         handle-as="json"
         content-type='application/json'
-        headers="{Authorization: [[token]]}"
-        last-response="{{playlists}}">
+        params="{{header}}"
+        last-response="{{playlists}}"
+        on-response="gotPlaylists">
       </iron-ajax>
-        
+      
+      <iron-ajax
+        id="sendPlaylistForm"
+        method="post"
+        url="http://localhost:8080/api/v1/playlists/create"
+        handle-as="json"
+        body='{"title": "{{title}}","description": "{{description}}"}'
+        params="{{header}}"
+        content-type="application/json"
+        on-response="formResponse"
+        on-error="handleError">
+      </iron-ajax>
+
       <div class="card">
         <div class="container">
             
@@ -84,14 +97,13 @@ class AllPlaylists extends PolymerElement {
 
           <div class="playlist-container">
             <iron-form id="playlistForm">
-              <!-- <form action="http://localhost:8080/api/v1/playlists/create" method="get"> -->
-              <form action="http://localhost:8080/api/v1/playlists/create" method="post" on-response="formResponse">
-                <div class="formInput">
-                  <paper-input type="text" name="name" label="Name" id="playlistName" 
-                  error-message="Please enter a name" required></paper-input>
-                  <paper-icon-button id="submitBtn" on-tap="_submitForm" icon="icons:add-circle-outline"></paper-icon-button>
-                </div>
-              </form>
+              <paper-input type="text" name="name" label="Playlist Name" id="playlistName" value="{{title}}" 
+              error-message="Please enter a name" required></paper-input>
+              <div class="formInput">
+                <paper-input type="text" name="description" label="Playlist Description" id="playlistDescription" value="{{description}}" 
+                error-message="Please enter a description"></paper-input>
+                <paper-icon-button id="submitBtn" on-tap="submitPlaylistForm" icon="icons:add-circle-outline"></paper-icon-button>
+              </div>
             </iron-form>
             
           </div>
@@ -100,19 +112,19 @@ class AllPlaylists extends PolymerElement {
     `;
   }
 
-  _submitForm() {
-    let pForm = this.$.playlistForm;
-
-    let isValid = pForm.validate();
-    if(isValid) {
-      this.$.playlistForm.submit();
-      
+  submitPlaylistForm() {
+    if(this.title == "") {
+      this.throwEvent('open-dialog-event', {title: 'Playlist', text: 'Please fill in a title'});
+    }
+    else{
+      this.$.sendPlaylistForm.generateRequest();
     }
   }
 
   formResponse(e,response) {
-    if(response == 200) {
-      updatePlaylists();
+    console.log("hi" + response.status);
+    if(response.status == 200) {
+      this.updatePlaylists();
     } else {
       this.throwEvent('open-dialog-event', {title: 'Playlist', text: 'Something went wrong, please try again'});
     }
@@ -122,6 +134,30 @@ class AllPlaylists extends PolymerElement {
     this.$.getPlaylists.generateRequest();
   }
   
+  gotPlaylists(e, response) {
+    if(response.status == 200) {
+      this.title = "";
+      this.description = "";
+    }
+  }
+
+  static get properties() {
+    return {
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
+      }
+    };
+  }
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
+  }
 
   throwEvent(name, detail){
     this.dispatchEvent(new CustomEvent(name, 
