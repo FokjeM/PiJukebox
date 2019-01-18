@@ -1,11 +1,6 @@
 package com.pijukebox.service.impl;
 
-import com.pijukebox.model.album.Album;
-import com.pijukebox.model.genre.Genre;
-import com.pijukebox.model.simple.SimpleAlbum;
-import com.pijukebox.model.simple.SimpleArtist;
 import com.pijukebox.model.simple.SimpleGenre;
-import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.repository.*;
 import org.hamcrest.core.IsSame;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,8 +21,6 @@ class GenreServiceImplTest {
 
     @Mock
     private IGenreRepository mockGenreWithAlbumsRepository;
-//    @Mock
-//    private ISimpleGenreRepository mockSimpleGenreRepository;
 
     private GenreServiceImpl genreServiceImplUnderTest;
 
@@ -41,7 +34,7 @@ class GenreServiceImplTest {
     void testGenreById() {
         // Source: https://stackoverflow.com/a/36004293
         String newLine = System.getProperty("line.separator");
-        System.out.println("Initiating testFindSimpleAlbumById...");
+        System.out.println("Initiating testGenreById...");
         System.out.println(newLine);
 
         // Given
