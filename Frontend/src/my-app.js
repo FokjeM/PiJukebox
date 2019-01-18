@@ -181,6 +181,7 @@ class MyApp extends PolymerElement {
      // Show 'tracks' in that case. And if the page doesn't exist, show 'view404'.
     var token = localStorage.getItem('token');
     if(token == null){
+      this.set('route.path', '/login');
       this.page = 'login';
     }
     else if (!page) {
