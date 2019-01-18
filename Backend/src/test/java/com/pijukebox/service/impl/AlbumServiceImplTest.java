@@ -1,8 +1,6 @@
 package com.pijukebox.service.impl;
 
 import com.pijukebox.model.album.Album;
-import com.pijukebox.model.artist.Artist;
-import com.pijukebox.model.genre.Genre;
 import com.pijukebox.model.simple.SimpleAlbum;
 import com.pijukebox.model.simple.SimpleArtist;
 import com.pijukebox.model.simple.SimpleGenre;
@@ -11,11 +9,7 @@ import com.pijukebox.repository.*;
 import org.hamcrest.core.IsSame;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.*;
 
@@ -123,7 +117,6 @@ class AlbumServiceImplTest {
         // You are expecting repo to be called once with correct param
         verify(mockAlbumRepository).findById(1L);
 
-        System.out.println(newLine);
         System.out.println("Expected result: " + expectedResult);
         System.out.println(newLine);
         System.out.println("Given result: " + result);
@@ -169,7 +162,6 @@ class AlbumServiceImplTest {
         // You are expecting repo to be called once with correct param
         verify(mockAlbumRepository).findAlbumsByNameContaining("Sheep Reliability");
 
-        System.out.println(newLine);
         System.out.println("Expected result: " + expectedResult);
         System.out.println(newLine);
         System.out.println("Given result: " + result);
