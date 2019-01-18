@@ -13,8 +13,6 @@ public interface IUserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findById(Long id);
 
-    Optional<User> findByFirstnameAndLastname(String firstname, String lastname);
-
     Optional<User> findByToken(String token);
 
     Optional<User> findByEmailAndPassword(String email, String password);

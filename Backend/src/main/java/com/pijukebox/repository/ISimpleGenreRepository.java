@@ -12,6 +12,4 @@ public interface ISimpleGenreRepository extends JpaRepository<SimpleGenre, Long>
     List<SimpleGenre> findAll();
 
     Optional<SimpleGenre> findById(Long id);
-
-    Optional<List<SimpleGenre>> findSimpleGenresByNameContaining(String name);
 }
