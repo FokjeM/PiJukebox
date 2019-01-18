@@ -31,8 +31,16 @@ public class PlaylistController {
 
     @GetMapping("/playlists")
     @ApiOperation(value = "Retrieve all simple playlists")
-    public ResponseEntity<List<SimplePlaylist>> playlists() {
+    public ResponseEntity<List<SimplePlaylist>> playlists(@RequestParam(name="name", required = false) String name) {
         try {
+            if(name != null && !name.isEmpty())
+            {
+                if(!playlistService.findSimplePlaylistsByName(name).isPresent())
+                {
+                   return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+                return new ResponseEntity<>(playlistService.findSimplePlaylistsByName(name).get(), HttpStatus.OK);
+            }
             return new ResponseEntity<>(playlistService.findAllSimplePlaylists(), HttpStatus.OK);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No simple playlists found", ex);
