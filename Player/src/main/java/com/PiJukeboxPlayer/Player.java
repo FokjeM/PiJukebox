@@ -1,8 +1,6 @@
 package com.PiJukeboxPlayer;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -11,7 +9,7 @@ import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The Player object will create an ErrorLogger,
@@ -159,19 +157,18 @@ public class Player {
             //We need to double check this, as calling create on a file that
             //already exists *will* throw an IOException.
             //However, the file might have been removed during runtime.
-            if(!checkQueueFile()) {
-                Files.write(QUEUE_FILE, new byte[0], StandardOpenOption.CREATE);
-            }
+            Files.deleteIfExists(QUEUE_FILE);
+            Files.createFile(QUEUE_FILE);
             if(!statefulQueue.isEmpty()) {
                 //Save current track number
                 statefulQueue.add(0, Integer.toString(trackNum));
             }
             //WRITE without saving previous data.
-            Files.write(QUEUE_FILE, statefulQueue, StandardOpenOption.WRITE);
+            Files.write(QUEUE_FILE, statefulQueue, StandardOpenOption.APPEND);
             return true;
         } catch (IOException ex) {
             writeLog(new NonFatalException("Could not save the Stateful Queue to file.", ex));
-            System.out.print("Running in non-stateful mode; cannot resume this queue on exit.");
+            System.err.println("Running in non-stateful mode; cannot resume this queue on exit.");
             return false;
         }
     }
@@ -220,9 +217,10 @@ public class Player {
      * @throws com.PiJukeboxPlayer.NonFatalException propagated from {@link #playTrack(com.PiJukebox.Track) playTrack}
      */
     public void next() throws FatalException, NonFatalException{
+        this.stop();
         if(trackNum == 0){
             //As long as there is still a track in there, we'll play it.
-            while(!queue.containsKey(trackNum) && trackNum <= queue.size()){
+            while(!queue.containsKey(trackNum) && trackNum < queue.size()){
                 trackNum++;
             }
         } else {
@@ -285,39 +283,60 @@ public class Player {
         cmd.append("-vn -sn ");
         //Set the codec for all streams
         cmd.append("-codec:a ");
-        cmd.append(t.getStreamType()); //Get the encoding, thus codec for this Track
-        //Set the track duration so we can tell FFPlay how long it should run
-        cmd.append(" -t ");
-        cmd.append(t.getDuration());//Get the duration for this Track
-        //Set the file we want to play
-        cmd.append(" -i ");
-        cmd.append("\"");
-        cmd.append(t.getPath().toAbsolutePath().toString()); //Get the full, absolute path
-        cmd.append("\"");
+        try {
+            //If the Track couldn't instantiate properly, we can't play it.
+            //This is really for if someone passes a legal, faulty value like null.
+            cmd.append(t.getStreamType()); //Get the encoding, thus codec for this Track
+            //Set the track duration so we can tell FFPlay how long it should run
+            cmd.append(" -t ");
+            cmd.append(t.getDuration());//Get the duration for this Track
+            //Set the file we want to play
+            cmd.append(" -i ");
+            cmd.append("\"");
+            cmd.append(t.getPath().toAbsolutePath().toString()); //Get the full, absolute path
+            cmd.append("\"");
+        } catch(Exception ex) {
+            throw new NonFatalException("Something went wrong with this Track. Playback has been STOPPED", ex);
+        }
         try {
             //the process shouldn't get killed on starting
             procKill = false;
             log.debugLine("ffplay " + cmd.toString());
             //ProcessBuilder expects the executable or command to be seperate from all arguments
             proc = Runtime.getRuntime().exec(cmd.toString());
+            playing = true;
             //proc = new ProcessBuilder("ffplay", cmd.toString()).redirectErrorStream(true).start();
             procInput = new OutputStreamWriter(proc.getOutputStream());
             //start listening for the exit code and any output without hanging
             procExitCode = new Thread(() -> {
-            int exitCode;
+            int exitCode = 1;
             try {
-                exitCode= proc.waitFor();
+                if(proc == null) {
+                    this.procExitCode.interrupt();
+                    return;
+                }
+                if(proc.waitFor(Long.parseLong(/*currentTrack.getDuration()*/"1"), TimeUnit.SECONDS)) {
+                    exitCode = proc.exitValue();
+                }
                 if(exitCode != 0){
-                    writeLog(new NonFatalException("FFPlay returned a non-zero exit code!", new IOException()));
-                } else {
-                    try {
+                    procKill = true;
+                    writeLog(new NonFatalException("FFPlay returned a non-zero exit code or did  not finish!", new IOException()));
+                }
+                if(procKill) {
+                    this.procExitCode.interrupt();
+                    return;
+                }
+                try {
+                    if(!procKill && playing) {
                         this.onSongEnd();
-                    } catch(NonFatalException | FatalException ex) {
-                        this.writeLog(ex);
                     }
+                } catch(NonFatalException | FatalException ex) {
+                    this.writeLog(ex);
                 }
             } catch(InterruptedException ie) {
                 writeLog(new NonFatalException("FFPlay exit code listener was interrupted waiting for an exit code!", ie));
+            } catch(IllegalThreadStateException its) {
+                writeLog(new NonFatalException("FFPlay exit code listener was done waiting for an exit code!", its));
             }
         });
         procExitCode.start();
@@ -325,7 +344,6 @@ public class Player {
             procKill = true; //Stop the threads again
             throw new FatalException("Could not start FFPlay!", ex);
         }
-        playing = true;
     }
     
     /**
@@ -354,6 +372,7 @@ public class Player {
         if(!playing){
             return;
         }
+        playing = false;
         try{
             procInput.write("p");
         } catch (IOException ex) {
@@ -361,7 +380,6 @@ public class Player {
             procKill = true;
             throw new NonFatalException("Could not pause FFPlay; Force-quit it", ex);
         }
-        playing = false;
     }
     
     /**
@@ -376,8 +394,7 @@ public class Player {
             procInput.write("p");
             playing = true;
         } catch (IOException ex) {
-            proc.destroy();
-            procKill = true;
+            stop();
             throw new NonFatalException("Could not resume FFPlay; Force-quit it", ex);
         }
     }
@@ -389,23 +406,27 @@ public class Player {
     public void stop() throws NonFatalException {
         //If the process has already exited, or FFPlay wasn't started yet
         if(proc == null) {
+            System.err.println("proc was null");
             return;
-        } else if(!proc.isAlive()) {
+        } else if(!proc.isAlive()){
+            System.err.println("proc wasn't alive");
             return;
         }
         //Try to leverage the threads to exit by themselves
         playing = false;
         procKill = true;
         try{
-            //Can't tell a dead process to stop
+            //Can't tell a dead process to stop, and it might've stopped
             if(proc.isAlive()) {
+                procExitCode.interrupt();
                 procInput.write("q");
+                procInput.close();
+                proc.destroy();
             }
         } catch (IOException ex) {
             proc.destroy();
             throw new NonFatalException("Could not stop FFPlay; Force-quit it", ex);
         }
-        proc.destroy();
     }
     
     /**

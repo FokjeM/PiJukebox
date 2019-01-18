@@ -40,16 +40,28 @@ public class PiJukeboxPlayer {
             log = player.getLogger();
             track = new Track("", "Phyrnna - Shelter [piano ver].mp3");
             queue.put(1, track);
-            player.addToQueue(new Track("D:\\School\\Advanced Java\\PiJukebox\\Music", "Phyrnna - Raindrops of a Dream.mp3"));
-            player.playTrack(track);//Works, plays 1 track
-	    player.addToQueue(queue);//Now the queue should be Raindrops > Shelter
-	    player.next();//Should handle automatically playing both from here, endlessly. Otherwise, the Thread has exited... But this should get logged
-        } catch (NonFatalException | FatalException ex) {
-            log.writeLog(ex, true);
+            player.addToQueue(new Track("D:\\School\\Advanced Java\\PiJukebox\\Player\\Music", "Phyrnna - Raindrops of a Dream.mp3"));
+	    player.playTrack(track);//Works, plays 1 track
+            Thread.sleep(2000);
+	    //player.next();//Should handle automatically playing both from here, endlessly. Otherwise, the Thread has exited... But this should get logged
+            //Thread.sleep(2000);
+            player.pause();
+            /*Thread.sleep(2000);
+            player.resume();
+            Thread.sleep(2000);
+            player.previous();
+            Thread.sleep(2000);
+            player.next();
+            Thread.sleep(2000);
+            player.next();
+            Thread.sleep(2000);
+            player.stop();*/
+        } catch(NonFatalException nfe) {
+            log.writeLog(nfe, false);
+        } catch(FatalException fe) {
+            log.writeLog(fe, true);
+        } catch(InterruptedException ie) {
+            log.writeLog(new FatalException("Thread got interrupted, ABORT", ie), true);
         }
-    }
-    
-    public void play() throws FatalException, NonFatalException{
-        player.playTrack(track);
     }
 }

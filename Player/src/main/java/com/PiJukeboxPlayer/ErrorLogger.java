@@ -44,16 +44,17 @@ public class ErrorLogger {
     private boolean writeLogLines(){
         try {
             if(!Files.exists(logFile)) {
+                //Might have been removed during runtime
                 Files.write(logFile, new byte[0], StandardOpenOption.CREATE);
             }
             Files.write(logFile, errorLines, StandardOpenOption.APPEND);
             if(errorLines.isEmpty()) {
                 return false;
             } else if(errorLines.get(0).contains("~~~~~")){
-                System.err.print("FATAL ERROR!");
+                System.err.println("FATAL ERROR!");
                 for (Iterator<String> it = errorLines.iterator(); it.hasNext();) {
                     String s = it.next();
-                    System.err.print(s);
+                    System.err.println(s);
                 }
                 //Mortal Kombat voice: FATALITY!
                 System.exit(1);
@@ -61,9 +62,9 @@ public class ErrorLogger {
             errorLines.clear();
             return true;
         } catch (IOException e) {
-            System.err.print("FATAL ERROR!");
-            System.err.print("\t" + e.toString());
-            System.err.print("\t" + e.getMessage());
+            System.err.println("FATAL ERROR!");
+            System.err.println("\t" + e.toString());
+            System.err.println("\t" + e.getMessage());
             System.exit(2);
             return false;
         }

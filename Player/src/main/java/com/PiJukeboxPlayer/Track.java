@@ -41,9 +41,10 @@ final class Track {
      * reliable. Pass this to the ErrorLogger and EXIT with a non-zero exit
      * code!
      */
-    public Track(String mediaDir, String filename) throws NonFatalException, FatalException, IOException {
+    public Track(String mediaDir, String filename) throws NonFatalException, FatalException {
         if (mediaDir != null && !mediaDir.equals("") && filename != null && !filename.equals("")) {
             filepath = FileSystems.getDefault().getPath(mediaDir, filename).toAbsolutePath();
+            System.err.println(filepath.toString());
             ///TODO: Handle file according to filetype
         } else if (mediaDir == null || mediaDir.equals("")) {
             filepath = FileSystems.getDefault().getPath(getOSPath(), filename).toAbsolutePath();
@@ -51,54 +52,22 @@ final class Track {
             //Empty string or null, not even a single character...
             throw new NonFatalException("No (valid) filename was given, like 'song.ext'\r\n\tInstead " + filename + " was given.", new java.nio.file.FileSystemException(mediaDir + filename), false, true);
         }
+        if(!Files.exists(filepath)) {
+            throw new NonFatalException("An incorrect filename or -path was given, like '" + getOSPath() + "song.ext'\r\n\tInstead " + filename + " was given.", new java.nio.file.FileSystemException(mediaDir + filename), false, true);
+        }
         streamType = checkFiletype();
         try {
-            /*if (streamType.equals("mp3")) {
-                Mp3File mp3file = mp3FromPath(filepath);
-                if (mp3file.hasId3v2Tag()) {
-                    title = mp3file.getId3v2Tag().getTitle();
-                } else {
-                    title = mp3file.getId3v1Tag().getTitle();
-                }
-                bitrate = mp3file.getBitrate();
-                StringBuilder dur = new StringBuilder();
-                dur.append(Long.toString(mp3file.getLengthInSeconds()));
-                dur.append(".");
-                long millis = mp3file.getLengthInMilliseconds() - (mp3file.getLengthInSeconds()*1000);
-                dur.append(Long.toString(millis));
-                duration = dur.toString().trim();
-            } else {*/
-                title = ffprobe("-show_entries format_tags=title").trim();
-                bitrate = Integer.parseInt(ffprobe("-show_entries format=bit_rate").trim());
-                duration = ffprobe("-show_entries format=duration").trim();
-           // }
+            title = ffprobe("-show_entries format_tags=title").trim();
+            bitrate = Integer.parseInt(ffprobe("-show_entries format=bit_rate").trim());
+            duration = ffprobe("-show_entries format=duration").trim();
         } catch (IOException io) {
             throw new NonFatalException("The file could not be read and/or processed and an exception was thrown.", io);
         }
-
     }
-
-    /**
-     * Returns an mp3agic Mp3File as specified in the given FILEPATH.
-     *
-     * @param path The Path object of the file to open.
-     * @return the mp3agick Mp3File object.
-     * @throws NonFatalException When the Mp3File class can't handle the data
-     * format of the file. This might mean a different MPeg encoding was used,
-     * like MPeg2 or MPeg4.
-     * @throws FatalException propagated from getOSPath() and
-     * NonFatalException()
-     * @throws IOException Propagated from Mp3File()
-     */
-/*    private Mp3File mp3FromPath(Path path) throws NonFatalException, FatalException, IOException {
-        try {
-            return new Mp3File(path);
-        } catch (InvalidDataException ide) {
-            throw new NonFatalException("Invalid data for an mp3 file for a file that was determined to be an mp3.", ide);
-        } catch (UnsupportedTagException ut) {
-            throw new NonFatalException("Mp3agic cannot handle this metadata tag. It's either really old, really new or non-standard.", ut);
-        }
-    }*/
+    
+    public Track(String filename) throws NonFatalException, FatalException {
+        this("", filename);
+    }
 
     /**
      * Get the hard-coded default path or a FatalError for this OS.
@@ -125,7 +94,8 @@ final class Track {
     }
 
     /**
-     * Checks the filetype as returned by FFProbe, a tool in the FFMpeg suite.
+     * Checks the MIMEtype specified on the file to determine if it's audio.
+     * Then checks the filetype as returned by FFProbe, a tool in the FFMpeg suite.
      * If file access is denied, a NonFatalException is thrown. Keep in mind
      * that any class that depends on Track objects MUST check if any Tracks
      * could be instantiated, or throw a FatalException, log and exit.
@@ -167,15 +137,18 @@ final class Track {
         s.append("\"");
         s.append(filepath.toAbsolutePath().toString());
         s.append("\"");
+        System.out.println(s.toString());
         Process cmd = Runtime.getRuntime().exec(s.toString());
-        StringBuilder ext;
+        StringBuilder out;
         InputStream ffprobe = cmd.getInputStream();
-        ext = new StringBuilder();
-        int extChar;
-        while ((extChar = ffprobe.read()) != -1) {
-            ext.append((char) extChar);
+        out = new StringBuilder();
+        int outChar;
+        while ((outChar = ffprobe.read()) != -1) {
+            out.append((char) outChar);
+            System.out.write(outChar);
         }
-        return ext.toString();
+        System.out.println(out.toString());
+        return out.toString();
     }
 
     /**
@@ -183,6 +156,7 @@ final class Track {
      * @return The String title for this Track
      */
     public String getTitle() {
+        System.err.println("Title: " + title);
         return this.title;
     }
 
@@ -191,6 +165,7 @@ final class Track {
      * @return The Integer bitrate for this Track
      */
     public int getBitrate() {
+        System.err.println("Bitrate: " + Integer.toString(bitrate));
         return this.bitrate;
     }
 
@@ -199,6 +174,7 @@ final class Track {
      * @return The String Stream Type for this Track
      */
     public String getStreamType() {
+        System.err.println("StreamType: " + streamType);
         return this.streamType;
     }
     
@@ -207,6 +183,7 @@ final class Track {
      * @return the String Duration for this Track.
      */
     public String getDuration() {
+        System.err.println("Duration: " + duration);
         return this.duration;
     }
 
@@ -222,7 +199,7 @@ final class Track {
      * Get the default Media path for music for this OS.
      * @return The default Media path for this OS
      */
-    private static String getDefaultMediaPath() throws FatalException {
+    public static String getDefaultMediaPath() throws FatalException {
         return getOSPath();
     }
 }
