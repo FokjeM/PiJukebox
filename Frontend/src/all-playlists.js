@@ -62,7 +62,7 @@ class AllPlaylists extends PolymerElement {
         url="http://localhost:8080/api/v1/details/playlists"  
         handle-as="json"
         content-type='application/json'
-        headers="{Authorization: [[token]]}"
+        params="{{header}}"
         last-response="{{playlists}}"
         on-response="gotPlaylists">
       </iron-ajax>
@@ -73,6 +73,7 @@ class AllPlaylists extends PolymerElement {
           url="http://localhost:8080/api/v1/playlists/create"
           handle-as="json"
           body='{"title": "{{title}}","description": "{{description}}"}'
+          params="{{header}}"
           content-type="application/json"
           on-response="formResponse"
           on-error="handleError">
@@ -138,6 +139,24 @@ class AllPlaylists extends PolymerElement {
       this.title = "";
       this.description = "";
     }
+  }
+
+  static get properties() {
+    return {
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
+      }
+    };
+  }
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
   }
 
   throwEvent(name, detail){

@@ -81,6 +81,7 @@ class PlaylistTrackRow extends PolymerElement {
         method="PATCH"
         url="http://localhost:8080/api/v1/details/playlists/{{playlistId}}/tracks/{{trackId}}"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
         on-response="addedTrack">
       </iron-ajax>
@@ -89,6 +90,7 @@ class PlaylistTrackRow extends PolymerElement {
         auto
         id="getPlaylists"
         url="http://localhost:8080/api/v1/playlists"  
+        params="{{header}}"
         handle-as="json"
         content-type="application/json"
         last-response="{{playlists}}">
@@ -143,8 +145,21 @@ class PlaylistTrackRow extends PolymerElement {
       playlistId: {
         type: Number,
         value: null
+      },
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
       }
     };
+  }
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
   }
 
   hasArtist(){

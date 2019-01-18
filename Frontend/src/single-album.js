@@ -51,6 +51,7 @@ class SingleAlbum extends PolymerElement {
         auto
         url="http://localhost:8080/api/v1/extended/albums/[[routeData.albumId]]"
         handle-as="json"
+        params="{{header}}"
         last-response="{{album}}">
       </iron-ajax>
       
@@ -74,6 +75,24 @@ class SingleAlbum extends PolymerElement {
         </template> 
       </div>
     `;
+  }
+
+  static get properties() {
+    return {
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
+      }
+    };
+  }
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
   }
 }
 

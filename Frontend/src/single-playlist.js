@@ -73,6 +73,7 @@ class SinglePlaylist extends PolymerElement {
       </div>
     `;
   }
+  
   static get properties() {
     return {
       token: {

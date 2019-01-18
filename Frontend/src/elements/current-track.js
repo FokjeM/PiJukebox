@@ -28,7 +28,7 @@ class CurrentTrack extends PolymerElement {
         method="post"
         url="http://localhost:8080/api/v1/player/current"
         handle-as="json"
-        headers="{Authorization: [[token]]}"
+        params="{{header}}"
         last-response="{{currentTrack}}">
       </iron-ajax>
 

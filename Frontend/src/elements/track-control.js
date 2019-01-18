@@ -110,6 +110,7 @@ class TrackControl extends PolymerElement {
         method="POST"
         url="http://localhost:8080/api/v1/player/volume"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
         on-response="getStatus">
       </iron-ajax>
@@ -175,8 +176,21 @@ class TrackControl extends PolymerElement {
       volumeLevel: {
         type: Number,
         value: 2
+      },
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
       }
     };
+  }
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
   }
 
 
