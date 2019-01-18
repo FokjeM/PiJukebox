@@ -39,7 +39,7 @@ public class PlayerController {
             return new ResponseEntity<>("Playing...", HttpStatus.OK);
         }catch (Exception ex){
             ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't play track"), ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't play track /play"), ex);
         }
     }
 
@@ -50,7 +50,7 @@ public class PlayerController {
             sp.pause();
             return new ResponseEntity<>("Playing...", HttpStatus.OK);
         }catch (Exception ex){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't play track"), ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't play track /pause"), ex);
         }
     }
 
@@ -61,7 +61,7 @@ public class PlayerController {
             sp.stop();
             return new ResponseEntity<>("Playing...", HttpStatus.OK);
         }catch (Exception ex){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't play track"), ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't play track /stop"), ex);
         }
     }
 
@@ -73,7 +73,7 @@ public class PlayerController {
             sp.play();
             return new ResponseEntity<>("Playing...", HttpStatus.OK);
         }catch (Exception ex){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't play track"), ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't play track /next"), ex);
         }
     }
 
@@ -81,16 +81,22 @@ public class PlayerController {
     public ResponseEntity<String> prevTrack()
     {
         try{
-            sp.next();
+            sp.prev();
+            sp.play();
             return new ResponseEntity<>("Playing...", HttpStatus.OK);
         }catch (Exception ex){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't play track"), ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't play track /prev"), ex);
         }
     }
 
     @GetMapping(value = "/status", produces = "application/json")
     @ApiOperation(value = "Get player status")
     public String status() {
-        return "{\"playPauseState\": true, \"volumeLevel\": 2}";
+        Boolean playerStatus = sp.isPlaying();
+        if (playerStatus) {
+            return "{\"isPlaying\": true, \"volumeLevel\": 2}";
+        } else {
+            return "{\"isPlaying\": false, \"volumeLevel\": 2}";
+        }
     }
 }

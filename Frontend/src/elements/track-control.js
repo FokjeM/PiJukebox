@@ -113,7 +113,7 @@ class TrackControl extends PolymerElement {
       <iron-ajax
         id="previousTrack"
         method="GET"
-        url="http://localhost:8080/api/v1/player/previous"
+        url="http://localhost:8080/api/v1/player/prev"
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
@@ -217,7 +217,7 @@ class TrackControl extends PolymerElement {
     console.log(playerStatus);
     if (response.status == 200) {
       this.updateStates(playerStatus);
-      // this.updateControls();
+      this.updateControls();
     } else {
       this.throwEvent('open-dialog-event', {title: 'Player', text: 'Something went wrong, please try again'});
     }
@@ -227,7 +227,7 @@ class TrackControl extends PolymerElement {
    * Set states
    */
   updateStates(playerStatus) {
-    this.playPauseState = playerStatus.playPauseState;
+    this.playPauseState = playerStatus.isPlaying;
     // this.repeatState = playerStatus.repeatState;
     this.volumeLevel = playerStatus.volumeLevel;
   }
@@ -243,12 +243,12 @@ class TrackControl extends PolymerElement {
 
   playPause(e) {
     let state = this.playPauseState;
-    if (!state) {
+    if (state) {
       // player is playing
-      this.pause();
-    } else if (state) {
+      this.pause(e);
+    } else if (!state) {
       // player is not playing
-      this.play();
+      this.play(e);
     }
   }
 
@@ -289,10 +289,10 @@ class TrackControl extends PolymerElement {
    */
   changePlayPauseIcon() {
     let state = this.playPauseState;
-    if (!state) {
+    if (state) {
       // player is playing
       this.playPauseIcon = "av:pause";
-    } else if (state) {
+    } else if (!state) {
       // player is not playing
       this.playPauseIcon = "av:play-arrow";
     }

@@ -47,6 +47,7 @@ public class SongPlayer{
     public void stop() {
         try {
             mediaPlayer.stop();
+            status = "stopped";
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -72,5 +73,14 @@ public class SongPlayer{
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public Boolean isPlaying(){
+        if (status.equals("playing")) {
+            return true;
+        } else if (status.equals("stopped") || status.equals("paused")) {
+            return false;
+        }
+        return false;
     }
 }

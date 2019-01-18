@@ -84,4 +84,20 @@ public class StartPlayer{
             current = 0;
         }
     }
+
+    public void prev()
+    {
+        current--;
+        if(current <= 0)
+        {
+            current = 0;
+            sp.next(songs.get(current));
+        }else{
+            current = 0;
+        }
+    }
+
+    public Boolean isPlaying() {
+        return sp.isPlaying();
+    }
 }
