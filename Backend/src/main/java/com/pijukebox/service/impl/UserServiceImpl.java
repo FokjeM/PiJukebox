@@ -3,7 +3,7 @@ package com.pijukebox.service.impl;
 import com.pijukebox.model.playlist.PlaylistWithTracks;
 import com.pijukebox.model.simple.SimplePlaylist;
 import com.pijukebox.model.user.User;
-import com.pijukebox.repository.IPlaylistRepository;
+import com.pijukebox.repository.IPlaylistWithTracksRepository;
 import com.pijukebox.repository.ISimplePlaylistRepository;
 import com.pijukebox.repository.IUserRepository;
 import com.pijukebox.service.IUserService;
@@ -21,11 +21,11 @@ import java.util.Optional;
 public class UserServiceImpl implements IUserService {
 
     private final IUserRepository userRepository;
-    private final IPlaylistRepository playlistRepository;
+    private final IPlaylistWithTracksRepository playlistRepository;
     private final ISimplePlaylistRepository simplePlaylistRepository;
 
     @Autowired
-    public UserServiceImpl(IUserRepository userRepository, IPlaylistRepository playlistRepository, ISimplePlaylistRepository simplePlaylistRepository) {
+    public UserServiceImpl(IUserRepository userRepository, IPlaylistWithTracksRepository playlistRepository, ISimplePlaylistRepository simplePlaylistRepository) {
         this.userRepository = userRepository;
         this.playlistRepository = playlistRepository;
         this.simplePlaylistRepository = simplePlaylistRepository;
