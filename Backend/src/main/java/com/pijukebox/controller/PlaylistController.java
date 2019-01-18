@@ -1,10 +1,12 @@
 package com.pijukebox.controller;
 
+import com.pijukebox.model.PlaylistForm;
 import com.pijukebox.model.playlist.PlaylistWithTracks;
 import com.pijukebox.model.simple.SimplePlaylist;
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.service.IPlaylistService;
 import com.pijukebox.service.ITrackService;
+import com.pijukebox.service.IUserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Set;
 
@@ -22,11 +26,13 @@ public class PlaylistController {
 
     private final IPlaylistService playlistService;
     private final ITrackService trackService;
+    private final IUserService userService;
 
     @Autowired
-    public PlaylistController(IPlaylistService playlistService, ITrackService trackService) {
+    public PlaylistController(IPlaylistService playlistService, ITrackService trackService, IUserService userService) {
         this.playlistService = playlistService;
         this.trackService = trackService;
+        this.userService = userService;
     }
 
     @GetMapping("/playlists")
@@ -62,6 +68,65 @@ public class PlaylistController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Playlist not created", ex);
         }
     }
+
+
+    @PostMapping(value = "/playlists/create", produces = "application/json")
+    @ApiOperation(value = "Create a new playlist")
+    public String createNewSimplePlaylist(@RequestBody PlaylistForm playlistForm, HttpServletResponse response, HttpServletRequest request) {
+        try {
+//            if (!userService.findByToken(request.getParameter("Authorization")).isPresent()) {
+//                response.setStatus(403);
+//                return Optional.empty().toString();
+//            }
+//            User user = userService.findByToken(request.getParameter("Authorization")).get();
+//            SimplePlaylist sp = new SimplePlaylist(null, name, "", user.getId());
+            String title = playlistForm.getTitle();
+            String description = playlistForm.getDescription();
+
+            System.out.println(title);
+            System.out.println(description);
+
+            SimplePlaylist sp = new SimplePlaylist(null, title, description, null);
+
+            playlistService.addNewPlaylist(sp);
+
+            response.setStatus(200);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Playlist not created", ex);
+        }
+
+        return null;
+    }
+
+//    @PostMapping(value = "/login", produces = "application/json")
+//    @ApiOperation(value = "Login by username and password.")
+//    public String login(@RequestBody LoginForm loginForm, HttpServletResponse response) {
+//
+//        try {
+//
+//            if (!userService.findByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword()).isPresent()) {
+//                response.setStatus(403);
+//                return Optional.empty().toString();
+//            }
+//            User user = userService.findByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword()).get();
+//            if(user.getToken() == null){
+//                //Generate random token
+//                SecureRandom random = new SecureRandom();
+//                byte[] bytes = new byte[20];
+//                random.nextBytes(bytes);
+//                String token = bytes.toString();
+//
+//                //Save token
+//                user.setToken(token);
+//                userService.saveUser(user);
+//            }
+//            return "{\"token\":\"" + user.getToken() + "\"}";
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", ex);
+//        }
+//    }
 
     @GetMapping("/details/playlists")
     @ApiOperation(value = "Retrieve all playlists in full detail, with full track info")
