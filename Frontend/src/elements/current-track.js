@@ -26,7 +26,7 @@ class CurrentTrack extends PolymerElement {
       <iron-ajax
         auto
         method="post"
-        url="localhost:8080/api/v1/player/current"
+        url="http://localhost:8080/api/v1/player/current"
         handle-as="json"
         headers="{Authorization: [[token]]}"
         last-response="{{currentTrack}}">

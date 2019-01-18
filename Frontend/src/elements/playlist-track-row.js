@@ -52,15 +52,6 @@ class PlaylistTrackRow extends PolymerElement {
         }
         
       </style>
-      <!-- sync -->
-      <iron-ajax
-        auto
-        id="getAllPlaylists"
-        url="http://localhost:8080/api/v1/laptops"
-        content-type="application/json"
-        handle-as="json"
-        last-response="{{playlists}}">
-      </iron-ajax>
 
       <iron-ajax
         id="addToPlaylist"

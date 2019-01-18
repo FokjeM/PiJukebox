@@ -13,5 +13,5 @@ public interface IArtistWithTracksRepository extends JpaRepository<ArtistWithTra
 
     Optional<ArtistWithTracks> findById(Long id);
 
-    Optional<List<ArtistWithTracks>> findArtistTracksByNameContaining(String name);
+    Optional<List<ArtistWithTracks>> findArtistWithTracksByNameContaining(String name);
 }

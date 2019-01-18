@@ -93,7 +93,6 @@ class SearchTracks extends PolymerElement {
       <iron-ajax
         id="ajaxSearchArtist"
         url="http://localhost:8080/api/v1/artists?name={{searchTerm}}"
-        
         handle-as="json"
         last-response="{{artistResults}}">
       </iron-ajax>

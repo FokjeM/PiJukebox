@@ -84,8 +84,8 @@ public class AlbumServiceImpl implements IAlbumService {
     }
 
     @Override
-    public Optional<List<ArtistWithAlbums>> findSimpleAlbumsByArtistName(String name) {
-        return artistWithAlbumsRepository.findArtistAlbumsByNameContaining(name);
+    public Optional<List<ArtistWithAlbums>> findAlbumsByArtistName(String name) {
+        return artistWithAlbumsRepository.findArtistWithAlbumsByNameContaining(name);
     }
 
     @Override

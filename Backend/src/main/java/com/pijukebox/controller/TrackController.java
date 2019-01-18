@@ -64,7 +64,6 @@ public class TrackController {
         }
     }
 
-
     @GetMapping("/extended/tracks/{id}")
     @ApiOperation(value = "Get all information pertaining to a track")
     public ResponseEntity<Track> trackDetails(@PathVariable Long id) {
@@ -206,8 +205,7 @@ public class TrackController {
                 return new ResponseEntity<>(trackService.findAllTracksByName(searchTerm).get(), HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No tracks found.", ex);
         }
     }
