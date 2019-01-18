@@ -32,13 +32,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> findAllUsers() {
         return userRepository.findAll();
-    }
-
-    @Override
-    public Optional<User> findByName(String firstname, String lastname) {
-        return userRepository.findByFirstnameAndLastname(firstname, lastname);
     }
 
     @Override
@@ -63,12 +58,12 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public Optional<List<PlaylistWithTracks>> findPlaylistsByUser(Long userID) {
+    public Optional<List<PlaylistWithTracks>> findPlaylistsByUserId(Long userID) {
         return playlistRepository.findAllByUserID(userID);
     }
 
     @Override
-    public Optional<List<SimplePlaylist>> findSimplePlaylistsByUser(Long userID) {
+    public Optional<List<SimplePlaylist>> findSimplePlaylistsByUserId(Long userID) {
         return simplePlaylistRepository.findAllByUserID(userID);
     }
 }

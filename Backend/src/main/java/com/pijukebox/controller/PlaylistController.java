@@ -30,7 +30,7 @@ public class PlaylistController {
     }
 
     @GetMapping("/playlists")
-    @ApiOperation(value = "Retrieve all simple playlists")
+    @ApiOperation(value = "Get all information pertaining to playlist (without relations)", notes = "Filter the returned items using the name parameter")
     public ResponseEntity<List<SimplePlaylist>> playlists(@RequestParam(name="name", required = false) String name) {
         try {
             if(name != null && !name.isEmpty())
@@ -48,7 +48,7 @@ public class PlaylistController {
     }
 
     @GetMapping("/playlists/{id}")
-    @ApiOperation(value = "Get a single simple playlist by its ID")
+    @ApiOperation(value = "Get all information pertaining to a certain playlist (without relations) by its ID")
     public ResponseEntity<SimplePlaylist> simplePlaylistDetails(@PathVariable Long id) {
         try {
             if (!playlistService.findSimplePlaylistById(id).isPresent()) {
@@ -72,7 +72,7 @@ public class PlaylistController {
     }
 
     @GetMapping("/details/playlists")
-    @ApiOperation(value = "Retrieve all playlists in full detail, with full track info")
+    @ApiOperation(value = "Get all information pertaining to an playlist (with relations)")
     public ResponseEntity<List<PlaylistWithTracks>> detailedPlaylists() {
         try {
             return new ResponseEntity<>(playlistService.findAll(), HttpStatus.OK);
@@ -82,7 +82,7 @@ public class PlaylistController {
     }
 
     @GetMapping("/details/playlists/{id}")
-    @ApiOperation(value = "Get all from a single playlist by its ID")
+    @ApiOperation(value = "Get all information pertaining to a certain playlist (with relations) by its ID")
     public ResponseEntity<PlaylistWithTracks> playlistDetails(@PathVariable Long id) {
         try {
             if (!playlistService.findById(id).isPresent()) {
