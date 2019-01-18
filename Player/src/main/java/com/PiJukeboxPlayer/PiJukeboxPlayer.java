@@ -18,7 +18,6 @@
 package com.PiJukeboxPlayer;
 
 import java.io.IOException;
-import com.mpatric.mp3agic.*;
 
 /**
  * Quick and dirty testing with a PiJukeboxPlayer class!
@@ -32,22 +31,19 @@ public class PiJukeboxPlayer {
 
     public static void main(String[] args) throws IOException {
         PiJukeboxPlayer m = new PiJukeboxPlayer();
-        /*try {
-            m.play();
-        } catch (FatalException | NonFatalException ex) {
-            boolean writeLog = log.writeLog(ex, true);
-        }*/
     }
     
     public PiJukeboxPlayer() throws IOException {
         try {
             queue = new Queue();
-            player = new Player(true, true, queue);//if this works, annoy the shit out of EVERYONE.
+            player = new Player(true, false, queue);//if this works, annoy the shit out of EVERYONE. Repeat=true, RepeatOne=false
             log = player.getLogger();
             track = new Track("", "Phyrnna - Shelter [piano ver].mp3");
             queue.put(1, track);
-            player.addToQueue(track);
-            player.playTrack(track);
+            player.addToQueue(new Track("D:\\School\\Advanced Java\\PiJukebox\\Music", "Phyrnna - Raindrops of a Dream.mp3"));
+            player.playTrack(track);//Works, plays 1 track
+	    player.addToQueue(queue);//Now the queue should be Raindrops > Shelter
+	    player.next();//Should handle automatically playing both from here, endlessly. Otherwise, the Thread has exited... But this should get logged
         } catch (NonFatalException | FatalException ex) {
             log.writeLog(ex, true);
         }

@@ -236,6 +236,7 @@ public class Player {
                 //Also, prevent calling playTrack twice
                 return;
             } else {
+		//Repeat is off and the queue seems to be empty. Ensure it is and exit.
                 trackNum = 0;
                 queue.clear();
                 updateStatefulQueue();
