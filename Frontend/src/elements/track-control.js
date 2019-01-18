@@ -139,7 +139,7 @@ class TrackControl extends PolymerElement {
             
             <paper-icon-button on-tap="nextTrack" icon="av:skip-next"></paper-icon-button>
 
-            <paper-icon-button on-tap="repeat" icon="[[repeatIcon]]" id="repeatBtn"></paper-icon-button>
+            <!-- <paper-icon-button on-tap="repeat" icon="[[repeatIcon]]" id="repeatBtn"></paper-icon-button> -->
           </div>
 
           <div class="controls">
