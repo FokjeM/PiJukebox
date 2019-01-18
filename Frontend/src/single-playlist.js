@@ -47,7 +47,6 @@ class SinglePlaylist extends PolymerElement {
         last-response="{{playlist}}">
       </iron-ajax>
 
-
       <div class="card">
         <h1>[[playlist.title]]</h1>
       </div>
