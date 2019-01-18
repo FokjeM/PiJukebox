@@ -50,10 +50,10 @@ public class TrackController {
     public ResponseEntity<List<Track>> detailTracks(@RequestParam(name = "name", required = false) String name) {
         try {
             if (name != null && !name.isEmpty()) {
-                if (!trackService.findAllTrackByName(name).isPresent()) {
+                if (!trackService.findAllTracksByName(name).isPresent()) {
                     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
                 }
-                return new ResponseEntity<>(trackService.findAllTrackByName(name).get(), HttpStatus.OK);
+                return new ResponseEntity<>(trackService.findAllTracksByName(name).get(), HttpStatus.OK);
             }
             if (!trackService.findAllSimpleTrack().isPresent()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -63,7 +63,6 @@ public class TrackController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No tracks name %s found", name), ex);
         }
     }
-
 
     @GetMapping("/extended/tracks/{id}")
     @ApiOperation(value = "Get all information pertaining to a track")
@@ -194,4 +193,21 @@ public class TrackController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No track with ID %s and artist with ID %s found", id, artistId), ex);
         }
     }
+
+    @PostMapping("/tracks/search/{searchTerm}")
+    @ApiOperation(value = "Search Tracks")
+    public ResponseEntity<List<Track>> searchTracks(@PathVariable String searchTerm) {
+        try {
+            if (searchTerm != null && !searchTerm.isEmpty()) {
+                if (!trackService.findAllTracksByName(searchTerm).isPresent()) {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+                return new ResponseEntity<>(trackService.findAllTracksByName(searchTerm).get(), HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No tracks found.", ex);
+        }
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.pijukebox.controller;
 
+import com.pijukebox.model.LoginForm;
 import com.pijukebox.model.playlist.PlaylistWithTracks;
 import com.pijukebox.model.simple.SimplePlaylist;
 import com.pijukebox.model.user.User;
@@ -11,7 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpServletResponse;
+import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -77,6 +82,35 @@ public class UserController {
             return new ResponseEntity<>(userService.findSimplePlaylistsByUser(userID).get(), HttpStatus.OK);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No user with ID %s found", userID), ex);
+        }
+    }
+
+    @PostMapping(value = "/login", produces = "application/json")
+    @ApiOperation(value = "Login by username and password.")
+    public String login(@RequestBody LoginForm loginForm, HttpServletResponse response) {
+
+        try {
+
+            if (!userService.findByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword()).isPresent()) {
+                response.setStatus(403);
+                return Optional.empty().toString();
+            }
+            User user = userService.findByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword()).get();
+            if(user.getToken() == null){
+                //Generate random token
+                SecureRandom random = new SecureRandom();
+                byte[] bytes = new byte[20];
+                random.nextBytes(bytes);
+                String token = bytes.toString();
+
+                //Save token
+                user.setToken(token);
+                userService.saveUser(user);
+            }
+            return "{\"token\":\"" + user.getToken() + "\"}";
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", ex);
         }
     }
 }

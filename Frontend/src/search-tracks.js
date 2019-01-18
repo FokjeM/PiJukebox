@@ -55,11 +55,16 @@ class SearchTracks extends PolymerElement {
         </div>
       </div>
 
+      <!-- Get token and bind to all ajax calls -->
+      <get-token token="{{token}}"></get-token>
+
       <!-- Track search ajax -->
       <iron-ajax
+        method="post"
         id="ajaxSearchTrack"
         auto
-        url="http://localhost:8080/api/v1/search/track/{{searchTerm}}"
+        url="http://localhost:8080/api/v1/tracks/search/{{searchTerm}}"
+        headers="{Authorization: [[token]]}"
         handle-as="json"
         last-response="{{trackResults}}">
       </iron-ajax>
@@ -86,7 +91,8 @@ class SearchTracks extends PolymerElement {
       <!-- Artist search ajax -->
       <iron-ajax
         id="ajaxSearchArtist"
-        url="http://localhost:8080/api/v1/search/artist/{{searchTerm}}"
+        url="http://localhost:8080/api/v1/artist/search/{{searchTerm}}"
+        headers="{Authorization: [[token]]}"
         handle-as="json"
         last-response="{{artistResults}}">
       </iron-ajax>
@@ -112,7 +118,8 @@ class SearchTracks extends PolymerElement {
       <!-- Album search ajax -->
       <iron-ajax
         id="ajaxSearchAlbum"
-        url="http://localhost:8080/api/v1/search/album/{{searchTerm}}"
+        url="http://localhost:8000/search/album/{{searchTerm}}"
+        headers="{Authorization: [[token]]}"
         handle-as="json"
         last-response="{{albumResults}}">
       </iron-ajax>
@@ -138,7 +145,8 @@ class SearchTracks extends PolymerElement {
       <!-- Playlist search ajax -->
       <iron-ajax
         id="ajaxSearchPlaylist"
-        url="http://localhost:8080/api/v1/search/playlist/{{searchTerm}}"
+        url="http://localhost:8000/search/playlist/{{searchTerm}}"
+        headers="{Authorization: [[token]]}"
         handle-as="json"
         last-response="{{playlistResults}}">
       </iron-ajax>

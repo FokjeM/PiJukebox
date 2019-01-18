@@ -7,6 +7,8 @@ import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-icons/av-icons.js';
 import '@polymer/paper-slider/paper-slider.js';
 
+import './current-track.js';
+
 /**
  * All the icons that are part of iron-icons
  * https://npm-demos.appspot.com/@polymer/iron-icons@3.0.1/demo/index.html
@@ -113,13 +115,15 @@ class TrackControl extends PolymerElement {
       </iron-ajax>
       
       <div class="container">  
-        
-        <div class="trackInfo">
-          <p>[[playerStatus.track.name]]</p>
-          <p>[[playerStatus.track.artist]]</p>
-        </div>
+        <div class="controlsContainer">
+         
+          <div>
+            <current-track
+              track-name="trackName"
+              track-artist="artistName">
+            </current-track>
+          </div>
 
-        <div class="controlsContainer">   
           <div class="controls">
             <paper-icon-button on-tap="shuffle" icon="av:shuffle" id="shuffleBtn"></paper-icon-button>
 
