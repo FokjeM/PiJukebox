@@ -28,6 +28,6 @@ public class GenreWithTracks extends SqlElement implements Serializable {
     private String name;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "track_genre", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "genre_id", nullable = false)}, inverseJoinColumns = {@JoinColumn(name = "track_id", nullable = false)})
+    @JoinTable(name = "track_genre", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "genreId", nullable = false)}, inverseJoinColumns = {@JoinColumn(name = "trackId", nullable = false)})
     private Set<SimpleTrack> tracks = new HashSet<>();
 }

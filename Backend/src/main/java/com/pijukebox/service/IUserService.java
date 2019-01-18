@@ -10,12 +10,18 @@ import java.util.Optional;
 public interface IUserService {
     List<User> findAll();
 
-    User findByName(String firstname, String lastname);
+    Optional<User> findByName(String firstname, String lastname);
 
     Optional<User> findById(Long id);
 
     Optional<List<PlaylistWithTracks>> findPlaylistsByUser(Long userID);
 
     Optional<List<SimplePlaylist>> findSimplePlaylistsByUser(Long userID);
+
+    Optional<User> findByToken(String token);
+
+    Optional<User> findByEmailAndPassword(String email, String password);
+
+    User saveUser(User user);
 
 }
