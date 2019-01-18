@@ -1,5 +1,6 @@
 package com.pijukebox.controller.player;
 
+import com.pijukebox.model.simple.SimpleTrack;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -9,27 +10,28 @@ import java.util.ArrayList;
 public class StartPlayer{
 
     private SongPlayer sp;
-    private ArrayList<String> songs;
+    private ArrayList<SimpleTrack> songs;
     private int current = 0;
     private final String pathToSong ="C:\\Users\\codru\\Desktop\\School\\Year 4\\Minor Java Assignments\\Final Java Assignment\\My Folder\\PiJukebox\\Backend\\songs\\";
     public StartPlayer()
     {
 //        System.out.println("Here startMain");
         songs = new ArrayList<>();
-        songs.add(pathToSong+"B.U.G. Mafia - La Fel De Prost Ca Tine (feat. Bogdan Dima).mp3");
-        songs.add(pathToSong+"Calum Scott - Dancing On My Own.mp3");
-        songs.add(pathToSong+"Calum Scott - You Are The Reason (Official).mp3");
-        songs.add(pathToSong+"Guess Who feat. Mitza - Decat sa minti.mp3");
-        songs.add(pathToSong+"Jessie Ware - Say You Love Me.mp3");
-        songs.add(pathToSong+"Kaleo - Way Down We Go (Official Video).mp3");
-        songs.add(pathToSong+"Lawless feat. Sydney Wayser - Dear God ( Lyrics ).mp3");
-        songs.add(pathToSong+"Nane - 911 (Videoclip Oficial).mp3");
-        sp = new SongPlayer(songs.get(current));
+//        songs.add(pathToSong+"B.U.G. Mafia - La Fel De Prost Ca Tine (feat. Bogdan Dima).mp3");
+//        songs.add(pathToSong+"Calum Scott - Dancing On My Own.mp3");
+//        songs.add(pathToSong+"Calum Scott - You Are The Reason (Official).mp3");
+//        songs.add(pathToSong+"Guess Who feat. Mitza - Decat sa minti.mp3");
+//        songs.add(pathToSong+"Jessie Ware - Say You Love Me.mp3");
+//        songs.add(pathToSong+"Kaleo - Way Down We Go (Official Video).mp3");
+//        songs.add(pathToSong+"Lawless feat. Sydney Wayser - Dear God ( Lyrics ).mp3");
+//        songs.add(pathToSong+"Nane - 911 (Videoclip Oficial).mp3");
+        sp = new SongPlayer();
 
     }
 
-    public void addSong(String path)
+    public void addSong(SimpleTrack path)
     {
+        path.setFilename(pathToSong+path.getFilename());
         songs.add(path);
     }
 
@@ -54,6 +56,7 @@ public class StartPlayer{
 
     public void pause()
     {
+        sp.next(songs.get(current).getFilename());
         sp.pause();
     }
     public void stop()
@@ -70,9 +73,13 @@ public class StartPlayer{
         current++;
         if(current < songs.size())
         {
-            sp.next(songs.get(current));
+            sp.next(songs.get(current).getFilename());
         }else{
             current = 0;
         }
+    }
+
+    public ArrayList<SimpleTrack> getQueue(){
+        return songs;
     }
 }
