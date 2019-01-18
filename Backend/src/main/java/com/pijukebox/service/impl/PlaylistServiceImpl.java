@@ -2,7 +2,7 @@ package com.pijukebox.service.impl;
 
 import com.pijukebox.model.playlist.PlaylistWithTracks;
 import com.pijukebox.model.simple.SimplePlaylist;
-import com.pijukebox.repository.IPlaylistRepository;
+import com.pijukebox.repository.IPlaylistWithTracksRepository;
 import com.pijukebox.repository.ISimplePlaylistRepository;
 import com.pijukebox.service.IPlaylistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,23 +16,23 @@ import java.util.Optional;
 @Transactional
 public class PlaylistServiceImpl implements IPlaylistService {
 
-    private final IPlaylistRepository playlistRepository;
+    private final IPlaylistWithTracksRepository playlistWithTracksRepository;
     private final ISimplePlaylistRepository simplePlaylistRepository;
 
     @Autowired
-    public PlaylistServiceImpl(IPlaylistRepository playlistRepository, ISimplePlaylistRepository simplePlaylistRepository) {
-        this.playlistRepository = playlistRepository;
+    public PlaylistServiceImpl(IPlaylistWithTracksRepository playlistRepository, ISimplePlaylistRepository simplePlaylistRepository) {
+        this.playlistWithTracksRepository = playlistRepository;
         this.simplePlaylistRepository = simplePlaylistRepository;
     }
 
     @Override
     public List<PlaylistWithTracks> findAll() {
-        return playlistRepository.findAll();
+        return playlistWithTracksRepository.findAll();
     }
 
     @Override
     public Optional<PlaylistWithTracks> findById(Long id) {
-        return playlistRepository.findById(id);
+        return playlistWithTracksRepository.findById(id);
     }
 
     @Override
@@ -52,12 +52,11 @@ public class PlaylistServiceImpl implements IPlaylistService {
 
     @Override
     public PlaylistWithTracks addTrackToPlaylist(PlaylistWithTracks playlistWithTracks) {
-        return playlistRepository.save(playlistWithTracks);
+        return playlistWithTracksRepository.save(playlistWithTracks);
     }
 
     @Override
     public PlaylistWithTracks deleteTrackFromPlaylist(PlaylistWithTracks playlistWithTracks) {
-        return playlistRepository.save(playlistWithTracks);
+        return playlistWithTracksRepository.save(playlistWithTracks);
     }
-
 }

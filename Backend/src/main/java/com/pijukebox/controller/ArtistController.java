@@ -1,5 +1,6 @@
 package com.pijukebox.controller;
 
+import com.pijukebox.model.artist.Artist;
 import com.pijukebox.model.simple.SimpleArtist;
 import com.pijukebox.service.IArtistService;
 import io.swagger.annotations.ApiOperation;
@@ -23,41 +24,63 @@ public class ArtistController {
         this.artistService = artistService;
     }
 
-    @GetMapping("/artists")
-    @ApiOperation(value = "Get all information pertaining to an artist via its name")
-    public ResponseEntity<List<SimpleArtist>> artists(@RequestParam(name = "id", required = false) Long id, @RequestParam(name = "name", required = false) String name) {
+    @GetMapping("/simple/artists")
+    @ApiOperation(value = "Get all information pertaining to an artist (without relations)")
+    public ResponseEntity<List<SimpleArtist>> getSimpleAlbums(@RequestParam(name = "name", required = false) String name) {
         try {
-
-            if (id != null && id > 0) {
-                if (!artistService.findByName(name).isPresent()) {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-                }
-                return new ResponseEntity<>(artistService.findByName(name).get(), HttpStatus.OK);
-            }
-
             if (name != null && !name.isEmpty()) {
-                if (!artistService.findByName(name).isPresent()) {
+                if (!artistService.findSimpleArtistsByNameContaining(name).isPresent()) {
                     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
                 }
-                return new ResponseEntity<>(artistService.findByName(name).get(), HttpStatus.OK);
+                return new ResponseEntity<>(artistService.findSimpleArtistsByNameContaining(name).get(), HttpStatus.OK);
             }
-            return new ResponseEntity<>(artistService.findAll(), HttpStatus.OK);
+            return new ResponseEntity<>(artistService.findAllSimpleArtists(), HttpStatus.OK);
         } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Artists with name %s Not Found", name), ex);
+        }
+    }
+
+    @GetMapping("/simple/artists/{id}")
+    @ApiOperation(value = "Get all information pertaining to an artist via its ID")
+    public ResponseEntity<SimpleArtist> artistDetails(@PathVariable Long id) {
+        try {
+            if (!artistService.findSimpleArtistById(id).isPresent()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(artistService.findSimpleArtistById(id).get(), HttpStatus.OK);
+        } catch (Exception ex) {
+            ex.printStackTrace();
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Artist with ID %s Not Found", id), ex);
         }
     }
 
-    @GetMapping("/artists/{id}")
-    @ApiOperation(value = "Get all information pertaining to an artist via its ID")
-    public ResponseEntity<SimpleArtist> artistDetails(@PathVariable Long id) {
+    @GetMapping("/extended/artists")
+    @ApiOperation(value = "Get all information pertaining to an album (with relations)")
+    public ResponseEntity<List<Artist>> getExtendedAlbums(@RequestParam(name = "name", required = false) String name) {
         try {
-            if (!artistService.findById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            if (name != null && !name.isEmpty()) {
+                if (!artistService.findExtendedArtistsByNameContaining(name).isPresent()) {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+                return new ResponseEntity<>(artistService.findExtendedArtistsByNameContaining(name).get(), HttpStatus.OK);
             }
-            return new ResponseEntity<>(artistService.findById(id).get(), HttpStatus.OK);
         } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Artist with ID %s Not Found", id), ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Album with name %s Not Found", name), ex);
+        }
+        return new ResponseEntity<>(artistService.findAllExtendedArtists(), HttpStatus.OK);
+    }
+
+    @GetMapping("/extended/artists/{id}")
+    @ApiOperation(value = "Get all information pertaining to an album")
+    public ResponseEntity<Artist> getExtendedAlbum(@PathVariable Long id) {
+        try {
+            if (!artistService.findExtendedArtistById(id).isPresent()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<>(artistService.findExtendedArtistById(id).get(), HttpStatus.OK);
+            }
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Album with ID %s Not Found", id), ex);
         }
     }
 }

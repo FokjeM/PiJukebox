@@ -43,17 +43,22 @@ public class DatabaseConfig {
 
     @Bean
     public DataSource dataSource() {
-        BasicDataSource dataSource = new BasicDataSource();
+        try {
+            BasicDataSource dataSource = new BasicDataSource();
 
-        dataSource.setDriverClassName(DRIVER_CLASS_NAME);
-        dataSource.setUsername(USER_NAME);
-        dataSource.setPassword(PASSWORD);
-        dataSource.setUrl(URL);
-        dataSource.setMaxActive(10);
-        dataSource.setMaxIdle(5);
-        dataSource.setInitialSize(5);
-        dataSource.setValidationQuery("SELECT 1");
-        return dataSource;
+            dataSource.setDriverClassName(DRIVER_CLASS_NAME);
+            dataSource.setUsername(USER_NAME);
+            dataSource.setPassword(PASSWORD);
+            dataSource.setUrl(URL);
+            dataSource.setMaxActive(10);
+            dataSource.setMaxIdle(5);
+            dataSource.setInitialSize(5);
+            dataSource.setValidationQuery("SELECT 1");
+            return dataSource;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -68,48 +73,76 @@ public class DatabaseConfig {
      */
     @Bean
     public JdbcTemplate jdbcTemplate(DataSource dataSource) {
-        return new JdbcTemplate(dataSource);
+        try {
+            return new JdbcTemplate(dataSource);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     @Bean
     public BeanPostProcessor persistenceTranslation() {
-        return new PersistenceExceptionTranslationPostProcessor();
+        try {
+            return new PersistenceExceptionTranslationPostProcessor();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     @Bean
     public JpaVendorAdapter jpaVendorAdapter() {
-        HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
-        adapter.setDatabase(Database.MYSQL);
-        return adapter;
+        try {
+            HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
+            adapter.setDatabase(Database.MYSQL);
+            return adapter;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     @Bean
     @PersistenceContext
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, JpaVendorAdapter jpaVendorAdapter) {
-        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-        entityManagerFactoryBean.setDataSource(dataSource);
-        entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter);
-        entityManagerFactoryBean.setPackagesToScan("com.pijukebox.model");
-        return entityManagerFactoryBean;
+        try {
+            LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+            entityManagerFactoryBean.setDataSource(dataSource);
+            entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter);
+            entityManagerFactoryBean.setPackagesToScan("com.pijukebox.model");
+            return entityManagerFactoryBean;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     @Bean
     public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
-        LocalSessionFactoryBean sfb = new LocalSessionFactoryBean();
-        sfb.setDataSource(dataSource);
-        sfb.setPackagesToScan("com.pijukebox.model");
-        Properties props = new Properties();
-        props.setProperty("dialect", "org.hibernate.dialect.MySQLDialect");
-        sfb.setHibernateProperties(props);
-        return sfb;
+        try {
+            LocalSessionFactoryBean sfb = new LocalSessionFactoryBean();
+            sfb.setDataSource(dataSource);
+            sfb.setPackagesToScan("com.pijukebox.model");
+            Properties props = new Properties();
+            props.setProperty("dialect", "org.hibernate.dialect.MySQLDialect");
+            sfb.setHibernateProperties(props);
+            return sfb;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {//(SessionFactory sessionFactory)
-//        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-//        transactionManager.setSessionFactory(sessionFactory);
-        JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManagerFactory);
-        return transactionManager;
+    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+        try {
+            JpaTransactionManager transactionManager = new JpaTransactionManager();
+            transactionManager.setEntityManagerFactory(entityManagerFactory);
+            return transactionManager;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }
