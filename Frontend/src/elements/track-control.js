@@ -71,9 +71,19 @@ class TrackControl extends PolymerElement {
       </iron-ajax>
 
       <iron-ajax
-        id="playPause"
+        id="play"
         method="GET"
         url="http://localhost:8080/api/v1/player/play"
+        content-type="application/json"
+        params="{{header}}"
+        handle-as="json"
+        on-response="getStatus">
+      </iron-ajax>
+
+      <iron-ajax
+        id="pause"
+        method="GET"
+        url="http://localhost:8080/api/v1/player/pause"
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
@@ -232,7 +242,22 @@ class TrackControl extends PolymerElement {
   }
 
   playPause(e) {
-    this.$.playPause.generateRequest();
+    let state = this.playPauseState;
+    if (!state) {
+      // player is playing
+      this.pause();
+    } else if (state) {
+      // player is not playing
+      this.play();
+    }
+  }
+
+  play(e) {
+    this.$.play.generateRequest();
+  }
+
+  pause(e){
+    this.$.pause.generateRequest();
   }
   
   repeat(e) {
@@ -265,8 +290,10 @@ class TrackControl extends PolymerElement {
   changePlayPauseIcon() {
     let state = this.playPauseState;
     if (!state) {
+      // player is playing
       this.playPauseIcon = "av:pause";
     } else if (state) {
+      // player is not playing
       this.playPauseIcon = "av:play-arrow";
     }
   }
