@@ -129,5 +129,6 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+songs/
 
 # End of https://www.gitignore.io/api/java,maven,netbeans,intellij+all
