@@ -11,21 +11,30 @@ public class StartPlayer{
     private SongPlayer sp;
     private ArrayList<String> songs;
     private int current = 0;
-    private final String pathToSong ="C:\\Users\\codru\\Desktop\\School\\Year 4\\Minor Java Assignments\\Final Java Assignment\\My Folder\\PiJukebox\\Backend\\songs\\";
+//    private final String pathToSong ="C:\\Users\\codru\\Desktop\\School\\Year 4\\Minor Java Assignments\\Final Java Assignment\\My Folder\\PiJukebox\\Backend\\songs\\";
+    // DON'T FORGET TO ADD \\ TO THE END OF "pathToSong" ;)
+    private final String pathToSong = "D:\\Users\\Ruben\\Google Drive TheWheelz14\\Java Minor\\Royalty Free Music\\";
+
     public StartPlayer()
     {
-//        System.out.println("Here startMain");
         songs = new ArrayList<>();
-        songs.add(pathToSong+"B.U.G. Mafia - La Fel De Prost Ca Tine (feat. Bogdan Dima).mp3");
-        songs.add(pathToSong+"Calum Scott - Dancing On My Own.mp3");
-        songs.add(pathToSong+"Calum Scott - You Are The Reason (Official).mp3");
-        songs.add(pathToSong+"Guess Who feat. Mitza - Decat sa minti.mp3");
-        songs.add(pathToSong+"Jessie Ware - Say You Love Me.mp3");
-        songs.add(pathToSong+"Kaleo - Way Down We Go (Official Video).mp3");
-        songs.add(pathToSong+"Lawless feat. Sydney Wayser - Dear God ( Lyrics ).mp3");
-        songs.add(pathToSong+"Nane - 911 (Videoclip Oficial).mp3");
-        sp = new SongPlayer(songs.get(current));
 
+        File[] files = new File(pathToSong).listFiles();
+        showFiles(files);
+        
+        sp = new SongPlayer(songs.get(current));
+    }
+
+    private void showFiles(File[] files) {
+        for (File file : files) {
+            if (file.isDirectory()) {
+                System.out.println("Directory: " + file.getName());
+                showFiles(file.listFiles()); // Calls same method again.
+            } else {
+                System.out.println("File: " + file.getName());
+                songs.add((pathToSong+file.getName()));
+            }
+        }
     }
 
     public void addSong(String path)
