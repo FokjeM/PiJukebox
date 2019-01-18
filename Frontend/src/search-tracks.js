@@ -60,10 +60,10 @@ class SearchTracks extends PolymerElement {
 
       <!-- Track search ajax -->
       <iron-ajax
-      method="post"
-        id="ajaxSearchTrack"
         auto
-        url="http://localhost:8080/api/v1/tracks/search/{{searchTerm}}"
+        method="get"
+        id="ajaxSearchTrack"
+        url="http://localhost:8080/api/v1/extended/tracks?name={{searchTerm}}"
         headers="{Authorization: [[token]]}"
         handle-as="json"
         last-response="{{trackResults}}">
@@ -77,8 +77,8 @@ class SearchTracks extends PolymerElement {
           <div style="display:flex;">          
               <result-row-track
                   track-id="{{track.id}}"
-                  track-name="{{track.title}}"
-                  track-artist="{{track.artist}}">
+                  track-name="{{track.name}}"
+                  track-artist="{{track.artists}}">
               </result-row-track>
             </div>
         </template>
@@ -91,8 +91,8 @@ class SearchTracks extends PolymerElement {
       <!-- Artist search ajax -->
       <iron-ajax
         id="ajaxSearchArtist"
-        url="localhost:8080/api/v1/artist/search/{{searchTerm}}"
-        headers="{Authorization: [[token]]}"
+        url="http://localhost:8080/api/v1/artists?name={{searchTerm}}"
+        
         handle-as="json"
         last-response="{{artistResults}}">
       </iron-ajax>
@@ -118,8 +118,8 @@ class SearchTracks extends PolymerElement {
       <!-- Album search ajax -->
       <iron-ajax
         id="ajaxSearchAlbum"
-        url="http://localhost:8000/search/album/{{searchTerm}}"
-        headers="{Authorization: [[token]]}"
+        url="http://localhost:8080/api/v1/simple/albums?name={{searchTerm}}"
+
         handle-as="json"
         last-response="{{albumResults}}">
       </iron-ajax>
@@ -132,7 +132,7 @@ class SearchTracks extends PolymerElement {
           <div style="display:flex;">
               <result-row-album
                 album-id="{{album.id}}"
-                album-name="{{album.title}}">
+                album-name="{{album.name}}">
               </result-row-album>
             </div>
         </template>
@@ -145,7 +145,7 @@ class SearchTracks extends PolymerElement {
       <!-- Playlist search ajax -->
       <iron-ajax
         id="ajaxSearchPlaylist"
-        url="http://localhost:8000/search/playlist/{{searchTerm}}"
+        url="http://localhost:8080/api/v1/playlists?name={{searchTerm}}"
         headers="{Authorization: [[token]]}"
         handle-as="json"
         last-response="{{playlistResults}}">
