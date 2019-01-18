@@ -37,8 +37,16 @@ public class PlaylistController {
 
     @GetMapping("/playlists")
     @ApiOperation(value = "Retrieve all simple playlists")
-    public ResponseEntity<List<SimplePlaylist>> playlists() {
+    public ResponseEntity<List<SimplePlaylist>> playlists(@RequestParam(name="name", required = false) String name) {
         try {
+            if(name != null && !name.isEmpty())
+            {
+                if(!playlistService.findSimplePlaylistsByName(name).isPresent())
+                {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+                return new ResponseEntity<>(playlistService.findSimplePlaylistsByName(name).get(), HttpStatus.OK);
+            }
             return new ResponseEntity<>(playlistService.findAllSimplePlaylists(), HttpStatus.OK);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No simple playlists found", ex);
@@ -98,35 +106,6 @@ public class PlaylistController {
 
         return null;
     }
-
-//    @PostMapping(value = "/login", produces = "application/json")
-//    @ApiOperation(value = "Login by username and password.")
-//    public String login(@RequestBody LoginForm loginForm, HttpServletResponse response) {
-//
-//        try {
-//
-//            if (!userService.findByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword()).isPresent()) {
-//                response.setStatus(403);
-//                return Optional.empty().toString();
-//            }
-//            User user = userService.findByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword()).get();
-//            if(user.getToken() == null){
-//                //Generate random token
-//                SecureRandom random = new SecureRandom();
-//                byte[] bytes = new byte[20];
-//                random.nextBytes(bytes);
-//                String token = bytes.toString();
-//
-//                //Save token
-//                user.setToken(token);
-//                userService.saveUser(user);
-//            }
-//            return "{\"token\":\"" + user.getToken() + "\"}";
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", ex);
-//        }
-//    }
 
     @GetMapping("/details/playlists")
     @ApiOperation(value = "Retrieve all playlists in full detail, with full track info")

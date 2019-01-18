@@ -15,4 +15,6 @@ public interface ISimplePlaylistRepository extends JpaRepository<SimplePlaylist,
     Optional<SimplePlaylist> findById(Long id);
 
     Optional<List<SimplePlaylist>> findAllByUserID(Long userID);
+
+    Optional<List<SimplePlaylist>> findSimplePlaylistsByTitleContaining(String name);
 }

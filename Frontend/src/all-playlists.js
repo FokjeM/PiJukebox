@@ -21,7 +21,6 @@ import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-icons/av-icons.js';
 import '@polymer/iron-form/iron-form.js';
-import './elements/get-token.js';
 
 class AllPlaylists extends PolymerElement {
   static get template() {
@@ -109,8 +108,6 @@ class AllPlaylists extends PolymerElement {
           </div>
         </div>
       </div>
-
-      <get-token token="{{token}}"></get-token>
     `;
   }
 

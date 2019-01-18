@@ -47,7 +47,7 @@ class MyLogin extends PolymerElement {
           method="post"
           url="http://localhost:8080/api/v1/login"
           handle-as="json"
-          body='{"email": "{{email}}","password": "{{password}}"}'
+          body='{"email": "{{email}}", "password": "{{password}}"}'
           content-type='application/json'
           on-response="setToken"
           on-error="handleError">
@@ -65,8 +65,9 @@ class MyLogin extends PolymerElement {
   setToken(e,r){
     if(r.status == 200){
       //Store token in local storage
-      var token = JSON.parse(r.response).token;
-      localStorage.setItem("token", token);
+      // var token = JSON.parse(r.response).token;
+      var token = r.response.token;
+      window.localStorage.setItem("token", token);
 
       //Redirect to /search
       window.history.pushState({}, null, '/search');

@@ -44,9 +44,9 @@ class SinglePlaylist extends PolymerElement {
         auto
         url="http://localhost:8080/api/v1/details/playlists/[[routeData.playlistId]]"
         handle-as="json"
+        params="{{header}}"
         last-response="{{playlist}}">
       </iron-ajax>
-
 
       <div class="card">
         <h1>[[playlist.title]]</h1>
@@ -72,6 +72,23 @@ class SinglePlaylist extends PolymerElement {
         </template> 
       </div>
     `;
+  }
+  static get properties() {
+    return {
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
+      }
+    };
+  }
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
   }
 }
 

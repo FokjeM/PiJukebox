@@ -64,7 +64,7 @@ public class TrackServiceImpl implements ITrackService {
 
     @Override
     public Optional<List<ArtistWithTracks>> findAllTracksByArtistName(String name) {
-        return artistWithTracksRepository.findArtistTracksByNameContaining(name);
+        return artistWithTracksRepository.findArtistWithTracksByNameContaining(name);
     }
 
     @Override
@@ -96,5 +96,4 @@ public class TrackServiceImpl implements ITrackService {
     public Optional<ArtistWithTracks> findTrackByArtistId(Long id) {
         return artistWithTracksRepository.findById(id);
     }
-
 }

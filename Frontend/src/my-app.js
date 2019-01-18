@@ -22,13 +22,10 @@ import '@polymer/iron-pages/iron-pages.js';
 import '@polymer/iron-selector/iron-selector.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-dialog/paper-dialog.js';
-
 import './my-icons.js';
-
 import './elements/track-control.js';
 import './elements/dialog-element.js';
 
-import './elements/get-token.js';
 
 
 // Gesture events like tap and track generated from touch will not be
@@ -181,6 +178,7 @@ class MyApp extends PolymerElement {
      // Show 'tracks' in that case. And if the page doesn't exist, show 'view404'.
     var token = localStorage.getItem('token');
     if(token == null){
+      this.set('route.path', '/login');
       this.page = 'login';
     }
     else if (!page) {

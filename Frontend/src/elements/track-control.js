@@ -56,7 +56,7 @@ class TrackControl extends PolymerElement {
         url="http://localhost:8080/api/v1/player/status"
         content-type="application/json"  
         handle-as="json"
-        last-response="{{playerStatus}}"
+   
         on-response="verifyStatus">
       </iron-ajax>
 
@@ -72,7 +72,7 @@ class TrackControl extends PolymerElement {
       <iron-ajax
         id="playPause"
         method="POST"
-        url="http://localhost:8080/api/v1/player/playpause"
+        url="http://localhost:8080/api/v1/player/play"
         content-type="application/json"
         handle-as="json"
         on-response="getStatus">
@@ -185,29 +185,33 @@ class TrackControl extends PolymerElement {
   }
 
   verifyStatus(e, response) {
+
+    var playerStatus = JSON.parse(response.response);
+
     if (response.status == 200) {
-      this.updateStates();
+      this.updateStates(playerStatus);
       this.updateControls();
     } else {
       this.throwEvent('open-dialog-event', {title: 'Player', text: 'Something went wrong, please try again'});
     }
+
+    console.log(this.volumeLevel);
+
   }
 
   /**
    * Set states
    */
-  updateStates() {
-    this.shuffleIsActive = playerStatus.player.shuffleState;
-    this.playPauseState = playerStatus.player.playPauseState;
-    this.repeatState = playerStatus.player.repeatState;
-    this.volumeLevel = playerStatus.player.volumeLevel;
+  updateStates(playerStatus) {
+    this.playPauseState = playerStatus.playPauseState;
+    this.repeatState = playerStatus.repeatState;
+    this.volumeLevel = playerStatus.volumeLevel;
   }
 
   /**
    * Update the controls
    */
   updateControls () {
-    this.changeShuffleIcon();
     this.changePlayPauseIcon();
     this.changeRepeatIcon();
     this.changeVolumeIcon();
@@ -215,10 +219,6 @@ class TrackControl extends PolymerElement {
 
   playPause(e) {
     this.$.playPause.generateRequest();
-  }
-  
-  shuffle(e) {
-    this.$.shuffle.generateRequest();
   }
   
   repeat(e) {
