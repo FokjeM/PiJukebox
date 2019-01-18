@@ -38,27 +38,22 @@ public class DatabaseConfig {
     private final String DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
     private final String URL = "jdbc:mysql://localhost:3306/pijukebox?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     private final String USER_NAME = "root";
-    private final String PASSWORD = "root";
+    private final String PASSWORD = "";
 
 
     @Bean
     public DataSource dataSource() {
-        try {
-            BasicDataSource dataSource = new BasicDataSource();
+        BasicDataSource dataSource = new BasicDataSource();
 
-            dataSource.setDriverClassName(DRIVER_CLASS_NAME);
-            dataSource.setUsername(USER_NAME);
-            dataSource.setPassword(PASSWORD);
-            dataSource.setUrl(URL);
-            dataSource.setMaxActive(10);
-            dataSource.setMaxIdle(5);
-            dataSource.setInitialSize(5);
-            dataSource.setValidationQuery("SELECT 1");
-            return dataSource;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        dataSource.setDriverClassName(DRIVER_CLASS_NAME);
+        dataSource.setUsername(USER_NAME);
+        dataSource.setPassword(PASSWORD);
+        dataSource.setUrl(URL);
+        dataSource.setMaxActive(10);
+        dataSource.setMaxIdle(5);
+        dataSource.setInitialSize(5);
+        dataSource.setValidationQuery("SELECT 1");
+        return dataSource;
     }
 
     /**
