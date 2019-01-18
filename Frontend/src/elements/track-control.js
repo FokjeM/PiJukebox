@@ -62,7 +62,7 @@ class TrackControl extends PolymerElement {
 
       <iron-ajax
         id="shuffle"
-        method="POST"
+        method="GET"
         url="http://localhost:8080/api/v1/player/shuffle"
         content-type="application/json"
         params="{{header}}"
@@ -72,7 +72,7 @@ class TrackControl extends PolymerElement {
 
       <iron-ajax
         id="playPause"
-        method="POST"
+        method="GET"
         url="http://localhost:8080/api/v1/player/play"
         content-type="application/json"
         params="{{header}}"
@@ -82,7 +82,7 @@ class TrackControl extends PolymerElement {
 
       <iron-ajax
         id="repeat"
-        method="POST"
+        method="GET"
         url="http://localhost:8080/api/v1/player/repeat"
         content-type="application/json"
         params="{{header}}"
@@ -92,7 +92,7 @@ class TrackControl extends PolymerElement {
 
       <iron-ajax
         id="nextTrack"
-        method="POST"
+        method="GET"
         url="http://localhost:8080/api/v1/player/next"
         content-type="application/json"
         params="{{header}}"
@@ -102,7 +102,7 @@ class TrackControl extends PolymerElement {
 
       <iron-ajax
         id="previousTrack"
-        method="POST"
+        method="GET"
         url="http://localhost:8080/api/v1/player/previous"
         content-type="application/json"
         params="{{header}}"
