@@ -1,11 +1,8 @@
 package com.pijukebox.service.impl;
 
-import com.pijukebox.model.artist.Artist;
-import com.pijukebox.model.simple.SimpleAlbum;
 import com.pijukebox.model.simple.SimpleArtist;
 import com.pijukebox.repository.IArtistRepository;
 import com.pijukebox.repository.ISimpleArtistRepository;
-import com.pijukebox.service.impl.ArtistServiceImpl;
 import org.hamcrest.core.IsSame;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,8 +18,9 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ArtistServiceImplTest {
-@Mock
-private ISimpleArtistRepository simpleArtistRepository;
+
+    @Mock
+    private ISimpleArtistRepository simpleArtistRepository;
     @Mock
     private IArtistRepository artistRepository;
 
@@ -31,12 +29,15 @@ private ISimpleArtistRepository simpleArtistRepository;
     @BeforeEach
     void setUp() {
         initMocks(this);
-       // albumServiceImplUnderTest = new AlbumServiceImpl(mockAlbumRepository, mockSimpleAlbumRepository, mockGenreWithAlbumsRepository, mockArtistWithAlbumsRepository, mockAlbumWithTracksRepository, mockSimpleTrackRepository, mockSimpleArtistRepository, mockSimpleGenreRepository, mockAlbumWithArtistsRepository, mockAlbumWithGenreRepository);
         artistServiceImplUnderTest = new ArtistServiceImpl(artistRepository,simpleArtistRepository);
     }
 
     @Test
     void testFindSimpleArtistById(){
+        String newLine = System.getProperty("line.separator");
+        System.out.println("Initiating testFindSimpleArtistById...");
+        System.out.println(newLine);
+
         // Given
         final Long id = 1L;
         final Optional<SimpleArtist> expectedResult = Optional.of(new SimpleArtist(1L,"yo"));
@@ -50,7 +51,12 @@ private ISimpleArtistRepository simpleArtistRepository;
         assertThat("result", result, is(IsSame.sameInstance(expectedResult)));
 
         // You are expecting repo to be called once with correct param
-        verify(artistRepository).findById(1L);
+        verify(simpleArtistRepository).findById(1L);
+
+        System.out.println("Expected result: " + expectedResult);
+        System.out.println(newLine);
+        System.out.println("Given result: " + result);
+        System.out.println("------------------------------------------------------------------------------------------------------------------------------------");
     }
 
     /*@Test
