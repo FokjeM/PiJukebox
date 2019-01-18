@@ -159,8 +159,9 @@ class MyApp extends PolymerElement {
     window.localStorage.removeItem("token");
  
     //Redirect to /login
-    window.history.pushState({}, null, '/login');
-    window.dispatchEvent(new CustomEvent('location-changed'));
+    window.location.href = "/";
+    // window.history.pushState({}, null, '/login');
+    // window.dispatchEvent(new CustomEvent('location-changed'));
   }
 
   static get properties() {

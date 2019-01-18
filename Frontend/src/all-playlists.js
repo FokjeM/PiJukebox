@@ -68,16 +68,16 @@ class AllPlaylists extends PolymerElement {
       </iron-ajax>
       
       <iron-ajax
-          id="sendPlaylistForm"
-          method="post"
-          url="http://localhost:8080/api/v1/playlists/create"
-          handle-as="json"
-          body='{"title": "{{title}}","description": "{{description}}"}'
-          params="{{header}}"
-          content-type="application/json"
-          on-response="formResponse"
-          on-error="handleError">
-        </iron-ajax>
+        id="sendPlaylistForm"
+        method="post"
+        url="http://localhost:8080/api/v1/playlists/create"
+        handle-as="json"
+        body='{"title": "{{title}}","description": "{{description}}"}'
+        params="{{header}}"
+        content-type="application/json"
+        on-response="formResponse"
+        on-error="handleError">
+      </iron-ajax>
 
       <div class="card">
         <div class="container">
