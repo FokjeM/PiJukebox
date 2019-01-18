@@ -88,15 +88,15 @@ class AlbumServiceImplTest {
 
         // Predefined Data
         final Set<SimpleGenre> genres = new HashSet<>();
-        final SimpleGenre simpleGenre = new SimpleGenre(1L,"GenreName");
+        final SimpleGenre simpleGenre = new SimpleGenre(1L, "GenreName");
         genres.add(simpleGenre);
 
         final Set<SimpleTrack> tracks = new HashSet<>();
-        final SimpleTrack simpleTrack = new SimpleTrack(1L , "TrackName", "TrackDescription", "TrackFilename.mp3" );
+        final SimpleTrack simpleTrack = new SimpleTrack(1L, "TrackName", "TrackDescription", "TrackFilename.mp3");
         tracks.add(simpleTrack);
 
         final Set<SimpleArtist> artists = new HashSet<>();
-        final SimpleArtist simpleArtist = new SimpleArtist(1L,"ArtistName");
+        final SimpleArtist simpleArtist = new SimpleArtist(1L, "ArtistName");
         artists.add(simpleArtist);
 
         System.out.println("Initiating testFindAlbumById...");
@@ -134,15 +134,15 @@ class AlbumServiceImplTest {
 
         // Predefined Data
         final Set<SimpleGenre> genres = new HashSet<>();
-        final SimpleGenre simpleGenre = new SimpleGenre(1L,"GenreName");
+        final SimpleGenre simpleGenre = new SimpleGenre(1L, "GenreName");
         genres.add(simpleGenre);
 
         final Set<SimpleTrack> tracks = new HashSet<>();
-        final SimpleTrack simpleTrack = new SimpleTrack(1L , "TrackName", "TrackDescription", "TrackFilename.mp3" );
+        final SimpleTrack simpleTrack = new SimpleTrack(1L, "TrackName", "TrackDescription", "TrackFilename.mp3");
         tracks.add(simpleTrack);
 
         final Set<SimpleArtist> artists = new HashSet<>();
-        final SimpleArtist simpleArtist = new SimpleArtist(1L,"ArtistName");
+        final SimpleArtist simpleArtist = new SimpleArtist(1L, "ArtistName");
         artists.add(simpleArtist);
 
         // Given
