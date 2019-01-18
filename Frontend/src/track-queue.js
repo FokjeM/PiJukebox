@@ -24,7 +24,7 @@ class TrackQueue extends PolymerElement {
       <iron-ajax
         id="getCurrentQueue"
         auto
-        url="http://localhost:8080/api/v1/search/track/k"
+        url="http://localhost:8080/api/v1/search/track/"
         params="{{header}}"
         handle-as="json"
         last-response="{{response}}">
