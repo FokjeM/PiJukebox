@@ -1,10 +1,7 @@
 package com.pijukebox.controller.player;
 
-import javafx.application.Application;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.Stage;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 
@@ -15,20 +12,8 @@ public class SongPlayer{
     private static MediaPlayer mediaPlayer;
     private String filePath;
 
-    public SongPlayer(String filePath) {
-        this.filePath = filePath;
-        try {
-            File f = new File(filePath);
-            if (f.exists()) {
-                hit = new Media(f.toURI().toString());
-                mediaPlayer = new MediaPlayer(hit);
-            } else {
-                System.out.println("abcdefgzzz");
-            }
+    public SongPlayer() {
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
     public void play() {

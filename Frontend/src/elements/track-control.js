@@ -208,13 +208,7 @@ class TrackControl extends PolymerElement {
       return {'Authorization': token};
   }
 
-  ready() {
-    super.ready();
-    this.getPlayerStatus();
-  }
-
   getPlayerStatus(e) {
-    console.log("hoi");
     this.$.getStatus.generateRequest();
   }
 

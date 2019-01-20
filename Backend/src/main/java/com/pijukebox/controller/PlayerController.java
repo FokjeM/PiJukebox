@@ -2,6 +2,8 @@ package com.pijukebox.controller;
 
 import com.google.protobuf.Int32Value;
 import com.pijukebox.controller.player.StartPlayer;
+import com.pijukebox.model.simple.SimpleTrack;
+import com.pijukebox.service.ITrackService;
 import io.swagger.annotations.ApiOperation;
 import javafx.embed.swing.JFXPanel;
 import org.hibernate.event.spi.SaveOrUpdateEvent;
@@ -13,16 +15,21 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.swing.*;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1/player")
 public class PlayerController {
 
-    private StartPlayer sp;
-    public PlayerController()
-    {
 
+    private StartPlayer sp;
+    private final ITrackService trackService;
+
+    @Autowired
+    public PlayerController(ITrackService trackService)
+    {
+        this.trackService = trackService;
         JFrame frame = new JFrame("FX");
         JFXPanel fxPanel = new JFXPanel();
         frame.add(fxPanel);
@@ -85,6 +92,46 @@ public class PlayerController {
             return new ResponseEntity<>("Playing...", HttpStatus.OK);
         }catch (Exception ex){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't play track /prev"), ex);
+        }
+    }
+
+    @GetMapping("/add/{id}")
+    public ResponseEntity<SimpleTrack> addTrack(@PathVariable Long id)
+    {
+        try{
+            if(!trackService.findSimpleTrackById(id).isPresent())
+            {
+                return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+            }
+            SimpleTrack track = trackService.findSimpleTrackById(id).get();
+            sp.addSong(track);
+            return new ResponseEntity<>(track, HttpStatus.OK);
+        }
+        catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't add song"), ex);
+        }
+    }
+
+    @GetMapping("/remove")
+    public ResponseEntity<String> deleteTrack(@PathVariable Long id)
+    {
+        try{
+            sp.deleteSong(id);
+            return new ResponseEntity<>("Song removed", HttpStatus.OK);
+        }
+        catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't remove song"), ex);
+        }
+    }
+
+    @GetMapping("/queue")
+    public ResponseEntity<ArrayList<SimpleTrack>> getQueue()
+    {
+        try{
+            return new ResponseEntity<>(sp.getQueue(), HttpStatus.OK);
+        }
+        catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't get queue"), ex);
         }
     }
 

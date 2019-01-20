@@ -28,13 +28,13 @@ class ResultRowTrack extends PolymerElement {
 
       <iron-ajax
         id="addToQueue"
-        method="post"
-        url="http://localhost:8080/api/v1/queue/add"
-        body='[{"trackId": [[trackId]]}]'
+        method="get"
+        url="http://localhost:8080/api/v1/player/add/[[trackId]]"
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
-        on-response="handleQueueResponse">
+        on-response="handleQueueResponse"
+        on-error="handleError">
       </iron-ajax>
       
       <div>
@@ -68,12 +68,11 @@ class ResultRowTrack extends PolymerElement {
   }
 
   handleQueueResponse(e,r){
-    if(r.status == 200){
       this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: this.trackName + ' has been added to the queue.'}, bubbles: true,composed: true, }));
-    }
-    else{
-      this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true, }));
-    }
+  }
+
+  handleError(e,r){
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true, }));
   }
 
   static get properties() {

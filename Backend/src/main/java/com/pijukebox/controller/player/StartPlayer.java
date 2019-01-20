@@ -1,14 +1,18 @@
 package com.pijukebox.controller.player;
 
+import com.pijukebox.model.simple.SimpleTrack;
+import javafx.application.Application;
+import javafx.stage.Stage;
+
 import java.io.File;
 import java.util.ArrayList;
 
 public class StartPlayer{
 
     private SongPlayer sp;
-    private ArrayList<String> songs;
+    private ArrayList<SimpleTrack> songs;
     private int current = 0;
-//    private final String pathToSong ="C:\\Users\\codru\\Desktop\\School\\Year 4\\Minor Java Assignments\\Final Java Assignment\\My Folder\\PiJukebox\\Backend\\songs\\";
+    // private final String pathToSong ="C:\\Users\\codru\\Desktop\\School\\Year 4\\Minor Java Assignments\\Final Java Assignment\\My Folder\\PiJukebox\\Backend\\songs\\";
     // DON'T FORGET TO ADD \\ TO THE END OF "pathToSong" ;)
     private final String pathToSong = "D:\\Users\\Ruben\\Google Drive TheWheelz14\\Java Minor\\Royalty Free Music\\";
 
@@ -16,26 +20,16 @@ public class StartPlayer{
     {
         songs = new ArrayList<>();
 
-        File[] files = new File(pathToSong).listFiles();
-        showFiles(files);
-        
+        //File[] files = new File(pathToSong).listFiles();
+        //showFiles(files);
+
+        //sp = new SongPlayer(songs.get(current));
         sp = new SongPlayer(songs.get(current));
     }
 
-    private void showFiles(File[] files) {
-        for (File file : files) {
-            if (file.isDirectory()) {
-                System.out.println("Directory: " + file.getName());
-                showFiles(file.listFiles()); // Calls same method again.
-            } else {
-                System.out.println("File: " + file.getName());
-                songs.add((pathToSong+file.getName()));
-            }
-        }
-    }
-
-    public void addSong(String path)
+    public void addSong(SimpleTrack path)
     {
+        path.setFilename(pathToSong + path.getFilename());
         songs.add(path);
     }
 
@@ -60,6 +54,7 @@ public class StartPlayer{
 
     public void pause()
     {
+        sp.next(songs.get(current).getFilename());
         sp.pause();
     }
     public void stop()
@@ -76,7 +71,7 @@ public class StartPlayer{
         current++;
         if(current < songs.size())
         {
-            sp.next(songs.get(current));
+            sp.next(songs.get(current).getFilename());
         }else{
             current = 0;
         }
@@ -88,10 +83,14 @@ public class StartPlayer{
         if(current <= 0)
         {
             current = 0;
-            sp.next(songs.get(current));
+            sp.next(songs.get(current).getFilename());
         }else{
             current = 0;
         }
+    }
+
+    public ArrayList<SimpleTrack> getQueue() {
+        return songs;
     }
 
     public Boolean isPlaying() {
