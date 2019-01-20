@@ -18,23 +18,16 @@
 package com.PiJukeboxPlayer;
 
 import java.io.IOException;
-import javafx.application.Application;
-import javafx.stage.Stage;
 
 /**
  * Quick and dirty testing with a PiJukeboxPlayer class!
  * @author Riven
  */
-public class PiJukeboxPlayer extends Application {
+public class PiJukeboxPlayer {
     public static Player player;
     public static Queue queue;
     private static Track track;
     public static ErrorLogger log;
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        Application.launch();
-    }
 
     public static void main(String[] args) throws IOException {
         PiJukeboxPlayer pjb = new PiJukeboxPlayer();

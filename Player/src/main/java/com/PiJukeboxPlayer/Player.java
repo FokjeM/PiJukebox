@@ -1,5 +1,6 @@
 package com.PiJukeboxPlayer;
 
+import com.sun.javafx.application.PlatformImpl;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -7,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.media.Media;
@@ -75,6 +77,11 @@ public class Player extends Application {
         }
         this.repeat = rep;
         this.repeatOne = repOne;
+        final CountDownLatch startupLatch = new CountDownLatch(1);
+        // Note, this method is called on the FX Application Thread
+        PlatformImpl.startup(startupLatch::countDown);
+        // Wait for FX platform to start
+        startupLatch.await();
     }
     
     /**
