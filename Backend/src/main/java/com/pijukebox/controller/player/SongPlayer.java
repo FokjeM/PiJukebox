@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 
 public class SongPlayer{
-    private String status;
+    private String status = "stopped";
+    private double volume = 0.5;
     private Media hit;
     private static MediaPlayer mediaPlayer;
     private String filePath;
@@ -75,12 +76,21 @@ public class SongPlayer{
         }
     }
 
-    public Boolean isPlaying(){
+    public Boolean isPlaying() {
         if (status.equals("playing")) {
             return true;
         } else if (status.equals("stopped") || status.equals("paused")) {
             return false;
         }
         return false;
+    }
+
+    public void setVolumeLevel(double volumeLevel) {
+        mediaPlayer.setVolume(volumeLevel);
+        this.volume = volumeLevel;
+    }
+
+    public double volumeLevel() {
+        return volume;
     }
 }

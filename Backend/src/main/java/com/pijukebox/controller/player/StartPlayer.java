@@ -1,8 +1,5 @@
 package com.pijukebox.controller.player;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
-
 import java.io.File;
 import java.util.ArrayList;
 
@@ -99,5 +96,14 @@ public class StartPlayer{
 
     public Boolean isPlaying() {
         return sp.isPlaying();
+    }
+
+    public double getVolumeLevel() {
+        return sp.volumeLevel();
+    }
+
+    public void setVolume(int volume) {
+        double volumeLevel = ((double)volume / 10);
+        sp.setVolumeLevel(volumeLevel);
     }
 }

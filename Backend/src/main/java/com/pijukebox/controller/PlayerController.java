@@ -1,15 +1,14 @@
 package com.pijukebox.controller;
 
+import com.google.protobuf.Int32Value;
 import com.pijukebox.controller.player.StartPlayer;
 import io.swagger.annotations.ApiOperation;
 import javafx.embed.swing.JFXPanel;
+import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.swing.*;
@@ -89,14 +88,25 @@ public class PlayerController {
         }
     }
 
+    @GetMapping("/volume/{volumeLevel}")
+    public ResponseEntity<String> volume(@PathVariable int volumeLevel) {
+        try {
+            sp.setVolume(volumeLevel);
+            return new ResponseEntity<>("Volume is " + volumeLevel, HttpStatus.OK);
+        }
+        catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't change volume"), ex);
+        }
+    }
+
     @GetMapping(value = "/status", produces = "application/json")
     @ApiOperation(value = "Get player status")
     public String status() {
         Boolean playerStatus = sp.isPlaying();
-        if (playerStatus) {
-            return "{\"isPlaying\": true, \"volumeLevel\": 2}";
-        } else {
-            return "{\"isPlaying\": false, \"volumeLevel\": 2}";
-        }
+        Double volumeLevel = sp.getVolumeLevel();
+        Double intVol = volumeLevel * 10;
+        int playerVolume = intVol.intValue();
+
+        return String.format("{\"isPlaying\": %s, \"volumeLevel\": %d}", playerStatus, playerVolume);
     }
 }

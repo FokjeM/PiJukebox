@@ -67,7 +67,7 @@ class TrackControl extends PolymerElement {
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
-        on-response="getStatus">
+        on-response="getPlayerStatus">
       </iron-ajax>
 
       <iron-ajax
@@ -77,7 +77,7 @@ class TrackControl extends PolymerElement {
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
-        on-response="getStatus">
+        on-response="getPlayerStatus">
       </iron-ajax>
 
       <iron-ajax
@@ -87,7 +87,7 @@ class TrackControl extends PolymerElement {
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
-        on-response="getStatus">
+        on-response="getPlayerStatus">
       </iron-ajax>
 
       <iron-ajax
@@ -97,7 +97,7 @@ class TrackControl extends PolymerElement {
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
-        on-response="getStatus">
+        on-response="getPlayerStatus">
       </iron-ajax>
 
       <iron-ajax
@@ -107,7 +107,7 @@ class TrackControl extends PolymerElement {
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
-        on-response="getStatus">
+        on-response="getPlayerStatus">
       </iron-ajax>
 
       <iron-ajax
@@ -117,19 +117,19 @@ class TrackControl extends PolymerElement {
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
-        on-response="getStatus">
+        on-response="getPlayerStatus">
       </iron-ajax>
 
       <iron-ajax
         id="changeVolume"
-        method="POST"
-        url="http://localhost:8080/api/v1/player/volume"
+        method="GET"
+        url="http://localhost:8080/api/v1/player/volume/{{volumeLevel}}"
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
-        on-response="getStatus">
+        on-response="getPlayerStatus">
       </iron-ajax>
-      
+
       <div class="container">  
         <div class="controlsContainer">
          
@@ -154,7 +154,7 @@ class TrackControl extends PolymerElement {
 
           <div class="controls">
             <iron-icon icon="[[volumeIcon]]"></iron-icon>
-            <paper-slider id="volumeSlider" max="10" step="1" value="[[volumeLevel]]" on-change="changeVolume"></paper-slider>
+            <paper-slider id="volumeSlider" max="10" step="1" value="{{volumeLevel}}" on-change="changeVolumeVal"></paper-slider>
           </div>
         </div>
 
@@ -190,7 +190,7 @@ class TrackControl extends PolymerElement {
       },
       volumeLevel: {
         type: Number,
-        value: 2
+        // value: 2
       },
       token: {
         type: String,
@@ -208,7 +208,13 @@ class TrackControl extends PolymerElement {
       return {'Authorization': token};
   }
 
-  getStatus(e) {
+  ready() {
+    super.ready();
+    this.getPlayerStatus();
+  }
+
+  getPlayerStatus(e) {
+    console.log("hoi");
     this.$.getStatus.generateRequest();
   }
 
@@ -320,9 +326,9 @@ class TrackControl extends PolymerElement {
   /**
    * This method calls the changeVolumeIcon and changeVolumeLevel methods 
    */
-  changeVolume(e) {
+  changeVolumeVal(e) {
     this.changeVolumeIcon();
-    this.changeVolumeLevel(e);
+    this.changeVolumeLevel();
   }
   
   /**
@@ -346,9 +352,7 @@ class TrackControl extends PolymerElement {
   /**
    * This method sends the request to the backend to change the volume level
    */
-  changeVolumeLevel(e) {
-    let volume = this.$.volumeSlider.value;
-    this.$.changeVolume.setAttribute('body', '{"volume":' + volume + '}');
+  changeVolumeLevel() {
     this.$.changeVolume.generateRequest();
   }
 
