@@ -176,27 +176,19 @@ public class Player extends Application {
     public boolean updateStatefulQueue() {
             statefulQueue.clear();
         try {
-            System.out.println("Updating Queue");
             this.statefulQueue.addAll(queue.valueStrings());
-            System.out.println("StatefulQueue size: " + statefulQueue.size());
             //We need to double check this, as calling create on a file that
             //already exists *will* throw an IOException.
             //However, the file might have been removed during runtime.
             if(!Files.exists(QUEUE_FILE)) {
                 Files.createFile(QUEUE_FILE);
-                System.out.println("Created Queue file");
             }
             if(!statefulQueue.isEmpty()) {
-                System.out.println("Queue wasn't empty");
                 //Save current track number
                 statefulQueue.add(0, Integer.toString(trackNum));
-                System.out.println("Added trackNum");
-            } else {
-                System.out.println("Queue was empty");
             }
             //WRITE without saving any previous data.
             Files.write(QUEUE_FILE, statefulQueue, StandardOpenOption.WRITE);
-            System.out.println("Wrote to the file!");
             return true;
         } catch (IOException ex) {
             writeLog(new NonFatalException("Could not save the Stateful Queue to file.", ex));
@@ -214,7 +206,6 @@ public class Player extends Application {
         try {
             List<String> qf = Files.readAllLines(QUEUE_FILE);
             if(qf.isEmpty()) {
-                System.out.println("Read the queue file, but it was empty.");
                 return;
             }
             //Sets trackNum to the previous state and shifts the tracks back up.
@@ -228,7 +219,6 @@ public class Player extends Application {
             writeLog(ex);
         }
         this.statefulQueue.addAll(this.queue.valueStrings());
-        System.out.println("Queue restored!");
     }
     
     /**
@@ -302,7 +292,6 @@ public class Player extends Application {
      */
     public void playTrack(Track t) throws FatalException, NonFatalException{
         if(t == null) {
-            System.out.println("Track given was null. We're not doing this!");
             next();
         }
         stop(); //Make sure we stop playing so we can do our standard set of tasks

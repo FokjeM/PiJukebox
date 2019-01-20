@@ -66,6 +66,8 @@ public class PiJukeboxPlayer {
             player.next();
             System.out.println("Next, wrapped around");
             Thread.sleep(2000);
+            //Just to show that it handles autoplay; sleep twice as long as Shelter's duration
+            Thread.sleep(Long.parseLong(track.getDuration().replace(".", ""))*2);
             player.stop();
             System.out.println("Stopped, total success!");
         } catch(NonFatalException nfe) {

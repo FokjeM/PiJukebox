@@ -1,5 +1,6 @@
 package com.PiJukeboxPlayer;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +37,7 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
         while (li.hasNext()) {
             length++;
             String track = (String)li.next();
-            this.put(length, new Track(track.substring(0, track.lastIndexOf("\\")), track.substring(track.lastIndexOf("\\")+1, track.length())));
+            this.put(length, new Track(track.substring(0, track.lastIndexOf(File.separator)), track.substring(track.lastIndexOf(File.separator)+1, track.length())));
         }
         this.size = length;
     }
@@ -162,14 +163,12 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
     @Override
     public Track put(Integer key, Track value) {
         if (this.containsKey(key)) { //If the key is present, return the result of setValue(value)
-            System.out.println("Already present!");
             for (QueueEntry e : this.entries) {
                 if (e.getKey().equals(key)) {
                     return (Track) e.setValue(value);
                 }
             }
         } else { //Else, create a new array with the necessary Length
-            System.out.println("Not yet present!");
             QueueEntry<Integer, Track>[] newEntries = new QueueEntry[key];
             //copy the current array into it
             if(size > 0) {
@@ -188,7 +187,6 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
             }
             for(QueueEntry q : entries){
                 String s = ((Track)q.getValue()).getPath().toString();
-                System.out.println(s);
             }
         }
         //If nothing was returned yet, the key did not exist

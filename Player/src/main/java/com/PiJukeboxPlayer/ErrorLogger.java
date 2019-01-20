@@ -94,11 +94,9 @@ public class ErrorLogger {
                 //Assume users or other programmers will ruin everything!
                 //Add all directories, strip any leading or trailing (back)slashes
                 createDirs.append(s.replaceAll("\\|/", ""));
-                System.out.println(createDirs.toString());
             }
             Files.createDirectories(FileSystems.getDefault().getPath(createDirs.toString()));
         } catch (Exception ex) { //Seems desperate, but a few unchecked exceptions might happen here
-            ex.printStackTrace(System.err);
             pathString = System.getProperty("user.dir");
         }
         initPath = FileSystems.getDefault().getPath(pathString, pathParts);
@@ -108,7 +106,6 @@ public class ErrorLogger {
     public boolean writeLog(Exception ex, boolean fatal) {
         ldt = LocalDateTime.now();
         if(fatal) {
-            ex.printStackTrace(System.err);
             errorLines.add("~~~~~FATAL ERROR occurred at: " + ldt.toString() + "~~~~~");
         } else {
             errorLines.add("-----non-fatal error occurred at: " + ldt.toString() + "-----");
@@ -124,10 +121,8 @@ public class ErrorLogger {
             if(errorLines.isEmpty()) {
                 return false;
             } else if(errorLines.get(0).contains("~~~~~")){
-                System.err.println("FATAL ERROR!");
                 for (Iterator<String> it = errorLines.iterator(); it.hasNext();) {
                     String s = it.next();
-                    System.err.println(s);
                 }
                 //Mortal Kombat voice: FATALITY!
                 System.exit(1);
@@ -135,6 +130,7 @@ public class ErrorLogger {
             errorLines.clear();
             return true;
         } catch (IOException e) {
+            //We can't write to a log file... All hell is raining down, huh?
             System.err.println("FATAL ERROR!");
             System.err.println("\t" + e.toString());
             System.err.println("\t" + e.getMessage());
