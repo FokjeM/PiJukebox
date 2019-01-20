@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -19,24 +20,24 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
      * The array holding the actual QueueEntry objects
      */
     private QueueEntry<Integer, Track>[] entries;
-    /**
-     * The current size of this Queue
-     */
     private int size;
 
     /**
      * Instantiates a Queue using an iterable object.
      *
      * @param list the Iterable collection of Tracks to populate the Queue with.
+     * @throws com.PiJukeboxPlayer.FatalException
+     * @throws com.PiJukeboxPlayer.NonFatalException
      */
-    public Queue(Iterable list) {
+    public Queue(Iterable<String> list) throws FatalException, NonFatalException {
         int length = 0;
+        this.entries = new QueueEntry[1];
         Iterator li = list.iterator();
         while (li.hasNext()) {
             length++;
-            li.next();
+            String track = (String)li.next();
+            this.put(length, new Track(track.substring(0, track.lastIndexOf("\\")), track.substring(track.lastIndexOf("\\")+1, track.length())));
         }
-        this.entries = new QueueEntry[length];
         this.size = length;
     }
     
@@ -52,9 +53,11 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
     /**
      * Cannibalistic Queue; it consumes another Queue.
      * @param q the Queue to consume.
+     * @throws com.PiJukeboxPlayer.FatalException
+     * @throws com.PiJukeboxPlayer.NonFatalException
      */
-    public Queue(Queue q){
-        this(q.values());
+    public Queue(Queue q) throws FatalException, NonFatalException{
+        this(q.valueStrings());
     }
     
     /**
@@ -73,22 +76,6 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
     public Queue(){
         this.entries = new QueueEntry[1];
         this.size = 0;
-    }
-
-    /**
-     * Remove all entries that hold null values and shift all Integer keys up.
-     */
-    private void reset() {
-        int index = 0;
-        Collection<Track> values = this.values();
-        this.clear();
-        for(Track t : values){
-            if(t != null){
-                index++;
-                this.put(index, t);
-            }
-        }
-        this.size = index;
     }
 
     /**
@@ -122,8 +109,10 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
             return false;
         }
         for (QueueEntry e : this.entries) {
-            if (e.getKey().equals(key)) {
-                return true;
+            if(e != null) {
+                if (e.getKey().equals(key)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -152,9 +141,11 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
      */
     public Track get(Integer key) {
         for (QueueEntry e : this.entries) {
-            if (e.getKey().equals(key)) {
-                //Cast to Track due to IDE errors; test without cast later
-                return (Track) e.getValue();
+            if(e != null) {
+                if (e.getKey().equals(key)) {
+                    //Cast to Track due to IDE errors; test without cast later
+                    return (Track) e.getValue();
+                }
             }
         }
         return null;
@@ -171,25 +162,34 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
     @Override
     public Track put(Integer key, Track value) {
         if (this.containsKey(key)) { //If the key is present, return the result of setValue(value)
+            System.out.println("Already present!");
             for (QueueEntry e : this.entries) {
                 if (e.getKey().equals(key)) {
-                    //Cast to Track due to IDE errors; test without cast later
                     return (Track) e.setValue(value);
                 }
             }
         } else { //Else, create a new array with the necessary Length
+            System.out.println("Not yet present!");
             QueueEntry<Integer, Track>[] newEntries = new QueueEntry[key];
             //copy the current array into it
             if(size > 0) {
                 for (QueueEntry e : entries) {
-                    newEntries[(Integer) e.getKey()] = e;
+                    newEntries[(Integer) e.getKey() - 1] = e;
                 }
+                //Add the new entry
+                newEntries[key-1] = new QueueEntry(key, value);
+                //and change the reference pointer of entries
+                this.entries = newEntries;
+                this.size = key;
+            } else {
+                entries = new QueueEntry[key];
+                entries[key-1] = new QueueEntry(key, value);
+                this.size = key;
             }
-            //Add the new entry
-            newEntries[key-1] = new QueueEntry(key, value);
-            //and change the reference pointer of entries
-            this.entries = newEntries;
-            this.size = key;
+            for(QueueEntry q : entries){
+                String s = ((Track)q.getValue()).getPath().toString();
+                System.out.println(s);
+            }
         }
         //If nothing was returned yet, the key did not exist
         return null;
@@ -233,7 +233,6 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
         }
         if(key > 0){
             this.remove(key);
-            this.reset();
             return t;
         }
         return null;
@@ -263,7 +262,6 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
                     e = null;
                 }
             }
-            reset();
         }
         return val;
     }
@@ -294,8 +292,6 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
                 this.put(index, t);
             }
         }
-        //Update the size
-        this.size = index;
     }
 
     /**
@@ -330,8 +326,8 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
     public Collection<Track> values() {
         ArrayList<Track> coll = new ArrayList<>();
         //Make sure the returned ArrayList uses the order specified by the user
-        for(int i = 0; i < size; i++) {
-            coll.add(i, this.get(i));
+        for(int i = 1; i <= size; i++) {
+            coll.add(this.get(i));
         }
         return coll;
     }
@@ -345,11 +341,9 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
      * @return a {@link java.util.List} List of FILEPATHS.
      */
     public Collection<String> valueStrings() {
-        ArrayList<String> coll = new ArrayList<>();
-        int index = 0;
-        for(Track t : values()){
-            coll.add(index, t.getPath().toAbsolutePath().toString());
-            index++;
+        List<String> coll = new ArrayList<>();
+        for(int i = 1; i <= size; i++) {
+            coll.add(this.get(i).getPath().toString());
         }
         return coll;
     }
@@ -433,8 +427,7 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
      * Internal class to return the matching implementation of Map.Entry
      *
      * @param <Integer> an Integer key (key must be an object)
-     * @param <Track> The value to map to the key; location path for the music
-     * file
+     * @param <Track> The value to map to the key; Track object
      */
     public class QueueEntry<Integer, Track> implements Map.Entry<Integer, Track> {
         

@@ -139,7 +139,6 @@ final class Track {
         s.append("\"");
         s.append(filepath.toAbsolutePath().toString());
         s.append("\"");
-        System.out.println(s.toString());
         Process cmd = Runtime.getRuntime().exec(s.toString());
         StringBuilder out;
         InputStream ffprobe = cmd.getInputStream();
@@ -147,9 +146,7 @@ final class Track {
         int outChar;
         while ((outChar = ffprobe.read()) != -1) {
             out.append((char) outChar);
-            System.out.write(outChar);
         }
-        System.out.println(out.toString());
         return out.toString();
     }
 
@@ -158,7 +155,6 @@ final class Track {
      * @return The String title for this Track
      */
     public String getTitle() {
-        System.err.println("Title: " + title);
         return this.title;
     }
 
@@ -167,7 +163,6 @@ final class Track {
      * @return The Integer bitrate for this Track
      */
     public int getBitrate() {
-        System.err.println("Bitrate: " + Integer.toString(bitrate));
         return this.bitrate;
     }
 
@@ -176,7 +171,6 @@ final class Track {
      * @return The String Stream Type for this Track
      */
     public String getStreamType() {
-        System.err.println("StreamType: " + streamType);
         return this.streamType;
     }
     
@@ -185,7 +179,6 @@ final class Track {
      * @return the String Duration for this Track.
      */
     public String getDuration() {
-        System.err.println("Duration: " + duration);
         return this.duration;
     }
 
