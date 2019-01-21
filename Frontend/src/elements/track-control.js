@@ -224,7 +224,7 @@ class TrackControl extends PolymerElement {
 
   verifyStatus(e, response) {
     let playerStatus = JSON.parse(response.response);
-    console.log(playerStatus);
+    // console.log(playerStatus);
     if (response.status == 200) {
       this.updateStates(playerStatus);
       this.updateControls();

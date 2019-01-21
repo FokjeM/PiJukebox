@@ -96,9 +96,21 @@ class PlaylistTrackRow extends PolymerElement {
         last-response="{{playlists}}">
       </iron-ajax>
 
+      <iron-ajax
+        id="addTrackToQueue"
+        method="get"
+        url="http://localhost:8080/api/v1/player/add/{{trackId}}"
+        content-type="application/json"
+        params="{{header}}"
+        handle-as="json"
+        on-response="handleQueueResponse"
+        on-error="handleError">
+      </iron-ajax>
+
       <div class="trackLink">
         <div class="trackAddToPlaylist">
-          <paper-icon-button on-tap="openBy" icon="av:playlist-add"></paper-icon-button>
+          <paper-icon-button icon="av:queue" on-tap="addToQueue"></paper-icon-button>
+          <paper-icon-button icon="av:playlist-add" on-tap="openBy"></paper-icon-button>
           <div class="trackName">
             [[track.name]]
           </div>
@@ -188,6 +200,23 @@ class PlaylistTrackRow extends PolymerElement {
     else {
       this.throwEvent('open-dialog-event', {title: 'Playlist', text: 'Something went wrong, please try again'});
     }
+  }
+
+  addToQueue(e){
+    // let track_Id = e.target.dataset.trackId;
+    // console.log(track_id);
+    this.trackId = this.track.id;
+    // console.log("hi");
+    // console.log(this.track.id);
+    this.$.addTrackToQueue.generateRequest();
+  }
+
+  handleQueueResponse(e,r){
+      this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: this.track.name + ' has been added to the queue.'}, bubbles: true,composed: true, }));
+  }
+
+  handleError(e,r){
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true, }));
   }
 
 
