@@ -130,13 +130,22 @@ class TrackControl extends PolymerElement {
         on-response="getPlayerStatus">
       </iron-ajax>
 
+      <iron-ajax
+       id="getCurrentTrack"
+       auto
+       method="GET"
+       url="http://localhost:8080/api/v1/player/current"
+       handle-as="json"
+       params="{{header}}"
+       last-response="{{currentTrack}}">
+     </iron-ajax>
+
       <div class="container">  
         <div class="controlsContainer">
          
           <div>
             <current-track
-              track-name="trackName"
-              track-artist="artistName">
+              current-track="{{currentTrack}}">
             </current-track>
           </div>
 
@@ -210,6 +219,7 @@ class TrackControl extends PolymerElement {
 
   getPlayerStatus(e) {
     this.$.getStatus.generateRequest();
+    this.$.getCurrentTrack.generateRequest();
   }
 
   verifyStatus(e, response) {

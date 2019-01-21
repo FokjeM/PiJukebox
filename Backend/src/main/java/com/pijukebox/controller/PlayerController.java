@@ -116,7 +116,7 @@ public class PlayerController {
         }
     }
 
-    @GetMapping("/remove")
+    @GetMapping("/remove/{id}")
     public ResponseEntity<String> deleteTrack(@PathVariable Long id)
     {
         try{
