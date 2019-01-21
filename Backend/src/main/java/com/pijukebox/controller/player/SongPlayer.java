@@ -45,6 +45,12 @@ public class SongPlayer{
         resetAudioStream();
     }
 
+    public void setCurrent(String filePath)throws Exception
+    {
+        this.filePath = filePath;
+        resetAudioStream();
+    }
+
     // Method to reset audio stream
     public void resetAudioStream() throws Exception{
         try {

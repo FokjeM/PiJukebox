@@ -54,7 +54,6 @@ public class StartPlayer{
 
     public void pause() throws Exception
     {
-        sp.next(songs.get(current).getFilename());
         sp.pause();
     }
     public void stop() throws Exception
@@ -63,6 +62,7 @@ public class StartPlayer{
     }
     public void play() throws Exception
     {
+        sp.setCurrent(songs.get(current).getFilename());
         sp.play();
     }
 
