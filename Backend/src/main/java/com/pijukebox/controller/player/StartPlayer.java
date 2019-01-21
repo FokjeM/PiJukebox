@@ -68,6 +68,7 @@ public class StartPlayer{
 
     public void next() throws Exception
     {
+        sp.stop();
         current++;
         if(current < songs.size())
         {
@@ -80,12 +81,13 @@ public class StartPlayer{
     public void prev() throws Exception
     {
         current--;
+        sp.stop();
         if(current <= 0)
         {
             current = 0;
             sp.next(songs.get(current).getFilename());
         }else{
-            current = 0;
+            sp.next(songs.get(current).getFilename());
         }
     }
 
