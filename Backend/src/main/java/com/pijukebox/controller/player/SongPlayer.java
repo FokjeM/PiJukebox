@@ -16,12 +16,12 @@ public class SongPlayer{
 
     }
 
-    public void play() {
+    public void play() throws Exception{
         mediaPlayer.play();
         status = "playing";
     }
 
-    public void pause() {
+    public void pause() throws Exception{
         if (status.equals("paused")) {
             System.out.println("Song already paused");
             return;
@@ -30,7 +30,7 @@ public class SongPlayer{
         status = "paused";
     }
 
-    public void stop() {
+    public void stop() throws Exception{
         try {
             mediaPlayer.stop();
             status = "stopped";
@@ -39,14 +39,14 @@ public class SongPlayer{
         }
     }
 
-    public void next(String filePath) {
+    public void next(String filePath) throws Exception{
         this.filePath = filePath;
         mediaPlayer.stop();
         resetAudioStream();
     }
 
     // Method to reset audio stream
-    public void resetAudioStream() {
+    public void resetAudioStream() throws Exception{
         try {
             File f = new File(filePath);
             if (f.exists()) {

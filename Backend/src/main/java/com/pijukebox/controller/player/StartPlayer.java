@@ -24,17 +24,17 @@ public class StartPlayer{
         //showFiles(files);
 
         //sp = new SongPlayer(songs.get(current));
-        sp = new SongPlayer(songs.get(current));
+        sp = new SongPlayer();
     }
 
-    public void addSong(SimpleTrack path)
+    public void addSong(SimpleTrack path) throws Exception
     {
         path.setFilename(pathToSong + path.getFilename());
         songs.add(path);
     }
 
 
-    public void deleteSong(Long id)
+    public void deleteSong(Long id) throws Exception
     {
         songs.remove(Integer.parseInt(id.toString()));
     }
@@ -52,21 +52,21 @@ public class StartPlayer{
 //
 //    }
 
-    public void pause()
+    public void pause() throws Exception
     {
         sp.next(songs.get(current).getFilename());
         sp.pause();
     }
-    public void stop()
+    public void stop() throws Exception
     {
         sp.stop();
     }
-    public void play()
+    public void play() throws Exception
     {
         sp.play();
     }
 
-    public void next()
+    public void next() throws Exception
     {
         current++;
         if(current < songs.size())
@@ -77,7 +77,7 @@ public class StartPlayer{
         }
     }
 
-    public void prev()
+    public void prev() throws Exception
     {
         current--;
         if(current <= 0)
@@ -87,6 +87,11 @@ public class StartPlayer{
         }else{
             current = 0;
         }
+    }
+
+    public SimpleTrack getCurrent()  throws Exception
+    {
+        return songs.get(current);
     }
 
     public ArrayList<SimpleTrack> getQueue() {

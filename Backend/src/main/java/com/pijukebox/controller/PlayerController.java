@@ -3,6 +3,7 @@ package com.pijukebox.controller;
 import com.google.protobuf.Int32Value;
 import com.pijukebox.controller.player.StartPlayer;
 import com.pijukebox.model.simple.SimpleTrack;
+import com.pijukebox.model.track.Track;
 import com.pijukebox.service.ITrackService;
 import io.swagger.annotations.ApiOperation;
 import javafx.embed.swing.JFXPanel;
@@ -42,7 +43,7 @@ public class PlayerController {
     {
         try{
             sp.play();
-            return new ResponseEntity<>("Playing...", HttpStatus.OK);
+            return new ResponseEntity<>("Play...", HttpStatus.OK);
         }catch (Exception ex){
             ex.printStackTrace();
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't play track /play"), ex);
@@ -54,7 +55,7 @@ public class PlayerController {
     {
         try{
             sp.pause();
-            return new ResponseEntity<>("Playing...", HttpStatus.OK);
+            return new ResponseEntity<>("Pause...", HttpStatus.OK);
         }catch (Exception ex){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't play track /pause"), ex);
         }
@@ -65,7 +66,7 @@ public class PlayerController {
     {
         try{
             sp.stop();
-            return new ResponseEntity<>("Playing...", HttpStatus.OK);
+            return new ResponseEntity<>("Stop...", HttpStatus.OK);
         }catch (Exception ex){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't play track /stop"), ex);
         }
@@ -77,7 +78,7 @@ public class PlayerController {
         try{
             sp.next();
             sp.play();
-            return new ResponseEntity<>("Playing...", HttpStatus.OK);
+            return new ResponseEntity<>("Next...", HttpStatus.OK);
         }catch (Exception ex){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't play track /next"), ex);
         }
@@ -99,11 +100,14 @@ public class PlayerController {
     public ResponseEntity<SimpleTrack> addTrack(@PathVariable Long id)
     {
         try{
+            System.out.println(id);
             if(!trackService.findSimpleTrackById(id).isPresent())
             {
+                System.out.println("Not found with id: " + id);
                 return new ResponseEntity<>( HttpStatus.NOT_FOUND);
             }
             SimpleTrack track = trackService.findSimpleTrackById(id).get();
+            System.out.println("Not found with id: " + id);
             sp.addSong(track);
             return new ResponseEntity<>(track, HttpStatus.OK);
         }
@@ -143,6 +147,21 @@ public class PlayerController {
         }
         catch (Exception ex){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't change volume"), ex);
+        }
+    }
+
+    @GetMapping("/current")
+    public ResponseEntity<Track> current()
+    {
+        try {
+            SimpleTrack st = sp.getCurrent();
+            if(!trackService.findTrackDetailsById(st.getId()).isPresent())
+            {
+                return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(trackService.findTrackDetailsById(st.getId()).get(), HttpStatus.OK);
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't get the current track or it doesn't exists"), ex);
         }
     }
 
