@@ -117,14 +117,14 @@ class PlaylistTrackRow extends PolymerElement {
         </div>
         <div class="trackInfo">
           <div class="trackArtist">
-          <template is="dom-if" if="[[hasArtist()]]">
-            <paper-icon-button disabled class="artistIcon" icon="social:person"></paper-icon-button>
-            <template is="dom-repeat" items="{{track.artists}}" as="artist" rendered-item-count="{{artistCount}}">
-              <div class="artist">
-                {{artist.name}}
-              </div>
+            <template is="dom-if" if="[[hasArtist()]]">
+              <paper-icon-button disabled class="artistIcon" icon="social:person"></paper-icon-button>
+              <template is="dom-repeat" items="{{track.artists}}" as="artist" rendered-item-count="{{artistCount}}">
+                <div class="artist">
+                  {{artist.name}}
+                </div>
+              </template>
             </template>
-          </template>
           </div>
           <!-- <div class="trackTime"> -->
             <!-- time -->

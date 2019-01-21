@@ -24,7 +24,7 @@ class TrackQueue extends PolymerElement {
       <iron-ajax
         id="getCurrentQueue"
         auto
-        url="http://localhost:8080/api/v1/search/track/"
+        url="http://localhost:8080/api/v1/player/queue/"
         params="{{header}}"
         handle-as="json"
         last-response="{{response}}">
@@ -33,7 +33,7 @@ class TrackQueue extends PolymerElement {
       <iron-ajax
         id="changeQueue"
         method="POST"
-        url="http://localhost:8080/api/v1/laptops/"
+        url="http://localhost:8080/api/v1/player/changeQueue/"
         params="{{header}}"
         handle-as="json"
         on-response="queueChanged">
@@ -46,8 +46,8 @@ class TrackQueue extends PolymerElement {
             <template>
               <queue-item
                   track-id="{{track.id}}"
-                  track-name="{{track.title}}"
-                  track-artist="{{track.artist}}">
+                  track-name="{{track.name}}"
+                  track-artist="{{track.artists}}">
               </queue-item>
             </template>
           </dom-repeat>

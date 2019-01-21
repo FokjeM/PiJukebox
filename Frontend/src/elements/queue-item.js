@@ -29,21 +29,6 @@ class QueueItem extends PolymerElement {
         }
       </style>
 
-      <div class="queueItem">
-        <div class="controls">
-          <paper-icon-button on-tap="oneUp" icon="arrow-upward"></paper-icon-button>
-          <paper-icon-button on-tap="oneDown" icon="arrow-downward"></paper-icon-button>
-        </div>
-        <div class="trackLink">
-        <div class="trackName">
-          [[trackName]]
-        </div>
-        <div class="trackArtist">
-          [[trackArtist]]
-        </div>
-       </div>
-      </div>
-
       <iron-ajax
         id="queueUp"
         method="post"
@@ -65,6 +50,21 @@ class QueueItem extends PolymerElement {
         handle-as="json"
         on-response="handleQueueResponseDown">
       </iron-ajax>
+
+      <div class="queueItem">
+        <!-- <div class="controls">
+          <paper-icon-button on-tap="oneUp" icon="arrow-upward"></paper-icon-button>
+          <paper-icon-button on-tap="oneDown" icon="arrow-downward"></paper-icon-button>
+        </div> -->
+        <div class="trackLink">
+          <div class="trackName">
+            [[trackName]]
+          </div>
+          <!-- <div class="trackArtist">
+            [[trackArtist]]
+          </div> -->
+        </div>
+      </div>
 
     `;
   }
