@@ -54,7 +54,7 @@ final class Track {
             throw new NonFatalException("No (valid) filename was given, like 'song.ext'\r\n\tInstead " + filename + " was given.", new java.nio.file.FileSystemException(mediaDir + filename), false, true);
         }
         if(!Files.exists(filepath)) {
-            throw new NonFatalException("An incorrect filename or -path was given, like '" + getOSPath() + "song.ext'\r\n\tInstead " + filename + " was given.", new java.nio.file.FileSystemException(mediaDir + filename), false, true);
+            throw new NonFatalException("An incorrect filename or -path was given, like '" + getOSPath() + "song.ext'\r\n\tInstead " + filepath.toString() + " was given.", new java.nio.file.FileSystemException(mediaDir + filename), false, true);
         }
         media = new Media(filepath.toUri().toString());
         streamType = checkFiletype();
