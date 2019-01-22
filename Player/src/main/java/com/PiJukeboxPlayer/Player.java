@@ -49,7 +49,7 @@ public class Player {
     private int pauseFrame = 0;
     public AdvancedPlayer player = null;
     private Thread playThread = new Thread();
-    public boolean songEnded = true;
+    public boolean songEnded = false;
 
     /**
      * Instantiate a new Player. This constructor sets no default options.

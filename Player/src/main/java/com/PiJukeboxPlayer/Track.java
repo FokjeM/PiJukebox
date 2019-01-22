@@ -6,6 +6,9 @@ import java.nio.file.Path;
 import java.nio.file.Files;
 import java.io.InputStream;
 import java.nio.file.FileSystemNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -104,7 +107,7 @@ final class Track {
      * @param path the FILEPATH of the file to check.
      * @return the filetype typically associated with this file.
      */
-    private String checkFiletype() throws NonFatalException {
+    private String checkFiletype() throws NonFatalException, FatalException {
         try {
             //Check the MIME Type first, to prevent unnecessary work
             String MIMEtype = Files.probeContentType(filepath).toLowerCase();
@@ -129,18 +132,34 @@ final class Track {
      * @return The information returned by FFProbe as queried in COMMAND
      * @throws IOException Propagated from Runtime.Exec(String command)
      */
-    public String ffprobe(String command) throws IOException {
+    public String ffprobe(String command) throws IOException, FatalException {
         //Set up the ffprobe command to check the stream type
-        StringBuilder s = new StringBuilder();
+        /*StringBuilder s = new StringBuilder();
         s.append("ffprobe -v error ");
         s.append(command);
         s.append(" -of default=noprint_wrappers=1:nokey=1 -i ");
         s.append("\"");
         s.append(filepath.toAbsolutePath().toString());
         s.append("\"");
-        Process cmd = Runtime.getRuntime().exec(s.toString());
+        Process cmd = Runtime.getRuntime().exec(s.toString());*/
+        List<String> s = new ArrayList<>();
+        s.add("ffprobe");
+        s.add("-v");
+        s.add("error");
+        s.addAll(Arrays.asList(command.split(" ")));
+        s.add("-of");
+        s.add("default=noprint_wrappers=1:nokey=1");
+        s.add("-i");
+        s.add("\"".concat(filepath.toAbsolutePath().toString()).concat("\""));
+        ProcessBuilder proc = new ProcessBuilder(s);
+        Process cmd = proc.start();
         StringBuilder out;
-        InputStream ffprobe = cmd.getInputStream();
+        InputStream ffprobe;
+        if(getOSPath().equals(NIX_DEFAULT_MEDIA_PATH)) {//Java on *NIX tends to run some stuff on stderr
+            ffprobe = cmd.getErrorStream();
+        } else {//Windows barely knows the concept of stderr though; most is like running with 2>&1
+            ffprobe = cmd.getInputStream();
+        }
         out = new StringBuilder();
         int outChar;
         while ((outChar = ffprobe.read()) != -1) {
