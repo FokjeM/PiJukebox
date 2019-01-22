@@ -7,7 +7,6 @@ import java.nio.file.Files;
 import java.io.InputStream;
 import java.nio.file.FileSystemNotFoundException;
 import java.util.Locale;
-import javafx.scene.media.Media;
 
 /**
  * Implementation of a Track Should just hold: - the filename of the track - the
@@ -27,7 +26,7 @@ final class Track {
     private final int bitrate;
     private final String streamType;
     private final String duration;
-    private final Media media;
+    private final int frames;
 
     /**
      * Create a Track object with info from the DB and file metadata
@@ -53,20 +52,20 @@ final class Track {
             //Empty string or null, not even a single character...
             throw new NonFatalException("No (valid) filename was given, like 'song.ext'\r\n\tInstead " + filename + " was given.", new java.nio.file.FileSystemException(mediaDir + filename), false, true);
         }
-        if(!Files.exists(filepath)) {
+        if (!Files.exists(filepath)) {
             throw new NonFatalException("An incorrect filename or -path was given, like '" + getOSPath() + "song.ext'\r\n\tInstead " + filepath.toString() + " was given.", new java.nio.file.FileSystemException(mediaDir + filename), false, true);
         }
-        media = new Media(filepath.toUri().toString());
         streamType = checkFiletype();
         try {
             title = ffprobe("-show_entries format_tags=title").trim();
             bitrate = Integer.parseInt(ffprobe("-show_entries format=bit_rate").trim());
             duration = ffprobe("-show_entries format=duration").trim();
+            frames = Integer.parseInt(ffprobe("-count_frames -select_streams a:0 -show_entries stream=nb_read_frames").trim());
         } catch (IOException io) {
             throw new NonFatalException("The file could not be read and/or processed and an exception was thrown.", io);
         }
     }
-    
+
     public Track(String filename) throws NonFatalException, FatalException {
         this("", filename);
     }
@@ -97,10 +96,10 @@ final class Track {
 
     /**
      * Checks the MIMEtype specified on the file to determine if it's audio.
-     * Then checks the filetype as returned by FFProbe, a tool in the FFMpeg suite.
-     * If file access is denied, a NonFatalException is thrown. Keep in mind
-     * that any class that depends on Track objects MUST check if any Tracks
-     * could be instantiated, or throw a FatalException, log and exit.
+     * Then checks the filetype as returned by FFProbe, a tool in the FFMpeg
+     * suite. If file access is denied, a NonFatalException is thrown. Keep in
+     * mind that any class that depends on Track objects MUST check if any
+     * Tracks could be instantiated, or throw a FatalException, log and exit.
      *
      * @param path the FILEPATH of the file to check.
      * @return the filetype typically associated with this file.
@@ -120,12 +119,12 @@ final class Track {
     }
 
     /**
-     * Call onto FFProbe to check something about this track.
-     * This function was built with the idea that only a single property is
-     * requested. If multiple properties are requested, this must be handled by
-     * the implementing or extending method.
-     * Headers, Footers, Wrappers and Keys for values are NOT PRINTED.
-     * 
+     * Call onto FFProbe to check something about this track. This function was
+     * built with the idea that only a single property is requested. If multiple
+     * properties are requested, this must be handled by the implementing or
+     * extending method. Headers, Footers, Wrappers and Keys for values are NOT
+     * PRINTED.
+     *
      * @param command The internals for the command to execute
      * @return The information returned by FFProbe as queried in COMMAND
      * @throws IOException Propagated from Runtime.Exec(String command)
@@ -152,6 +151,7 @@ final class Track {
 
     /**
      * Get the title for this Track as specified in its metadata.
+     *
      * @return The String title for this Track
      */
     public String getTitle() {
@@ -160,6 +160,7 @@ final class Track {
 
     /**
      * Get the bitrate for this Track as specified in its metadata.
+     *
      * @return The Integer bitrate for this Track
      */
     public int getBitrate() {
@@ -167,15 +168,18 @@ final class Track {
     }
 
     /**
-     * Get the Stream Type / encoding for this Track as specified in its metadata.
+     * Get the Stream Type / encoding for this Track as specified in its
+     * metadata.
+     *
      * @return The String Stream Type for this Track
      */
     public String getStreamType() {
         return this.streamType;
     }
-    
+
     /**
      * Get the duration for this Track as probed by FFProbe.
+     *
      * @return the String Duration for this Track.
      */
     public String getDuration() {
@@ -184,18 +188,20 @@ final class Track {
 
     /**
      * Get the FILEPATH for this Track as specified during instantiation.
+     *
      * @return The Path filepath for this Track
      */
     public Path getPath() {
         return this.filepath;
     }
-    
-    public Media getMedia(){
-        return this.media;
+
+    public int getFrameCount() {
+        return this.frames;
     }
 
     /**
      * Get the default Media path for music for this OS.
+     *
      * @return The default Media path for this OS
      */
     public static String getDefaultMediaPath() throws FatalException {

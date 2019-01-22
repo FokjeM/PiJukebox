@@ -18,12 +18,15 @@
 package com.PiJukeboxPlayer;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 /**
  * Quick and dirty testing with a PiJukeboxPlayer class!
+ *
  * @author Riven
  */
 public class PiJukeboxPlayer {
+
     public static Player player;
     public static Queue queue;
     private static Track track;
@@ -34,21 +37,21 @@ public class PiJukeboxPlayer {
         pjb.run();
         System.exit(0);
     }
-    
+
     public PiJukeboxPlayer() throws IOException {
         log = new ErrorLogger();
     }
-    
-    public void run(){
+
+    public void run() {
         try {
             queue = new Queue();
             player = new Player(true, false, queue, log);
             track = new Track("", "Phyrnna - Shelter [piano ver].mp3");
-            player.addToQueue(track);
-            System.out.println("Added Shelter to queue");
             player.addToQueue(new Track("D:\\School\\Advanced Java\\PiJukebox\\Player\\Music", "Phyrnna - Raindrops of a Dream.mp3"));
             System.out.println("Added Raindrops to queue");
-	    player.next();//Should handle automatically playing both from here, endlessly. Otherwise, the Thread has exited... But this should get logged
+            player.addToQueue(track);
+            System.out.println("Added Shelter to queue");
+            player.next();//Should handle automatically playing both from here, endlessly. Otherwise, the Thread has exited... But this should get logged
             System.out.println("Hit next, playing track 1");
             Thread.sleep(2000);
             player.pause();
@@ -65,16 +68,13 @@ public class PiJukeboxPlayer {
             Thread.sleep(2000);
             player.next();
             System.out.println("Next, wrapped around");
-            Thread.sleep(2000);
-            //Just to show that it handles autoplay; sleep twice as long as Shelter's duration
-            Thread.sleep(Long.parseLong(track.getDuration().replace(".", ""))*2);
-            player.stop();
+            new Scanner(System.in).next("quit");
             System.out.println("Stopped, total success!");
-        } catch(NonFatalException nfe) {
+        } catch (NonFatalException nfe) {
             log.writeLog(nfe, false);
-        } catch(FatalException fe) {
+        } catch (FatalException fe) {
             log.writeLog(fe, true);
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             log.writeLog(new FatalException("MediaPlayer crashed!", ex), true);
         }
     }
