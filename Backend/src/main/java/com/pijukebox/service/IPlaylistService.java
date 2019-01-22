@@ -16,6 +16,8 @@ public interface IPlaylistService {
 
     Optional<SimplePlaylist> findSimplePlaylistById(Long id);
 
+    Optional<List<SimplePlaylist>> findSimplePlaylistsByName(String name);
+
     SimplePlaylist addNewPlaylist(SimplePlaylist simplePlaylist);
 
     PlaylistWithTracks addTrackToPlaylist(PlaylistWithTracks playlistWithTracks);

@@ -24,7 +24,8 @@ class TrackQueue extends PolymerElement {
       <iron-ajax
         id="getCurrentQueue"
         auto
-        url="http://localhost:8080/api/v1/search/track/k"
+        url="http://localhost:8080/api/v1/player/queue/"
+        params="{{header}}"
         handle-as="json"
         last-response="{{response}}">
       </iron-ajax>
@@ -32,7 +33,9 @@ class TrackQueue extends PolymerElement {
       <iron-ajax
         id="changeQueue"
         method="POST"
-        url="http://localhost:8080/api/v1/laptops/"
+        url="http://localhost:8080/api/v1/player/changeQueue/"
+        params="{{header}}"
+        handle-as="json"
         on-response="queueChanged">
       </iron-ajax>
 
@@ -43,8 +46,8 @@ class TrackQueue extends PolymerElement {
             <template>
               <queue-item
                   track-id="{{track.id}}"
-                  track-name="{{track.title}}"
-                  track-artist="{{track.artist}}">
+                  track-name="{{track.name}}"
+                  track-artist="{{track.artists}}">
               </queue-item>
             </template>
           </dom-repeat>
@@ -69,11 +72,29 @@ class TrackQueue extends PolymerElement {
   }
 
   queueChanged(e, response) {
-    if(response == 200) {
+    if(response.status == 200) {
       this.throwEvent('open-dialog-event', {title: 'Queue', text: 'The queue changed successfully'});
     } else {
       this.throwEvent('open-dialog-event', {title: 'Queue', text: 'Something went wrong, please try again'});
     }
+  }
+
+  static get properties() {
+    return {
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
+      }
+    };
+  }
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
   }
   
 }

@@ -43,22 +43,17 @@ public class DatabaseConfig {
 
     @Bean
     public DataSource dataSource() {
-        try {
-            BasicDataSource dataSource = new BasicDataSource();
+        BasicDataSource dataSource = new BasicDataSource();
 
-            dataSource.setDriverClassName(DRIVER_CLASS_NAME);
-            dataSource.setUsername(USER_NAME);
-            dataSource.setPassword(PASSWORD);
-            dataSource.setUrl(URL);
-            dataSource.setMaxActive(10);
-            dataSource.setMaxIdle(5);
-            dataSource.setInitialSize(5);
-            dataSource.setValidationQuery("SELECT 1");
-            return dataSource;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        dataSource.setDriverClassName(DRIVER_CLASS_NAME);
+        dataSource.setUsername(USER_NAME);
+        dataSource.setPassword(PASSWORD);
+        dataSource.setUrl(URL);
+        dataSource.setMaxActive(10);
+        dataSource.setMaxIdle(5);
+        dataSource.setInitialSize(5);
+        dataSource.setValidationQuery("SELECT 1");
+        return dataSource;
     }
 
     /**

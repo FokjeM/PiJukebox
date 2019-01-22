@@ -46,6 +46,11 @@ public class PlaylistServiceImpl implements IPlaylistService {
     }
 
     @Override
+    public Optional<List<SimplePlaylist>> findSimplePlaylistsByName(String name) {
+        return simplePlaylistRepository.findSimplePlaylistsByTitleContaining(name);
+    }
+
+    @Override
     public SimplePlaylist addNewPlaylist(SimplePlaylist simplePlaylist) {
         return simplePlaylistRepository.save(simplePlaylist);
     }
