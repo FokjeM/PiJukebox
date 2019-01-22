@@ -150,7 +150,7 @@ class TrackControl extends PolymerElement {
           </div>
 
           <div class="controls">
-            <!-- <paper-icon-button on-tap="shuffle" icon="av:shuffle" id="shuffleBtn"></paper-icon-button> -->
+            <paper-icon-button on-tap="shuffle" icon="av:shuffle" id="shuffleBtn"></paper-icon-button>
 
             <paper-icon-button on-tap="previousTrack" icon="av:skip-previous"></paper-icon-button>
 
@@ -158,7 +158,7 @@ class TrackControl extends PolymerElement {
             
             <paper-icon-button on-tap="nextTrack" icon="av:skip-next"></paper-icon-button>
 
-            <!-- <paper-icon-button on-tap="repeat" icon="[[repeatIcon]]" id="repeatBtn"></paper-icon-button> -->
+            <paper-icon-button on-tap="repeat" icon="[[repeatIcon]]" id="repeatBtn"></paper-icon-button>
           </div>
 
           <div class="controls">
@@ -224,12 +224,11 @@ class TrackControl extends PolymerElement {
 
   verifyStatus(e, response) {
     let playerStatus = JSON.parse(response.response);
-    // console.log(playerStatus);
     if (response.status == 200) {
       this.updateStates(playerStatus);
       this.updateControls();
     } else {
-      this.throwEvent('open-dialog-event', {title: 'Player', text: 'Something went wrong, please try again'});
+      this.throwEvent('open-dialog-event', {title: 'Player', text: 'Something went wrong, please try again'});//??
     }
   }
 
@@ -238,7 +237,7 @@ class TrackControl extends PolymerElement {
    */
   updateStates(playerStatus) {
     this.playPauseState = playerStatus.isPlaying;
-    // this.repeatState = playerStatus.repeatState;
+    this.repeatState = playerStatus.repeatState;
     this.volumeLevel = playerStatus.volumeLevel;
   }
 
@@ -247,7 +246,7 @@ class TrackControl extends PolymerElement {
    */
   updateControls () {
     this.changePlayPauseIcon();
-    // this.changeRepeatIcon();
+    this.changeRepeatIcon();
     this.changeVolumeIcon();
   }
 
@@ -281,6 +280,11 @@ class TrackControl extends PolymerElement {
   previousTrack(e) {
     this.$.previousTrack.generateRequest();
   }
+
+  shuffle(e){
+    this.$.shuffle.generateRequest();
+    this.dispatchEvent(new CustomEvent('refresh-queue-event', { bubbles: true, composed: true }));
+  }
   
   changeShuffleIcon() {
     let shuffleButton = this.$.shuffleBtn;
@@ -311,17 +315,11 @@ class TrackControl extends PolymerElement {
   changeRepeatIcon() {
     let repeatButton = this.$.repeatBtn;
     // no repeat
-    if(this.repeatState === 0) {
-      repeatButton.style.color = "var(--app-primary-color-light)";
-      this.repeatIcon = "av:repeat-one";
-    }
-    // repeat one track
-    else if(this.repeatState === 1) {
-      repeatButton.style.color = "var(--app-primary-color-light)";
+    if(this.repeatState) {
+      repeatButton.style.color = "var(--app-primary-color)";
       this.repeatIcon = "av:repeat";
     }
-    // repeat queue
-    else if(this.repeatState === 2) {
+    else {
       repeatButton.style.color = "var(--paper-icon-button-ink-color, var(--primary-text-color))";
       this.repeatIcon = "av:repeat";
     }

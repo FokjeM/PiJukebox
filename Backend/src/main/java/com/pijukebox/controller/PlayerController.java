@@ -96,6 +96,30 @@ public class PlayerController {
         }
     }
 
+    @GetMapping("/shuffle")
+    public ResponseEntity<String> shuffle()
+    {
+        try{
+            sp.shuffle();
+            return new ResponseEntity<>("Shuffling...", HttpStatus.OK);
+        }
+        catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't shuffle current queue"), ex);
+        }
+    }
+
+    @GetMapping("/repeat")
+    public ResponseEntity<String> repeat()
+    {
+        try{
+            sp.repeat();
+            return new ResponseEntity<>("Changed repeat state...", HttpStatus.OK);
+        }
+        catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't change repeat state"), ex);
+        }
+    }
+
     @GetMapping("/add/{id}")
     public ResponseEntity<SimpleTrack> addTrack(@PathVariable Long id)
     {
@@ -172,7 +196,8 @@ public class PlayerController {
         Double volumeLevel = sp.getVolumeLevel();
         Double intVol = volumeLevel * 10;
         int playerVolume = intVol.intValue();
+        Boolean repeatState = sp.getRepeatState();
 
-        return String.format("{\"isPlaying\": %s, \"volumeLevel\": %d}", playerStatus, playerVolume);
+        return String.format("{\"isPlaying\": %s, \"volumeLevel\": %d, \"repeatState\": %b}", playerStatus, playerVolume, repeatState);
     }
 }

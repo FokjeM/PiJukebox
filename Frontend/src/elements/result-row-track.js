@@ -68,11 +68,12 @@ class ResultRowTrack extends PolymerElement {
   }
 
   handleQueueResponse(e,r){
-      this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: this.trackName + ' has been added to the queue.'}, bubbles: true,composed: true, }));
+    this.dispatchEvent(new CustomEvent('refresh-queue-event', { bubbles: true, composed: true }));
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: this.trackName + ' has been added to the queue.'}, bubbles: true, composed: true }));
   }
 
   handleError(e,r){
-    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true, }));
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true }));
   }
 
   static get properties() {

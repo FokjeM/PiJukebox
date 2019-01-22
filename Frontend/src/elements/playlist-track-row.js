@@ -203,20 +203,17 @@ class PlaylistTrackRow extends PolymerElement {
   }
 
   addToQueue(e){
-    // let track_Id = e.target.dataset.trackId;
-    // console.log(track_id);
     this.trackId = this.track.id;
-    // console.log("hi");
-    // console.log(this.track.id);
     this.$.addTrackToQueue.generateRequest();
   }
 
   handleQueueResponse(e,r){
-      this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: this.track.name + ' has been added to the queue.'}, bubbles: true,composed: true, }));
+    this.dispatchEvent(new CustomEvent('refresh-queue-event', { bubbles: true, composed: true }));
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: this.track.name + ' has been added to the queue.'}, bubbles: true,composed: true }));
   }
 
   handleError(e,r){
-    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true, }));
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true }));
   }
 
 
