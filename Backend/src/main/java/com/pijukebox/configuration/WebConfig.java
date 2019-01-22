@@ -56,7 +56,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(interceptor).addPathPatterns("/**").excludePathPatterns("/api/v1/login");
+        registry.addInterceptor(interceptor).addPathPatterns("/**").excludePathPatterns("api/v1/login", "api/v1/upload");
     }
 
 
