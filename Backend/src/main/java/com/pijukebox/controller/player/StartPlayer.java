@@ -94,11 +94,11 @@ public class StartPlayer{
     }
 
     public void shuffle() throws Exception {
-        ArrayList<SimpleTrack> randomSongs = new ArrayList<>();
+        SimpleTrack currentTrack = songs.get(current);
+        songs.remove(current);
         Collections.shuffle(songs);
-        randomSongs.addAll(songs);
+        songs.add(0, currentTrack);
         current = 0;
-        songs = randomSongs;
     }
 
     public void repeat(){
