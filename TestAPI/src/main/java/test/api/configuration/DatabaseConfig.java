@@ -1,5 +1,5 @@
 package test.api.configuration;
-
+/*
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -20,12 +20,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
-import java.util.Properties;
+import java.util.Properties;*/
 
-@Slf4j
-@Configuration
-@EnableJpaRepositories("test.api")
-@EnableTransactionManagement
+//@Slf4j
+//@Configuration
+//@EnableJpaRepositories("test.api")
+//@EnableTransactionManagement
 public class DatabaseConfig {
 
   /**
@@ -35,8 +35,8 @@ public class DatabaseConfig {
    *
    * @return The connection to the database
    */
-  private final String DRIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
-  private final String URL = "jdbc:mysql://localhost:3306/rapidml?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+  /*private final String DRIVER_CLASS_NAME = "org.mariadb.jdbc.Driver";
+  private final String URL = "jdbc:mariadb://localhost:3307/rapidml?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
   private final String USER_NAME = "root";
   private final String PASSWORD = "";//MySQL / MariaDB DEFAULT
 
@@ -65,7 +65,7 @@ public class DatabaseConfig {
    *
    * @param dataSource The data source
    * @return the a {@link JdbcTemplate} template
-   */
+   *//*
   @Bean
   public JdbcTemplate jdbcTemplate(DataSource dataSource) {
     try {
@@ -139,5 +139,5 @@ public class DatabaseConfig {
       ex.printStackTrace();
     }
     return null;
-  }
+  }*/
 }

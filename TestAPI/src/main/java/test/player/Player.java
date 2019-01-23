@@ -328,6 +328,9 @@ public class Player {
         if(t == null) {
             next();
         }
+        if(playing){
+            stop();
+        }
         updateStatefulQueue();
         //Set up the player for this Track
         playThread = new Thread(() -> {
