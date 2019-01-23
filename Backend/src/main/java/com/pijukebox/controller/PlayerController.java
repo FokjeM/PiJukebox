@@ -127,7 +127,7 @@ public class PlayerController {
     }
 
     @GetMapping("/add/playlist/{id}")
-    public void addPlaylistToQueue(@PathVariable Long id) {
+    public void Responsentity addPlaylistToQueue(@PathVariable Long id) {
 
         try {
             Optional<PlaylistWithTracks> playlist = playlistService.findById(id);

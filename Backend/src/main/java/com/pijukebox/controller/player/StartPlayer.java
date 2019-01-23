@@ -19,7 +19,7 @@ public class StartPlayer{
     private boolean repeatState = true;
     // private final String pathToSong ="C:\\Users\\codru\\Desktop\\School\\Year 4\\Minor Java Assignments\\Final Java Assignment\\My Folder\\PiJukebox\\Backend\\songs\\";
     // DON'T FORGET TO ADD \\ TO THE END OF "pathToSong" ;)
-    private final String pathToSong = "D:\\Java minor\\Royalty Free Music\\";
+    private final String pathToSong = "C:\\Users\\Bata\\Downloads\\Royalty Free Music\\";
 
 
     public StartPlayer()
@@ -45,7 +45,11 @@ public class StartPlayer{
         //haal tracks op
         //queue is arraylist met simpletracks
 
-        songs.addAll(playlist);
+        for(SimpleTrack track : playlist ){
+            track.setFilename( track.getFilename());
+            addSong(track);
+        }
+        //songs.addAll(playlist);
     }
 
 
