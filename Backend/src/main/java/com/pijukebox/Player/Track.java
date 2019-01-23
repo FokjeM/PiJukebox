@@ -1,4 +1,4 @@
-package com.pijukebox.controller.PiJukeboxPlayer;
+package com.pijukebox.Player;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;

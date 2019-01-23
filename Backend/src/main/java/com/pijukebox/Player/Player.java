@@ -1,4 +1,4 @@
-package com.pijukebox.controller.PiJukeboxPlayer;
+package com.pijukebox.Player;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -159,14 +159,14 @@ public class Player {
      * NonFatalError. If this behavior is not desirable, either handle false as
      * an error, or override this method. The easiest solution is throwing an
      * error (which could be a
-     * {@link com.pijukebox.controller.PiJukeboxPlayer.NonFatalException NonFatalException} or {@link com.pijukebox.controller.PiJukeboxPlayer.FatalException FatalException)
+     * {@link com.pijukebox.Player.NonFatalException NonFatalException} or {@link com.pijukebox.Player.FatalException FatalException)
      * and handling that as would be applicable to the use case.
      *
      * This method may be called at any point in time, as it allows for a better
      * user experience. It is called internally at several points in time as well.
      *
      * This method and its class do not ensure the default directory exists.
-     * Classes that use a {@link com.pijukebox.controller.PiJukeboxPlayer.Player Player} are encouraged
+     * Classes that use a {@link com.pijukebox.Player.Player Player} are encouraged
      * to set a mechanism in place that creates the missing directories.
      *
      * If the specified directory exists, the existence of the file is guaranteed
@@ -249,7 +249,7 @@ public class Player {
      *
      * @throws FatalException propagated from
      * {@link  #playTrack(com.PiJukebox.Track) playTrack}
-     * @throws com.pijukebox.controller.PiJukeboxPlayer.NonFatalException propagated from
+     * @throws com.pijukebox.Player.NonFatalException propagated from
      * {@link #playTrack(com.PiJukebox.Track) playTrack}
      */
     public void next() throws FatalException, NonFatalException {
@@ -305,9 +305,9 @@ public class Player {
      * Plays the specified Track
      *
      * @param t the Track to play
-     * @throws com.pijukebox.controller.PiJukeboxPlayer.FatalException When the MediaPlayer can't be
+     * @throws com.pijukebox.Player.FatalException When the MediaPlayer can't be
      * started
-     * @throws com.pijukebox.controller.PiJukeboxPlayer.NonFatalException propagated from
+     * @throws com.pijukebox.Player.NonFatalException propagated from
      * {@link #stop() stop()}
      */
     public void playTrack(Track t) throws FatalException, NonFatalException {
@@ -431,7 +431,7 @@ public class Player {
      * Get the {@link com.pijukebox.controller.PiJukeboxPlayer.ErrorLogger ErrorLogger} that belongs
  to this Player. This method should be the first one called if planning to
      * allow recovery from a
-     * {@link com.pijukebox.controller.PiJukeboxPlayer.FatalException FatalException}, to ensure
+     * {@link com.pijukebox.Player.FatalException FatalException}, to ensure
      * retrieval.
      *
      * @return

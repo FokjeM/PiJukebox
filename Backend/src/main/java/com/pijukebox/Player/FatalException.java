@@ -1,4 +1,4 @@
-package com.pijukebox.controller.PiJukeboxPlayer;
+package com.pijukebox.Player;
 
 /**
  * An exception that poses a valid reason to halt execution of the program
