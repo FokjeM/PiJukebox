@@ -18,6 +18,30 @@ class TrackQueue extends PolymerElement {
 
           padding: 10px;
         }
+
+        #cleanQueue {
+          background-color:#c74545;
+          -moz-border-radius:28px;
+          -webkit-border-radius:28px;
+          border-radius:28px;
+          border:1px solid #ab1919;
+          display:inline-block;
+          cursor:pointer;
+          color:#ffffff;
+          font-family:Arial;
+          font-size:17px;
+          padding:16px 31px;
+          text-decoration:none;
+          text-shadow:0px 1px 0px #662828;
+        }
+        #cleanQueue:hover {
+          background-color:#bd2a2a;
+        }
+        #cleanQueue:active {
+          position:relative;
+          top:1px;
+        }
+      }
         
       </style>
       
@@ -41,6 +65,7 @@ class TrackQueue extends PolymerElement {
 
       <div class="card">  
         <div class="container">
+        <button id="cleanQueue">Clean Queue</button>
           <h1>Current queue</h1>
           <dom-repeat items="{{response}}" as="track">
             <template>
