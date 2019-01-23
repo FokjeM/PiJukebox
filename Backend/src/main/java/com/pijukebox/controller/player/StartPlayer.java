@@ -16,7 +16,8 @@ public class StartPlayer{
     private boolean repeatState = true;
     // private final String pathToSong ="C:\\Users\\codru\\Desktop\\School\\Year 4\\Minor Java Assignments\\Final Java Assignment\\My Folder\\PiJukebox\\Backend\\songs\\";
     // DON'T FORGET TO ADD \\ TO THE END OF "pathToSong" ;)
-    private final String pathToSong = "G:\\music\\";
+    private final String pathToSong = "D:\\Java minor\\Royalty Free Music\\";
+
 
     public StartPlayer()
     {
