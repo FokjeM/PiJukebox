@@ -1,4 +1,4 @@
-package com.pijukebox.Player;
+package com.pijukebox.player;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,8 +49,8 @@ public class ErrorLogger {
 
     /**
      * Private constructor that allows specifying a custom
-     * {@link java.time.LocalDateTime LocalDateTime} and a different
-     * {@link java.nio.file.Path Path} to initialize with. Appends the default
+     * {@link LocalDateTime LocalDateTime} and a different
+     * {@link Path Path} to initialize with. Appends the default
      * filename to the Path if only a directory was given.
      *
      * @param ldtInit LocalDateTime to initialize with.
@@ -77,7 +77,7 @@ public class ErrorLogger {
      * Create a Path object pointing to the folder where the initial class or
      * package file containing this ErrorLogger resides. If any pathParts are
      * given, the directories will be created as specified using
-     * {@link java.nio.file.Files#createDirectories(java.nio.file.Path, java.nio.file.attribute.FileAttribute...) Files.createDirectories(path/pathParts)},
+     * {@link Files#createDirectories(Path, java.nio.file.attribute.FileAttribute...) Files.createDirectories(path/pathParts)},
      * as long as a valid path can be created from it.
      *
      * @param pathParts A variable amount of Strings for creating
@@ -90,7 +90,8 @@ public class ErrorLogger {
         try {
             //Get the location where we're being run from and strip any protocol/source
             //identifiers like file:///, file:/, jar:/ and war:/ and split off the
-            //package structure of jar and war files; these are Java ¿directories?
+            //package structure of jar and war files; these are Java �directories?
+            //The structure in a jar is <file>.jar!<folders&files>[/<files>]
             pathString = FileSystems.getDefault().getPath(URLDecoder.decode(ErrorLogger.class.getResource("").toString(), "UTF-8").replaceAll("[a-zA-Z]{2,}:[/]*", "").split("\\!")[0]).getParent().toString();
             StringBuilder createDirs = new StringBuilder();
             createDirs.append(pathString);

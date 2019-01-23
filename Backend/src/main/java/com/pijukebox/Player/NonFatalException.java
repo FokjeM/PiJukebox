@@ -1,11 +1,11 @@
-package com.pijukebox.Player;
+package com.pijukebox.player;
 
 /**
  * Non-fatal exception to be thrown in the PiJukebox
  *
  * @author Riven
  */
-class NonFatalException extends Exception {
+public class NonFatalException extends Exception {
 
     /**
      * A generic, non-fatal exception. We can get back on our feet after this

@@ -1,4 +1,4 @@
-package com.pijukebox.Player;
+package com.pijukebox.player;
 
 import java.io.File;
 import java.io.Serializable;
@@ -341,10 +341,10 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
      *
      * These are created by the {@link java.nio.file.Path Path} implemented in
      * this {@link java.nio.file.FileSystems#getDefault() FileSystems.getDefault()}
-     * {@link java.nio.file.FileSystem#getPath(java.lang.String, java.lang.String...) getPath()}
+     * {@link java.nio.file.FileSystem#getPath(String, String...) getPath()}
      * method
      *
-     * @return a {@link java.util.List} List of FILEPATHS.
+     * @return a {@link List} List of FILEPATHS.
      */
     public Collection<String> valueStrings() {
         List<String> coll = new ArrayList<>();
@@ -436,7 +436,7 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
      * @param <Integer> an Integer key (key must be an object)
      * @param <Track> The value to map to the key; Track object
      */
-    public class QueueEntry<Integer, Track> implements Map.Entry<Integer, Track> {
+    public class QueueEntry<Integer, Track> implements Entry<Integer, Track> {
 
         private final Integer key;
         private Track value;

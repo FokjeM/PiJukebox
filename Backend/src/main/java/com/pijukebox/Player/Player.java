@@ -1,4 +1,4 @@
-package com.pijukebox.Player;
+package com.pijukebox.player;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -65,9 +65,10 @@ public class Player {
      * @param repOne Set repeating this Track indefinitely.
      * @param q The Queue to instantiate with.
      * @param el the ErrorLogger for this instance of Player.
-     * @throws java.lang.Exception propagated from the MediaPlayer
+     * @throws test.player.FatalException when the Queue can't instantiate Fatally so
+     * @throws test.player.NonFatalException when the Queue can't instantiate, NonFatally so
      */
-    public Player(boolean rep, boolean repOne, Queue q, ErrorLogger el) throws Exception {
+    public Player(boolean rep, boolean repOne, Queue q, ErrorLogger el) throws FatalException, NonFatalException {
         this.log = el;
         this.queue = new Queue(q);
         this.currentTrack = null;
@@ -97,8 +98,11 @@ public class Player {
      * @param rep Set repeating the entire Queue indefinitely.
      * @param repOne Set repeating this Track indefinitely.
      * @param q The Queue to instantiate with.
+     * @throws IOException When an ErrorLogger can't be created. This is an user access limitation
+     * @throws test.player.FatalException when the Queue can't instantiate Fatally so
+     * @throws test.player.NonFatalException when the Queue can't instantiate, NonFatally so
      */
-    public Player(boolean rep, boolean repOne, Queue q) throws Exception {
+    public Player(boolean rep, boolean repOne, Queue q) throws IOException, FatalException, NonFatalException {
         this(rep, repOne, q, new ErrorLogger());
     }
 
@@ -111,8 +115,11 @@ public class Player {
      *
      * @param rep Set repeating the entire Queue indefinitely.
      * @param repOne Set repeating this Track indefinitely.
+     * @throws IOException When an ErrorLogger can't be created. This is an user access limitation
+     * @throws test.player.FatalException when the Queue can't instantiate Fatally so
+     * @throws test.player.NonFatalException when the Queue can't instantiate, NonFatally so
      */
-    public Player(boolean rep, boolean repOne) throws Exception {
+    public Player(boolean rep, boolean repOne) throws IOException, FatalException, NonFatalException {
         this(rep, repOne, new Queue());
     }
 
@@ -124,8 +131,11 @@ public class Player {
      * </ul>
      *
      * @param rep Set repeating the entire Queue indefinitely.
+     * @throws IOException When an ErrorLogger can't be created. This is an user access limitation
+     * @throws test.player.FatalException when the Queue can't instantiate Fatally so
+     * @throws test.player.NonFatalException when the Queue can't instantiate, NonFatally so
      */
-    public Player(boolean rep) throws Exception {
+    public Player(boolean rep) throws IOException, FatalException, NonFatalException {
         this(rep, false);
     }
 
@@ -135,8 +145,12 @@ public class Player {
      * <li>Repeat: OFF (false)</li>
      * <li>Repeat One: OFF (false)</li>
      * </ul>
+     * 
+     * @throws IOException When an ErrorLogger can't be created. This is an user access limitation
+     * @throws test.player.FatalException when the Queue can't instantiate Fatally so
+     * @throws test.player.NonFatalException when the Queue can't instantiate, NonFatally so
      */
-    public Player() throws Exception {
+    public Player() throws IOException, FatalException, NonFatalException {
         this(false, false);
     }
 
