@@ -1,4 +1,4 @@
-package com.PiJukeboxPlayer;
+package com.pijukebox.controller.PiJukeboxPlayer;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -86,7 +86,7 @@ public class Player {
      * Instantiate a new Player. This constructor sets no default options.
      *
      * Creates a new instance of
-     * {@link com.PiJukeboxPlayer.ErrorLogger ErrorLogger} to log this object.
+     * {@link com.pijukebox.controller.PiJukeboxPlayer.ErrorLogger ErrorLogger} to log this object.
      * This logger should be retrieved by the instantiating class to pass to the
      * constructor in case of a recovery.
      * <ul>
@@ -159,14 +159,14 @@ public class Player {
      * NonFatalError. If this behavior is not desirable, either handle false as
      * an error, or override this method. The easiest solution is throwing an
      * error (which could be a
-     * {@link com.PiJukeboxPlayer.NonFatalException NonFatalException} or {@link com.PiJukeboxPlayer.FatalException FatalException)
+     * {@link com.pijukebox.controller.PiJukeboxPlayer.NonFatalException NonFatalException} or {@link com.pijukebox.controller.PiJukeboxPlayer.FatalException FatalException)
      * and handling that as would be applicable to the use case.
      *
      * This method may be called at any point in time, as it allows for a better
      * user experience. It is called internally at several points in time as well.
      *
      * This method and its class do not ensure the default directory exists.
-     * Classes that use a {@link com.PiJukeboxPlayer.Player Player} are encouraged
+     * Classes that use a {@link com.pijukebox.controller.PiJukeboxPlayer.Player Player} are encouraged
      * to set a mechanism in place that creates the missing directories.
      *
      * If the specified directory exists, the existence of the file is guaranteed
@@ -226,7 +226,7 @@ public class Player {
     }
 
     /**
-     * Lets the {@link com.PiJukeboxPlayer.ErrorLogger ErrorLogger} handle
+     * Lets the {@link com.pijukebox.controller.PiJukeboxPlayer.ErrorLogger ErrorLogger} handle
      * logging and exiting where appropriate.
      *
      * @param ex The exception to log. Should be an instance of the included
@@ -249,7 +249,7 @@ public class Player {
      *
      * @throws FatalException propagated from
      * {@link  #playTrack(com.PiJukebox.Track) playTrack}
-     * @throws com.PiJukeboxPlayer.NonFatalException propagated from
+     * @throws com.pijukebox.controller.PiJukeboxPlayer.NonFatalException propagated from
      * {@link #playTrack(com.PiJukebox.Track) playTrack}
      */
     public void next() throws FatalException, NonFatalException {
@@ -305,9 +305,9 @@ public class Player {
      * Plays the specified Track
      *
      * @param t the Track to play
-     * @throws com.PiJukeboxPlayer.FatalException When the MediaPlayer can't be
+     * @throws com.pijukebox.controller.PiJukeboxPlayer.FatalException When the MediaPlayer can't be
      * started
-     * @throws com.PiJukeboxPlayer.NonFatalException propagated from
+     * @throws com.pijukebox.controller.PiJukeboxPlayer.NonFatalException propagated from
      * {@link #stop() stop()}
      */
     public void playTrack(Track t) throws FatalException, NonFatalException {
@@ -428,10 +428,10 @@ public class Player {
     }
 
     /**
-     * Get the {@link com.PiJukeboxPlayer.ErrorLogger ErrorLogger} that belongs
+     * Get the {@link com.pijukebox.controller.PiJukeboxPlayer.ErrorLogger ErrorLogger} that belongs
  to this Player. This method should be the first one called if planning to
      * allow recovery from a
-     * {@link com.PiJukeboxPlayer.FatalException FatalException}, to ensure
+     * {@link com.pijukebox.controller.PiJukeboxPlayer.FatalException FatalException}, to ensure
      * retrieval.
      *
      * @return

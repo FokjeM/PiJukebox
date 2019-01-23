@@ -1,4 +1,4 @@
-package com.PiJukeboxPlayer;
+package com.pijukebox.controller.PiJukeboxPlayer;
 
 import java.io.File;
 import java.io.Serializable;
@@ -27,8 +27,8 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
      * Instantiates a Queue using an iterable object.
      *
      * @param list the Iterable collection of Tracks to populate the Queue with.
-     * @throws com.PiJukeboxPlayer.FatalException
-     * @throws com.PiJukeboxPlayer.NonFatalException
+     * @throws com.pijukebox.controller.PiJukeboxPlayer.FatalException
+     * @throws com.pijukebox.controller.PiJukeboxPlayer.NonFatalException
      */
     public Queue(Iterable<String> list) throws FatalException, NonFatalException {
         int length = 0;
@@ -56,8 +56,8 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
      * Cannibalistic Queue; it consumes another Queue.
      *
      * @param q the Queue to consume.
-     * @throws com.PiJukeboxPlayer.FatalException
-     * @throws com.PiJukeboxPlayer.NonFatalException
+     * @throws com.pijukebox.controller.PiJukeboxPlayer.FatalException
+     * @throws com.pijukebox.controller.PiJukeboxPlayer.NonFatalException
      */
     public Queue(Queue q) throws FatalException, NonFatalException {
         this(q.valueStrings());

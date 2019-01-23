@@ -1,4 +1,4 @@
-package com.PiJukeboxPlayer;
+package com.pijukebox.controller.PiJukeboxPlayer;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +21,7 @@ import java.util.List;
  *
  * This method and its class do not ensure that any directory exists, except for
  * the directory of this class, maybe with a subdirectory Logs. Classes that use
- * a {@link com.PiJukeboxPlayer.Player Player} are encouraged to set a mechanism
+ * a {@link com.pijukebox.controller.PiJukeboxPlayer.Player Player} are encouraged to set a mechanism
  * in place that creates the missing directories.
  *
  * If the specified directory or its direct parent exists, the existence of the

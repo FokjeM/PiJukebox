@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.PiJukebox</groupId>
-    <artifactId>PiJukebox</artifactId>
-    <version>1.1</version>
+    <groupId>PiJukebox</groupId>
+    <artifactId>Player</artifactId>
+    <version>1.0</version>
     <!-- We're building a web application; namely a REST API. Web apps need to be WAR instead of JAR -->
     <!-- Although for testing or including in WAR, JAR is fine -->
     <packaging>jar</packaging>
@@ -19,11 +19,6 @@
     </properties>
     
     <dependencies>
-        <dependency>
-            <groupId>javazoom</groupId>
-            <artifactId>jlayer</artifactId>
-            <version>1.0.1</version>
-        </dependency>
         <!-- am I missing anything? -->
     </dependencies>
     
@@ -36,14 +31,6 @@
             <configuration>
             </configuration>
         </plugin>
-            <!--<plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-war-plugin</artifactId>
-                    <version>${maven-war-plugin.version}</version>
-                    <configuration>
-                        <failOnMissingWebXml>false</failOnMissingWebXml>
-                    </configuration>
-            </plugin>-->
             <plugin>
                 <!-- Alternate way of setting the target and source versions to compile with -->
                 <groupId>org.apache.maven.plugins</groupId>
