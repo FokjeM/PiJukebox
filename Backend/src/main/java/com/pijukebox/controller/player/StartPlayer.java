@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Set;
 
 public class StartPlayer{
 
@@ -35,10 +36,17 @@ public class StartPlayer{
         songs.add(path);
     }
 
-
     public void deleteSong(Long id) throws Exception
     {
         songs.remove(Integer.parseInt(id.toString()));
+    }
+
+    public void addPlaylistToQueue(Set<SimpleTrack> playlist) throws Exception
+    {
+        for(SimpleTrack track : playlist ){
+            track.setFilename( track.getFilename());
+            addSong(track);
+        }
     }
 
 //    public void startMain()

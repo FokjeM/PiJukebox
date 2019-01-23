@@ -4,7 +4,9 @@ import com.google.protobuf.Int32Value;
 import com.pijukebox.controller.player.StartPlayer;
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.model.track.Track;
+import com.pijukebox.model.playlist.PlaylistWithTracks;
 import com.pijukebox.service.ITrackService;
+import com.pijukebox.service.IPlaylistService;
 import io.swagger.annotations.ApiOperation;
 import javafx.embed.swing.JFXPanel;
 import org.hibernate.event.spi.SaveOrUpdateEvent;
@@ -17,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.swing.*;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Optional;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -26,11 +29,13 @@ public class PlayerController {
 
     private StartPlayer sp;
     private final ITrackService trackService;
+    private final IPlaylistService playlistService;
 
     @Autowired
-    public PlayerController(ITrackService trackService)
+    public PlayerController(ITrackService trackService, IPlaylistService playlistService)
     {
         this.trackService = trackService;
+        this.playlistService = playlistService;
         JFrame frame = new JFrame("FX");
         JFXPanel fxPanel = new JFXPanel();
         frame.add(fxPanel);
@@ -150,6 +155,23 @@ public class PlayerController {
         catch (Exception ex){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't remove song"), ex);
         }
+    }
+
+    @GetMapping("/add/playlist/{id}")
+    public ResponseEntity<String> addPlaylistToQueue(@PathVariable Long id) {
+
+        try {
+            Optional<PlaylistWithTracks> playlist = playlistService.findById(id);
+            if(playlist.isPresent()) {
+                sp.addPlaylistToQueue(playlist.get().getTracks());
+                return new ResponseEntity<>("Playlist added: " , HttpStatus.OK);
+            }
+            return new ResponseEntity<>("Playlist not found!",  HttpStatus.NOT_FOUND);
+        }
+        catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't add Playlist to Queue"), ex);
+        }
+
     }
 
     @GetMapping("/queue")

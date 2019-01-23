@@ -48,6 +48,17 @@ class SinglePlaylist extends PolymerElement {
         last-response="{{playlist}}">
       </iron-ajax>
 
+      <iron-ajax
+        id="addPlaylist"
+        auto
+        url="http://localhost:8080/api/v1/player/add/playlist/[[routeData.playlistId]]"
+        handle-as="json"
+        params="{{header}}"
+        last-response="{{playlist}}"
+        on-response="handleAddPlaylist"
+        on-error="handleAddPlaylistError">
+      </iron-ajax>
+
       <div class="card">
         <h1>[[playlist.title]]</h1>
         <p><i>[[playlist.description]]</i></p>
@@ -56,7 +67,7 @@ class SinglePlaylist extends PolymerElement {
       <!-- Artist tracks -->
       <div id="artistTracks" class="card">
         <h1>Tracks</h1>
-
+        <button id="addPlaylistToQueue" on-click="addPlaylistToQueue">Playlist to Queue</button>
         <template is="dom-repeat" items="{{playlist.tracks}}" as="track" rendered-item-count="{{playlistTrackCount}}">
           <div style="display:flex;">
               <result-row-track
@@ -75,6 +86,19 @@ class SinglePlaylist extends PolymerElement {
     `;
   }
   
+  addPlaylistToQueue(e){
+    this.$.addPlaylist.generateRequest();
+  }
+
+  handleAddPlaylist(e,r){
+    this.dispatchEvent(new CustomEvent('refresh-queue-event', { bubbles: true, composed: true }));
+    this.throwEvent('open-dialog-event', {title: 'Playlist', text: 'Playlist added to queue'});
+  }
+
+  handleAddPlaylistError(e,r){
+    this.throwEvent('open-dialog-event', {title: 'Playlist', text: 'Something went wrong'});
+  }
+
   static get properties() {
     return {
       token: {
