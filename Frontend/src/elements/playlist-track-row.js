@@ -66,6 +66,25 @@ class PlaylistTrackRow extends PolymerElement {
           cursor: pointer;
         }
 
+        .playlistRow {
+          color: var(--app-primary-color);
+        }
+
+        #dialog{
+          padding-bottom:60px;
+        }
+
+        .closeDialog{
+          position: absolute;
+          right: 0;
+          bottom: -15px;
+          color: var(--app-primary-color);
+        }
+
+        .closeDialog:hover{
+          cursor: pointer;
+        }
+
         paper-dialog {
           padding-bottom: 10px;
         }
@@ -133,16 +152,23 @@ class PlaylistTrackRow extends PolymerElement {
       </div>
 
       <paper-dialog id="dialog">
-        <h3>Add <span>[[track.name]]</span> to playlist</h2>
+        <h3>Click a playlist to add <span>[[track.name]]</span> </h2>
         <dom-repeat items="{{playlists}}" as="playlist">
           <template>
-            <label class="playlist" data-playlist-id$="[[playlist.id]]" data-track-id$="[[track.id]]"
-                on-tap="addTrack">[[playlist.title]]</label> <br>
+            <div class="playlistRow">
+              <label class="playlist" data-playlist-id$="[[playlist.id]]" data-track-id$="[[track.id]]"
+                on-tap="addTrack">[[playlist.title]]</label>
+            </div>    
           </template>
         </dom-repeat>
+        <paper-button class="closeDialog" on-click="closeDialog">Close</paper-button>
       </paper-dialog>
       
     `;
+  }
+
+  closeDialog(){
+    this.$.dialog.close();
   }
 
   static get properties() {
@@ -223,7 +249,6 @@ class PlaylistTrackRow extends PolymerElement {
   handleError(e,r){
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true }));
   }
-
 
   throwEvent(name, detail){
     this.dispatchEvent(new CustomEvent(name, 

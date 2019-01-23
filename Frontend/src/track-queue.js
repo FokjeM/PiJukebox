@@ -42,7 +42,7 @@ class TrackQueue extends PolymerElement {
       <div class="card">  
         <div class="container">
           <h1>Current queue</h1>
-          <dom-repeat items="{{response}}" as="track">
+          <dom-repeat items="{{response}}" as="track" rendered-item-count="{{queueTrackCount}}">
             <template>
               <queue-item
                   track-id="{{track.id}}"
@@ -51,6 +51,9 @@ class TrackQueue extends PolymerElement {
               </queue-item>
             </template>
           </dom-repeat>
+          <template is="dom-if" if="{{!queueTrackCount}}">
+            No tracks in queue.
+          </template> 
         </div>
       </div>
 
