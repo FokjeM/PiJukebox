@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Created-By: Apache Maven 3.3.9
-Built-By: codru
-Build-Jdk: 11.0.1
+Built-By: Riven
+Created-By: Apache Maven 3.6.0
+Build-Jdk: 1.8.0_192
 
