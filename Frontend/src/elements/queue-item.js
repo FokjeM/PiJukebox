@@ -29,27 +29,13 @@ class QueueItem extends PolymerElement {
         }
       </style>
 
-      <div class="queueItem">
-        <div class="controls">
-          <paper-icon-button on-click="oneUp" icon="arrow-upward"></paper-icon-button>
-          <paper-icon-button on-click="oneDown" icon="arrow-downward"></paper-icon-button>
-        </div>
-        <div class="trackLink">
-        <div class="trackName">
-          [[trackName]]
-        </div>
-        <div class="trackArtist">
-          [[trackArtist]]
-        </div>
-       </div>
-      </div>
-
       <iron-ajax
         id="queueUp"
         method="post"
         url="http://localhost:8080/api/v1/queue/moveup"
         body='[{"trackId": [[trackId]]}]'
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
         on-response="handleQueueResponseUp">
       </iron-ajax>
@@ -60,9 +46,25 @@ class QueueItem extends PolymerElement {
         url="http://localhost:8080/api/v1/queue/movedown"
         body='[{"trackId": [[trackId]]}]'
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
         on-response="handleQueueResponseDown">
       </iron-ajax>
+
+      <div class="queueItem">
+        <!-- <div class="controls">
+          <paper-icon-button on-tap="oneUp" icon="arrow-upward"></paper-icon-button>
+          <paper-icon-button on-tap="oneDown" icon="arrow-downward"></paper-icon-button>
+        </div> -->
+        <div class="trackLink">
+          <div class="trackName">
+            [[trackName]]
+          </div>
+          <!-- <div class="trackArtist">
+            [[trackArtist]]
+          </div> -->
+        </div>
+      </div>
 
     `;
   }
@@ -105,8 +107,21 @@ class QueueItem extends PolymerElement {
       },
       trackArtist: {
         type: String
+      },
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
       }
     };
+  }
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
   }
 
 }

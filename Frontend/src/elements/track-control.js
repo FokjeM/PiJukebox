@@ -55,72 +55,97 @@ class TrackControl extends PolymerElement {
         id="getStatus"
         url="http://localhost:8080/api/v1/player/status"
         content-type="application/json"  
+        params="{{header}}"   
         handle-as="json"
-   
         on-response="verifyStatus">
       </iron-ajax>
 
       <iron-ajax
         id="shuffle"
-        method="POST"
+        method="GET"
         url="http://localhost:8080/api/v1/player/shuffle"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
-        on-response="getStatus">
+        on-response="getPlayerStatus">
       </iron-ajax>
 
       <iron-ajax
-        id="playPause"
-        method="POST"
+        id="play"
+        method="GET"
         url="http://localhost:8080/api/v1/player/play"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
-        on-response="getStatus">
+        on-response="getPlayerStatus">
+      </iron-ajax>
+
+      <iron-ajax
+        id="pause"
+        method="GET"
+        url="http://localhost:8080/api/v1/player/pause"
+        content-type="application/json"
+        params="{{header}}"
+        handle-as="json"
+        on-response="getPlayerStatus">
       </iron-ajax>
 
       <iron-ajax
         id="repeat"
-        method="POST"
+        method="GET"
         url="http://localhost:8080/api/v1/player/repeat"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
-        on-response="getStatus">
+        on-response="getPlayerStatus">
       </iron-ajax>
 
       <iron-ajax
         id="nextTrack"
-        method="POST"
+        method="GET"
         url="http://localhost:8080/api/v1/player/next"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
-        on-response="getStatus">
+        on-response="getPlayerStatus">
       </iron-ajax>
 
       <iron-ajax
         id="previousTrack"
-        method="POST"
-        url="http://localhost:8080/api/v1/player/previous"
+        method="GET"
+        url="http://localhost:8080/api/v1/player/prev"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
-        on-response="getStatus">
+        on-response="getPlayerStatus">
       </iron-ajax>
 
       <iron-ajax
         id="changeVolume"
-        method="POST"
-        url="http://localhost:8080/api/v1/player/volume"
+        method="GET"
+        url="http://localhost:8080/api/v1/player/volume/{{volumeLevel}}"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
-        on-response="getStatus">
+        on-response="getPlayerStatus">
       </iron-ajax>
-      
+
+      <iron-ajax
+       id="getCurrentTrack"
+       auto
+       method="GET"
+       url="http://localhost:8080/api/v1/player/current"
+       handle-as="json"
+       params="{{header}}"
+       last-response="{{currentTrack}}">
+     </iron-ajax>
+
       <div class="container">  
         <div class="controlsContainer">
          
           <div>
             <current-track
-              track-name="trackName"
-              track-artist="artistName">
+              current-track="{{currentTrack}}">
             </current-track>
           </div>
 
@@ -138,7 +163,7 @@ class TrackControl extends PolymerElement {
 
           <div class="controls">
             <iron-icon icon="[[volumeIcon]]"></iron-icon>
-            <paper-slider id="volumeSlider" max="10" step="1" value="[[volumeLevel]]" on-change="changeVolume"></paper-slider>
+            <paper-slider id="volumeSlider" max="10" step="1" value="{{volumeLevel}}" on-change="changeVolumeVal"></paper-slider>
           </div>
         </div>
 
@@ -154,7 +179,7 @@ class TrackControl extends PolymerElement {
       },
       playPauseState: {
         type: Boolean,
-        value: 0
+        // value: false
       },
       repeatIcon: {
         type: String,
@@ -174,36 +199,44 @@ class TrackControl extends PolymerElement {
       },
       volumeLevel: {
         type: Number,
-        value: 2
+        // value: 2
+      },
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
       }
     };
   }
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
+  }
 
-
-  getStatus(e) {
+  getPlayerStatus(e) {
     this.$.getStatus.generateRequest();
+    this.$.getCurrentTrack.generateRequest();
   }
 
   verifyStatus(e, response) {
-
-    var playerStatus = JSON.parse(response.response);
-
+    let playerStatus = JSON.parse(response.response);
     if (response.status == 200) {
       this.updateStates(playerStatus);
       this.updateControls();
     } else {
-      this.throwEvent('open-dialog-event', {title: 'Player', text: 'Something went wrong, please try again'});
+      this.throwEvent('open-dialog-event', {title: 'Player', text: 'Something went wrong, please try again'});//??
     }
-
-    console.log(this.volumeLevel);
-
   }
 
   /**
    * Set states
    */
   updateStates(playerStatus) {
-    this.playPauseState = playerStatus.playPauseState;
+    this.playPauseState = playerStatus.isPlaying;
     this.repeatState = playerStatus.repeatState;
     this.volumeLevel = playerStatus.volumeLevel;
   }
@@ -218,7 +251,22 @@ class TrackControl extends PolymerElement {
   }
 
   playPause(e) {
-    this.$.playPause.generateRequest();
+    let state = this.playPauseState;
+    if (state) {
+      // player is playing
+      this.pause(e);
+    } else if (!state) {
+      // player is not playing
+      this.play(e);
+    }
+  }
+
+  play(e) {
+    this.$.play.generateRequest();
+  }
+
+  pause(e){
+    this.$.pause.generateRequest();
   }
   
   repeat(e) {
@@ -231,6 +279,11 @@ class TrackControl extends PolymerElement {
   
   previousTrack(e) {
     this.$.previousTrack.generateRequest();
+  }
+
+  shuffle(e){
+    this.$.shuffle.generateRequest();
+    this.dispatchEvent(new CustomEvent('refresh-queue-event', { bubbles: true, composed: true }));
   }
   
   changeShuffleIcon() {
@@ -248,10 +301,13 @@ class TrackControl extends PolymerElement {
   /**
    * Change the play/pause icon to the current play / pause state
    */
-  changePlayPauseIcon(state) {
-    if (!state) {
+  changePlayPauseIcon() {
+    let state = this.playPauseState;
+    if (state) {
+      // player is playing
       this.playPauseIcon = "av:pause";
-    } else if (state) {
+    } else if (!state) {
+      // player is not playing
       this.playPauseIcon = "av:play-arrow";
     }
   }
@@ -259,17 +315,11 @@ class TrackControl extends PolymerElement {
   changeRepeatIcon() {
     let repeatButton = this.$.repeatBtn;
     // no repeat
-    if(this.repeatState === 0) {
-      repeatButton.style.color = "var(--app-primary-color-light)";
-      this.repeatIcon = "av:repeat-one";
-    }
-    // repeat one track
-    else if(this.repeatState === 1) {
-      repeatButton.style.color = "var(--app-primary-color-light)";
+    if(this.repeatState) {
+      repeatButton.style.color = "var(--app-primary-color)";
       this.repeatIcon = "av:repeat";
     }
-    // repeat queue
-    else if(this.repeatState === 2) {
+    else {
       repeatButton.style.color = "var(--paper-icon-button-ink-color, var(--primary-text-color))";
       this.repeatIcon = "av:repeat";
     }
@@ -278,9 +328,9 @@ class TrackControl extends PolymerElement {
   /**
    * This method calls the changeVolumeIcon and changeVolumeLevel methods 
    */
-  changeVolume(e) {
+  changeVolumeVal(e) {
     this.changeVolumeIcon();
-    this.changeVolumeLevel(e);
+    this.changeVolumeLevel();
   }
   
   /**
@@ -304,9 +354,7 @@ class TrackControl extends PolymerElement {
   /**
    * This method sends the request to the backend to change the volume level
    */
-  changeVolumeLevel(e) {
-    let volume = this.$.volumeSlider.value;
-    this.$.changeVolume.setAttribute('body', '{"volume":' + volume + '}');
+  changeVolumeLevel() {
     this.$.changeVolume.generateRequest();
   }
 
