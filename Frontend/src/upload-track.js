@@ -14,9 +14,9 @@ import './shared-styles.js';
 import '@polymer/app-route/app-location.js';
 import '@polymer/app-route/app-route.js';
 import '@polymer/iron-ajax/iron-ajax.js';
-import './elements/result-row-track.js';
 import '@polymer/iron-form/iron-form.js';
 import '@polymer/paper-button/paper-button.js';
+import './elements/result-row-track.js';
 
 class UploadTrack extends PolymerElement {
   static get template() {
@@ -29,74 +29,31 @@ class UploadTrack extends PolymerElement {
         }
       </style>
       
-      <iron-ajax
-        id="sendPlaylistForm"
-        method="post"
-        url="http://localhost:8080/api/v1/upload/add"
-        handle-as="json"
-        body='{"title": "{{title}}","description": "{{description}}"}'
-        params="{{header}}"
-        content-type="application/json"
-        on-response="formResponse"
-        on-error="handleError">
-      </iron-ajax>
-
       <iron-request
         id="sendUploadForm"
-        handle-as="document"
-        on-response="formResponse">
+        handle-as="document">
       </iron-request>
-      <!-- body='{"title": "{{title}}","description": "{{description}}"}' -->
-     
-      <iron-form id="playlistForm">
-        <paper-input type="file" name="file" label="file" id="file"  
-            error-message="Please enter a description"></paper-input>
-        <paper-icon-button id="submitBtn" on-tap="submitPlaylistForm" icon="icons:add-circle-outline"></paper-icon-button>
-      </iron-form>
-
-
-      <form id="myForm" action="http://localhost:8080/api/v1/upload" method="post" enctype="multipart/form-data">
-        <input id="fileUpload" type="file" name="file" value="{{thefile}}">
-        <!-- <button type="submit">Submit</button> -->
+      
+      <form>
+        <input id="fileUpload" type="file" name="file" multiple>
         <paper-button id="subBtn" on-tap="SubForm">Send</paper-button>
-        <!-- <button on-tap="SubForm">Submit</button> -->
       </form>
 
     `;
   }
 
   SubForm() {
-    console.log(this.$.fileUpload);
-    console.log(this.$.fileUpload.name);
-    console.log(this.$.fileUpload.type);
-    console.log(this.$.fileUpload.size);
-    console.log(this.$.fileUpload.files[0]);
-    var data = new FormData();
-    data.append("file", this.$.fileUpload.files[0]);
-    // data.append("url","http://localhost:8080/api/v1/upload");
-    console.log("HI");
-    // this.$.sendUploadForm.open("POST", "http://localhost:8080/api/v1/upload");
-    // this.$.sendUploadForm.open();
-    // this.$.sendUploadForm.setRequestHeader("Content-Type", "multipart/form-data");
-    var xhr = new XMLHttpRequest();
+    let files = this.$.fileUpload.files;
+    let data = new FormData();
+
+    for(let i=0; i < files.length; i++) {
+      data.append("file", this.$.fileUpload.files[i]);
+    }
+    
+    let xhr = new XMLHttpRequest();
     xhr.Authorization = true;
-    
-    console.log();
-    xhr.open("POST", "http://localhost:8080/api/v1/upload?Authorization="+JSON.parse(JSON.stringify(this.header)).Authorization);
-    
-    // xhr.setRequestHeader("Content-Type", "multipart/form-data");
+    xhr.open("POST", "http://localhost:8080/api/v1/upload?Authorization=" + JSON.parse(JSON.stringify(this.header)).Authorization);
     xhr.send(data);
-    // this.$.sendUploadForm.send({ 
-    //   url: "http://localhost:8080/api/v1/upload",
-    //   headers: {
-    //     "Content-Type": "multipart/form-data"
-    //   },
-    //   params: "[[header]]",
-    //   body: this.$.fileUpload.files[0],
-    //   method: "post"
-    // });
-    console.log(this.$.sendUploadForm);
-    
   }
 
   static get properties() {
@@ -112,9 +69,10 @@ class UploadTrack extends PolymerElement {
       }
     };
   }
-  _computeTokenHeaders(token)
-  {
-      return {'Authorization': token};
+  _computeTokenHeaders(token) {
+    return {
+      'Authorization': token
+    };
   }
 }
 

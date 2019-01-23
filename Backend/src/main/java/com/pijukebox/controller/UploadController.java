@@ -14,12 +14,14 @@ import java.nio.file.Paths;
 public class UploadController {
 
     //private String uploadDir = "C:\\Users\\rutge\\Desktop\\uploads\\";
-    private String uploadDir = "D:\\Users\\Ruben\\Desktop\\uploads\\";
+    private final String uploadDir = "D:\\Users\\Ruben\\Desktop\\uploads\\";
 
     @PostMapping(value = "/upload", consumes = {"multipart/form-data"})
-    public ResponseEntity<?> uploadFile(@RequestBody MultipartFile file) {
+    public ResponseEntity<?> uploadFile(@RequestBody MultipartFile[] file) {
         try {
-            uploadThisFile(file);
+            for (MultipartFile f : file) {
+                uploadThisFile(f);
+            }
             return ResponseEntity.ok().body(null);
         } catch (Exception ex) {
             ex.printStackTrace();
