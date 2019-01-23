@@ -2,8 +2,10 @@ package com.pijukebox.controller;
 
 import com.google.protobuf.Int32Value;
 import com.pijukebox.controller.player.StartPlayer;
+import com.pijukebox.model.playlist.PlaylistWithTracks;
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.model.track.Track;
+import com.pijukebox.service.IPlaylistService;
 import com.pijukebox.service.ITrackService;
 import io.swagger.annotations.ApiOperation;
 import javafx.embed.swing.JFXPanel;
@@ -15,8 +17,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.swing.*;
+import java.sql.Array;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Optional;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -26,11 +30,13 @@ public class PlayerController {
 
     private StartPlayer sp;
     private final ITrackService trackService;
+    private  final IPlaylistService playlistService;
 
     @Autowired
-    public PlayerController(ITrackService trackService)
+    public PlayerController(ITrackService trackService, IPlaylistService playlistService)
     {
         this.trackService = trackService;
+        this.playlistService = playlistService;
         JFrame frame = new JFrame("FX");
         JFXPanel fxPanel = new JFXPanel();
         frame.add(fxPanel);
@@ -117,6 +123,15 @@ public class PlayerController {
         }
         catch (Exception ex){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't change repeat state"), ex);
+        }
+    }
+
+    @GetMapping("/add/playlist/{id}")
+    public void addPlaylistToQueue(@PathVariable Long id) {
+
+        Optional<PlaylistWithTracks> playlist = playlistService.findById(id);
+        if(playlist.isPresent()) {
+            sp.addPlaylistToQueue(playlist.get().getTracks());
         }
     }
 
