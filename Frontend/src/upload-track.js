@@ -15,7 +15,7 @@ import '@polymer/app-route/app-location.js';
 import '@polymer/app-route/app-route.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 import './elements/result-row-track.js';
-import '@vaadin/vaadin-upload/vaadin-upload.js';
+import '@polymer/iron-form/iron-form.js';
 
 class UploadTrack extends PolymerElement {
   static get template() {
@@ -28,13 +28,36 @@ class UploadTrack extends PolymerElement {
         }
       </style>
       
-      <vaadin-upload target="http://localhost:8080/api/v1/upload">
-        <iron-icon slot="drop-label-icon" icon="description"></iron-icon>
-        <span slot="drop-label">Drop your Files here (mp3 files only)</span>
-      </vaadin-upload>
+      <iron-ajax
+        id="sendPlaylistForm"
+        method="post"
+        url="http://localhost:8080/api/v1/upload/add"
+        handle-as="json"
+        body='{"title": "{{title}}","description": "{{description}}"}'
+        params="{{header}}"
+        content-type="application/json"
+        on-response="formResponse"
+        on-error="handleError">
+      </iron-ajax>
+
+      <!-- value="{{description}}" -->
+     
+      <iron-form id="playlistForm">
+      
+        <paper-input type="file" name="file" label="file" id="file"  
+            error-message="Please enter a description"></paper-input>
+
+        <paper-icon-button id="submitBtn" on-tap="submitPlaylistForm" icon="icons:add-circle-outline"></paper-icon-button>
+
+      </iron-form>
 
 
-
+      <form action="http://localhost:8080/api/v1/upload/upload1" method="post" enctype="multipart/form-data">
+        <!-- <input type="text" name="description" value="some text"> -->
+        <!-- <input type="text" name="myName"> -->
+        <input type="file" name="file">
+        <button type="submit">Submit</button>
+      </form>
 
     `;
   }
