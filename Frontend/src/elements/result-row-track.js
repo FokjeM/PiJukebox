@@ -28,17 +28,18 @@ class ResultRowTrack extends PolymerElement {
 
       <iron-ajax
         id="addToQueue"
-        method="post"
-        url="http://localhost:8080/api/v1/queue/add"
-        body='[{"trackId": [[trackId]]}]'
+        method="get"
+        url="http://localhost:8080/api/v1/player/add/[[trackId]]"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
-        on-response="handleQueueResponse">
+        on-response="handleQueueResponse"
+        on-error="handleError">
       </iron-ajax>
       
       <div>
         <div class="track-info">
-          <paper-icon-button icon="av:queue" on-click="addToQueue"></paper-icon-button>
+          <paper-icon-button icon="av:queue" on-tap="addToQueue"></paper-icon-button>
           <div style="display:flex; padding:8px;">
             <div>[[trackName]]</div>
           
@@ -67,12 +68,12 @@ class ResultRowTrack extends PolymerElement {
   }
 
   handleQueueResponse(e,r){
-    if(r.status == 200){
-      this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: this.trackName + ' has been added to the queue.'}, bubbles: true,composed: true, }));
-    }
-    else{
-      this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true, }));
-    }
+    this.dispatchEvent(new CustomEvent('refresh-queue-event', { bubbles: true, composed: true }));
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: this.trackName + ' has been added to the queue.'}, bubbles: true, composed: true }));
+  }
+
+  handleError(e,r){
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true }));
   }
 
   static get properties() {
@@ -89,8 +90,21 @@ class ResultRowTrack extends PolymerElement {
       excludeArtist:{
         type: Boolean,
         value: false
+      },
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
       }
     };
+  }
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
   }
 
 }

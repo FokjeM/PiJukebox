@@ -15,6 +15,9 @@ import '@polymer/app-route/app-location.js';
 import '@polymer/app-route/app-route.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 
+import './elements/result-row-track.js';
+
+
 class SingleAlbum extends PolymerElement {
   static get template() {
     return html`
@@ -39,18 +42,20 @@ class SingleAlbum extends PolymerElement {
       </app-route>
 
       <div class="card">
-        <h1>[[album.title]]</h1>
+        <h1>[[album.name]]</h1>
         <h1>[[album.artist]]</h1>
       </div>
 
       <!-- Get all album info -->
       <iron-ajax
         auto
-        url="http://localhost:8080/api/v1/album/[[routeData.albumId]]"
+        url="http://localhost:8080/api/v1/extended/albums/[[routeData.albumId]]"
         handle-as="json"
+        params="{{header}}"
         last-response="{{album}}">
       </iron-ajax>
       
+
       <!-- Album tracks -->
       <div id="albumTracks" class="card">
         <h1>Tracks</h1>
@@ -59,8 +64,8 @@ class SingleAlbum extends PolymerElement {
           <div style="display:flex;">          
               <result-row-track
                   track-id="{{track.id}}"
-                  track-name="{{track.title}}"
-                  track-artist="{{track.artist}}">
+                  track-name="{{track.name}}"
+                  track-artist="{{album.artists}}">
               </result-row-track>
             </div>
         </template>
@@ -70,6 +75,24 @@ class SingleAlbum extends PolymerElement {
         </template> 
       </div>
     `;
+  }
+
+  static get properties() {
+    return {
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
+      }
+    };
+  }
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
   }
 }
 

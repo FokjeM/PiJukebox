@@ -17,8 +17,9 @@ class TrackList extends PolymerElement {
       
       <iron-ajax
         auto
-        url="http://localhost:8080/api/v1/laptops"
+        url="http://localhost:8080/api/v1/extended/tracks"
         handle-as="json"
+        params="{{header}}"
         last-response="{{response}}">
       </iron-ajax>
       
@@ -35,6 +36,24 @@ class TrackList extends PolymerElement {
         
       </div>
     `;
+  }
+
+  static get properties() {
+    return {
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
+      }
+    };
+  }
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
   }
 
 }

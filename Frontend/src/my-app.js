@@ -22,13 +22,10 @@ import '@polymer/iron-pages/iron-pages.js';
 import '@polymer/iron-selector/iron-selector.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-dialog/paper-dialog.js';
-
 import './my-icons.js';
-
 import './elements/track-control.js';
 import './elements/dialog-element.js';
 
-import './elements/get-token.js';
 
 
 // Gesture events like tap and track generated from touch will not be
@@ -96,14 +93,15 @@ class MyApp extends PolymerElement {
         <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
           <app-toolbar>Menu</app-toolbar>
           <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-            <a name="tracks" href="[[rootPath]]tracks">Tracks</a>
-            <a name="playlists" href="[[rootPath]]playlists">Playlists</a>
-            <a name="playlist" href="[[rootPath]]playlist">Single Playlist</a>
-            <a name="queue" href="[[rootPath]]queue">Queue</a>
-            <a name="login" href="[[rootPath]]login">Login</a>
-            <a name="search" href="[[rootPath]]search">Search</a>
-          </iron-selector>
-        </app-drawer>
+              <template is="dom-if" if="[[!isLogin(page)]]">
+                <a name="tracks" href="[[rootPath]]tracks">Tracks</a>
+                <a name="playlists" href="[[rootPath]]playlists">Playlists</a>
+                <a name="queue" href="[[rootPath]]queue">Queue</a>
+                <a name="search" href="[[rootPath]]search">Search</a>
+                <a name="signout" on-tap="signOut" href="#">Sign out</a>
+              </template>
+            </iron-selector>
+          </app-drawer>
 
         <!-- Main content -->
         <app-header-layout has-scrolling-region="">
@@ -157,6 +155,15 @@ class MyApp extends PolymerElement {
     dialog.open();
   }
 
+  signOut(){
+    window.localStorage.removeItem("token");
+ 
+    //Redirect to /login
+    window.location.href = "/";
+    // window.history.pushState({}, null, '/login');
+    // window.dispatchEvent(new CustomEvent('location-changed'));
+  }
+
   static get properties() {
     return {
       page: {
@@ -182,6 +189,7 @@ class MyApp extends PolymerElement {
      // Show 'tracks' in that case. And if the page doesn't exist, show 'view404'.
     var token = localStorage.getItem('token');
     if(token == null){
+      this.set('route.path', '/login');
       this.page = 'login';
     }
     else if (!page) {
