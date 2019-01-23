@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.PiJukebox</groupId>
-    <artifactId>PiJukeboxPlayer</artifactId>
+    <artifactId>PiJukebox</artifactId>
     <version>1.1</version>
     <!-- We're building a web application; namely a REST API. Web apps need to be WAR instead of JAR -->
     <!-- Although for testing or including in WAR, JAR is fine -->
@@ -34,7 +34,6 @@
             <artifactId>exec-maven-plugin</artifactId>
             <version>1.2.1</version>
             <configuration>
-                <mainClass>com.PiJukeboxPlayer.PiJukeboxPlayer</mainClass>
             </configuration>
         </plugin>
             <!--<plugin>
@@ -84,12 +83,11 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.PiJukeboxPlayer.PiJukeboxPlayer</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-    <name>PiJukeboxPlayer</name>
+    <name>PiJukebox</name>
 </project>
