@@ -13,7 +13,8 @@ import java.nio.file.Paths;
 @RequestMapping("/api/v1")
 public class UploadController {
 
-    private String uploadDir = "C:\\Users\\rutge\\Desktop\\uploads\\";
+    //private String uploadDir = "C:\\Users\\rutge\\Desktop\\uploads\\";
+    private String uploadDir = "D:\\Users\\Ruben\\Desktop\\uploads\\";
 
     @PostMapping(value = "/upload", consumes = {"multipart/form-data"})
     public ResponseEntity<?> uploadFile(@RequestBody MultipartFile file) {
