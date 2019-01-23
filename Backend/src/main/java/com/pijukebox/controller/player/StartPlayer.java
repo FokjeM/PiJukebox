@@ -1,10 +1,12 @@
 package com.pijukebox.controller.player;
 
+import com.pijukebox.model.playlist.PlaylistWithTracks;
 import com.pijukebox.model.simple.SimpleTrack;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -34,6 +36,15 @@ public class StartPlayer{
     {
         path.setFilename(pathToSong + path.getFilename());
         songs.add(path);
+    }
+
+    public void addPlaylistToQueue(ArrayList<SimpleTrack> playlist) throws Exception
+    {
+        //ga door playlist
+        //haal tracks op
+        //queue is arraylist met simpletracks
+        
+        songs.addAll(playlist);
     }
 
 
