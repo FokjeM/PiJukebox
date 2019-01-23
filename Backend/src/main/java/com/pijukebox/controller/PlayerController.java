@@ -127,14 +127,15 @@ public class PlayerController {
     }
 
     @GetMapping("/add/playlist/{id}")
-    public void Responsentity addPlaylistToQueue(@PathVariable Long id) {
+    public ResponseEntity<String> addPlaylistToQueue(@PathVariable Long id) {
 
         try {
             Optional<PlaylistWithTracks> playlist = playlistService.findById(id);
             if(playlist.isPresent()) {
                 sp.addPlaylistToQueue(playlist.get().getTracks());
+                return new ResponseEntity<>("Playlist added: " , HttpStatus.OK);
             }
-
+            return new ResponseEntity<>("Playlist not found!",  HttpStatus.NOT_FOUND);
         }
         catch (Exception ex){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't add Playlist to Queue"), ex);
