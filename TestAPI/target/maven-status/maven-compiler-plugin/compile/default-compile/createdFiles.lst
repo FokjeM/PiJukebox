@@ -1,0 +1,9 @@
+test\api\configuration\ApplicationInitializer.class
+test\api\data\model\ImageAnnotated.class
+test\api\data\Image.class
+test\api\ImageAPI.class
+test\api\configuration\WebConfig.class
+test\api\configuration\DatabaseConfig.class
+test\api\service\ImageService.class
+test\api\data\jpa\SpringJpaRepository.class
+test\api\data\model\ImagePOJO.class
