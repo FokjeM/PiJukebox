@@ -1,4 +1,4 @@
-package com.pijukebox.Player;
+package com.pijukebox.player;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -19,7 +19,7 @@ import java.util.Locale;
  *
  * @author Riven
  */
-final class Track {
+public final class Track {
 
     private final static String WINDOWS_DEFAULT_MEDIA_PATH = "C:\\Users\\Public\\Music\\";
     private final static String NIX_DEFAULT_MEDIA_PATH = "/media/music/";

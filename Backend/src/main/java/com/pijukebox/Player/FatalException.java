@@ -1,11 +1,11 @@
-package com.pijukebox.Player;
+package com.pijukebox.player;
 
 /**
  * An exception that poses a valid reason to halt execution of the program
  *
  * @author Riven
  */
-class FatalException extends Exception {
+public class FatalException extends Exception {
 
     /**
      * Fatal Exception with all parameters
