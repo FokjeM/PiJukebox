@@ -174,6 +174,13 @@ class PlaylistTrackRow extends PolymerElement {
       return {'Authorization': token};
   }
 
+  ready(){
+    super.ready();
+    window.addEventListener('refresh-playlists-event', function(e) {
+      this.$.getPlaylists.generateRequest();
+    }.bind(this));
+  }
+
   hasArtist(){
     return this.track.artists.length > 0;
   }
@@ -195,6 +202,7 @@ class PlaylistTrackRow extends PolymerElement {
 
   addedTrack(e, response) {
     if(response.status == 200) {
+      this.dispatchEvent(new CustomEvent('refresh-playlist-event', { bubbles: true, composed: true }));
       this.throwEvent('open-dialog-event', {title: 'Playlist', text: 'Song is successfully added to the playlist'});
     }
     else {

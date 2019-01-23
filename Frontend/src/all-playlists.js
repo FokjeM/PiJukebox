@@ -122,13 +122,14 @@ class AllPlaylists extends PolymerElement {
   }
 
   formResponse(e,response) {
-    console.log("hi" + response.status);
     if(response.status == 200) {
       this.updatePlaylists();
+      this.dispatchEvent(new CustomEvent('refresh-playlists-event', { bubbles: true, composed: true }));
     } else {
       this.throwEvent('open-dialog-event', {title: 'Playlist', text: 'Something went wrong, please try again'});
     }
   }
+
 
   updatePlaylists() {
     this.$.getPlaylists.generateRequest();
