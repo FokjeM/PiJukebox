@@ -9,6 +9,7 @@ import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Set;
 
 public class StartPlayer{
 
@@ -38,12 +39,12 @@ public class StartPlayer{
         songs.add(path);
     }
 
-    public void addPlaylistToQueue(ArrayList<SimpleTrack> playlist) throws Exception
+    public void addPlaylistToQueue(Set<SimpleTrack> playlist) throws Exception
     {
         //ga door playlist
         //haal tracks op
         //queue is arraylist met simpletracks
-        
+
         songs.addAll(playlist);
     }
 

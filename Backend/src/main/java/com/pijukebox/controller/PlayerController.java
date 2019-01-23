@@ -129,10 +129,17 @@ public class PlayerController {
     @GetMapping("/add/playlist/{id}")
     public void addPlaylistToQueue(@PathVariable Long id) {
 
-        Optional<PlaylistWithTracks> playlist = playlistService.findById(id);
-        if(playlist.isPresent()) {
-            sp.addPlaylistToQueue(playlist.get().getTracks());
+        try {
+            Optional<PlaylistWithTracks> playlist = playlistService.findById(id);
+            if(playlist.isPresent()) {
+                sp.addPlaylistToQueue(playlist.get().getTracks());
+            }
+
         }
+        catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't add Playlist to Queue"), ex);
+        }
+
     }
 
     @GetMapping("/add/{id}")
