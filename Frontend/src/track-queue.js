@@ -32,6 +32,7 @@ class TrackQueue extends PolymerElement {
         url="http://localhost:8080/api/v1/player/queue/"
         params="{{header}}"
         handle-as="json"
+        on-response="test"
         last-response="{{response}}">
       </iron-ajax>
 
@@ -57,12 +58,13 @@ class TrackQueue extends PolymerElement {
       <div class="card">  
         <div class="container">
           <h1>Current queue</h1>
-          <dom-repeat items="{{response}}" as="track" rendered-item-count="{{queueTrackCount}}">
-            <template>
+          <dom-repeat id="domRepeat" items="{{response}}" as="track" index-as="innerIndex" rendered-item-count="{{queueTrackCount}}">
+          <template>
               <queue-item
                   track-id="{{track.id}}"
                   track-name="{{track.name}}"
-                  track-artist="{{track.artists}}">
+                  track-artist="{{track.artists}}"
+                  track-index={{innerIndex}}>
               </queue-item>
             </template>
           </dom-repeat>

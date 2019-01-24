@@ -46,6 +46,25 @@ public class StartPlayer{
         songs.clear();
     }
 
+    public void moveSongUp(int index)
+    {
+        if(index > 0) {
+            SimpleTrack simpleTrack = songs.get(index);
+            songs.remove(index);
+            songs.add(index - 1, simpleTrack);
+        }
+    }
+
+    public void moveSongDown(int index)
+    {
+        if (index < songs.size())
+        {
+            SimpleTrack simpleTrack = songs.get(index);
+            songs.remove(index);
+            songs.add(index + 1, simpleTrack);
+        }
+    }
+
     public void addPlaylistToQueue(Set<SimpleTrack> playlist) throws Exception
     {
         for(SimpleTrack track : playlist ){

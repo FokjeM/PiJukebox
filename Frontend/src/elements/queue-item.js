@@ -27,13 +27,12 @@ class QueueItem extends PolymerElement {
         .trackArtist {
           font-size: 12px;
         }
+
       </style>
 
       <iron-ajax
         id="queueUp"
-        method="post"
-        url="http://localhost:8080/api/v1/queue/moveup"
-        body='[{"trackId": [[trackId]]}]'
+        url="http://localhost:8080/api/v1/player/move/track/up/[[trackIndex]]"
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
@@ -43,9 +42,7 @@ class QueueItem extends PolymerElement {
 
       <iron-ajax
         id="queueDown"
-        method="post"
-        url="http://localhost:8080/api/v1/queue/movedown"
-        body='[{"trackId": [[trackId]]}]'
+        url="http://localhost:8080/api/v1/player/move/track/down/[[trackIndex]]"
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
@@ -55,8 +52,17 @@ class QueueItem extends PolymerElement {
 
       <div class="queueItem">
         <div class="controls">
-          <paper-icon-button on-tap="oneUp" icon="arrow-upward"></paper-icon-button>
-          <paper-icon-button on-tap="oneDown" icon="arrow-downward"></paper-icon-button>
+
+          <template is="dom-if" if="[[isFirst()]]">
+            <paper-icon-button on-tap="oneUp" icon="arrow-upward" disabled></paper-icon-button>
+          </template> 
+
+          <template is="dom-if" if="[[!isFirst()]]">
+            <paper-icon-button on-tap="oneUp" icon="arrow-upward"></paper-icon-button>
+          </template>  
+
+          <paper-icon-button class="downButton" on-tap="oneDown" icon="arrow-downward"></paper-icon-button>
+          
         </div>
         <div class="trackLink">
           <div class="trackName">
@@ -67,8 +73,11 @@ class QueueItem extends PolymerElement {
           </div>
         </div>
       </div>
-
     `;
+  }
+
+  isFirst(){
+    return this.trackIndex == 0;
   }
 
   oneUp(e) {
@@ -95,6 +104,9 @@ class QueueItem extends PolymerElement {
 
   static get properties() {
     return {
+      trackIndex: {
+        type: Number
+      },
       trackId: {
         type: Number
       },
