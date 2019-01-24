@@ -385,6 +385,13 @@ public class Player {
         queue.putAll(q);
         updateStatefulQueue();
     }
+    
+    public void addToQueue(List<Track> tracks) {
+        tracks.forEach((track) -> {
+            queue.put(queue.size() + 1, track);
+        });
+        updateStatefulQueue();
+    }
 
     /**
      * Pause the currently playing track. Does nothing when not playing.
@@ -470,14 +477,16 @@ public class Player {
     /**
      * Toggles repeat between true and false. If this turns off repeat, it will
      * also turn off repeatOne.
+     * @return the new repeat state
      */
-    public void toggleRepeat() {
+    public boolean toggleRepeat() {
         if (repeat) { //If we're going to false, we should still be true
             if (repeatOne) { //If repeatOne is also true, we flip it
                 toggleRepeatOne();
             }
         }
         this.repeat = !repeat; //Flip repeat, this'll change it both ways.
+        return repeat;
     }
 
     /**
@@ -494,8 +503,10 @@ public class Player {
     /**
      * Toggles repeatOne between true and false. Has no effect on any other
      * value
+     * @return the new repeatOne state
      */
-    public void toggleRepeatOne() {
+    public boolean toggleRepeatOne() {
         this.repeatOne = !repeatOne;
+        return repeatOne;
     }
 }
