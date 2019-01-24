@@ -6,7 +6,7 @@ import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
-
+import '@polymer/paper-button/paper-button.js';
 import './elements/queue-item.js';
 
 class TrackQueue extends PolymerElement {
@@ -15,10 +15,15 @@ class TrackQueue extends PolymerElement {
       <style include="shared-styles">
         :host {
           display: block;
-
           padding: 10px;
         }
-        
+        #clearQueue {
+          font-size:14px;
+          color: var(--app-primary-color);
+        }
+        #clearQueue:hover {
+          cursor: pointer;
+        }
       </style>
       
       <iron-ajax
@@ -31,12 +36,22 @@ class TrackQueue extends PolymerElement {
       </iron-ajax>
 
       <iron-ajax
+        id="clearQueue"
+        url="http://localhost:8080/api/v1/player/queue/clear/"
+        params="{{header}}"
+        handle-as="json"
+        on-response="queueCleared"
+        on-error="queueClearedError">
+      </iron-ajax>
+
+      <iron-ajax
         id="changeQueue"
         method="POST"
         url="http://localhost:8080/api/v1/player/changeQueue/"
         params="{{header}}"
         handle-as="json"
-        on-response="queueChanged">
+        on-response="queueChanged"
+        on-error="queueChangedError">
       </iron-ajax>
 
       <div class="card">  
@@ -51,10 +66,13 @@ class TrackQueue extends PolymerElement {
               </queue-item>
             </template>
           </dom-repeat>
-          <template is="dom-if" if="{{!queueTrackCount}}">
-            No tracks in queue.
-          </template> 
         </div>
+        <template is="dom-if" if="{{queueTrackCount}}">
+          <paper-button id="clearQueue" on-click="clearQueue">Clear queue</paper-button>
+        </template> 
+        <template is="dom-if" if="{{!queueTrackCount}}">
+          No tracks in queue.
+        </template> 
       </div>
 
     `;
@@ -74,12 +92,25 @@ class TrackQueue extends PolymerElement {
     this.$.changeQueue.generateRequest();
   }
 
-  queueChanged(e, response) {
-    if(response.status == 200) {
-      this.throwEvent('open-dialog-event', {title: 'Queue', text: 'The queue changed successfully'});
-    } else {
-      this.throwEvent('open-dialog-event', {title: 'Queue', text: 'Something went wrong, please try again'});
-    }
+  clearQueue(e){
+    this.$.clearQueue.generateRequest();
+  }
+
+  queueChanged(e, r) {
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'The queue changed successfully'}, bubbles: true, composed: true }));
+  }
+
+  queueChangedError(e,r){
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong, please try again'}, bubbles: true, composed: true }));
+  }
+
+  queueCleared(e,r){
+    this.$.getCurrentQueue.generateRequest(); // Refresh Queue
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'The queue has been cleaned successfully'}, bubbles: true, composed: true }));
+  }
+
+  queueClearedError(e,r){
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong, please try again'}, bubbles: true, composed: true }));
   }
 
   static get properties() {

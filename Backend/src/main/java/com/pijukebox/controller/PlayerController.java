@@ -185,6 +185,18 @@ public class PlayerController {
         }
     }
 
+    @GetMapping("/queue/clear")
+    public ResponseEntity<String> clearQueue()
+    {
+        try {
+            sp.clearQueue();
+            return new ResponseEntity<>("queue cleared" , HttpStatus.OK);
+        }
+        catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, String.format("Couldn't clear the queue"), ex);
+        }
+    }
+
     @GetMapping("/volume/{volumeLevel}")
     public ResponseEntity<String> volume(@PathVariable int volumeLevel) {
         try {
