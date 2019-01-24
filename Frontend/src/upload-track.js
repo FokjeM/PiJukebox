@@ -33,16 +33,33 @@ class UploadTrack extends PolymerElement {
         id="sendUploadForm"
         handle-as="document">
       </iron-request>
-      
-      <form>
-        <input id="fileUpload" type="file" name="file" multiple>
-        <paper-button id="subBtn" on-tap="SubForm">Send</paper-button>
-      </form>
+
+      <iron-ajax
+        id="scanFolder"
+        url="http://localhost:8080/api/v1/upload/folder/"
+        params="{{header}}"
+        handle-as="json"
+        on-response="handleScanResponse"
+        on-error="handleError">
+      </iron-ajax>
+
+      <div class="card">  
+        <div class="container">
+          <form>
+            <input id="fileUpload" type="file" name="file" multiple>
+            <paper-button raised id="subBtn" on-tap="subForm">Send</paper-button>
+          </form>
+        </div>
+
+        <div class="container">
+          <paper-button raised id="subBtn" on-tap="scanForFiles">Scan folder for files</paper-button>
+        </div>
+      </div>
 
     `;
   }
 
-  SubForm() {
+  subForm() {
     let files = this.$.fileUpload.files;
     let data = new FormData();
 
@@ -54,6 +71,18 @@ class UploadTrack extends PolymerElement {
     xhr.Authorization = true;
     xhr.open("POST", "http://localhost:8080/api/v1/upload?Authorization=" + JSON.parse(JSON.stringify(this.header)).Authorization);
     xhr.send(data);
+  }
+
+  scanForFiles() {
+    this.$.scanFolder.generateRequest();
+  }
+
+  handleScanResponse(e,r){
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Upload', text: 'Scan was successful'}, bubbles: true, composed: true }));
+  }
+
+  handleError(e,r){
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Upload', text: 'Something went wrong'}, bubbles: true,composed: true }));
   }
 
   static get properties() {
