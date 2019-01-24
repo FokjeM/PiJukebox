@@ -33,7 +33,7 @@ public class PlayerController {
     @Autowired
     public PlayerController(ITrackService trackService) {
         this.trackService = trackService;
-        this.playerWrapper = new PlayerWrapper(Paths.get("\\media\\music"));
+        this.playerWrapper = new PlayerWrapper(Paths.get("\\media\\music\\"));
     }
 
     @GetMapping("/play")
