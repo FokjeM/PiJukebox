@@ -143,4 +143,25 @@ public class StartPlayer{
         double volumeLevel = ((double)volume / 10);
         sp.setVolumeLevel(volumeLevel);
     }
+
+    public void moveSongUp(int index)
+    {
+        if(index > 0) {
+            SimpleTrack simpleTrack = songs.get(index);
+            songs.remove(index);
+            songs.add(index - 1, simpleTrack);
+        }
+    }
+
+    public void moveSongDown(int index)
+    {
+        if (index < songs.size())
+        {
+            SimpleTrack simpleTrack = songs.get(index);
+            songs.remove(index);
+            songs.add(index + 1, simpleTrack);
+        }
+    }
+
+
 }
