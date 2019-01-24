@@ -55,7 +55,7 @@ public class UserServiceImplTest {
         final Optional<List<PlaylistWithTracks>> expectedResult = Optional.of(playListWithTracks);
         when(playlistRepository.findAllByUserID(anyLong())).thenReturn(expectedResult);
 
-        final Optional<List<PlaylistWithTracks>> result = userService.findPlaylistsByUser(1L);
+        final Optional<List<PlaylistWithTracks>> result = userService.findPlaylistsByUserId(1L);
 
         assertThat("result", result, is(IsSame.sameInstance(expectedResult)));
 
