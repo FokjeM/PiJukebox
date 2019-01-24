@@ -278,7 +278,10 @@ public class Player {
             }
             //Repeat is on; go back to 0 and play the next file
             trackNum = 0;
-            next();
+            //prevent infinite callbacks if the queue is empty and repeat is on
+            if (!queue.isEmpty()) {
+                next();
+            }
             //Also, prevent calling playTrack twice
             return;
         } else {
@@ -308,9 +311,13 @@ public class Player {
         } else if (!repeat) {
             //Don't do ANYTHING we don't need to do.
             return;
-        } else {
+        } else if (!queue.isEmpty()){
             trackNum = queue.size();
             currentTrack = queue.get(trackNum);
+        } else {
+            //Prevent previous from calling stop and playTrack
+            trackNum = 0;
+            return;
         }
         stop();
         playTrack(currentTrack);
@@ -328,6 +335,12 @@ public class Player {
     public void playTrack(Track t) throws FatalException, NonFatalException {
         if(t == null) {
             next();
+        }
+        if(currentTrack == null || !currentTrack.equals(t)) {
+            currentTrack = t;
+        }
+        if(!queue.get(trackNum).equals(t)){
+            addToQueue(t);
         }
         if(playing){
             stop();
@@ -364,6 +377,7 @@ public class Player {
             }
         });
         playThread.start();
+        //this is for debugging
         System.err.println("Now playing: " + currentTrack.getTitle());
         this.playing = true;
     }
@@ -403,7 +417,6 @@ public class Player {
         }
         this.player.stop();
         playing = false;
-
     }
 
     /**
