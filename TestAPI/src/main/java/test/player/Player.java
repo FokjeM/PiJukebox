@@ -459,6 +459,7 @@ public class Player {
      */
     protected void onSongEnd() throws FatalException, NonFatalException {
         pauseFrame = 0;
+        playing = false;
         if (repeatOne) {
             this.playTrack(currentTrack);
         } else {
