@@ -291,7 +291,7 @@ public class Player {
         if(!songEnded) {
             stop();
         }
-        this.songEnded = false;
+
         playTrack(currentTrack);
     }
 
@@ -321,6 +321,7 @@ public class Player {
         }
         stop();
         playTrack(currentTrack);
+        songEnded = false;
     }
 
     /**
