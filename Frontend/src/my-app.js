@@ -76,7 +76,7 @@ class MyApp extends PolymerElement {
         }
 
         .drawer-list a.iron-selected {
-          color: black;
+          color: var(--app-primary-color);
           font-weight: bold;
         }
         

@@ -9,12 +9,13 @@ class ResultRowAlbum extends PolymerElement {
           display: block;
         }
       </style>
-      
-      <a href="[[rootPath]]album/[[albumId]]">
-        <div>
-            <div>[[albumName]]</div>
-        </div>
-      </a>
+      <div class="resultRow">
+        <a href="[[rootPath]]album/[[albumId]]">
+          <div>
+              <div>[[albumName]]</div>
+          </div>
+        </a>
+      </div>
     `;
   }
 

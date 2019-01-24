@@ -50,6 +50,11 @@ class AllPlaylists extends PolymerElement {
           margin-top: 10px;
         }
 
+        .playlistTrack{
+          color: var(--app-primary-color);
+          padding: 5px 0;
+        }
+
         #playlistName, #playlistDescription {
           width: 350px;
         }

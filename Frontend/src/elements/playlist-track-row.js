@@ -21,7 +21,7 @@ class PlaylistTrackRow extends PolymerElement {
         
         .trackLink {
           display: flex;
-          flex-direction: column;
+      
           margin-bottom: 10px;
           background-color: rgba(0,121,107,0.05);
           border-radius: 5px;
@@ -39,6 +39,7 @@ class PlaylistTrackRow extends PolymerElement {
           flex-direction: row;
           justify-content: space-between;
           flex-wrap: wrap;
+          margin-left: 20px;
         }
 
         .trackArtist {
@@ -77,7 +78,6 @@ class PlaylistTrackRow extends PolymerElement {
         .closeDialog{
           position: absolute;
           right: 0;
-          bottom: -15px;
           color: var(--app-primary-color);
         }
 
@@ -90,6 +90,10 @@ class PlaylistTrackRow extends PolymerElement {
         }
 
         h3 span {
+          color: var(--app-primary-color);
+        }
+
+        .button{
           color: var(--app-primary-color);
         }
         
@@ -128,8 +132,8 @@ class PlaylistTrackRow extends PolymerElement {
 
       <div class="trackLink">
         <div class="trackAddToPlaylist">
-          <paper-icon-button icon="av:queue" on-tap="addToQueue"></paper-icon-button>
-          <paper-icon-button icon="av:playlist-add" on-tap="openBy"></paper-icon-button>
+          <paper-icon-button class="button" icon="av:queue" on-tap="addToQueue"></paper-icon-button>
+          <paper-icon-button class="button" icon="av:playlist-add" on-tap="openBy"></paper-icon-button>
           <div class="trackName">
             [[track.name]]
           </div>

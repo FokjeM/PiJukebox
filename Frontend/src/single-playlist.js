@@ -25,6 +25,13 @@ class SinglePlaylist extends PolymerElement {
 
           padding: 10px;
         }
+        #addPlaylistToQueue {
+          font-size:14px;
+          color: var(--app-primary-color);
+        }
+        #addPlaylistToQueue:hover {
+          cursor: pointer;
+        }
       </style>
       
       <app-location 
@@ -61,12 +68,12 @@ class SinglePlaylist extends PolymerElement {
       <div class="card">
         <h1>[[playlist.title]]</h1>
         <p><i>[[playlist.description]]</i></p>
+        <paper-button id="addPlaylistToQueue" on-click="addPlaylistToQueue">Add playlist to Queue</paper-button>
       </div>
 
       <!-- Artist tracks -->
       <div id="artistTracks" class="card">
         <h1>Tracks</h1>
-        <button id="addPlaylistToQueue" on-click="addPlaylistToQueue">Playlist to Queue</button>
         <template is="dom-repeat" items="{{playlist.tracks}}" as="track" rendered-item-count="{{playlistTrackCount}}">
           <div style="display:flex;">
               <result-row-track

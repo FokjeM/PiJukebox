@@ -41,6 +41,11 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
         color: #3d3d3d;
         font-size: 22px;
       }
+
+      .resultRow a{
+        text-decoration:none;
+        color: var(--app-primary-color);
+      }
         
     </style>
   </template>
