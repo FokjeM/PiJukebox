@@ -26,9 +26,9 @@ public class PlayerController {
     @Autowired
     public PlayerController() throws FatalException {
         try {
-            if(player == null) {
-                player = new Player();
-            }
+
+            player = new Player();
+
         } catch (IOException | NonFatalException ex) {
             ex.printStackTrace(System.err);
             throw new FatalException("Couldn't instantiate Player!", ex);
