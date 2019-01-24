@@ -158,7 +158,8 @@ public class PlayerController {
     }
 
     @GetMapping("/add/playlist/{id}")
-    public ResponseEntity<String> addPlaylistToQueue(@PathVariable Long id) {
+    public ResponseEntity<String> addPlaylistToQueue(@PathVariable Long id)
+    {
 
         try {
             Optional<PlaylistWithTracks> playlist = playlistService.findById(id);
@@ -182,6 +183,18 @@ public class PlayerController {
         }
         catch (Exception ex){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't get queue"), ex);
+        }
+    }
+
+    @GetMapping("/queue/clear")
+    public ResponseEntity<String> clearQueue()
+    {
+        try {
+                sp.clearSongs();
+                return new ResponseEntity<>("queue cleared" , HttpStatus.OK);
+        }
+        catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, String.format("Couldn't clear the queue"), ex);
         }
     }
 

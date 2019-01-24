@@ -41,6 +41,11 @@ public class StartPlayer{
         songs.remove(Integer.parseInt(id.toString()));
     }
 
+    public void clearSongs()
+    {
+        songs.clear();
+    }
+
     public void addPlaylistToQueue(Set<SimpleTrack> playlist) throws Exception
     {
         for(SimpleTrack track : playlist ){
