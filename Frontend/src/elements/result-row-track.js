@@ -1,0 +1,111 @@
+import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
+import '../shared-styles.js';
+
+class ResultRowTrack extends PolymerElement {
+  static get template() {
+    return html`
+      <style include="shared-styles">
+        :host {
+          display: block;
+        }
+        .track-info {
+          display: flex;
+        }
+
+        .artist {
+          display: flex;
+        }
+
+        .artist:not(:last-of-type)::after {
+          content: ", ";
+          position: relative;
+          display: block;
+          right: 0;
+          width: 10px;
+        }
+        
+      </style>
+
+      <iron-ajax
+        id="addToQueue"
+        method="get"
+        url="http://localhost:8080/api/v1/player/add/[[trackId]]"
+        content-type="application/json"
+        params="{{header}}"
+        handle-as="json"
+        on-response="handleQueueResponse"
+        on-error="handleError">
+      </iron-ajax>
+      
+      <div>
+        <div class="track-info">
+          <paper-icon-button icon="av:queue" on-tap="addToQueue"></paper-icon-button>
+          <div style="display:flex; padding:8px;">
+            <div>[[trackName]]</div>
+          
+            <template is="dom-if" if="[[!excludeArtist]]">
+              <div style="margin:0 10px;"> - </div>
+              <template is="dom-repeat" items="{{trackArtist}}" as="artist" rendered-item-count="{{artistCount}}">
+                <div class="artist">
+                  {{artist.name}}
+                </div>
+              </template>
+            </template>
+
+            <template is="dom-if" if="{{!artistCount}}">
+              No Artists.
+            </template>
+            
+          </div>  
+        </div>
+      </div>
+
+    `;
+  }
+
+  addToQueue(e){
+    this.shadowRoot.getElementById('addToQueue').generateRequest();
+  }
+
+  handleQueueResponse(e,r){
+      this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: this.trackName + ' has been added to the queue.'}, bubbles: true,composed: true, }));
+  }
+
+  handleError(e,r){
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true, }));
+  }
+
+  static get properties() {
+    return {
+      trackId: {
+        type: Number
+      },
+      trackName: {
+        type: String
+      },
+      trackArtist: {
+        type: Object
+      },
+      excludeArtist:{
+        type: Boolean,
+        value: false
+      },
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
+      }
+    };
+  }
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
+  }
+
+}
+
+customElements.define('result-row-track', ResultRowTrack);

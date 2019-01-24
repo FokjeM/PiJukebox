@@ -69,10 +69,10 @@ public class AlbumController {
         try {
 
             if (name != null && !name.isEmpty()) {
-                if (!albumService.findSimpleAlbumsByArtistName(name).isPresent()) {
+                if (!albumService.findAlbumsByArtistName(name).isPresent()) {
                     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
                 }
-                return new ResponseEntity<>(albumService.findSimpleAlbumsByArtistName(name).get(), HttpStatus.OK);
+                return new ResponseEntity<>(albumService.findAlbumsByArtistName(name).get(), HttpStatus.OK);
             }
             return null;
         } catch (Exception ex) {

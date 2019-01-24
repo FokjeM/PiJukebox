@@ -1,41 +1,27 @@
 package com.pijukebox.controller.player;
 
-import javafx.application.Application;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.Stage;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 
 public class SongPlayer{
-    private String status;
+    private String status = "stopped";
+    private double volume = 0.5;
     private Media hit;
     private static MediaPlayer mediaPlayer;
     private String filePath;
 
-    public SongPlayer(String filePath) {
-        this.filePath = filePath;
-        try {
-            File f = new File(filePath);
-            if (f.exists()) {
-                hit = new Media(f.toURI().toString());
-                mediaPlayer = new MediaPlayer(hit);
-            } else {
-                System.out.println("abcdefgzzz");
-            }
+    public SongPlayer() {
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
-    public void play() {
+    public void play() throws Exception{
         mediaPlayer.play();
         status = "playing";
     }
 
-    public void pause() {
+    public void pause() throws Exception{
         if (status.equals("paused")) {
             System.out.println("Song already paused");
             return;
@@ -44,22 +30,29 @@ public class SongPlayer{
         status = "paused";
     }
 
-    public void stop() {
+    public void stop() throws Exception{
         try {
             mediaPlayer.stop();
+            status = "stopped";
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public void next(String filePath) {
+    public void next(String filePath) throws Exception{
         this.filePath = filePath;
         mediaPlayer.stop();
         resetAudioStream();
     }
 
+    public void setCurrent(String filePath)throws Exception
+    {
+        this.filePath = filePath;
+        resetAudioStream();
+    }
+
     // Method to reset audio stream
-    public void resetAudioStream() {
+    public void resetAudioStream() throws Exception{
         try {
             File f = new File(filePath);
             if (f.exists()) {
@@ -72,5 +65,23 @@ public class SongPlayer{
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public Boolean isPlaying() {
+        if (status.equals("playing")) {
+            return true;
+        } else if (status.equals("stopped") || status.equals("paused")) {
+            return false;
+        }
+        return false;
+    }
+
+    public void setVolumeLevel(double volumeLevel) {
+        mediaPlayer.setVolume(volumeLevel);
+        this.volume = volumeLevel;
+    }
+
+    public double volumeLevel() {
+        return volume;
     }
 }

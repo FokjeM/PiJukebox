@@ -2,7 +2,6 @@ package com.pijukebox.model.genre;
 
 import com.pijukebox.model.SqlElement;
 import com.pijukebox.model.simple.SimpleAlbum;
-import com.pijukebox.model.simple.SimpleTrack;
 import lombok.*;
 import org.hibernate.annotations.NaturalId;
 
@@ -31,8 +30,4 @@ public class Genre extends SqlElement implements Serializable {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "album_genre", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "genre_id", nullable = false)}, inverseJoinColumns = {@JoinColumn(name = "album_id", nullable = false)})
     private Set<SimpleAlbum> albums = new HashSet<>();
-
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "track_genre", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "genre_id", nullable = false)}, inverseJoinColumns = {@JoinColumn(name = "track_id", nullable = false)})
-    private Set<SimpleTrack> tracks = new HashSet<>();
 }

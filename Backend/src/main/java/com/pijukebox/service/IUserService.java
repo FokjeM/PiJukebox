@@ -23,5 +23,4 @@ public interface IUserService {
     Optional<User> findByEmailAndPassword(String email, String password);
 
     User saveUser(User user);
-
 }

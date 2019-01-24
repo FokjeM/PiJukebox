@@ -14,10 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.security.SecureRandom;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -86,7 +83,6 @@ public class UserController {
         }
     }
 
-
     @PostMapping(value = "/login", produces = "application/json")
     @ApiOperation(value = "Login by username and password.")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginForm loginForm, HttpServletResponse response) {
@@ -99,11 +95,7 @@ public class UserController {
             }
             User user = userService.findByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword()).get();
             if(user.getToken() == null || user.getToken().isEmpty()){
-                //Generate random token
-                SecureRandom random = new SecureRandom();
-                byte[] bytes = new byte[20];
-                random.nextBytes(bytes);
-                String token = bytes.toString();
+                String token = generateRandomChars("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", 17);
 
                 //Save token
                 user.setToken(token);
@@ -116,5 +108,16 @@ public class UserController {
             ex.printStackTrace();
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", ex);
         }
+    }
+
+    public static String generateRandomChars(String candidateChars, int length) {
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            sb.append(candidateChars.charAt(random.nextInt(candidateChars
+                    .length())));
+        }
+
+        return sb.toString();
     }
 }
