@@ -37,7 +37,8 @@ class QueueItem extends PolymerElement {
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
-        on-response="handleQueueResponseUp">
+        on-response="handleQueueResponseUp"
+        on-error="handleError">
       </iron-ajax>
 
       <iron-ajax
@@ -48,21 +49,22 @@ class QueueItem extends PolymerElement {
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
-        on-response="handleQueueResponseDown">
+        on-response="handleQueueResponseDown"
+        on-error="handleError">
       </iron-ajax>
 
       <div class="queueItem">
-        <!-- <div class="controls">
+        <div class="controls">
           <paper-icon-button on-tap="oneUp" icon="arrow-upward"></paper-icon-button>
           <paper-icon-button on-tap="oneDown" icon="arrow-downward"></paper-icon-button>
-        </div> -->
+        </div>
         <div class="trackLink">
           <div class="trackName">
             [[trackName]]
           </div>
-          <!-- <div class="trackArtist">
+          <div class="trackArtist">
             [[trackArtist]]
-          </div> -->
+          </div>
         </div>
       </div>
 
@@ -78,23 +80,17 @@ class QueueItem extends PolymerElement {
   }
 
   handleQueueResponseUp(e,r){
-    if(r.status == 200){
       this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: this.trackName + ' has been moved up.'}, bubbles: true,composed: true, }));
       this.dispatchEvent(new CustomEvent('refresh-queue-event', { bubbles: true,composed: true }));
-    }
-    else{
-      this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true, }));
-    }
   }
 
   handleQueueResponseDown(e,r){
-    if(r.status == 200){
       this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: this.trackName + ' has been moved down.'}, bubbles: true,composed: true, }));
       this.dispatchEvent(new CustomEvent('refresh-queue-event', { bubbles: true,composed: true }));
-    }
-    else{
-      this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true, }));
-    }
+  }
+
+  handleError(e,r){
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true, }));
   }
 
   static get properties() {
