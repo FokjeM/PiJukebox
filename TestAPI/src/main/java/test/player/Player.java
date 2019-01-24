@@ -288,6 +288,7 @@ public class Player {
         if(!songEnded) {
             stop();
         }
+        this.songEnded = false;
         playTrack(currentTrack);
     }
 
@@ -365,7 +366,6 @@ public class Player {
         playThread.start();
         System.err.println("Now playing: " + currentTrack.getTitle());
         this.playing = true;
-        this.songEnded = false;
     }
     /**
      * Add a single Track to this Queue
