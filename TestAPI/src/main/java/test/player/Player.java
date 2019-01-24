@@ -363,8 +363,9 @@ public class Player {
             }
         });
         playThread.start();
-        System.out.println("Now playing: " + currentTrack.getTitle());
+        System.err.println("Now playing: " + currentTrack.getTitle());
         this.playing = true;
+        this.songEnded = false;
     }
     /**
      * Add a single Track to this Queue
@@ -447,7 +448,6 @@ public class Player {
         } else {
             songEnded = true;
             next();
-            songEnded = false;
         }
     }
 

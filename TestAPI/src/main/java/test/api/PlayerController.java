@@ -20,7 +20,7 @@ import test.player.NonFatalException;
 @RequestMapping("/api/v1/player")
 public class PlayerController {
     
-    private final Player player;
+    private static Player player;
     private Track track;
 
     @Autowired
@@ -43,7 +43,7 @@ public class PlayerController {
      * @return The title of the currently playing track
      */
     @GetMapping("/play/track/filename")
-    public String playTrackByFilename(@RequestParam("filename") String filename) throws FatalException {
+    public String playTrackByFilename(@RequestParam("file") String filename) throws FatalException {
         try {
             track = new Track(URLDecoder.decode(filename, "UTF-8"));
             player.playTrack(track);
@@ -64,11 +64,12 @@ Also added an empty method that can add all tracks in an album, but I haven't im
      */
     @GetMapping("/play/track/id")
     public String playTrackByID(@RequestParam("id") Long id) throws FatalException {
-        try {
+       // try {
             /*Perform the correct calls on the JPA for getting the filename by ID
             The SQL would be:
                 SELECT filename FROM track WHERE track.id = id
             The SimpleTrack contains this info*/
+            return "1";/*
             String filename = "";
             track = new Track(URLDecoder.decode(filename, "UTF-8"));
             player.playTrack(track);
@@ -78,7 +79,7 @@ Also added an empty method that can add all tracks in an album, but I haven't im
             fe.printStackTrace(System.err);
             throw fe;
         }
-        return track.getTitle();
+        return track.getTitle();*/
     }
     
     /**
