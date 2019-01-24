@@ -338,9 +338,11 @@ public class Player {
             next();
         }
         if(currentTrack == null || !currentTrack.equals(t)) {
+            trackNum++;
+            queue.put(trackNum, t);
             currentTrack = t;
         }
-        if(!queue.get(trackNum).equals(t)){
+        if(!queue.containsValue(t)){
             addToQueue(t);
         }
         if(playing){
