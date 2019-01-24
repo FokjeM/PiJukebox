@@ -29,19 +29,22 @@ public class UploadController {
     }
 
     @PostMapping(value = "/upload", consumes = {"multipart/form-data"})
-    public ResponseEntity<SimpleTrack> upload(@RequestBody MultipartFile file) {
-        try {
-            SimpleTrack track = new SimpleTrack(null, FilenameUtils.removeExtension(file.getOriginalFilename()), null, file.getOriginalFilename());
-            if (trackService.findAllSimpleTrackByName(track.getName()).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.CONFLICT);
-            } else {
-                uploadFile(file);
-                return new ResponseEntity<>(trackService.addSimpleTrack(track), HttpStatus.CREATED);
+    public ResponseEntity<?> upload(@RequestBody MultipartFile[] file) {
+        for (MultipartFile f : file) {
+            try {
+                SimpleTrack track = new SimpleTrack(null, FilenameUtils.removeExtension(f.getOriginalFilename()), null, f.getOriginalFilename());
+                if (trackService.findAllSimpleTrackByName(track.getName()).isPresent()) {
+                    return new ResponseEntity<>(HttpStatus.CONFLICT);
+                } else {
+                    uploadFile(f);
+                    trackService.addSimpleTrack(track);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Something went wrong while uploading %s.", f.getName()), ex);
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Something went wrong while uploading %s.", file.getName()), ex);
         }
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     private void uploadFile(MultipartFile file) {

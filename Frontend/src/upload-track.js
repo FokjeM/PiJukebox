@@ -14,8 +14,9 @@ import './shared-styles.js';
 import '@polymer/app-route/app-location.js';
 import '@polymer/app-route/app-route.js';
 import '@polymer/iron-ajax/iron-ajax.js';
-import './elements/result-row-track.js';
 import '@polymer/iron-form/iron-form.js';
+import '@polymer/paper-button/paper-button.js';
+import './elements/result-row-track.js';
 
 class UploadTrack extends PolymerElement {
   static get template() {
@@ -28,40 +29,51 @@ class UploadTrack extends PolymerElement {
         }
       </style>
       
-      <iron-ajax
-        id="sendPlaylistForm"
-        method="post"
-        url="http://localhost:8080/api/v1/upload/add"
-        handle-as="json"
-        body='{"title": "{{title}}","description": "{{description}}"}'
-        params="{{header}}"
-        content-type="application/json"
-        on-response="formResponse"
-        on-error="handleError">
-      </iron-ajax>
-
-      <!-- value="{{description}}" -->
-     
-      <iron-form id="playlistForm">
+      <iron-request
+        id="sendUploadForm"
+        handle-as="document">
+      </iron-request>
       
-        <paper-input type="file" name="file" label="file" id="file"  
-            error-message="Please enter a description"></paper-input>
-
-        <paper-icon-button id="submitBtn" on-tap="submitPlaylistForm" icon="icons:add-circle-outline"></paper-icon-button>
-
-      </iron-form>
-
-
-      <form action="http://localhost:8080/api/v1/upload/upload1" method="post" enctype="multipart/form-data">
-        <!-- <input type="text" name="description" value="some text"> -->
-        <!-- <input type="text" name="myName"> -->
-        <input type="file" name="file">
-        <button type="submit">Submit</button>
+      <form>
+        <input id="fileUpload" type="file" name="file" multiple>
+        <paper-button id="subBtn" on-tap="SubForm">Send</paper-button>
       </form>
 
     `;
   }
-  
+
+  SubForm() {
+    let files = this.$.fileUpload.files;
+    let data = new FormData();
+
+    for(let i=0; i < files.length; i++) {
+      data.append("file", this.$.fileUpload.files[i]);
+    }
+    
+    let xhr = new XMLHttpRequest();
+    xhr.Authorization = true;
+    xhr.open("POST", "http://localhost:8080/api/v1/upload?Authorization=" + JSON.parse(JSON.stringify(this.header)).Authorization);
+    xhr.send(data);
+  }
+
+  static get properties() {
+    return {
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
+      }
+    };
+  }
+  _computeTokenHeaders(token) {
+    return {
+      'Authorization': token
+    };
+  }
 }
 
 window.customElements.define('upload-track', UploadTrack);
