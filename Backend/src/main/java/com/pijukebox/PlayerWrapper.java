@@ -39,7 +39,7 @@ public class PlayerWrapper {
     }
 
     public void playOne(String file) {
-        mp3Player.addToPlayList(new File(songDirPath.toAbsolutePath() + "\\" + file));
+        mp3Player.addToPlayList(new File(songDirPath.toAbsolutePath() + "/" + file));
         mp3Player.play();
         playerStatus.setCurrSong(FilenameUtils.removeExtension(file));
         playerStatus.setCurrStatus(PlayerStatus.Status.PLAYING);
