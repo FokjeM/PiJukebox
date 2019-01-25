@@ -6,7 +6,10 @@ import com.pijukebox.player.Audio;
 import com.pijukebox.player.PlayerWrapper;
 import com.pijukebox.service.IPlaylistService;
 import com.pijukebox.service.ITrackService;
+import com.pijukebox.service.IPlaylistService;
 import io.swagger.annotations.ApiOperation;
+import javafx.embed.swing.JFXPanel;
+import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -141,6 +144,10 @@ public class PlayerController {
             ex.printStackTrace();
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Couldn't add song", ex);
         }
+        catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't add Playlist to Queue"), ex);
+        }
+
     }
 
     @GetMapping("/remove/{id}")
@@ -184,6 +191,19 @@ public class PlayerController {
         if (value != null && !value.isEmpty()) {
             map.put(key, value);
         }
+    }
+
+    @GetMapping("/move/track/down/{index}")
+    public ResponseEntity<String> moveQueueItemDown(@PathVariable int index)
+    {
+        try{
+            sp.moveSongDown(index);
+            return new ResponseEntity<>("track moved up ", HttpStatus.OK);
+        }
+        catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, String.format("track can't be moved down"), ex);
+        }
+
     }
 
     @GetMapping(value = "/status", produces = "application/json")

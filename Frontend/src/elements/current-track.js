@@ -7,10 +7,6 @@ class CurrentTrack extends PolymerElement {
  static get template() {
    return html`
      <style include="shared-styles">
-       :host {
-         display: block;
-       }
-
        .container {
          display: flex;
          flex-direction: column;
@@ -70,22 +66,10 @@ class CurrentTrack extends PolymerElement {
    return {
      currentTrack: {
        type: Object
-     },
-     token: {
-       type: String,
-       value: localStorage.getItem("token")
-     },
-     header: {
-       type: Object,
-       reflectToAttribute: true,
-       computed: '_computeTokenHeaders(token)'
      }
    };
  }
- _computeTokenHeaders(token)
- {
-     return {'Authorization': token};
- }
+
 
  hasArtist(){
    return this.currentTrack.artists.length > 0;

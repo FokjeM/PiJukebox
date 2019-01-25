@@ -5,9 +5,7 @@ class ResultRowTrack extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
-        :host {
-          display: block;
-        }
+  
         .track-info {
           display: flex;
         }
@@ -29,10 +27,11 @@ class ResultRowTrack extends PolymerElement {
         
       </style>
 
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
+
       <iron-ajax
         id="addToQueue"
-        method="get"
-        url="http://localhost:8080/api/v1/player/add/[[trackId]]"
+        url="[[apiRootPath]]/player/add/[[trackId]]"
         content-type="application/json"
         params="{{header}}"
         handle-as="json"

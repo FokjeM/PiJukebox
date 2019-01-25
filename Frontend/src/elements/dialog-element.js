@@ -5,9 +5,6 @@ class DialogElement extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
-        :host {
-          display: block;
-        }
         #dialog{
           max-width:600px;
           padding-bottom:60px;
