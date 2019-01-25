@@ -1,9 +1,9 @@
 package com.pijukebox.controller;
 
-import com.pijukebox.player.Audio;
-import com.pijukebox.player.PlayerWrapper;
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.model.track.Track;
+import com.pijukebox.player.Audio;
+import com.pijukebox.player.PlayerWrapper;
 import com.pijukebox.service.IPlaylistService;
 import com.pijukebox.service.ITrackService;
 import io.swagger.annotations.ApiOperation;
@@ -168,13 +168,32 @@ public class PlayerController {
         }
     }
 
+    @GetMapping(value = "/trackDetails")
+    @ApiOperation(value = "Get track details of the current song")
+    public Map<String, String> trackDetails() {
+        Map<String, String> status = new HashMap<>();
+
+        addMapValue(status, "title", playerWrapper.getCurrentSong());
+        addMapValue(status, "artist", playerWrapper.getArtist());
+        addMapValue(status, "genre", playerWrapper.getGenre());
+        addMapValue(status, "album", playerWrapper.getAlbum());
+        return status;
+    }
+
+    private void addMapValue(Map<String, String> map, String key, String value) {
+        if (value != null && !value.isEmpty()) {
+            map.put(key, value);
+        }
+    }
+
     @GetMapping(value = "/status", produces = "application/json")
     @ApiOperation(value = "Get player status")
     public Map<String, String> status() {
         Map<String, String> status = new HashMap<>();
-        status.put("currSong", playerWrapper.getCurrentSong());
-        status.put("playerStatus", playerWrapper.getStatus());
-        status.put("repeatState", playerWrapper.getRepeat().toString());
+
+        addMapValue(status, "status", playerWrapper.getStatus());
+        addMapValue(status, "song", playerWrapper.getCurrentSong());
+        addMapValue(status, "repeat", playerWrapper.getRepeat().toString());
         return status;
     }
 
@@ -185,6 +204,7 @@ public class PlayerController {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             SimpleTrack st = trackService.findAllSimpleTrackByName(playerWrapper.getCurrentSong()).get().get(0);
+
             if (!trackService.findTrackDetailsById(st.getId()).isPresent()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
@@ -197,7 +217,7 @@ public class PlayerController {
     @GetMapping("/volume/{volumeLevel}")
     public ResponseEntity<String> volume(@PathVariable Float volumeLevel) {
         try {
-            playerWrapper.increaseVolume((volumeLevel/100f));
+            playerWrapper.setVolume((volumeLevel / 100f));
             return new ResponseEntity<>("Volume is " + Audio.getMasterOutputVolume(), HttpStatus.OK);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't change volume", ex);

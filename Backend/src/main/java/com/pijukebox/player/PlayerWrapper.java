@@ -18,6 +18,7 @@ public class PlayerWrapper {
     private int current;
 
     private PlayerStatus playerStatus = new PlayerStatus();
+    private TrackDetails trackDetails = new TrackDetails();
 
     public PlayerWrapper(Path songDirPath) {
         this.songDirPath = songDirPath;
@@ -29,6 +30,7 @@ public class PlayerWrapper {
         clearQueue();
         mp3Player.addToPlayList(new File(songDirPath.toAbsolutePath() + "\\" + filename));
         mp3Player.play();
+        this.trackDetails = new TrackDetails(filename);
         playerStatus.setCurrSong(FilenameUtils.removeExtension(filename));
         playerStatus.setCurrStatus(PlayerStatus.Status.PLAYING);
         keepSongPlaying();
@@ -38,6 +40,7 @@ public class PlayerWrapper {
         clearQueue();
         mp3Player.addToPlayList(queue.get(current));
         mp3Player.play();
+        this.trackDetails = new TrackDetails(queue.get(current).getName());
         playerStatus.setCurrStatus(PlayerStatus.Status.PLAYING);
         playerStatus.setCurrSong(FilenameUtils.removeExtension(queue.get(current).getName()));
         keepSongPlaying();
@@ -81,29 +84,6 @@ public class PlayerWrapper {
         }
     }
 
-    private boolean inPlaylist(String filename) {
-        boolean exists = false;
-        if (queue.size() > 0) {
-            for (File f : queue) {
-                if (f.getName().equals(filename)) {
-                    exists = true;
-                    break;
-                }
-            }
-        }
-        return exists;
-    }
-
-    private void removeSongFromQueue(String filename) {
-        mp3Player.getPlayList().clear();
-        for (int i = 0; i < queue.size(); i++) {
-            if (queue.get(i).getName().equals(filename)) {
-                queue.remove(i);
-                break;
-            }
-        }
-    }
-
     public String getStatus() {
         if (!getCurrentSong().isEmpty()) {
             return playerStatus.getStatus();
@@ -111,7 +91,7 @@ public class PlayerWrapper {
         return "";
     }
 
-    public void increaseVolume(Float volume) {
+    public void setVolume(Float volume) {
         try {
             Audio.setMasterOutputVolume(volume);
         } catch (Exception ex) {
@@ -144,18 +124,47 @@ public class PlayerWrapper {
         }
     }
 
-
-    private void clearQueue() {
-        mp3Player.stop();
-        mp3Player.getPlayList().clear();
-    }
-
     public List<String> getQueue() {
         List<String> currQueue = new ArrayList<>();
         for (File file : queue) {
             currQueue.add(file.getName());
         }
         return currQueue;
+    }
+
+    public String getArtist() {
+        return trackDetails.getArtist();
+    }
+
+    public String getGenre() {
+        return trackDetails.getGenre();
+    }
+
+    public String getAlbum() {
+        return trackDetails.getAlbum();
+    }
+
+    private boolean inPlaylist(String filename) {
+        boolean exists = false;
+        if (queue.size() > 0) {
+            for (File f : queue) {
+                if (f.getName().equals(filename)) {
+                    exists = true;
+                    break;
+                }
+            }
+        }
+        return exists;
+    }
+
+    private void removeSongFromQueue(String filename) {
+        mp3Player.getPlayList().clear();
+        for (int i = 0; i < queue.size(); i++) {
+            if (queue.get(i).getName().equals(filename)) {
+                queue.remove(i);
+                break;
+            }
+        }
     }
 
     private void keepSongPlaying() {
@@ -170,5 +179,10 @@ public class PlayerWrapper {
                 }
             }
         }).start();
+    }
+
+    private void clearQueue() {
+        mp3Player.stop();
+        mp3Player.getPlayList().clear();
     }
 }
