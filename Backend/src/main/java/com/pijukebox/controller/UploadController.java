@@ -1,8 +1,12 @@
 package com.pijukebox.controller;
 
+import com.pijukebox.model.simple.SimpleArtist;
+import com.pijukebox.model.simple.SimpleGenre;
 import com.pijukebox.model.simple.SimpleTrack;
+import com.pijukebox.player.TrackDetails;
+import com.pijukebox.service.IArtistService;
+import com.pijukebox.service.IGenreService;
 import com.pijukebox.service.ITrackService;
-import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,17 +28,20 @@ import java.util.ArrayList;
 public class UploadController {
 
     private final ITrackService trackService;
+    private final IGenreService genreService;
+    private final IArtistService artistService;
+    private String uploadDir = "C:\\Users\\Public\\Music\\";
+//    private String uploadDir = "D:\\Users\\Ruben\\Desktop\\uploads\\";
 
-    //private String uploadDir = "C:\\Users\\rutge\\Desktop\\uploads\\";
-    private String uploadDir = "D:\\Users\\Ruben\\Desktop\\uploads\\";
-
-    //private String path = "D:\\Users\\rutge\\Desktop\\uploads\\check\\";
-    private String dirToScan = "D:\\Users\\Ruben\\Desktop\\uploads\\check\\";
+    private String dirToScan = "C:\\Users\\Public\\Downloads\\";
+    //    private String dirToScan = "D:\\Users\\Ruben\\Desktop\\uploads\\check\\";
     private ArrayList<String> tracks = new ArrayList<>();
 
     @Autowired
-    public UploadController(ITrackService trackService) {
+    public UploadController(ITrackService trackService, IGenreService genreService, IArtistService artistService) {
         this.trackService = trackService;
+        this.genreService = genreService;
+        this.artistService = artistService;
     }
 
     @PostMapping(value = "/upload", consumes = {"multipart/form-data"})
@@ -62,17 +69,31 @@ public class UploadController {
         showFiles(files);
 
         for (String t : tracks) {
-            try {
-                SimpleTrack track = new SimpleTrack(null, FilenameUtils.removeExtension(t), null, t);
-                if (trackService.findAllSimpleTrackByName(track.getName()).isPresent()) {
-                    return new ResponseEntity<>(HttpStatus.CONFLICT);
-                } else {
-                    addFileToFolder(dirToScan, uploadDir, t);
-                    trackService.addSimpleTrack(track);
+            if (!t.equals("desktop.ini")) {
+                try {
+                    SimpleTrack track = new SimpleTrack(null, FilenameUtils.removeExtension(t), null, t);
+                    TrackDetails trackDetails = new TrackDetails(t, dirToScan);
+                    SimpleGenre genre = new SimpleGenre(null, trackDetails.getGenre());
+                    SimpleArtist artist = new SimpleArtist(null, trackDetails.getArtist());
+                    if (!trackService.findAllSimpleTrackByName(track.getName()).isPresent()) {
+                        addFileToFolder(dirToScan, uploadDir, t);
+                        trackService.addSimpleTrack(track);
+                    }
+                    if (!genreService.findGenresByNameContaining(genre.getName()).isPresent()) {
+                        genreService.addSimpleGenre(genre);
+                    }
+                    if (!artistService.findSimpleArtistsByNameContaining(artist.getName()).isPresent()) {
+                        artistService.addSimpleArtist(artist);
+                    }
+                    Long addToArtistId = artistService.findSimpleArtistsByNameContaining(artist.getName()).get().get(0).getId();
+                    Long addToGenreId = genreService.findGenresByNameContaining(genre.getName()).get().get(0).getId();
+                    trackService.addArtistToTrack(trackService.findTrackByArtistId(addToArtistId).get());
+                    trackService.addGenreToTrack(trackService.findTrackByGenreId(addToGenreId).get());
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Something went wrong while uploading %s.", t), ex);
                 }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Something went wrong while uploading %s.", t), ex);
             }
         }
         return null;
@@ -91,6 +112,7 @@ public class UploadController {
     }
 
     private void showFiles(File[] files) {
+        tracks.clear();
         for (File file : files) {
             if (file.isDirectory()) {
                 showFiles(file.listFiles()); // Calls same method again.

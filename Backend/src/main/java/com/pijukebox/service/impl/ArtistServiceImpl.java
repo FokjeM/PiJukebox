@@ -54,4 +54,9 @@ public class ArtistServiceImpl implements IArtistService {
     public Optional<List<SimpleArtist>> findSimpleArtistsByNameContaining(String name) {
         return simpleArtistRepository.findSimpleArtistByNameContaining(name);
     }
+
+    @Override
+    public SimpleArtist addSimpleArtist(SimpleArtist artist) {
+        return simpleArtistRepository.save(artist);
+    }
 }

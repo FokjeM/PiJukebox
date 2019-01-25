@@ -11,4 +11,6 @@ public interface IGenreService {
     Optional<SimpleGenre> findById(Long id);
 
     Optional<List<SimpleGenre>> findGenresByNameContaining(String name);
+
+    SimpleGenre addSimpleGenre(SimpleGenre simpleGenre);
 }
