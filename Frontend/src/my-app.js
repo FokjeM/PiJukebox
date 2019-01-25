@@ -20,9 +20,9 @@ import '@polymer/app-route/app-location.js';
 import '@polymer/app-route/app-route.js';
 import '@polymer/iron-pages/iron-pages.js';
 import '@polymer/iron-selector/iron-selector.js';
+import '@polymer/iron-icons/iron-icons';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-dialog/paper-dialog.js';
-import './my-icons.js';
 import './elements/track-control.js';
 import './elements/dialog-element.js';
 
@@ -109,7 +109,7 @@ class MyApp extends PolymerElement {
 
           <app-header slot="header" condenses="" reveals="" effects="waterfall">
             <app-toolbar>
-              <paper-icon-button icon="my-icons:menu" drawer-toggle=""></paper-icon-button>
+              <paper-icon-button icon="icons:menu" drawer-toggle=""></paper-icon-button>
               <div main-title="">PiJukeBox</div>
             </app-toolbar>
           </app-header>
