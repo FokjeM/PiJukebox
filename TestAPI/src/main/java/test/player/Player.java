@@ -291,7 +291,6 @@ public class Player {
         if(!songEnded) {
             stop();
         }
-
         playTrack(currentTrack);
     }
 
@@ -357,20 +356,21 @@ public class Player {
                 @Override
                 public void playbackFinished(PlaybackEvent evt) {
                     //JLayer returns 0 on end. And the frames ffprobe didn't get can't be read, usually.
-                    if(evt.getFrame() < t.getFrameCount() && evt.getFrame() > 0) {
+                    if(!playing){
                         pauseFrame = evt.getFrame();
-                    } else {
-                        pauseFrame = 0;
+                    }
+                    if(evt.getFrame() == 0) {
                         try {
-                            System.out.println("Working!");
+                            System.out.println("Working! Frame: " + pauseFrame);
                             onSongEnd();
                         } catch (FatalException | NonFatalException ex) {
-                            writeLog(ex);
+                                writeLog(ex);
+                            }
                         }
                     }
-                }
-            });
-                player.play(pauseFrame, t.getFrameCount());
+                });
+                playing = true;
+                player.play(this.pauseFrame, t.getFrameCount());
             } catch (IOException ioe) {
                 playing = false;
                 writeLog(new NonFatalException("Couldn't open the Track file!", ioe));
@@ -380,9 +380,6 @@ public class Player {
             }
         });
         playThread.start();
-        //this is for debugging
-        System.err.println("Now playing: " + currentTrack.getTitle());
-        this.playing = true;
     }
     /**
      * Add a single Track to this Queue
@@ -418,19 +415,24 @@ public class Player {
         if (!playing || player == null) {
             return;
         }
-        this.player.stop();
         playing = false;
+        player.stop();
     }
 
     /**
      * Resume playing the currently paused track. Does nothing when playing.
      */
     public void resume() {
+        System.err.println("Resuming:");
         if (playing || player == null) {
+            System.err.println("Whoops! Playing: " + playing + "\r\n\t Player: " + player.toString());
             return;
         }
+        System.err.println("playing ain't true and the player ain't null");
         try {
+            System.err.println("Calling playTrack");
             playTrack(currentTrack);
+            System.err.println("Should be playing...");
         } catch (FatalException | NonFatalException ex) {
             writeLog(ex);
         }
@@ -440,13 +442,34 @@ public class Player {
      * Stop the currently playing song by disposing the MediaPlayer. This resets
      * the current Track, to prevent errors when resuming playback.
      */
-    public void stop() {
+    private void stop() {
         if (player == null) {
             return;
         }
         player.stop();
         pauseFrame = 0;
         playing = false;
+    }
+    
+    /**
+     * Stop execution of the player completely.
+     * Sets trackNum to 0, playing and repeat flags to false and currentTrack
+     * to null, before stopping the player and interrupting playThread
+     */
+    public void halt() {
+        if(player == null) {
+            return;
+        }
+        trackNum = 0;
+        playing = false;
+        repeat = false;
+        repeatOne = false;
+        queue.clear();
+        currentTrack = null;
+        player.stop();
+        if(playThread.isAlive()) {
+            playThread.interrupt();
+        }
     }
 
     /**
@@ -458,8 +481,10 @@ public class Player {
      * {@link #playTrack(com.PiJukebox.Track) playTrack}
      */
     protected void onSongEnd() throws FatalException, NonFatalException {
+        if(!playing){
+            return;
+        }
         pauseFrame = 0;
-        playing = false;
         if (repeatOne) {
             this.playTrack(currentTrack);
         } else {

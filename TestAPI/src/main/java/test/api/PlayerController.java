@@ -223,14 +223,14 @@ Also added an empty method that can add all tracks in an album, but I haven't im
         player.pause();
     }
     
-    @GetMapping("resume")
+    @GetMapping("/resume")
     public void resume() {
         player.resume();
     }
     
     @GetMapping("/stop")
     public void stop() {
-        player.stop();
+        player.halt();
     }
     
     @GetMapping("/get/r")
