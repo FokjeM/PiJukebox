@@ -28,6 +28,7 @@ public final class Track {
     private final String title;
     private final String artist;
     private final String genre;
+    private final String album;
     private final int bitrate;
     private final String streamType;
     private final String duration;
@@ -67,6 +68,12 @@ public final class Track {
             duration = ffprobe("-show_entries format=duration").trim();
             frames = Integer.parseInt(ffprobe("-count_frames -select_streams a:0 -show_entries stream=nb_read_frames").trim());
             genre = ffprobe("-show_entries format_tags=genre").trim();
+            String alb = ffprobe("-show_entries format_tags=album").trim();
+            if(alb.contentEquals("")) {
+                album = "Album was not defined in the metadata";
+            } else {
+                album = alb;
+            }
             String art = ffprobe("-show_entries format_tags=artist").trim();
             if(art.contentEquals("")) {
                 artist = ffprobe("-show_entries format_tags=album_artist").trim();
@@ -246,6 +253,16 @@ public final class Track {
      */
     public String getGenre() {
         return this.genre;
+    }
+    
+    /**
+     * Get the album for this Track as specified in its metadata, or a String
+     * stating it wasn't defined.
+     * 
+     * @return the String album for this Track
+     */
+    public String getAlbum() {
+        return this.album;
     }
 
     /**
