@@ -61,6 +61,7 @@ class PagePlaylists extends PolymerElement {
 
       </style>
       
+      <!-- Get current playlists -->
       <iron-ajax
         auto
         id="getPlaylists"
@@ -68,10 +69,10 @@ class PagePlaylists extends PolymerElement {
         handle-as="json"
         content-type='application/json'
         params="{{header}}"
-        last-response="{{playlists}}"
-        on-response="clearPlaylistForm">
+        last-response="{{playlists}}">
       </iron-ajax>
       
+      <!-- Create new playlist -->
       <iron-ajax
         id="sendPlaylistForm"
         method="post"
@@ -86,7 +87,6 @@ class PagePlaylists extends PolymerElement {
 
       <div class="card">
         <div class="container">
-            
           <h1>Playlists</h1>
           <dom-repeat items="{{playlists}}" as="playlist">
             <template>
@@ -110,7 +110,6 @@ class PagePlaylists extends PolymerElement {
                 <paper-icon-button id="submitBtn" on-tap="submitPlaylistForm" icon="icons:add-circle-outline"></paper-icon-button>
               </div>
             </iron-form>
-            
           </div>
         </div>
       </div>
@@ -130,6 +129,7 @@ class PagePlaylists extends PolymerElement {
     this.updatePlaylists();
     this.dispatchEvent(new CustomEvent('refresh-playlists-event', { bubbles: true, composed: true }));
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Status', text: 'Playlist created.'}, bubbles: true, composed: true }));
+    this.clearPlaylistForm();
   }
 
   formResponseError(e,r){
@@ -140,7 +140,7 @@ class PagePlaylists extends PolymerElement {
     this.$.getPlaylists.generateRequest();
   }
   
-  clearPlaylistForm(e, r) {
+  clearPlaylistForm() {
       this.title = "";
       this.description = "";
   }

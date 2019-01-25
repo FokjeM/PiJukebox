@@ -114,7 +114,8 @@ class TrackRow extends PolymerElement {
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
-        on-response="addedTrack">
+        on-response="addedTrack"
+        on-error="addedTrackError">
       </iron-ajax>
 
       <iron-ajax
@@ -241,7 +242,7 @@ class TrackRow extends PolymerElement {
   }
 
   addedTrackError(e,r){
-    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Add track', text: this.track.name + ' could not be added.'}, bubbles: true,composed: true }));
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Add track', text: this.track.name + ' could not be added. (No double tracks allowed in playlist)'}, bubbles: true,composed: true }));
   }
 
   addToQueue(e){
