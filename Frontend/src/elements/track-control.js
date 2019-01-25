@@ -74,7 +74,7 @@ class TrackControl extends PolymerElement {
       <!-- Play current track -->
       <iron-ajax
         id="play"
-        url="[[apiRootPath]]/player/play"
+        url="[[apiRootPath]]/player/playCurrent"
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
