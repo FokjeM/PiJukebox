@@ -20,15 +20,12 @@ public class SimpleTrack extends SqlElement implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @NotNull
     @Column(nullable = false, name = "name")
     private String name;
 
-    @NotNull
-    @Column(nullable = false)
+    @Column(name = "description")
     private String description;
 
-    @NotNull
     @Column(nullable = false, name = "fileName")
     private String filename;
 }

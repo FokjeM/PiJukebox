@@ -15,9 +15,6 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
   <template>
     <style>
 
-
-    
-
       .card {
         margin: 24px;
         padding: 16px;
@@ -43,6 +40,11 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
         margin: 16px 0;
         color: #3d3d3d;
         font-size: 22px;
+      }
+
+      .resultRow a{
+        text-decoration:none;
+        color: var(--app-primary-color);
       }
         
     </style>

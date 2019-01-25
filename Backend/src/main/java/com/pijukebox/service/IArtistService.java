@@ -1,6 +1,6 @@
 package com.pijukebox.service;
 
-import com.pijukebox.model.artist.ArtistWithTracks;
+import com.pijukebox.model.artist.Artist;
 import com.pijukebox.model.simple.SimpleArtist;
 
 import java.util.List;
@@ -8,11 +8,17 @@ import java.util.Optional;
 
 public interface IArtistService {
 
-    List<SimpleArtist> findAll();
+    List<Artist> findAllExtendedArtists();
 
-    Optional<SimpleArtist> findById(Long id);
+    Optional<Artist> findExtendedArtistById(Long id);
 
-    Optional<List<SimpleArtist>> findByName(String name);
+    Optional<List<Artist>> findExtendedArtistsByNameContaining(String name);
 
-    Optional<ArtistWithTracks> findTracksByArtistId(Long id);
+    List<SimpleArtist> findAllSimpleArtists();
+
+    Optional<SimpleArtist> findSimpleArtistById(Long id);
+
+    Optional<List<SimpleArtist>> findSimpleArtistsByNameContaining(String name);
+
+    SimpleArtist addSimpleArtist(SimpleArtist artist);
 }

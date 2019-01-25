@@ -5,11 +5,17 @@ class DialogElement extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
-        :host {
-          display: block;
-        }
         #dialog{
           max-width:600px;
+          padding-bottom:60px;
+        }
+        .closeDialog{
+          position: absolute;
+          right: 0;
+          color: var(--app-primary-color);
+        }
+        .closeDialog:hover{
+          cursor: pointer;
         }
       </style>
       
@@ -17,6 +23,7 @@ class DialogElement extends PolymerElement {
         <paper-dialog id="dialog">
           <h2>[[dialogTitle]]</h2>
           <p>[[dialogText]]</p>
+          <paper-button class="closeDialog" on-click="closeDialog">Close</paper-button>
         </paper-dialog>
       </div>
     `;
@@ -35,6 +42,10 @@ class DialogElement extends PolymerElement {
 
   open(e) {
     this.$.dialog.open();
+  }
+
+  closeDialog(){
+    this.$.dialog.close();
   }
 }
 

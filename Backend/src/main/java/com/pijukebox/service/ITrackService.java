@@ -20,7 +20,7 @@ public interface ITrackService {
 
     Optional<List<SimpleTrack>> findAllSimpleTrackByName(String name);
 
-    Optional<List<Track>> findAllTrackByName(String name);
+    Optional<List<Track>> findAllTracksByName(String name);
 
     Optional<List<ArtistWithTracks>> findAllTracksByArtistName(String name);
 

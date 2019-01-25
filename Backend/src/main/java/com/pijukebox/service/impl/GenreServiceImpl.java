@@ -35,4 +35,9 @@ public class GenreServiceImpl implements IGenreService {
     public Optional<List<SimpleGenre>> findGenresByNameContaining(String name) {
         return genreRepository.findGenresByNameContaining(name);
     }
+
+    @Override
+    public SimpleGenre addSimpleGenre(SimpleGenre simpleGenre) {
+        return genreRepository.save(simpleGenre);
+    }
 }

@@ -10,9 +10,7 @@
 
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import './shared-styles.js';
-import './elements/track-list.js';
 import './elements/track-control.js';
-import './elements/track-info.js';
 import './elements/result-row-track.js';
 import './elements/result-row-artist.js';
 import './elements/result-row-playlist.js';
@@ -21,9 +19,11 @@ import '@polymer/paper-input/paper-input.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/iron-icons/av-icons.js';
 import '@polymer/paper-checkbox/paper-checkbox.js';
+import '@polymer/iron-meta/iron-meta.js';
 
 
-class SearchTracks extends PolymerElement {
+
+class PageSearch extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -41,6 +41,8 @@ class SearchTracks extends PolymerElement {
         }
       </style>
 
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
+
       <div class="card">
         <h1>Search</h1>
         <div>
@@ -57,10 +59,13 @@ class SearchTracks extends PolymerElement {
 
       <!-- Track search ajax -->
       <iron-ajax
-        id="ajaxSearchTrack"
+      method="GET"
         auto
-        url="http://localhost:8080/api/v1/search/track/{{searchTerm}}"
+        id="ajaxSearchTrack"
+        url="[[apiRootPath]]/extended/tracks?name={{searchTerm}}"
         handle-as="json"
+        params="{{header}}"
+        content-type="application/json"
         last-response="{{trackResults}}">
       </iron-ajax>
 
@@ -72,8 +77,8 @@ class SearchTracks extends PolymerElement {
           <div style="display:flex;">          
               <result-row-track
                   track-id="{{track.id}}"
-                  track-name="{{track.title}}"
-                  track-artist="{{track.artist}}">
+                  track-name="{{track.name}}"
+                  track-artist="{{track.artists}}">
               </result-row-track>
             </div>
         </template>
@@ -86,8 +91,9 @@ class SearchTracks extends PolymerElement {
       <!-- Artist search ajax -->
       <iron-ajax
         id="ajaxSearchArtist"
-        url="http://localhost:8080/api/v1/search/artist/{{searchTerm}}"
+        url="[[apiRootPath]]/simple/artists?name={{searchTerm}}"
         handle-as="json"
+        params="{{header}}"
         last-response="{{artistResults}}">
       </iron-ajax>
   
@@ -112,8 +118,9 @@ class SearchTracks extends PolymerElement {
       <!-- Album search ajax -->
       <iron-ajax
         id="ajaxSearchAlbum"
-        url="http://localhost:8080/api/v1/search/album/{{searchTerm}}"
+        url="[[apiRootPath]]/simple/albums?name={{searchTerm}}"
         handle-as="json"
+        params="{{header}}"
         last-response="{{albumResults}}">
       </iron-ajax>
 
@@ -125,7 +132,7 @@ class SearchTracks extends PolymerElement {
           <div style="display:flex;">
               <result-row-album
                 album-id="{{album.id}}"
-                album-name="{{album.title}}">
+                album-name="{{album.name}}">
               </result-row-album>
             </div>
         </template>
@@ -138,8 +145,9 @@ class SearchTracks extends PolymerElement {
       <!-- Playlist search ajax -->
       <iron-ajax
         id="ajaxSearchPlaylist"
-        url="http://localhost:8080/api/v1/search/playlist/{{searchTerm}}"
+        url="[[apiRootPath]]/playlists?name={{searchTerm}}"
         handle-as="json"
+        params="{{header}}"
         last-response="{{playlistResults}}">
       </iron-ajax>
 
@@ -160,7 +168,28 @@ class SearchTracks extends PolymerElement {
           No results.
         </template> 
       </div>
+
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
+    
     `;
+  }
+
+  static get properties() {
+    return {
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
+      }
+    };
+  }
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
   }
 
   //Toggle ajax auto attribute and hide/show results according to checkbox value
@@ -181,4 +210,4 @@ class SearchTracks extends PolymerElement {
   }
 }
 
-window.customElements.define('search-tracks', SearchTracks);
+window.customElements.define('page-search', PageSearch);

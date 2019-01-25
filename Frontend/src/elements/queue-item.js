@@ -5,9 +5,7 @@ class QueueItem extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
-        :host {
-          display: block;
-        }
+  
         .queueItem {
           display: flex;
           flex-direction: row;
@@ -27,44 +25,59 @@ class QueueItem extends PolymerElement {
         .trackArtist {
           font-size: 12px;
         }
+
       </style>
 
-      <div class="queueItem">
-        <div class="controls">
-          <paper-icon-button on-click="oneUp" icon="arrow-upward"></paper-icon-button>
-          <paper-icon-button on-click="oneDown" icon="arrow-downward"></paper-icon-button>
-        </div>
-        <div class="trackLink">
-        <div class="trackName">
-          [[trackName]]
-        </div>
-        <div class="trackArtist">
-          [[trackArtist]]
-        </div>
-       </div>
-      </div>
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
 
       <iron-ajax
         id="queueUp"
-        method="post"
-        url="http://localhost:8080/api/v1/queue/moveup"
-        body='[{"trackId": [[trackId]]}]'
+        url="[[apiRootPath]]/player/move/track/up/[[trackIndex]]"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
-        on-response="handleQueueResponseUp">
+        on-response="handleQueueResponseUp"
+        on-error="handleError">
       </iron-ajax>
 
       <iron-ajax
         id="queueDown"
-        method="post"
-        url="http://localhost:8080/api/v1/queue/movedown"
-        body='[{"trackId": [[trackId]]}]'
+        url="[[apiRootPath]]/player/move/track/down/[[trackIndex]]"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
-        on-response="handleQueueResponseDown">
+        on-response="handleQueueResponseDown"
+        on-error="handleError">
       </iron-ajax>
 
+      <div class="queueItem">
+        <div class="controls">
+
+          <template is="dom-if" if="[[isFirst()]]">
+            <paper-icon-button on-tap="oneUp" icon="arrow-upward" disabled></paper-icon-button>
+          </template> 
+
+          <template is="dom-if" if="[[!isFirst()]]">
+            <paper-icon-button on-tap="oneUp" icon="arrow-upward"></paper-icon-button>
+          </template>  
+
+          <paper-icon-button class="downButton" on-tap="oneDown" icon="arrow-downward"></paper-icon-button>
+          
+        </div>
+        <div class="trackLink">
+          <div class="trackName">
+            [[trackName]]
+          </div>
+          <div class="trackArtist">
+            [[trackArtist]]
+          </div>
+        </div>
+      </div>
     `;
+  }
+
+  isFirst(){
+    return this.trackIndex == 0;
   }
 
   oneUp(e) {
@@ -76,27 +89,24 @@ class QueueItem extends PolymerElement {
   }
 
   handleQueueResponseUp(e,r){
-    if(r.status == 200){
       this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: this.trackName + ' has been moved up.'}, bubbles: true,composed: true, }));
       this.dispatchEvent(new CustomEvent('refresh-queue-event', { bubbles: true,composed: true }));
-    }
-    else{
-      this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true, }));
-    }
   }
 
   handleQueueResponseDown(e,r){
-    if(r.status == 200){
       this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: this.trackName + ' has been moved down.'}, bubbles: true,composed: true, }));
       this.dispatchEvent(new CustomEvent('refresh-queue-event', { bubbles: true,composed: true }));
-    }
-    else{
-      this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true, }));
-    }
+  }
+
+  handleError(e,r){
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true, }));
   }
 
   static get properties() {
     return {
+      trackIndex: {
+        type: Number
+      },
       trackId: {
         type: Number
       },
@@ -105,8 +115,21 @@ class QueueItem extends PolymerElement {
       },
       trackArtist: {
         type: String
+      },
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
       }
     };
+  }
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
   }
 
 }

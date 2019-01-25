@@ -8,14 +8,17 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IUserService {
-    List<User> findAll();
-
-    User findByName(String firstname, String lastname);
+    List<User> findAllUsers();
 
     Optional<User> findById(Long id);
 
-    Optional<List<PlaylistWithTracks>> findPlaylistsByUser(Long userID);
+    Optional<List<PlaylistWithTracks>> findPlaylistsByUserId(Long id);
 
-    Optional<List<SimplePlaylist>> findSimplePlaylistsByUser(Long userID);
+    Optional<List<SimplePlaylist>> findSimplePlaylistsByUserId(Long id);
 
+    Optional<User> findByToken(String token);
+
+    Optional<User> findByEmailAndPassword(String email, String password);
+
+    User saveUser(User user);
 }

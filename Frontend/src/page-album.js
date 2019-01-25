@@ -15,7 +15,10 @@ import '@polymer/app-route/app-location.js';
 import '@polymer/app-route/app-route.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 
-class SingleAlbum extends PolymerElement {
+import './elements/result-row-track.js';
+
+
+class PageAlbum extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -26,6 +29,8 @@ class SingleAlbum extends PolymerElement {
         }
       </style>
       
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
+
       <app-location 
         route="{{route}}"
         url-space-regex="^[[rootPath]]">
@@ -38,19 +43,20 @@ class SingleAlbum extends PolymerElement {
         tail="{{subroute}}">
       </app-route>
 
-      <div class="card">
-        <h1>[[album.title]]</h1>
-        <h1>[[album.artist]]</h1>
-      </div>
-
       <!-- Get all album info -->
       <iron-ajax
         auto
-        url="http://localhost:8080/api/v1/album/[[routeData.albumId]]"
+        url="[[apiRootPath]]/extended/albums/[[routeData.albumId]]"
         handle-as="json"
+        params="{{header}}"
         last-response="{{album}}">
       </iron-ajax>
       
+      <div class="card">
+        <h1>[[album.name]]</h1>
+        <h1>[[album.artist]]</h1>
+      </div>
+
       <!-- Album tracks -->
       <div id="albumTracks" class="card">
         <h1>Tracks</h1>
@@ -59,8 +65,8 @@ class SingleAlbum extends PolymerElement {
           <div style="display:flex;">          
               <result-row-track
                   track-id="{{track.id}}"
-                  track-name="{{track.title}}"
-                  track-artist="{{track.artist}}">
+                  track-name="{{track.name}}"
+                  track-artist="{{album.artists}}">
               </result-row-track>
             </div>
         </template>
@@ -71,6 +77,24 @@ class SingleAlbum extends PolymerElement {
       </div>
     `;
   }
+
+  static get properties() {
+    return {
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
+      }
+    };
+  }
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
+  }
 }
 
-window.customElements.define('single-album', SingleAlbum);
+window.customElements.define('page-album', PageAlbum);

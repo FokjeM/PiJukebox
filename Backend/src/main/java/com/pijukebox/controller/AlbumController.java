@@ -33,7 +33,7 @@ public class AlbumController {
     }
 
     @GetMapping("/simple/albums")
-    @ApiOperation(value = "Get all information pertaining to an album (without relations)")
+    @ApiOperation(value = "Get all pertaining to albums (without relations)", notes = "Filter the returned items using the name parameter")
     public ResponseEntity<List<SimpleAlbum>> getSimpleAlbums(@RequestParam(name = "name", required = false) String name) {
         try {
             if (name != null && !name.isEmpty()) {
@@ -49,6 +49,7 @@ public class AlbumController {
     }
 
     @GetMapping("/albums/byGenre")
+    @ApiOperation(value = "Get all information pertaining to an album (without relations) by genre", notes = "Filter the returned items using the name parameter")
     public ResponseEntity<List<GenreWithAlbums>> getAlbumsByGenreName(@RequestParam(name = "name") String name) {
         try {
 
@@ -65,14 +66,15 @@ public class AlbumController {
     }
 
     @GetMapping("/albums/byArtist")
+    @ApiOperation(value = "Get all information pertaining to an album by artist", notes = "Filter the returned items using the name parameter")
     public ResponseEntity<List<ArtistWithAlbums>> getAlbumsByArtistName(@RequestParam(name = "name") String name) {
         try {
 
             if (name != null && !name.isEmpty()) {
-                if (!albumService.findSimpleAlbumsByArtistName(name).isPresent()) {
+                if (!albumService.findAlbumsByArtistName(name).isPresent()) {
                     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
                 }
-                return new ResponseEntity<>(albumService.findSimpleAlbumsByArtistName(name).get(), HttpStatus.OK);
+                return new ResponseEntity<>(albumService.findAlbumsByArtistName(name).get(), HttpStatus.OK);
             }
             return null;
         } catch (Exception ex) {
@@ -81,7 +83,7 @@ public class AlbumController {
     }
 
     @GetMapping("/simple/albums/{id}")
-    @ApiOperation(value = "Get all information pertaining to an album")
+    @ApiOperation(value = "Get all information pertaining to a certain album (without relations) by its ID")
     public ResponseEntity<SimpleAlbum> getSimpleAlbum(@PathVariable Long id) {
         try {
             if (!albumService.findSimpleAlbumById(id).isPresent()) {
@@ -111,7 +113,7 @@ public class AlbumController {
     }
 
     @GetMapping("/extended/albums/{id}")
-    @ApiOperation(value = "Get all information pertaining to an album")
+    @ApiOperation(value = "Get all information pertaining to a certain album (with relations) by its ID")
     public ResponseEntity<Album> getExtendedAlbum(@PathVariable Long id) {
         try {
             if (!albumService.findExtendedAlbumById(id).isPresent()) {
@@ -154,7 +156,7 @@ public class AlbumController {
     }
 
     @PostMapping("/extended/albums/{albumId}/artists/{artistId}")
-    @ApiOperation(value = "Add a new track to an existing album")
+    @ApiOperation(value = "Add a new artist to an existing album")
     public ResponseEntity<AlbumWithArtists> addArtistToAlbum(@PathVariable Long albumId, @PathVariable Long artistId) {
         try {
             if (!albumService.findArtistByAlbumId(albumId).isPresent()) {
@@ -183,7 +185,7 @@ public class AlbumController {
     }
 
     @PostMapping("/extended/albums/{albumId}/genres/{genreId}")
-    @ApiOperation(value = "Add a new track to an existing album")
+    @ApiOperation(value = "Add a new genre to an existing album")
     public ResponseEntity<AlbumWithGenres> addGenreToAlbum(@PathVariable Long albumId, @PathVariable Long genreId) {
         try {
             if (!albumService.findGenreByAlbumId(albumId).isPresent()) {

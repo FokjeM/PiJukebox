@@ -20,15 +20,14 @@ import '@polymer/app-route/app-location.js';
 import '@polymer/app-route/app-route.js';
 import '@polymer/iron-pages/iron-pages.js';
 import '@polymer/iron-selector/iron-selector.js';
+import '@polymer/iron-icons/iron-icons';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-dialog/paper-dialog.js';
-
-import './my-icons.js';
-
 import './elements/track-control.js';
 import './elements/dialog-element.js';
+import '@polymer/iron-meta/iron-meta.js';
 
-import './elements/get-token.js';
+
 
 
 // Gesture events like tap and track generated from touch will not be
@@ -37,9 +36,9 @@ setPassiveTouchGestures(true);
 
 // Set Polymer's root path to the same value we passed to our service worker
 // in `index.html`.
-setRootPath(MyAppGlobals.rootPath);
+setRootPath(JukeBoxGlobals.rootPath);
 
-class MyApp extends PolymerElement {
+class JukeBox extends PolymerElement {
   static get template() {
     return html`
       <style>
@@ -79,7 +78,7 @@ class MyApp extends PolymerElement {
         }
 
         .drawer-list a.iron-selected {
-          color: black;
+          color: var(--app-primary-color);
           font-weight: bold;
         }
         
@@ -96,35 +95,38 @@ class MyApp extends PolymerElement {
         <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
           <app-toolbar>Menu</app-toolbar>
           <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-            <a name="tracks" href="[[rootPath]]tracks">Tracks</a>
-            <a name="playlists" href="[[rootPath]]playlists">Playlists</a>
-            <a name="playlist" href="[[rootPath]]playlist">Single Playlist</a>
-            <a name="queue" href="[[rootPath]]queue">Queue</a>
-            <a name="login" href="[[rootPath]]login">Login</a>
-            <a name="search" href="[[rootPath]]search">Search</a>
-          </iron-selector>
-        </app-drawer>
+              <template is="dom-if" if="[[!isLogin(page)]]">
+                <a name="tracks" href="[[rootPath]]tracks">Tracks</a>
+                <a name="playlists" href="[[rootPath]]playlists">Playlists</a>
+                <a name="queue" href="[[rootPath]]queue">Queue</a>
+                <a name="search" href="[[rootPath]]search">Search</a>
+                <a name="upload" href="[[rootPath]]upload">Upload</a>
+                <a name="signout" on-tap="signOut" href="#">Sign out</a>
+              </template>
+            </iron-selector>
+          </app-drawer>
 
         <!-- Main content -->
         <app-header-layout has-scrolling-region="">
 
           <app-header slot="header" condenses="" reveals="" effects="waterfall">
             <app-toolbar>
-              <paper-icon-button icon="my-icons:menu" drawer-toggle=""></paper-icon-button>
+              <paper-icon-button icon="icons:menu" drawer-toggle=""></paper-icon-button>
               <div main-title="">PiJukeBox</div>
             </app-toolbar>
           </app-header>
 
           <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
-            <all-tracks name="tracks"></all-tracks>
-            <all-playlists name="playlists"></all-playlists>
-            <single-playlist name="playlist"></single-playlist>
-            <track-queue name="queue"></track-queue>
-            <single-artist name="artist"></single-artist>
-            <single-album name="album"></single-album>
-            <search-tracks name="search"></search-tracks>
-            <my-login name="login"></my-login>
-            <my-view404 name="view404"></my-view404>
+            <page-tracks name="tracks"></page-tracks>
+            <page-playlists name="playlists"></page-playlists>
+            <page-playlist name="playlist"></page-playlist>
+            <page-queue name="queue"></page-queue>
+            <page-artist name="artist"></page-artist>
+            <page-album name="album"></page-album>
+            <page-search name="search"></page-search>
+            <page-upload name="upload"></page-upload>
+            <page-login name="login"></page-login>
+            <page-404 name="view404"></page-404>
           </iron-pages>
 
           <dialog-element id="mainDialog">
@@ -136,6 +138,9 @@ class MyApp extends PolymerElement {
 
         </app-header-layout>
       </app-drawer-layout>
+
+      <iron-meta key="apiPath" value="http://localhost:8080/api/v1"></iron-meta>
+
     `;
   }
 
@@ -155,6 +160,15 @@ class MyApp extends PolymerElement {
     dialog.dialogTitle = e.detail.title;
     dialog.dialogText = e.detail.text;
     dialog.open();
+  }
+
+  signOut(){
+    window.localStorage.removeItem("token");
+ 
+    //Redirect to /login
+    window.location.href = "/";
+    // window.history.pushState({}, null, '/login');
+    // window.dispatchEvent(new CustomEvent('location-changed'));
   }
 
   static get properties() {
@@ -182,12 +196,13 @@ class MyApp extends PolymerElement {
      // Show 'tracks' in that case. And if the page doesn't exist, show 'view404'.
     var token = localStorage.getItem('token');
     if(token == null){
+      this.set('route.path', '/login');
       this.page = 'login';
     }
     else if (!page) {
       this.page = 'tracks';
     } 
-    else if (['tracks', 'playlists', 'playlist', 'queue', 'search', 'artist', 'album', 'login'].indexOf(page) !== -1) {
+    else if (['tracks', 'playlists', 'playlist', 'queue', 'search', 'artist', 'album', 'upload' ,'login'].indexOf(page) !== -1) {
       this.page = page;
     } 
     else {
@@ -207,33 +222,36 @@ class MyApp extends PolymerElement {
     // statement, so break it up.
     switch (page) {
       case 'tracks':
-        import('./all-tracks.js');
+        import('./page-tracks.js');
         break;
       case 'playlists':
-        import('./all-playlists.js');
+        import('./page-playlists.js');
         break;
       case 'playlist':
-        import('./single-playlist.js');
+        import('./page-playlist.js');
         break;
       case 'queue':
-        import('./track-queue.js');
+        import('./page-queue.js');
       case 'artist':
-        import('./single-artist.js');
+        import('./page-artist.js');
         break;  
       case 'album':
-        import('./single-album.js');
+        import('./page-album.js');
         break;    
       case 'search':
-        import('./search-tracks.js');
+        import('./page-search.js');
+        break;  
+      case 'upload':
+        import('./page-upload.js');
         break;  
       case 'login':
-        import('./my-login.js');
+        import('./page-login.js');
         break;  
       case 'view404':
-        import('./my-view404.js');
+        import('./page-404.js');
         break;
     }
   }
 }
 
-window.customElements.define('my-app', MyApp);
+window.customElements.define('juke-box', JukeBox);

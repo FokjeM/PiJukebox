@@ -7,6 +7,8 @@ import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-icons/av-icons.js';
 import '@polymer/paper-slider/paper-slider.js';
 
+import './current-track.js';
+
 /**
  * All the icons that are part of iron-icons
  * https://npm-demos.appspot.com/@polymer/iron-icons@3.0.1/demo/index.html
@@ -16,10 +18,7 @@ class TrackControl extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
-        :host {
-          display: block;
-        }
-        
+ 
         .container {
           display: flex;
           flex-direction: column;
@@ -48,78 +47,115 @@ class TrackControl extends PolymerElement {
         }
       </style>
 
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
+
+      <!-- Get Play/Pause state, Volume level and Repeat state  -->
       <iron-ajax
         auto
         id="getStatus"
-        url="http://localhost:8080/api/v1/player/status"
+        url="[[apiRootPath]]/player/status"
         content-type="application/json"  
+        params="{{header}}"   
         handle-as="json"
-        last-response="{{playerStatus}}"
         on-response="verifyStatus">
       </iron-ajax>
 
+      <!-- Shuffle the queue-->
       <iron-ajax
         id="shuffle"
-        method="POST"
-        url="http://localhost:8080/api/v1/player/shuffle"
+        url="[[apiRootPath]]/player/shuffle"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
-        on-response="getStatus">
+        on-response="getPlayerStatus"
+        on-error="handleSetError">
       </iron-ajax>
 
+      <!-- Play current track -->
       <iron-ajax
-        id="playPause"
-        method="POST"
-        url="http://localhost:8080/api/v1/player/playpause"
+        id="play"
+        url="[[apiRootPath]]/player/playCurrent"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
-        on-response="getStatus">
+        on-response="getPlayerStatus"
+        on-error="handleSetError">
       </iron-ajax>
 
+      <!-- Pause current track -->
+      <iron-ajax
+        id="pause"
+        url="[[apiRootPath]]/player/pause"
+        content-type="application/json"
+        params="{{header}}"
+        handle-as="json"
+        on-response="getPlayerStatus"
+        on-error="handleSetError">
+      </iron-ajax>
+
+      <!-- Toggle repeat state -->
       <iron-ajax
         id="repeat"
-        method="POST"
-        url="http://localhost:8080/api/v1/player/repeat"
+        url="[[apiRootPath]]/player/repeat"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
-        on-response="getStatus">
+        on-response="getPlayerStatus"
+        on-error="handleSetError">
       </iron-ajax>
 
+      <!-- Play next track in queue -->
       <iron-ajax
         id="nextTrack"
-        method="POST"
-        url="http://localhost:8080/api/v1/player/next"
+        url="[[apiRootPath]]/player/next"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
-        on-response="getStatus">
+        on-response="getPlayerStatus"
+        on-error="handleSetError">
       </iron-ajax>
 
+      <!-- Play previous track in queue -->
       <iron-ajax
         id="previousTrack"
-        method="POST"
-        url="http://localhost:8080/api/v1/player/previous"
+        url="[[apiRootPath]]/player/prev"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
-        on-response="getStatus">
+        on-response="getPlayerStatus"
+        on-error="handleSetError">
       </iron-ajax>
 
+      <!-- Set volume level  -->
       <iron-ajax
         id="changeVolume"
-        method="POST"
-        url="http://localhost:8080/api/v1/player/volume"
+        url="[[apiRootPath]]/player/volume/{{volumeLevel}}"
         content-type="application/json"
+        params="{{header}}"
         handle-as="json"
-        on-response="getStatus">
+        on-response="getPlayerStatus"
+        on-error="handleSetError">
       </iron-ajax>
-      
-      <div class="container">  
-        
-        <div class="trackInfo">
-          <p>[[playerStatus.track.name]]</p>
-          <p>[[playerStatus.track.artist]]</p>
-        </div>
 
-        <div class="controlsContainer">   
+      <!-- Get currently playing track and bind to {{currentTrack}}-->
+      <iron-ajax
+       id="getCurrentTrack"
+       auto
+       url="[[apiRootPath]]/player/current"
+       handle-as="json"
+       params="{{header}}"
+       last-response="{{currentTrack}}">
+     </iron-ajax>
+
+      <div class="container">  
+        <div class="controlsContainer">
+         
+          <div>
+            <current-track
+              current-track="{{currentTrack}}">
+            </current-track>
+          </div>
+
           <div class="controls">
             <paper-icon-button on-tap="shuffle" icon="av:shuffle" id="shuffleBtn"></paper-icon-button>
 
@@ -134,7 +170,7 @@ class TrackControl extends PolymerElement {
 
           <div class="controls">
             <iron-icon icon="[[volumeIcon]]"></iron-icon>
-            <paper-slider id="volumeSlider" max="10" step="1" value="[[volumeLevel]]" on-change="changeVolume"></paper-slider>
+            <paper-slider id="volumeSlider" max="10" step="1" value="{{volumeLevel}}" on-change="changeVolumeVal"></paper-slider>
           </div>
         </div>
 
@@ -150,7 +186,7 @@ class TrackControl extends PolymerElement {
       },
       playPauseState: {
         type: Boolean,
-        value: 0
+        // value: false
       },
       repeatIcon: {
         type: String,
@@ -170,51 +206,74 @@ class TrackControl extends PolymerElement {
       },
       volumeLevel: {
         type: Number,
-        value: 2
+      },
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
       }
     };
   }
-
-
-  getStatus(e) {
-    this.$.getStatus.generateRequest();
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
   }
 
-  verifyStatus(e, response) {
-    if (response == 200) {
-      this.updateStates();
-      this.updateControls();
-    } else {
-      this.throwEvent('open-dialog-event', {title: 'Player', text: 'Something went wrong, please try again'});
-    }
+  getPlayerStatus(e) {
+    this.$.getStatus.generateRequest();
+    this.$.getCurrentTrack.generateRequest();
+  }
+
+  // Update play/pause state, repeat state and volumeLevel (+ icons)
+  verifyStatus(e, r) {
+    let playerStatus = JSON.parse(r.response);
+    this.updateStates(playerStatus);
+    this.updateControls();
+  }
+
+  handleSetError(e,r){
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Status', text: 'Could not send request.'}, bubbles: true, composed: true }));
   }
 
   /**
    * Set states
    */
-  updateStates() {
-    this.shuffleIsActive = playerStatus.player.shuffleState;
-    this.playPauseState = playerStatus.player.playPauseState;
-    this.repeatState = playerStatus.player.repeatState;
-    this.volumeLevel = playerStatus.player.volumeLevel;
+  updateStates(playerStatus) {
+    this.playPauseState = playerStatus.isPlaying;
+    this.repeatState = playerStatus.repeatState;
+    this.volumeLevel = playerStatus.volumeLevel;
   }
 
   /**
    * Update the controls
    */
   updateControls () {
-    this.changeShuffleIcon();
     this.changePlayPauseIcon();
     this.changeRepeatIcon();
     this.changeVolumeIcon();
   }
 
   playPause(e) {
-    this.$.playPause.generateRequest();
+    let state = this.playPauseState;
+    if (state) {
+      // player is playing
+      this.pause(e);
+    } else if (!state) {
+      // player is not playing
+      this.play(e);
+    }
   }
-  
-  shuffle(e) {
-    this.$.shuffle.generateRequest();
+
+  play(e) {
+    this.$.play.generateRequest();
+  }
+
+  pause(e){
+    this.$.pause.generateRequest();
   }
   
   repeat(e) {
@@ -227,6 +286,11 @@ class TrackControl extends PolymerElement {
   
   previousTrack(e) {
     this.$.previousTrack.generateRequest();
+  }
+
+  shuffle(e){
+    this.$.shuffle.generateRequest();
+    this.dispatchEvent(new CustomEvent('refresh-queue-event', { bubbles: true, composed: true }));
   }
   
   changeShuffleIcon() {
@@ -244,10 +308,13 @@ class TrackControl extends PolymerElement {
   /**
    * Change the play/pause icon to the current play / pause state
    */
-  changePlayPauseIcon(state) {
-    if (!state) {
+  changePlayPauseIcon() {
+    let state = this.playPauseState;
+    if (state) {
+      // player is playing
       this.playPauseIcon = "av:pause";
-    } else if (state) {
+    } else if (!state) {
+      // player is not playing
       this.playPauseIcon = "av:play-arrow";
     }
   }
@@ -255,17 +322,11 @@ class TrackControl extends PolymerElement {
   changeRepeatIcon() {
     let repeatButton = this.$.repeatBtn;
     // no repeat
-    if(this.repeatState === 0) {
-      repeatButton.style.color = "var(--app-primary-color-light)";
-      this.repeatIcon = "av:repeat-one";
-    }
-    // repeat one track
-    else if(this.repeatState === 1) {
-      repeatButton.style.color = "var(--app-primary-color-light)";
+    if(this.repeatState) {
+      repeatButton.style.color = "var(--app-primary-color)";
       this.repeatIcon = "av:repeat";
     }
-    // repeat queue
-    else if(this.repeatState === 2) {
+    else {
       repeatButton.style.color = "var(--paper-icon-button-ink-color, var(--primary-text-color))";
       this.repeatIcon = "av:repeat";
     }
@@ -274,9 +335,9 @@ class TrackControl extends PolymerElement {
   /**
    * This method calls the changeVolumeIcon and changeVolumeLevel methods 
    */
-  changeVolume(e) {
+  changeVolumeVal(e) {
     this.changeVolumeIcon();
-    this.changeVolumeLevel(e);
+    this.changeVolumeLevel();
   }
   
   /**
@@ -300,22 +361,9 @@ class TrackControl extends PolymerElement {
   /**
    * This method sends the request to the backend to change the volume level
    */
-  changeVolumeLevel(e) {
-    let volume = this.$.volumeSlider.value;
-    this.$.changeVolume.setAttribute('body', '{"volume":' + volume + '}');
+  changeVolumeLevel() {
     this.$.changeVolume.generateRequest();
   }
-
-  throwEvent(name, detail){
-    this.dispatchEvent(new CustomEvent(name, 
-      { 
-          detail: detail, 
-          bubbles: true,
-          composed: true, 
-      }
-    ));
-  }
-
 }
 
 customElements.define('track-control', TrackControl);

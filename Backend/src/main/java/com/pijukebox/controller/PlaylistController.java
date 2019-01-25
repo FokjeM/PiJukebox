@@ -1,10 +1,13 @@
 package com.pijukebox.controller;
 
+import com.pijukebox.model.PlaylistForm;
 import com.pijukebox.model.playlist.PlaylistWithTracks;
 import com.pijukebox.model.simple.SimplePlaylist;
 import com.pijukebox.model.simple.SimpleTrack;
+import com.pijukebox.model.user.User;
 import com.pijukebox.service.IPlaylistService;
 import com.pijukebox.service.ITrackService;
+import com.pijukebox.service.IUserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +15,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @CrossOrigin(maxAge = 3600)
@@ -22,17 +28,27 @@ public class PlaylistController {
 
     private final IPlaylistService playlistService;
     private final ITrackService trackService;
+    private final IUserService userService;
 
     @Autowired
-    public PlaylistController(IPlaylistService playlistService, ITrackService trackService) {
+    public PlaylistController(IPlaylistService playlistService, ITrackService trackService, IUserService userService) {
         this.playlistService = playlistService;
         this.trackService = trackService;
+        this.userService = userService;
     }
 
     @GetMapping("/playlists")
-    @ApiOperation(value = "Retrieve all simple playlists")
-    public ResponseEntity<List<SimplePlaylist>> playlists() {
+    @ApiOperation(value = "Get all information pertaining to playlist (without relations)", notes = "Filter the returned items using the name parameter")
+    public ResponseEntity<List<SimplePlaylist>> playlists(@RequestParam(name="name", required = false) String name) {
         try {
+            if(name != null && !name.isEmpty())
+            {
+                if(!playlistService.findSimplePlaylistsByName(name).isPresent())
+                {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+                return new ResponseEntity<>(playlistService.findSimplePlaylistsByName(name).get(), HttpStatus.OK);
+            }
             return new ResponseEntity<>(playlistService.findAllSimplePlaylists(), HttpStatus.OK);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No simple playlists found", ex);
@@ -40,7 +56,7 @@ public class PlaylistController {
     }
 
     @GetMapping("/playlists/{id}")
-    @ApiOperation(value = "Get a single simple playlist by its ID")
+    @ApiOperation(value = "Get all information pertaining to a certain playlist (without relations) by its ID")
     public ResponseEntity<SimplePlaylist> simplePlaylistDetails(@PathVariable Long id) {
         try {
             if (!playlistService.findSimplePlaylistById(id).isPresent()) {
@@ -63,8 +79,36 @@ public class PlaylistController {
         }
     }
 
+
+    @PostMapping(value = "/playlists/create", produces = "application/json")
+    @ApiOperation(value = "Create a new playlist")
+    public String createNewSimplePlaylist(@RequestBody PlaylistForm playlistForm, HttpServletResponse response, HttpServletRequest request) {
+        try {
+            if (!userService.findByToken(request.getParameter("Authorization")).isPresent()) {
+                response.setStatus(403);
+                return Optional.empty().toString();
+            }
+            User user = userService.findByToken(request.getParameter("Authorization")).get();
+
+            Long userID = user.getId();
+            String title = playlistForm.getTitle();
+            String description = playlistForm.getDescription();
+
+            SimplePlaylist sp = new SimplePlaylist(null, title, description, userID);
+
+            playlistService.addNewPlaylist(sp);
+
+            response.setStatus(200);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Playlist not created", ex);
+        }
+
+        return null;
+    }
+
     @GetMapping("/details/playlists")
-    @ApiOperation(value = "Retrieve all playlists in full detail, with full track info")
+    @ApiOperation(value = "Get all information pertaining to an playlist (with relations)")
     public ResponseEntity<List<PlaylistWithTracks>> detailedPlaylists() {
         try {
             return new ResponseEntity<>(playlistService.findAll(), HttpStatus.OK);
@@ -74,7 +118,7 @@ public class PlaylistController {
     }
 
     @GetMapping("/details/playlists/{id}")
-    @ApiOperation(value = "Get all from a single playlist by its ID")
+    @ApiOperation(value = "Get all information pertaining to a certain playlist (with relations) by its ID")
     public ResponseEntity<PlaylistWithTracks> playlistDetails(@PathVariable Long id) {
         try {
             if (!playlistService.findById(id).isPresent()) {

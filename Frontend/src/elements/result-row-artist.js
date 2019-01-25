@@ -4,18 +4,14 @@ import '../shared-styles.js';
 class ResultRowArtist extends PolymerElement {
   static get template() {
     return html`
-      <style include="shared-styles">
-        :host {
-          display: block;
-        }
-      
-      </style>
-      
-      <a href="[[rootPath]]artist/[[artistId]]">
-        <div>
-            <div>[[artistName]]</div>
-        </div>
-      </a>
+      <style include="shared-styles"></style>
+      <div class="resultRow">
+        <a href="[[rootPath]]artist/[[artistId]]">
+          <div>
+              <div>[[artistName]]</div>
+          </div>
+        </a>
+      </div>
     `;
   }
 

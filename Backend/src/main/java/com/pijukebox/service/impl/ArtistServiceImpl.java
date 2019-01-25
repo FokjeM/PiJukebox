@@ -1,8 +1,9 @@
 package com.pijukebox.service.impl;
 
-import com.pijukebox.model.artist.ArtistWithTracks;
+import com.pijukebox.model.artist.Artist;
 import com.pijukebox.model.simple.SimpleArtist;
 import com.pijukebox.repository.IArtistRepository;
+import com.pijukebox.repository.ISimpleArtistRepository;
 import com.pijukebox.service.IArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,29 +17,46 @@ import java.util.Optional;
 public class ArtistServiceImpl implements IArtistService {
 
     private final IArtistRepository artistRepository;
+    private final ISimpleArtistRepository simpleArtistRepository;
 
     @Autowired
-    public ArtistServiceImpl(IArtistRepository artistRepository) {
+    public ArtistServiceImpl(IArtistRepository artistRepository, ISimpleArtistRepository simpleArtistRepository) {
         this.artistRepository = artistRepository;
+        this.simpleArtistRepository = simpleArtistRepository;
     }
 
     @Override
-    public List<SimpleArtist> findAll() {
+    public List<Artist> findAllExtendedArtists() {
         return artistRepository.findAll();
     }
 
     @Override
-    public Optional<SimpleArtist> findById(Long id) {
+    public Optional<Artist> findExtendedArtistById(Long id) {
         return artistRepository.findById(id);
     }
 
     @Override
-    public Optional<List<SimpleArtist>> findByName(String name) {
-        return artistRepository.findArtistsByNameContaining(name);
+    public Optional<List<Artist>> findExtendedArtistsByNameContaining(String name) {
+        return artistRepository.findExtendedArtistsByNameContaining(name);
     }
 
     @Override
-    public Optional<ArtistWithTracks> findTracksByArtistId(Long id) {
-        return Optional.empty();
+    public List<SimpleArtist> findAllSimpleArtists() {
+        return simpleArtistRepository.findAll();
+    }
+
+    @Override
+    public Optional<SimpleArtist> findSimpleArtistById(Long id) {
+        return simpleArtistRepository.findById(id);
+    }
+
+    @Override
+    public Optional<List<SimpleArtist>> findSimpleArtistsByNameContaining(String name) {
+        return simpleArtistRepository.findSimpleArtistByNameContaining(name);
+    }
+
+    @Override
+    public SimpleArtist addSimpleArtist(SimpleArtist artist) {
+        return simpleArtistRepository.save(artist);
     }
 }

@@ -67,17 +67,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       * path (e.g., with URLs like `my.domain/` and `my.domain/view1`).
       *
       * If you intend to serve your app from a non-root path (e.g., with URLs
-      * like `my.domain/my-app/` and `my.domain/my-app/view1`), edit this line
+      * like `my.domain/juke-box/` and `my.domain/juke-box/view1`), edit this line
       * to indicate the path from which you'll be serving, including leading
-      * and trailing slashes (e.g., `/my-app/`).
+      * and trailing slashes (e.g., `/juke-box/`).
       */
-      window.MyAppGlobals = { rootPath: '/' };
+      window.JukeBoxGlobals = { rootPath: '/' };
 
       // Load and register pre-caching Service Worker
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
           navigator.serviceWorker.register('service-worker.js', {
-            scope: MyAppGlobals.rootPath
+            scope: JukeBoxGlobals.rootPath
           });
         });
       }
@@ -87,7 +87,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 
     <!-- Load your application shell -->
-    <script type="module" src="src/my-app.js"></script>
+    <script type="module" src="src/juke-box.js"></script>
 
     <!-- Add any global styles for body, document, etc. -->
     <style>
@@ -101,7 +101,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
   </head>
   <body>
-    <my-app></my-app>
+    <juke-box></juke-box>
     <noscript>
       Please enable JavaScript to view this website.
     </noscript>

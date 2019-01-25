@@ -17,7 +17,7 @@ import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/paper-button/paper-button.js';
 
-class MyLogin extends PolymerElement {
+class PageLogin extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -34,20 +34,25 @@ class MyLogin extends PolymerElement {
         }
       </style>
       
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
+
       <div>
         <div style="padding:20px; 40px 20px 20px;">
-          <paper-input label="Username" value="{{username}}"></paper-input>
-          <paper-input label="Password" value="{{password}}"></paper-input>
-          <paper-button id="loginButton" raised on-click="submitLogin">Login</paper-button>
+          <paper-input label="Email" value="{{email}}" autofocus></paper-input>
+          <paper-input type="password" label="Password" value="{{password}}"></paper-input>
+          <paper-button id="loginButton" style="background-color: #00796B; color: white; width:100%; margin-top:20px;" raised on-tap="submitLogin">Login</paper-button>
         </div>
 
         <!-- Post credentials -->
         <iron-ajax
           id="loginForm"
-          url="http://localhost:8080/api/v1/login"
+          method="post"
+          url="[[apiRootPath]]/login"
           handle-as="json"
-          body="{username: {{username}}, password: {{password}}}"
-          on-response="setToken">
+          body='{"email": "{{email}}", "password": "{{password}}"}'
+          content-type='application/json'
+          on-response="setToken"
+          on-error="handleError">
         </iron-ajax>
       </div>
 
@@ -55,19 +60,26 @@ class MyLogin extends PolymerElement {
   }
 
   submitLogin(){
-    localStorage.setItem("token", "r.response.token");
     this.$.loginForm.generateRequest();
   }
 
   setToken(e,r){
-    if(r.status == 200){
-      localStorage.setItem("token", r.response.token);
-      // window.location.href = "/";
-    }
-    else{
-      this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Login', text: 'Invalid credentials'}, bubbles: true,composed: true, }));
-    }
+    //Store token in local storage
+    var token = r.response.token;
+    window.localStorage.setItem("token", token);
+
+    //Redirect to /search
+    window.history.pushState({}, null, '/search');
+    window.dispatchEvent(new CustomEvent('location-changed'));
   }
+
+  handleError(e,r){
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Login', text: 'Login failed (Invalid credentials?)'}, bubbles: true,composed: true, }));
+  }
+
+
+
+  
 }
 
-window.customElements.define('my-login', MyLogin);
+window.customElements.define('page-login', PageLogin);
