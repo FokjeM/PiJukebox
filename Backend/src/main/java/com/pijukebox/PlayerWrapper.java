@@ -59,6 +59,29 @@ public class PlayerWrapper {
         playerStatus.setCurrStatus(PlayerStatus.Status.STOPPED);
     }
 
+    public void moveSongUp(int index) {
+        if (index > 0) {
+            //SimpleTrack simpleTrack = songs.get(index);
+            //songs.remove(index);
+            //songs.add(index - 1, simpleTrack);
+
+             Object file =  mp3Player.getPlayList().get(index);
+             mp3Player.getPlayList().remove(index);
+             mp3Player.getPlayList().add(file);
+        }
+    }
+
+    public void moveSongDown(int index) {
+        if (index < (mp3Player.getPlayList().size() - 1)) {
+         //   SimpleTrack simpleTrack = songs.get(index);
+           // songs.remove(index);
+           // songs.add(index + 1, simpleTrack);
+            Object file =  mp3Player.getPlayList().get(index);
+            mp3Player.getPlayList().remove(index);
+            mp3Player.getPlayList().add(file);
+        }
+    }
+
     public String getStatus() {
         return playerStatus.getStatus();
     }
@@ -92,4 +115,6 @@ public class PlayerWrapper {
         mp3Player.stop();
         mp3Player.getPlayList().clear();
     }
+
+
 }
