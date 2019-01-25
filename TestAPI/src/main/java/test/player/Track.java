@@ -69,6 +69,18 @@ public final class Track {
         }
     }
 
+    /**
+     * Create a Track object with info from the DB and file metadata.
+     * This constructor uses the default paths availlable through getOSPath();
+     * 
+     * @param filename The filename of the Track, this should come from the DB
+     * @throws NonFatalException Something went wrong, but we can recover. Pass
+     * this to the ErrorLogger and move on.
+     * @throws FatalException Originates in getOSPath(), OS cannot be determined
+     * and thus any OS specific things like separators and paths aren't
+     * reliable. Pass this to the ErrorLogger and EXIT with a non-zero exit
+     * code!
+     */
     public Track(String filename) throws NonFatalException, FatalException {
         this("", filename);
     }
@@ -201,6 +213,10 @@ public final class Track {
         return this.filepath;
     }
 
+    /**
+     * Get the amount of mpeg frames in this track
+     * @return the counted amount of frames
+     */
     public int getFrameCount() {
         return this.frames;
     }

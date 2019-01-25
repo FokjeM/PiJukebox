@@ -8,8 +8,6 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.AudioDevice;
-import javazoom.jl.player.FactoryRegistry;
 import javazoom.jl.player.advanced.PlaybackListener;
 import javazoom.jl.player.advanced.AdvancedPlayer;
 import javazoom.jl.player.advanced.PlaybackEvent;
@@ -265,7 +263,7 @@ public class Player {
      *
      * @throws FatalException propagated from
      * {@link  #playTrack(com.PiJukebox.Track) playTrack}
-     * @throws com.pijukebox.Player.NonFatalException propagated from
+     * @throws NonFatalException propagated from
      * {@link #playTrack(com.PiJukebox.Track) playTrack}
      */
     public void next() throws FatalException, NonFatalException {
@@ -402,6 +400,10 @@ public class Player {
         updateStatefulQueue();
     }
     
+    /**
+     * Add a {@link java.util.List List} of tracks to the Queue
+     * @param tracks the List<Track> to add
+     */
     public void addToQueue(List<Track> tracks) {
         tracks.forEach((track) -> {
             queue.put(queue.size() + 1, track);

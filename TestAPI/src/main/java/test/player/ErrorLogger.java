@@ -110,6 +110,12 @@ public class ErrorLogger {
         return initPath;
     }
 
+    /**
+     * Write an exception to the logfile and handle fatal status
+     * @param ex The exception to write
+     * @param fatal the fatal status
+     * @return True if successful in writing the log
+     */
     public boolean writeLog(Exception ex, boolean fatal) {
         ldt = LocalDateTime.now();
         if (fatal) {
@@ -123,6 +129,10 @@ public class ErrorLogger {
         return writeLogLines();
     }
 
+    /**
+     * The actual writing function
+     * @return true if successful, false if it wasn't but it didn't die
+     */
     private boolean writeLogLines() {
         try {
             Files.write(LOG_FILE, errorLines, StandardOpenOption.APPEND);
@@ -149,6 +159,12 @@ public class ErrorLogger {
         }
     }
 
+    /**
+     * Create a logfile in the specified path.
+     * Recursively creates all directories not yet present.
+     * @param p the path to create the logfile in
+     * @return true if a logfile was created, false otherwise.
+     */
     private static boolean createLogFile(Path p) {
         try {
             if (!Files.exists(p)) {
