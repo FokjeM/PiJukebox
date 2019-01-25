@@ -27,6 +27,19 @@ class PageUpload extends PolymerElement {
 
           padding: 10px;
         }
+
+        #fileUpload {
+          max-width: 350px;
+        }
+
+        .uploadForm {
+          display: flex;
+          flex-direction: row;
+          align-items:flex-end;
+          justify-content: space-between;
+          margin-top: 10px;
+          max-width: 500px;
+        }
       </style>
       
       <iron-request
@@ -45,8 +58,9 @@ class PageUpload extends PolymerElement {
 
       <div class="card">  
         <div class="container">
-          <form>
-            <input id="fileUpload" type="file" name="file" multiple>
+          <form class="uploadForm">
+            <paper-input id="fileUpload" type="file" name="file" multiple required></paper-input>
+            <!-- <input id="fileUpload" type="file" name="file" multiple> -->
             <paper-button raised id="subBtn" on-tap="subForm">Send</paper-button>
           </form>
         </div>
