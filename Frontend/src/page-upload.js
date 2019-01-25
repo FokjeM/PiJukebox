@@ -18,7 +18,7 @@ import '@polymer/iron-form/iron-form.js';
 import '@polymer/paper-button/paper-button.js';
 import './elements/result-row-track.js';
 
-class UploadTrack extends PolymerElement {
+class PageUpload extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -105,4 +105,4 @@ class UploadTrack extends PolymerElement {
   }
 }
 
-window.customElements.define('upload-track', UploadTrack);
+window.customElements.define('page-upload', PageUpload);

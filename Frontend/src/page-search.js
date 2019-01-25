@@ -22,7 +22,7 @@ import '@polymer/iron-icons/av-icons.js';
 import '@polymer/paper-checkbox/paper-checkbox.js';
 
 
-class SearchTracks extends PolymerElement {
+class PageSearch extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -208,4 +208,4 @@ class SearchTracks extends PolymerElement {
   }
 }
 
-window.customElements.define('search-tracks', SearchTracks);
+window.customElements.define('page-search', PageSearch);

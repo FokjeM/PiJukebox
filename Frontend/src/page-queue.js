@@ -9,7 +9,7 @@ import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/paper-button/paper-button.js';
 import './elements/queue-item.js';
 
-class TrackQueue extends PolymerElement {
+class PageQueue extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -117,4 +117,4 @@ class TrackQueue extends PolymerElement {
   
 }
 
-customElements.define('track-queue', TrackQueue);
+customElements.define('page-queue', PageQueue);

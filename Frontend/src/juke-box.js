@@ -34,9 +34,9 @@ setPassiveTouchGestures(true);
 
 // Set Polymer's root path to the same value we passed to our service worker
 // in `index.html`.
-setRootPath(MyAppGlobals.rootPath);
+setRootPath(JukeBoxGlobals.rootPath);
 
-class MyApp extends PolymerElement {
+class JukeBox extends PolymerElement {
   static get template() {
     return html`
       <style>
@@ -115,16 +115,16 @@ class MyApp extends PolymerElement {
           </app-header>
 
           <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
-            <tracks-page name="tracks"></tracks-page>
-            <all-playlists name="playlists"></all-playlists>
-            <single-playlist name="playlist"></single-playlist>
-            <track-queue name="queue"></track-queue>
-            <single-artist name="artist"></single-artist>
-            <single-album name="album"></single-album>
-            <search-tracks name="search"></search-tracks>
-            <upload-track name="upload"></upload-track>
-            <my-login name="login"></my-login>
-            <my-view404 name="view404"></my-view404>
+            <page-tracks name="tracks"></page-tracks>
+            <page-playlists name="playlists"></page-playlists>
+            <page-playlist name="playlist"></page-playlist>
+            <page-queue name="queue"></page-queue>
+            <page-artist name="artist"></page-artist>
+            <page-album name="album"></page-album>
+            <page-search name="search"></page-search>
+            <page-upload name="upload"></page-upload>
+            <page-login name="login"></page-login>
+            <page-404 name="view404"></page-404>
           </iron-pages>
 
           <dialog-element id="mainDialog">
@@ -217,36 +217,36 @@ class MyApp extends PolymerElement {
     // statement, so break it up.
     switch (page) {
       case 'tracks':
-        import('./tracks-page.js');
+        import('./page-tracks.js');
         break;
       case 'playlists':
-        import('./all-playlists.js');
+        import('./page-playlists.js');
         break;
       case 'playlist':
-        import('./single-playlist.js');
+        import('./page-playlist.js');
         break;
       case 'queue':
-        import('./track-queue.js');
+        import('./page-queue.js');
       case 'artist':
-        import('./single-artist.js');
+        import('./page-artist.js');
         break;  
       case 'album':
-        import('./single-album.js');
+        import('./page-album.js');
         break;    
       case 'search':
-        import('./search-tracks.js');
+        import('./page-search.js');
         break;  
       case 'upload':
-        import('./upload-track.js');
+        import('./page-upload.js');
         break;  
       case 'login':
-        import('./my-login.js');
+        import('./page-login.js');
         break;  
       case 'view404':
-        import('./my-view404.js');
+        import('./page-404.js');
         break;
     }
   }
 }
 
-window.customElements.define('my-app', MyApp);
+window.customElements.define('juke-box', JukeBox);
