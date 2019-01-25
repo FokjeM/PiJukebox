@@ -8,6 +8,8 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.AudioDevice;
+import javazoom.jl.player.FactoryRegistry;
 import javazoom.jl.player.advanced.PlaybackListener;
 import javazoom.jl.player.advanced.AdvancedPlayer;
 import javazoom.jl.player.advanced.PlaybackEvent;
@@ -358,8 +360,7 @@ public class Player {
                     //JLayer returns 0 on end. And the frames ffprobe didn't get can't be read, usually.
                     if(!playing){
                         pauseFrame = evt.getFrame();
-                    }
-                    if(evt.getFrame() == 0) {
+                    } else if(evt.getFrame() == 0) {
                         try {
                             System.out.println("Working! Frame: " + pauseFrame);
                             onSongEnd();
