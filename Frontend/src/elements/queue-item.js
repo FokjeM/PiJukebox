@@ -5,9 +5,7 @@ class QueueItem extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
-        :host {
-          display: block;
-        }
+  
         .queueItem {
           display: flex;
           flex-direction: row;

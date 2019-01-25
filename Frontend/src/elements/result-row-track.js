@@ -5,9 +5,7 @@ class ResultRowTrack extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
-        :host {
-          display: block;
-        }
+  
         .track-info {
           display: flex;
         }

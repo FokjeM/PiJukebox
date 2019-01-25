@@ -10,7 +10,7 @@
 
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import './shared-styles.js';
-import './elements/playlist-track-row.js';
+import './elements/track-row.js';
 
 class TracksPage extends PolymerElement {
   static get template() {
@@ -37,9 +37,9 @@ class TracksPage extends PolymerElement {
           <h1>Tracks</h1>
           <dom-repeat items="{{response}}" as="track">
             <template>
-              <playlist-track-row 
+              <track-row 
                   track="[[track]]">
-              </playlist-track-row>
+              </track-row>
             </template>
           </dom-repeat>
         </div>

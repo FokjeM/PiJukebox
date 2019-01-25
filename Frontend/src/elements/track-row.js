@@ -11,14 +11,11 @@ import '@polymer/iron-icons/av-icons.js';
 import '@polymer/iron-icons/social-icons.js';
 import '@polymer/paper-dialog/paper-dialog.js';
 
-class PlaylistTrackRow extends PolymerElement {
+class TrackRow extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
-        :host {
-          display: block;
-        }
-        
+
         .trackLink {
           display: flex;
           justify-content: space-between;
@@ -274,4 +271,4 @@ class PlaylistTrackRow extends PolymerElement {
 
 }
 
-customElements.define('playlist-track-row', PlaylistTrackRow);
+customElements.define('track-row', TrackRow);
