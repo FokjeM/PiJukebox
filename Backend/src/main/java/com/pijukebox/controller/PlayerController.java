@@ -154,6 +154,32 @@ public class PlayerController {
 //        }
 //    }
 
+    @GetMapping("/move/track/up/{index}")
+    public ResponseEntity<String> moveQueueItemUp(@PathVariable int index)
+    {
+        try{
+            playerWrapper.moveSongUp(index);
+            return new ResponseEntity<>("track moved up ", HttpStatus.OK);
+        }
+        catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, String.format("track can't be moved up"), ex);
+        }
+
+    }
+
+    @GetMapping("/move/track/down/{index}")
+    public ResponseEntity<String> moveQueueItemDown(@PathVariable int index)
+    {
+        try{
+            playerWrapper.moveSongDown(index);
+            return new ResponseEntity<>("track moved up ", HttpStatus.OK);
+        }
+        catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, String.format("track can't be moved down"), ex);
+        }
+
+    }
+
     @GetMapping("/current")
     public ResponseEntity<Track> current() {
         try {
