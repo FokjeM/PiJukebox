@@ -75,7 +75,7 @@ public class UploadController {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Something went wrong while uploading %s.", t), ex);
             }
         }
-        return null;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     private void addFileToFolder(String oldDir, String newDir, String fileName) {

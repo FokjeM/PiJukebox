@@ -55,6 +55,10 @@ class PagePlaylists extends PolymerElement {
           padding: 5px 0;
         }
 
+        paper-icon-button {
+          color: var(--app-primary-color);
+        }
+
         #playlistName, #playlistDescription {
           width: 350px;
         }

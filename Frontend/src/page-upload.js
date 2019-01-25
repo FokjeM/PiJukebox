@@ -40,6 +40,14 @@ class PageUpload extends PolymerElement {
           margin-top: 10px;
           max-width: 500px;
         }
+
+        #scanForFilesContainer {
+          margin-top: 100px;
+        }
+
+        paper-button {
+          color: var(--app-primary-color);
+        }
       </style>
       
       <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
@@ -61,13 +69,12 @@ class PageUpload extends PolymerElement {
       <div class="card">  
         <div class="container">
           <form class="uploadForm">
-            <paper-input id="fileUpload" type="file" name="file" multiple required></paper-input>
-            <!-- <input id="fileUpload" type="file" name="file" multiple> -->
+            <input id="fileUpload" type="file" name="file" multiple>
             <paper-button raised id="subBtn" on-tap="subForm">Send</paper-button>
           </form>
         </div>
 
-        <div class="container">
+        <div class="container" id="scanForFilesContainer">
           <paper-button raised id="subBtn" on-tap="scanForFiles">Scan folder for files</paper-button>
         </div>
       </div>
@@ -84,7 +91,7 @@ class PageUpload extends PolymerElement {
     
     let xhr = new XMLHttpRequest();
     xhr.Authorization = true;
-    xhr.open("POST", "[[apiRootPath]]/upload?Authorization=" + JSON.parse(JSON.stringify(this.header)).Authorization);
+    xhr.open("POST", this.apiRootPath+"/upload?Authorization=" + JSON.parse(JSON.stringify(this.header)).Authorization);
     xhr.send(data);
   }
 
