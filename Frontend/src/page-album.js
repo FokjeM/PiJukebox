@@ -55,7 +55,6 @@ class PageAlbum extends PolymerElement {
         last-response="{{album}}">
       </iron-ajax>
       
-
       <!-- Album tracks -->
       <div id="albumTracks" class="card">
         <h1>Tracks</h1>
