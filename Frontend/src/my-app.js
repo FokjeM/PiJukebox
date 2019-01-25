@@ -76,7 +76,7 @@ class MyApp extends PolymerElement {
         }
 
         .drawer-list a.iron-selected {
-          color: black;
+          color: var(--app-primary-color);
           font-weight: bold;
         }
         
@@ -98,6 +98,7 @@ class MyApp extends PolymerElement {
                 <a name="playlists" href="[[rootPath]]playlists">Playlists</a>
                 <a name="queue" href="[[rootPath]]queue">Queue</a>
                 <a name="search" href="[[rootPath]]search">Search</a>
+                <a name="upload" href="[[rootPath]]upload">Upload</a>
                 <a name="signout" on-tap="signOut" href="#">Sign out</a>
               </template>
             </iron-selector>
@@ -121,6 +122,7 @@ class MyApp extends PolymerElement {
             <single-artist name="artist"></single-artist>
             <single-album name="album"></single-album>
             <search-tracks name="search"></search-tracks>
+            <upload-track name="upload"></upload-track>
             <my-login name="login"></my-login>
             <my-view404 name="view404"></my-view404>
           </iron-pages>
@@ -195,7 +197,7 @@ class MyApp extends PolymerElement {
     else if (!page) {
       this.page = 'tracks';
     } 
-    else if (['tracks', 'playlists', 'playlist', 'queue', 'search', 'artist', 'album', 'login'].indexOf(page) !== -1) {
+    else if (['tracks', 'playlists', 'playlist', 'queue', 'search', 'artist', 'album', 'upload' ,'login'].indexOf(page) !== -1) {
       this.page = page;
     } 
     else {
@@ -233,6 +235,9 @@ class MyApp extends PolymerElement {
         break;    
       case 'search':
         import('./search-tracks.js');
+        break;  
+      case 'upload':
+        import('./upload-track.js');
         break;  
       case 'login':
         import('./my-login.js');

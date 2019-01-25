@@ -10,12 +10,13 @@ class ResultRowArtist extends PolymerElement {
         }
       
       </style>
-      
-      <a href="[[rootPath]]artist/[[artistId]]">
-        <div>
-            <div>[[artistName]]</div>
-        </div>
-      </a>
+      <div class="resultRow">
+        <a href="[[rootPath]]artist/[[artistId]]">
+          <div>
+              <div>[[artistName]]</div>
+          </div>
+        </a>
+      </div>
     `;
   }
 

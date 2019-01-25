@@ -3,8 +3,12 @@ package com.pijukebox.controller;
 import com.pijukebox.PlayerWrapper;
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.model.track.Track;
+import com.pijukebox.model.playlist.PlaylistWithTracks;
 import com.pijukebox.service.ITrackService;
+import com.pijukebox.service.IPlaylistService;
 import io.swagger.annotations.ApiOperation;
+import javafx.embed.swing.JFXPanel;
+import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +35,8 @@ public class PlayerController {
     private final PlayerWrapper playerWrapper;
 
     @Autowired
-    public PlayerController(ITrackService trackService) {
+    public PlayerController(ITrackService trackService, IPlaylistService playlistService)
+    {
         this.trackService = trackService;
         this.playerWrapper = new PlayerWrapper(Paths.get("/media/music/"));
     }
@@ -45,6 +50,10 @@ public class PlayerController {
             ex.printStackTrace();
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't play track! /play", ex);
         }
+        catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Couldn't add Playlist to Queue"), ex);
+        }
+
     }
 
     @GetMapping("/pause")
@@ -170,7 +179,7 @@ public class PlayerController {
     }
 
     @GetMapping(value = "/status", produces = "application/json")
-    @ApiOperation(value = "Get player getStatus")
+    @ApiOperation(value = "Get player status")
     public Map<String, String> status() {
         Map<String, String> status = new HashMap<>();
         status.put("playerStatus", playerWrapper.getStatus());

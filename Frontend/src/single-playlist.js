@@ -25,6 +25,13 @@ class SinglePlaylist extends PolymerElement {
 
           padding: 10px;
         }
+        #addPlaylistToQueue {
+          font-size:14px;
+          color: var(--app-primary-color);
+        }
+        #addPlaylistToQueue:hover {
+          cursor: pointer;
+        }
       </style>
       
       <app-location 
@@ -42,21 +49,31 @@ class SinglePlaylist extends PolymerElement {
       <!-- Get all playlist info -->
       <iron-ajax
         auto
+        id="getDetails"
         url="http://localhost:8080/api/v1/details/playlists/[[routeData.playlistId]]"
         handle-as="json"
         params="{{header}}"
         last-response="{{playlist}}">
       </iron-ajax>
 
+      <iron-ajax
+        id="addPlaylist"
+        url="http://localhost:8080/api/v1/player/add/playlist/[[routeData.playlistId]]"
+        handle-as="json"
+        params="{{header}}"
+        on-response="handleAddPlaylist"
+        on-error="handleAddPlaylistError">
+      </iron-ajax>
+
       <div class="card">
         <h1>[[playlist.title]]</h1>
         <p><i>[[playlist.description]]</i></p>
+        <paper-button id="addPlaylistToQueue" on-click="addPlaylistToQueue">Add playlist to Queue</paper-button>
       </div>
 
       <!-- Artist tracks -->
       <div id="artistTracks" class="card">
         <h1>Tracks</h1>
-
         <template is="dom-repeat" items="{{playlist.tracks}}" as="track" rendered-item-count="{{playlistTrackCount}}">
           <div style="display:flex;">
               <result-row-track
@@ -74,7 +91,27 @@ class SinglePlaylist extends PolymerElement {
       </div>
     `;
   }
-  
+
+  ready(){
+    super.ready();
+    window.addEventListener('refresh-playlist-event', function(e) {
+      this.$.getDetails.generateRequest();
+    }.bind(this));
+  }
+
+  addPlaylistToQueue(e){
+    this.$.addPlaylist.generateRequest();
+  }
+
+  handleAddPlaylist(e,r){
+    this.dispatchEvent(new CustomEvent('refresh-queue-event', { bubbles: true, composed: true }));
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Playlist', text: 'Playlist has been added to the queue.'}, bubbles: true, composed: true }));
+  }
+
+  handleAddPlaylistError(e,r){
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Playlist', text: 'Playlist has not been added to the queue.'}, bubbles: true, composed: true }));
+  }
+
   static get properties() {
     return {
       token: {

@@ -39,6 +39,10 @@ class CurrentTrack extends PolymerElement {
          right: 0;
          width: 10px;
        }
+       .container{
+         color: var(--app-secondary-color);
+       }
+
      </style>
 
      <div class="container">

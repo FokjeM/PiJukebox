@@ -36,7 +36,7 @@ class MyLogin extends PolymerElement {
       
       <div>
         <div style="padding:20px; 40px 20px 20px;">
-          <paper-input label="Email" value="{{email}}"></paper-input>
+          <paper-input label="Email" value="{{email}}" autofocus></paper-input>
           <paper-input type="password" label="Password" value="{{password}}"></paper-input>
           <paper-button id="loginButton" style="background-color: #00796B; color: white; width:100%; margin-top:20px;" raised on-tap="submitLogin">Login</paper-button>
         </div>
@@ -79,6 +79,10 @@ class MyLogin extends PolymerElement {
   handleError(e,r){
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Login', text: 'Invalid credentials'}, bubbles: true,composed: true, }));
   }
+
+
+
+  
 }
 
 window.customElements.define('my-login', MyLogin);

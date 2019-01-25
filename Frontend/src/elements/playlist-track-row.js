@@ -21,7 +21,7 @@ class PlaylistTrackRow extends PolymerElement {
         
         .trackLink {
           display: flex;
-          flex-direction: column;
+      
           margin-bottom: 10px;
           background-color: rgba(0,121,107,0.05);
           border-radius: 5px;
@@ -39,6 +39,7 @@ class PlaylistTrackRow extends PolymerElement {
           flex-direction: row;
           justify-content: space-between;
           flex-wrap: wrap;
+          margin-left: 20px;
         }
 
         .trackArtist {
@@ -66,11 +67,33 @@ class PlaylistTrackRow extends PolymerElement {
           cursor: pointer;
         }
 
+        .playlistRow {
+          color: var(--app-primary-color);
+        }
+
+        #dialog{
+          padding-bottom:60px;
+        }
+
+        .closeDialog{
+          position: absolute;
+          right: 0;
+          color: var(--app-primary-color);
+        }
+
+        .closeDialog:hover{
+          cursor: pointer;
+        }
+
         paper-dialog {
           padding-bottom: 10px;
         }
 
         h3 span {
+          color: var(--app-primary-color);
+        }
+
+        .button{
           color: var(--app-primary-color);
         }
         
@@ -109,8 +132,8 @@ class PlaylistTrackRow extends PolymerElement {
 
       <div class="trackLink">
         <div class="trackAddToPlaylist">
-          <paper-icon-button icon="av:queue" on-tap="addToQueue"></paper-icon-button>
-          <paper-icon-button icon="av:playlist-add" on-tap="openBy"></paper-icon-button>
+          <paper-icon-button class="button" icon="av:queue" on-tap="addToQueue"></paper-icon-button>
+          <paper-icon-button class="button" icon="av:playlist-add" on-tap="openBy"></paper-icon-button>
           <div class="trackName">
             [[track.name]]
           </div>
@@ -133,16 +156,23 @@ class PlaylistTrackRow extends PolymerElement {
       </div>
 
       <paper-dialog id="dialog">
-        <h3>Add <span>[[track.name]]</span> to playlist</h2>
+        <h3>Click a playlist to add <span>[[track.name]]</span> </h2>
         <dom-repeat items="{{playlists}}" as="playlist">
           <template>
-            <label class="playlist" data-playlist-id$="[[playlist.id]]" data-track-id$="[[track.id]]"
-                on-tap="addTrack">[[playlist.title]]</label> <br>
+            <div class="playlistRow">
+              <label class="playlist" data-playlist-id$="[[playlist.id]]" data-track-id$="[[track.id]]"
+                on-tap="addTrack">[[playlist.title]]</label>
+            </div>    
           </template>
         </dom-repeat>
+        <paper-button class="closeDialog" on-click="closeDialog">Close</paper-button>
       </paper-dialog>
       
     `;
+  }
+
+  closeDialog(){
+    this.$.dialog.close();
   }
 
   static get properties() {
@@ -174,6 +204,13 @@ class PlaylistTrackRow extends PolymerElement {
       return {'Authorization': token};
   }
 
+  ready(){
+    super.ready();
+    window.addEventListener('refresh-playlists-event', function(e) {
+      this.$.getPlaylists.generateRequest();
+    }.bind(this));
+  }
+
   hasArtist(){
     return this.track.artists.length > 0;
   }
@@ -195,6 +232,7 @@ class PlaylistTrackRow extends PolymerElement {
 
   addedTrack(e, response) {
     if(response.status == 200) {
+      this.dispatchEvent(new CustomEvent('refresh-playlist-event', { bubbles: true, composed: true }));
       this.throwEvent('open-dialog-event', {title: 'Playlist', text: 'Song is successfully added to the playlist'});
     }
     else {
@@ -215,7 +253,6 @@ class PlaylistTrackRow extends PolymerElement {
   handleError(e,r){
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true }));
   }
-
 
   throwEvent(name, detail){
     this.dispatchEvent(new CustomEvent(name, 

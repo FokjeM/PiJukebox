@@ -11,7 +11,6 @@ class ResultRowTrack extends PolymerElement {
         .track-info {
           display: flex;
         }
-
         .artist {
           display: flex;
         }
@@ -22,6 +21,10 @@ class ResultRowTrack extends PolymerElement {
           display: block;
           right: 0;
           width: 10px;
+        }
+
+        .addTrackToQueue{
+          color: var(--app-primary-color);
         }
         
       </style>
@@ -39,7 +42,7 @@ class ResultRowTrack extends PolymerElement {
       
       <div>
         <div class="track-info">
-          <paper-icon-button icon="av:queue" on-tap="addToQueue"></paper-icon-button>
+          <paper-icon-button class="addTrackToQueue" icon="av:queue" on-tap="addToQueue"></paper-icon-button>
           <div style="display:flex; padding:8px;">
             <div>[[trackName]]</div>
           

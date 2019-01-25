@@ -9,12 +9,13 @@ class ResultRowPlaylist extends PolymerElement {
           display: block;
         }
       </style>
-      
-      <a href="[[rootPath]]playlist/[[playlistId]]">
-        <div>
-            <div>[[playlistName]]</div>
-        </div>
-      </a>
+      <div class="resultRow">
+        <a href="[[rootPath]]playlist/[[playlistId]]">
+          <div>
+              <div>[[playlistName]]</div>
+          </div>
+        </a>
+      </div>
     `;
   }
 
