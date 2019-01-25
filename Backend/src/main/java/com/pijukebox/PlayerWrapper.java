@@ -21,6 +21,7 @@ public class PlayerWrapper {
     }
 
     public void playOne(File file) {
+        mp3Player.stop();
         mp3Player.addToPlayList(file);
         playerStatus.setCurrSong(FilenameUtils.removeExtension(file.getName()));
         mp3Player.play();
@@ -39,6 +40,7 @@ public class PlayerWrapper {
     }
 
     public void playOne(String file) {
+        mp3Player.stop();
         mp3Player.addToPlayList(new File(songDirPath.toAbsolutePath() + "/" + file));
         mp3Player.play();
         playerStatus.setCurrSong(FilenameUtils.removeExtension(file));
