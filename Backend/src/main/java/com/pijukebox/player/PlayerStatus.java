@@ -1,4 +1,4 @@
-package com.pijukebox;
+package com.pijukebox.player;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
