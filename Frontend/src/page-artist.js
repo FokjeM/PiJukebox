@@ -14,11 +14,10 @@ import './shared-styles.js';
 import '@polymer/app-route/app-location.js';
 import '@polymer/app-route/app-route.js';
 import '@polymer/iron-ajax/iron-ajax.js';
-
 import './elements/result-row-track.js';
+import './elements/result-row-album.js';
 
-
-class SingleAlbum extends PolymerElement {
+class PageArtist extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -36,36 +35,36 @@ class SingleAlbum extends PolymerElement {
 
       <app-route 
         route="{{route}}" 
-        pattern="[[rootPath]]album/:albumId"
+        pattern="[[rootPath]]artist/:artistId"
         data="{{routeData}}" 
         tail="{{subroute}}">
       </app-route>
 
       <div class="card">
-        <h1>[[album.name]]</h1>
-        <h1>[[album.artist]]</h1>
+        <h1>[[artist.name]]</h1>
       </div>
 
-      <!-- Get all album info -->
+      <!-- Get all artist info -->
       <iron-ajax
         auto
-        url="http://localhost:8080/api/v1/extended/albums/[[routeData.albumId]]"
+        url="http://localhost:8080/api/v1/extended/artists/[[routeData.artistId]]"
         handle-as="json"
         params="{{header}}"
-        last-response="{{album}}">
+        last-response="{{artist}}">
       </iron-ajax>
-      
 
-      <!-- Album tracks -->
-      <div id="albumTracks" class="card">
+
+      <!-- Artist tracks -->
+      <div id="artistTracks" class="card">
         <h1>Tracks</h1>
 
-        <template is="dom-repeat" items="{{album.tracks}}" as="track" rendered-item-count="{{trackCount}}">
+        <template is="dom-repeat" items="{{artist.tracks}}" as="track" rendered-item-count="{{trackCount}}">
           <div style="display:flex;">          
               <result-row-track
                   track-id="{{track.id}}"
                   track-name="{{track.name}}"
-                  track-artist="{{album.artists}}">
+                  track-artist="{{track.artist}}"
+                  exclude-artist="true">
               </result-row-track>
             </div>
         </template>
@@ -74,6 +73,25 @@ class SingleAlbum extends PolymerElement {
           No tracks.
         </template> 
       </div>
+
+      <!-- Artist Album -->
+      <div id="artistAlbums" class="card">
+        <h1>Albums</h1>
+
+        <template is="dom-repeat" items="{{artist.albums}}" as="album" rendered-item-count="{{albumCount}}"> 
+        <div style="display:flex;">
+              <result-row-album
+                album-id="{{album.id}}"
+                album-name="{{album.name}}">
+              </result-row-album>
+            </div>
+        </template>
+
+        <template is="dom-if" if="{{!albumCount}}">
+          No Albums.
+        </template> 
+      </div>
+
     `;
   }
 
@@ -94,6 +112,7 @@ class SingleAlbum extends PolymerElement {
   {
       return {'Authorization': token};
   }
+
 }
 
-window.customElements.define('single-album', SingleAlbum);
+window.customElements.define('page-artist', PageArtist);

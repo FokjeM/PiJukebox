@@ -22,7 +22,7 @@ import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-icons/av-icons.js';
 import '@polymer/iron-form/iron-form.js';
 
-class AllPlaylists extends PolymerElement {
+class PagePlaylists extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -176,4 +176,4 @@ class AllPlaylists extends PolymerElement {
   }
 }
 
-window.customElements.define('all-playlists', AllPlaylists);
+window.customElements.define('page-playlists', PagePlaylists);

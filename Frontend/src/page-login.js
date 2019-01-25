@@ -17,7 +17,7 @@ import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/paper-button/paper-button.js';
 
-class MyLogin extends PolymerElement {
+class PageLogin extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -85,4 +85,4 @@ class MyLogin extends PolymerElement {
   
 }
 
-window.customElements.define('my-login', MyLogin);
+window.customElements.define('page-login', PageLogin);

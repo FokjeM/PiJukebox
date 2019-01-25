@@ -10,7 +10,7 @@
 
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
-class MyView404 extends PolymerElement {
+class Page404 extends PolymerElement {
   static get template() {
     return html`
       <style>
@@ -26,4 +26,4 @@ class MyView404 extends PolymerElement {
   }
 }
 
-window.customElements.define('my-view404', MyView404);
+window.customElements.define('page-404', Page404);

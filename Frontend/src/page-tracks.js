@@ -12,7 +12,7 @@ import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import './shared-styles.js';
 import './elements/track-row.js';
 
-class TracksPage extends PolymerElement {
+class PageTracks extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -30,6 +30,7 @@ class TracksPage extends PolymerElement {
         params="{{header}}"
         last-response="{{response}}">
       </iron-ajax>
+
 
       <div class="card">      
       
@@ -68,4 +69,4 @@ class TracksPage extends PolymerElement {
   }
 }
 
-window.customElements.define('tracks-page', TracksPage);
+window.customElements.define('page-tracks', PageTracks);

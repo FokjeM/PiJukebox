@@ -16,7 +16,7 @@ import '@polymer/app-route/app-route.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 import './elements/result-row-track.js';
 
-class SinglePlaylist extends PolymerElement {
+class PagePlaylist extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -131,4 +131,4 @@ class SinglePlaylist extends PolymerElement {
   }
 }
 
-window.customElements.define('single-playlist', SinglePlaylist);
+window.customElements.define('page-playlist', PagePlaylist);
