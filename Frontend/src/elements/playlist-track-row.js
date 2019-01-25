@@ -21,10 +21,11 @@ class PlaylistTrackRow extends PolymerElement {
         
         .trackLink {
           display: flex;
-      
+          justify-content: space-between;
           margin-bottom: 10px;
           background-color: rgba(0,121,107,0.05);
           border-radius: 5px;
+          padding: 10px 20px 10px 7px;
         }
         
         .trackAddToPlaylist {
@@ -39,7 +40,6 @@ class PlaylistTrackRow extends PolymerElement {
           flex-direction: row;
           justify-content: space-between;
           flex-wrap: wrap;
-          margin-left: 20px;
         }
 
         .trackArtist {
@@ -97,6 +97,17 @@ class PlaylistTrackRow extends PolymerElement {
           color: var(--app-primary-color);
         }
         
+        @media(min-width: 1300px) {
+          .trackArtist {
+            width: 300px;
+          }
+        }
+
+        @media(max-width: 1299.5px) {
+          .trackArtist {
+            width: 175px;
+          }
+        }
       </style>
 
       <iron-ajax
@@ -149,9 +160,6 @@ class PlaylistTrackRow extends PolymerElement {
               </template>
             </template>
           </div>
-          <!-- <div class="trackTime"> -->
-            <!-- time -->
-          <!-- </div> -->
         </div>
       </div>
 

@@ -115,7 +115,7 @@ class MyApp extends PolymerElement {
           </app-header>
 
           <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
-            <all-tracks name="tracks"></all-tracks>
+            <tracks-page name="tracks"></tracks-page>
             <all-playlists name="playlists"></all-playlists>
             <single-playlist name="playlist"></single-playlist>
             <track-queue name="queue"></track-queue>
@@ -217,7 +217,7 @@ class MyApp extends PolymerElement {
     // statement, so break it up.
     switch (page) {
       case 'tracks':
-        import('./all-tracks.js');
+        import('./tracks-page.js');
         break;
       case 'playlists':
         import('./all-playlists.js');

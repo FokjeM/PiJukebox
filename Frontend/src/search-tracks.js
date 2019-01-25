@@ -10,7 +10,6 @@
 
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import './shared-styles.js';
-import './elements/track-list.js';
 import './elements/track-control.js';
 import './elements/track-info.js';
 import './elements/result-row-track.js';
