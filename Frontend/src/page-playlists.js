@@ -93,7 +93,11 @@ class PagePlaylists extends PolymerElement {
               <div>
                 <a class="playlistLink" href="[[rootPath]]playlist/[[playlist.id]]">
                   <div class="playlistTrack">
-                    [[playlist.title]] - [[playlist.description]]
+                    [[playlist.title]]
+
+                    <template is="dom-if" if="[[playlist.description]]">
+                      - [[playlist.description]]
+                    </template>
                   </div>
                 </a>
               </div>
