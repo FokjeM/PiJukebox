@@ -27,7 +27,7 @@ public class TrackController {
     }
 
     @GetMapping("/simple/tracks")
-    @ApiOperation(value = "Get all tracks in the application")
+    @ApiOperation(value = "Get all pertaining to tracks (without relations)", notes = "Filter the returned items using the name parameter")
     public ResponseEntity<List<SimpleTrack>> simpleTracks(@RequestParam(name = "name", required = false) String name) {
         try {
             if (name != null && !name.isEmpty()) {
@@ -46,7 +46,7 @@ public class TrackController {
     }
 
     @GetMapping("/extended/tracks")
-    @ApiOperation(value = "Get all tracks in the application")
+    @ApiOperation(value = "Get all information pertaining to tracks (with relations)", notes = "Filter the returned items using the name parameter")
     public ResponseEntity<List<Track>> detailTracks(@RequestParam(name = "name", required = false) String name) {
         try {
             if (name != null && !name.isEmpty()) {
@@ -65,7 +65,7 @@ public class TrackController {
     }
 
     @GetMapping("/extended/tracks/{id}")
-    @ApiOperation(value = "Get all information pertaining to a track")
+    @ApiOperation(value = "Get all information pertaining to a certain track (with relations) by its ID")
     public ResponseEntity<Track> trackDetails(@PathVariable Long id) {
         try {
             if (!trackService.findTrackDetailsById(id).isPresent()) {
@@ -78,7 +78,7 @@ public class TrackController {
     }
 
     @GetMapping("/simple/tracks/{id}")
-    @ApiOperation(value = "Get all information pertaining to a track")
+    @ApiOperation(value = "Get all information pertaining to a certain track (without relations) by its ID")
     public ResponseEntity<SimpleTrack> simpleTrack(@PathVariable Long id) {
         try {
             if (!trackService.findTrackDetailsById(id).isPresent()) {
@@ -91,6 +91,7 @@ public class TrackController {
     }
 
     @GetMapping("/tracks/byGenre")
+    @ApiOperation(value = "Get all information pertaining to an track by genre", notes = "Filter the returned items using the name parameter")
     public ResponseEntity<List<GenreWithTracks>> getTracksByGenreName(@RequestParam(name = "name") String name) {
         try {
 
@@ -107,6 +108,7 @@ public class TrackController {
     }
 
     @GetMapping("/tracks/byArtist")
+    @ApiOperation(value = "Get all information pertaining to an track by artist", notes = "Filter the returned items using the name parameter")
     public ResponseEntity<List<ArtistWithTracks>> getTracksByArtistName(@RequestParam(name = "name") String name) {
         try {
 
@@ -123,6 +125,7 @@ public class TrackController {
     }
 
     @PostMapping("/simple/tracks")
+    @ApiOperation(value = "Add a new track")
     public ResponseEntity<SimpleTrack> addSimpleTrack(@RequestBody SimpleTrack simpleTrack) {
         try {
             return new ResponseEntity<>(trackService.addSimpleTrack(simpleTrack), HttpStatus.CREATED);
@@ -133,6 +136,7 @@ public class TrackController {
     }
 
     @PatchMapping("/simple/tracks")
+    @ApiOperation(value = "Update an existing a track")
     public ResponseEntity<SimpleTrack> updateSimpleTrack(@RequestBody SimpleTrack simpleTrack) {
         try {
             if (simpleTrack.getId() != null && !simpleTrack.getId().toString().isEmpty()) {
@@ -154,6 +158,7 @@ public class TrackController {
     }
 
     @PatchMapping("/extended/tracks/{id}/genres/{genreId}")
+    @ApiOperation(value = "Add a new genre to an existing track")
     public ResponseEntity<GenreWithTracks> addGenreToTrack(@PathVariable Long id, @PathVariable Long genreId) {
 
         try {
@@ -175,6 +180,7 @@ public class TrackController {
     }
 
     @PatchMapping("/extended/tracks/{id}/artists/{artistId}")
+    @ApiOperation(value = "Add a new artist to an existing track")
     public ResponseEntity<ArtistWithTracks> addArtistToTrack(@PathVariable Long id, @PathVariable Long artistId) {
 
         try {

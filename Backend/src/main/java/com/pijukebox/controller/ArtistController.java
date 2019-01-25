@@ -25,7 +25,7 @@ public class ArtistController {
     }
 
     @GetMapping("/simple/artists")
-    @ApiOperation(value = "Get all information pertaining to an artist (without relations)")
+    @ApiOperation(value = "Get all information pertaining artists (without relations)", notes = "Filter the returned items using the name parameter")
     public ResponseEntity<List<SimpleArtist>> getSimpleAlbums(@RequestParam(name = "name", required = false) String name) {
         try {
             if (name != null && !name.isEmpty()) {
@@ -41,7 +41,7 @@ public class ArtistController {
     }
 
     @GetMapping("/simple/artists/{id}")
-    @ApiOperation(value = "Get all information pertaining to an artist via its ID")
+    @ApiOperation(value = "Get all information pertaining to a certain artist (without relations) by its ID")
     public ResponseEntity<SimpleArtist> artistDetails(@PathVariable Long id) {
         try {
             if (!artistService.findSimpleArtistById(id).isPresent()) {
@@ -71,7 +71,7 @@ public class ArtistController {
     }
 
     @GetMapping("/extended/artists/{id}")
-    @ApiOperation(value = "Get all information pertaining to an album")
+    @ApiOperation(value = "Get all information pertaining to an album (with relations) by its ID")
     public ResponseEntity<Artist> getExtendedAlbum(@PathVariable Long id) {
         try {
             if (!artistService.findExtendedArtistById(id).isPresent()) {

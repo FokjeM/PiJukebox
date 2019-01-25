@@ -2,101 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5f6465a1-ee3f-42eb-8d07-1eb7e274a5ac" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/configuration/DatabaseConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/configuration/DatabaseConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/configuration/Interceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/configuration/Interceptor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/configuration/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/configuration/WebConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/controller/AlbumController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/controller/AlbumController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/controller/ArtistController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/controller/ArtistController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/controller/GenreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/controller/GenreController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/controller/PlayerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/controller/PlayerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/controller/PlaylistController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/controller/PlaylistController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/controller/TrackController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/controller/TrackController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/controller/player/SongPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/controller/player/SongPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/controller/player/StartPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/controller/player/StartPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/model/LoginForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/model/LoginForm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/model/artist/Artist.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/model/artist/Artist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/model/artist/ArtistWithAlbums.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/model/artist/ArtistWithAlbums.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/model/artist/ArtistWithTracks.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/model/artist/ArtistWithTracks.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/model/genre/Genre.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/model/genre/Genre.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/model/simple/SimplePlaylist.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/model/simple/SimplePlaylist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/repository/IArtistRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/repository/IArtistRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/repository/IArtistTrackRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/repository/IArtistWithAlbumsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/repository/IArtistWithAlbumsRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/repository/IArtistWithTracksRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/repository/IArtistWithTracksRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/repository/IGenreRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/repository/IGenreRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/repository/IPlaylistRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/repository/ISimpleGenreRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/repository/ISimpleGenreRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/service/IAlbumService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/service/IAlbumService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/service/IArtistService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/service/IArtistService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/service/IGenreService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/service/IGenreService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/service/ITrackService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/service/ITrackService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/service/IUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/service/IUserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/service/impl/AlbumServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/service/impl/AlbumServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/service/impl/ArtistServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/service/impl/ArtistServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/service/impl/GenreServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/service/impl/GenreServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/service/impl/PlaylistServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/service/impl/PlaylistServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/service/impl/TrackServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/service/impl/TrackServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Backend/src/main/java/com/pijukebox/service/impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/configuration/ApplicationInitializer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/configuration/DatabaseConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/configuration/WebConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/controller/AlbumController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/controller/ArtistController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/controller/GenreController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/controller/PlaylistController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/controller/TrackController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/controller/UserController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/model/Role.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/model/SqlElement.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/model/album/Album.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/model/artist/ArtistAlbum.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/model/artist/ArtistTrack.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/model/genre/GenreAlbum.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/model/genre/GenreTrack.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/model/playlist/Playlist.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/model/playlist/PlaylistTracks.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/model/simple/SimpleAlbum.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/model/simple/SimpleArtist.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/model/simple/SimpleGenre.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/model/simple/SimplePlaylist.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/model/simple/SimpleTrack.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/model/track/Track.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/model/user/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/model/user/UserPlaylist.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/model/user/UserRole.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/repository/IAlbumRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/repository/IArtistRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/repository/IArtistTrackRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/repository/IGenreRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/repository/IGenreTrackRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/repository/IPlaylistRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/repository/IRoleRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/repository/ISimpleTrackRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/repository/ITrackRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/repository/IUserRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/service/IAlbumService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/service/IArtistService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/service/IGenreService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/service/IPlaylistService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/service/IRoleService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/service/ITrackService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/service/IUserService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/service/impl/AlbumServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/service/impl/ArtistServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/service/impl/GenreServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/service/impl/PlaylistServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/service/impl/RoleServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/service/impl/TrackServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/java/com/pijukebox/service/impl/UserServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Rutget-Backend/Backend/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -120,7 +26,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/test/api/configuration/DatabaseConfig.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1700">
+            <state relative-caret-position="1556">
               <caret line="120" column="29" selection-start-line="120" selection-start-column="29" selection-end-line="120" selection-end-column="29" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -330,6 +236,15 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="TestAPI" type="b2602c69:ProjectViewProjectNode" />
+              <item name="TestAPI" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -429,7 +344,7 @@
       <window_info anchor="bottom" id="Version Control" order="2" />
       <window_info anchor="bottom" id="Message" order="3" />
       <window_info anchor="bottom" id="Find" order="4" />
-      <window_info anchor="bottom" id="Run" order="5" weight="0.9575071" />
+      <window_info anchor="bottom" id="Run" order="5" weight="0.296034" />
       <window_info anchor="bottom" id="Debug" order="6" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="7" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="8" weight="0.4" />
@@ -451,16 +366,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/test/api/configuration/DatabaseConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1700">
-          <caret line="120" column="29" selection-start-line="120" selection-start-column="29" selection-end-line="120" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -525,6 +430,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2363">
           <caret line="139" column="21" selection-start-line="139" selection-start-column="21" selection-end-line="139" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/test/api/configuration/DatabaseConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1556">
+          <caret line="120" column="29" selection-start-line="120" selection-start-column="29" selection-end-line="120" selection-end-column="29" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

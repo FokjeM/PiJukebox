@@ -21,7 +21,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class ArtistServiceImplTest {
+class ArtistServiceImplTest {
 
     @Mock
     private ISimpleArtistRepository simpleArtistRepository;
@@ -33,18 +33,18 @@ public class ArtistServiceImplTest {
     @BeforeEach
     void setUp() {
         initMocks(this);
-        artistServiceImplUnderTest = new ArtistServiceImpl(artistRepository,simpleArtistRepository);
+        artistServiceImplUnderTest = new ArtistServiceImpl(artistRepository, simpleArtistRepository);
     }
 
     @Test
-    void testFindSimpleArtistById(){
+    void testFindSimpleArtistById() {
         String newLine = System.getProperty("line.separator");
         System.out.println("Initiating testFindSimpleArtistById...");
         System.out.println(newLine);
 
         // Given
         final Long id = 1L;
-        final Optional<SimpleArtist> expectedResult = Optional.of(new SimpleArtist(1L,"yo"));
+        final Optional<SimpleArtist> expectedResult = Optional.of(new SimpleArtist(1L, "yo"));
         when(simpleArtistRepository.findById(anyLong())).thenReturn(expectedResult);
 
         // When
@@ -64,7 +64,7 @@ public class ArtistServiceImplTest {
     }
 
     @Test
-    void testFindExtendedArtistById(){
+    void testFindExtendedArtistById() {
         // Given
 
         Set<SimpleAlbum> albums = new HashSet<>();
@@ -72,11 +72,11 @@ public class ArtistServiceImplTest {
         albums.add(simpleAlbum);
 
         Set<SimpleTrack> tracks = new HashSet<>();
-        SimpleTrack simpleTracks = new SimpleTrack(1L, "trackName", "song","song.mp3");
+        SimpleTrack simpleTracks = new SimpleTrack(1L, "trackName", "song", "song.mp3");
         tracks.add(simpleTracks);
 
         final Long id = 1L;
-        final Optional<Artist> expectedResult = Optional.of(new Artist(1L,"ArtistName", albums,tracks));
+        final Optional<Artist> expectedResult = Optional.of(new Artist(1L, "ArtistName", albums, tracks));
         when(artistRepository.findById(anyLong())).thenReturn(expectedResult);
 
         // When
@@ -93,11 +93,10 @@ public class ArtistServiceImplTest {
         System.out.println(System.getProperty("line.separator"));
         System.out.println("Given result: " + result);
         System.out.println("------------------------------------------------------------------------------------------------------------------------------------");
-
     }
 
     @Test
-    void findExtendedArtistsByNameContaining(){
+    void findExtendedArtistsByNameContaining() {
         // Given
 
         Set<SimpleAlbum> albums = new HashSet<>();
@@ -105,11 +104,11 @@ public class ArtistServiceImplTest {
         albums.add(simpleAlbum);
 
         Set<SimpleTrack> tracks = new HashSet<>();
-        SimpleTrack simpleTracks = new SimpleTrack(1L, "trackName", "song","song.mp3");
+        SimpleTrack simpleTracks = new SimpleTrack(1L, "trackName", "song", "song.mp3");
         tracks.add(simpleTracks);
 
         List<Artist> artists = new ArrayList<>();
-        artists.add(new Artist(1L,"ArtistName", albums,tracks));
+        artists.add(new Artist(1L, "ArtistName", albums, tracks));
 
         final String name = "trackName";
         final Optional<List<Artist>> expectedResult = Optional.of(artists);
@@ -129,8 +128,5 @@ public class ArtistServiceImplTest {
         System.out.println(System.getProperty("line.separator"));
         System.out.println("Given result: " + result);
         System.out.println("------------------------------------------------------------------------------------------------------------------------------------");
-
     }
-
-
 }

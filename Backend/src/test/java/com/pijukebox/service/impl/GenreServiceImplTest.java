@@ -1,13 +1,15 @@
 package com.pijukebox.service.impl;
 
 import com.pijukebox.model.simple.SimpleGenre;
-import com.pijukebox.repository.*;
+import com.pijukebox.repository.IGenreRepository;
 import org.hamcrest.core.IsSame;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
