@@ -28,9 +28,11 @@ class QueueItem extends PolymerElement {
 
       </style>
 
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
+
       <iron-ajax
         id="queueUp"
-        url="http://localhost:8080/api/v1/player/move/track/up/[[trackIndex]]"
+        url="[[apiRootPath]]/player/move/track/up/[[trackIndex]]"
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
@@ -40,7 +42,7 @@ class QueueItem extends PolymerElement {
 
       <iron-ajax
         id="queueDown"
-        url="http://localhost:8080/api/v1/player/move/track/down/[[trackIndex]]"
+        url="[[apiRootPath]]/player/move/track/down/[[trackIndex]]"
         content-type="application/json"
         params="{{header}}"
         handle-as="json"

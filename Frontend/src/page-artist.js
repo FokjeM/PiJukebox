@@ -28,6 +28,8 @@ class PageArtist extends PolymerElement {
         }
       </style>
       
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
+
       <app-location 
         route="{{route}}"
         url-space-regex="^[[rootPath]]">
@@ -40,19 +42,18 @@ class PageArtist extends PolymerElement {
         tail="{{subroute}}">
       </app-route>
 
-      <div class="card">
-        <h1>[[artist.name]]</h1>
-      </div>
-
       <!-- Get all artist info -->
       <iron-ajax
         auto
-        url="http://localhost:8080/api/v1/extended/artists/[[routeData.artistId]]"
+        url="[[apiRootPath]]/extended/artists/[[routeData.artistId]]"
         handle-as="json"
         params="{{header}}"
         last-response="{{artist}}">
       </iron-ajax>
 
+      <div class="card">
+        <h1>[[artist.name]]</h1>
+      </div>
 
       <!-- Artist tracks -->
       <div id="artistTracks" class="card">

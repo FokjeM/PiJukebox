@@ -60,12 +60,14 @@ class PagePlaylists extends PolymerElement {
         }
 
       </style>
+
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
       
       <!-- Get current playlists -->
       <iron-ajax
         auto
         id="getPlaylists"
-        url="http://localhost:8080/api/v1/details/playlists"  
+        url="[[apiRootPath]]/details/playlists"  
         handle-as="json"
         content-type='application/json'
         params="{{header}}"
@@ -76,7 +78,7 @@ class PagePlaylists extends PolymerElement {
       <iron-ajax
         id="sendPlaylistForm"
         method="post"
-        url="http://localhost:8080/api/v1/playlists/create"
+        url="[[apiRootPath]]/playlists/create"
         handle-as="json"
         body='{"title": "{{title}}","description": "{{description}}"}'
         params="{{header}}"

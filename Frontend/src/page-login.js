@@ -34,6 +34,8 @@ class PageLogin extends PolymerElement {
         }
       </style>
       
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
+
       <div>
         <div style="padding:20px; 40px 20px 20px;">
           <paper-input label="Email" value="{{email}}" autofocus></paper-input>
@@ -45,7 +47,7 @@ class PageLogin extends PolymerElement {
         <iron-ajax
           id="loginForm"
           method="post"
-          url="http://localhost:8080/api/v1/login"
+          url="[[apiRootPath]]/login"
           handle-as="json"
           body='{"email": "{{email}}", "password": "{{password}}"}'
           content-type='application/json'

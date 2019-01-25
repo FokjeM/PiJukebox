@@ -25,6 +25,8 @@ import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-dialog/paper-dialog.js';
 import './elements/track-control.js';
 import './elements/dialog-element.js';
+import '@polymer/iron-meta/iron-meta.js';
+
 
 
 
@@ -136,6 +138,9 @@ class JukeBox extends PolymerElement {
 
         </app-header-layout>
       </app-drawer-layout>
+
+      <iron-meta key="apiPath" value="http://localhost:8080/api/v1"></iron-meta>
+
     `;
   }
 

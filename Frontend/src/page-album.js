@@ -29,6 +29,8 @@ class PageAlbum extends PolymerElement {
         }
       </style>
       
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
+
       <app-location 
         route="{{route}}"
         url-space-regex="^[[rootPath]]">
@@ -41,20 +43,20 @@ class PageAlbum extends PolymerElement {
         tail="{{subroute}}">
       </app-route>
 
-      <div class="card">
-        <h1>[[album.name]]</h1>
-        <h1>[[album.artist]]</h1>
-      </div>
-
       <!-- Get all album info -->
       <iron-ajax
         auto
-        url="http://localhost:8080/api/v1/extended/albums/[[routeData.albumId]]"
+        url="[[apiRootPath]]/extended/albums/[[routeData.albumId]]"
         handle-as="json"
         params="{{header}}"
         last-response="{{album}}">
       </iron-ajax>
       
+      <div class="card">
+        <h1>[[album.name]]</h1>
+        <h1>[[album.artist]]</h1>
+      </div>
+
       <!-- Album tracks -->
       <div id="albumTracks" class="card">
         <h1>Tracks</h1>

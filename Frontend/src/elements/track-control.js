@@ -47,22 +47,23 @@ class TrackControl extends PolymerElement {
         }
       </style>
 
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
+
       <!-- Get Play/Pause state, Volume level and Repeat state  -->
       <iron-ajax
         auto
         id="getStatus"
-        url="http://localhost:8080/api/v1/player/status"
+        url="[[apiRootPath]]/player/status"
         content-type="application/json"  
         params="{{header}}"   
         handle-as="json"
-        on-response="verifyStatus"
-        on-error="handleError">
+        on-response="verifyStatus">
       </iron-ajax>
 
       <!-- Shuffle the queue-->
       <iron-ajax
         id="shuffle"
-        url="http://localhost:8080/api/v1/player/shuffle"
+        url="[[apiRootPath]]/player/shuffle"
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
@@ -73,7 +74,7 @@ class TrackControl extends PolymerElement {
       <!-- Play current track -->
       <iron-ajax
         id="play"
-        url="http://localhost:8080/api/v1/player/play"
+        url="[[apiRootPath]]/player/play"
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
@@ -84,7 +85,7 @@ class TrackControl extends PolymerElement {
       <!-- Pause current track -->
       <iron-ajax
         id="pause"
-        url="http://localhost:8080/api/v1/player/pause"
+        url="[[apiRootPath]]/player/pause"
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
@@ -95,7 +96,7 @@ class TrackControl extends PolymerElement {
       <!-- Toggle repeat state -->
       <iron-ajax
         id="repeat"
-        url="http://localhost:8080/api/v1/player/repeat"
+        url="[[apiRootPath]]/player/repeat"
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
@@ -106,7 +107,7 @@ class TrackControl extends PolymerElement {
       <!-- Play next track in queue -->
       <iron-ajax
         id="nextTrack"
-        url="http://localhost:8080/api/v1/player/next"
+        url="[[apiRootPath]]/player/next"
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
@@ -117,7 +118,7 @@ class TrackControl extends PolymerElement {
       <!-- Play previous track in queue -->
       <iron-ajax
         id="previousTrack"
-        url="http://localhost:8080/api/v1/player/prev"
+        url="[[apiRootPath]]/player/prev"
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
@@ -128,7 +129,7 @@ class TrackControl extends PolymerElement {
       <!-- Set volume level  -->
       <iron-ajax
         id="changeVolume"
-        url="http://localhost:8080/api/v1/player/volume/{{volumeLevel}}"
+        url="[[apiRootPath]]/player/volume/{{volumeLevel}}"
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
@@ -140,7 +141,7 @@ class TrackControl extends PolymerElement {
       <iron-ajax
        id="getCurrentTrack"
        auto
-       url="http://localhost:8080/api/v1/player/current"
+       url="[[apiRootPath]]/player/current"
        handle-as="json"
        params="{{header}}"
        last-response="{{currentTrack}}">
@@ -205,7 +206,6 @@ class TrackControl extends PolymerElement {
       },
       volumeLevel: {
         type: Number,
-        // value: 2
       },
       token: {
         type: String,
@@ -233,10 +233,6 @@ class TrackControl extends PolymerElement {
     let playerStatus = JSON.parse(r.response);
     this.updateStates(playerStatus);
     this.updateControls();
-  }
-
-  handleError(e,r){
-    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Status', text: 'Could not update player status.'}, bubbles: true, composed: true }));
   }
 
   handleSetError(e,r){
