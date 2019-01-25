@@ -174,6 +174,7 @@ public class PlayerController {
     @ApiOperation(value = "Get player status")
     public Map<String, String> status() {
         Map<String, String> status = new HashMap<>();
+        status.put("currSong", playerWrapper.getCurrentSong());
         status.put("playerStatus", playerWrapper.getStatus());
         status.put("repeatState", playerWrapper.getRepeat().toString());
         return status;

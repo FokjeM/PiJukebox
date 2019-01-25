@@ -20,31 +20,13 @@ public class PlayerWrapper {
         this.songDirPath = songDirPath;
     }
 
-    public void playOne(File file) {
-        mp3Player.stop();
-        mp3Player.addToPlayList(file);
-        playerStatus.setCurrSong(FilenameUtils.removeExtension(file.getName()));
-        mp3Player.play();
-        t = new Thread(() -> {
-            boolean sw = true;
-            while (sw) {
-                if (mp3Player.isPaused() || mp3Player.isStopped()) {
-                    sw = false;
-                    if (playerStatus.getCurrStatus() != PlayerStatus.Status.PAUSED && playerStatus.getCurrStatus() != PlayerStatus.Status.STOPPED) {
-                        playerStatus.setCurrStatus(PlayerStatus.Status.INTERRUPTED);
-                    }
-                }
-            }
-        });
-        t.start();
-    }
-
     public void playOne(String file) {
-        mp3Player.stop();
-        mp3Player.addToPlayList(new File(songDirPath.toAbsolutePath() + "/" + file));
+        clearQueue();
+        mp3Player.addToPlayList(new File(songDirPath.toAbsolutePath() + "\\" + file));
         mp3Player.play();
         playerStatus.setCurrSong(FilenameUtils.removeExtension(file));
         playerStatus.setCurrStatus(PlayerStatus.Status.PLAYING);
+
         t = new Thread(() -> {
             boolean sw = true;
             while (sw) {
@@ -77,24 +59,6 @@ public class PlayerWrapper {
         playerStatus.setCurrStatus(PlayerStatus.Status.STOPPED);
     }
 
-    public void playCurrent() {
-        mp3Player.play();
-        playerStatus.setCurrStatus(PlayerStatus.Status.PLAYING);
-
-        t = new Thread(() -> {
-            boolean sw = true;
-            while (sw) {
-                if (mp3Player.isPaused() || mp3Player.isStopped()) {
-                    sw = false;
-                    if (playerStatus.getCurrStatus() != PlayerStatus.Status.PAUSED && playerStatus.getCurrStatus() != PlayerStatus.Status.STOPPED) {
-                        playerStatus.setCurrStatus(PlayerStatus.Status.INTERRUPTED);
-                    }
-                }
-            }
-        });
-        t.start();
-    }
-
     public String getStatus() {
         return playerStatus.getStatus();
     }
@@ -123,15 +87,9 @@ public class PlayerWrapper {
 //        mp3Player.play();
 //    }
 //
-//    public void playMultiple(List<File> files) {
-//        for (File f : files) {
-//            mp3Player.addToPlayList(f);
-//        }
-//        mp3Player.play();
-//    }
 
-//    public void clearQueue() {
-//        mp3Player.stop();
-//        mp3Player.getPlayList().clear();
-//    }
+    private void clearQueue() {
+        mp3Player.stop();
+        mp3Player.getPlayList().clear();
+    }
 }
