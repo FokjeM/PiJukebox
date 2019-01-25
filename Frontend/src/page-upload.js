@@ -42,19 +42,21 @@ class PageUpload extends PolymerElement {
         }
       </style>
       
-      <iron-request
-        id="sendUploadForm"
-        handle-as="document">
-      </iron-request>
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
 
       <iron-ajax
         id="scanFolder"
-        url="http://localhost:8080/api/v1/upload/folder/"
+        url="[[apiRootPath]]/upload/folder/"
         params="{{header}}"
         handle-as="json"
         on-response="handleScanResponse"
         on-error="handleError">
       </iron-ajax>
+
+      <iron-request
+        id="sendUploadForm"
+        handle-as="document">
+      </iron-request>
 
       <div class="card">  
         <div class="container">
@@ -69,7 +71,6 @@ class PageUpload extends PolymerElement {
           <paper-button raised id="subBtn" on-tap="scanForFiles">Scan folder for files</paper-button>
         </div>
       </div>
-
     `;
   }
 
@@ -83,7 +84,7 @@ class PageUpload extends PolymerElement {
     
     let xhr = new XMLHttpRequest();
     xhr.Authorization = true;
-    xhr.open("POST", "http://localhost:8080/api/v1/upload?Authorization=" + JSON.parse(JSON.stringify(this.header)).Authorization);
+    xhr.open("POST", "[[apiRootPath]]/upload?Authorization=" + JSON.parse(JSON.stringify(this.header)).Authorization);
     xhr.send(data);
   }
 

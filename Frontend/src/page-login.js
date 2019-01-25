@@ -34,6 +34,8 @@ class PageLogin extends PolymerElement {
         }
       </style>
       
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
+
       <div>
         <div style="padding:20px; 40px 20px 20px;">
           <paper-input label="Email" value="{{email}}" autofocus></paper-input>
@@ -45,7 +47,7 @@ class PageLogin extends PolymerElement {
         <iron-ajax
           id="loginForm"
           method="post"
-          url="http://localhost:8080/api/v1/login"
+          url="[[apiRootPath]]/login"
           handle-as="json"
           body='{"email": "{{email}}", "password": "{{password}}"}'
           content-type='application/json'
@@ -61,28 +63,19 @@ class PageLogin extends PolymerElement {
     this.$.loginForm.generateRequest();
   }
 
-  //Handle status code 200
   setToken(e,r){
-    if(r.status == 200){
-      //Store token in local storage
-      // var token = JSON.parse(r.response).token;
-      var token = r.response.token;
-      window.localStorage.setItem("token", token);
+    //Store token in local storage
+    var token = r.response.token;
+    window.localStorage.setItem("token", token);
 
-      //Redirect to /search
-      window.history.pushState({}, null, '/search');
-      window.dispatchEvent(new CustomEvent('location-changed'));
-    }
+    //Redirect to /search
+    window.history.pushState({}, null, '/search');
+    window.dispatchEvent(new CustomEvent('location-changed'));
   }
 
-  //Anything but 200
   handleError(e,r){
-    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Login', text: 'Invalid credentials'}, bubbles: true,composed: true, }));
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Login', text: 'Login failed (Invalid credentials?)'}, bubbles: true,composed: true, }));
   }
-
-
-
-  
 }
 
 window.customElements.define('page-login', PageLogin);

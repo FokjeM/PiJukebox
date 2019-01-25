@@ -19,6 +19,8 @@ import '@polymer/paper-input/paper-input.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/iron-icons/av-icons.js';
 import '@polymer/paper-checkbox/paper-checkbox.js';
+import '@polymer/iron-meta/iron-meta.js';
+
 
 
 class PageSearch extends PolymerElement {
@@ -39,6 +41,8 @@ class PageSearch extends PolymerElement {
         }
       </style>
 
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
+
       <div class="card">
         <h1>Search</h1>
         <div>
@@ -58,7 +62,7 @@ class PageSearch extends PolymerElement {
       method="GET"
         auto
         id="ajaxSearchTrack"
-        url="http://localhost:8080/api/v1/extended/tracks?name={{searchTerm}}"
+        url="[[apiRootPath]]/extended/tracks?name={{searchTerm}}"
         handle-as="json"
         params="{{header}}"
         content-type="application/json"
@@ -87,7 +91,7 @@ class PageSearch extends PolymerElement {
       <!-- Artist search ajax -->
       <iron-ajax
         id="ajaxSearchArtist"
-        url="http://localhost:8080/api/v1/simple/artists?name={{searchTerm}}"
+        url="[[apiRootPath]]/simple/artists?name={{searchTerm}}"
         handle-as="json"
         params="{{header}}"
         last-response="{{artistResults}}">
@@ -114,7 +118,7 @@ class PageSearch extends PolymerElement {
       <!-- Album search ajax -->
       <iron-ajax
         id="ajaxSearchAlbum"
-        url="http://localhost:8080/api/v1/simple/albums?name={{searchTerm}}"
+        url="[[apiRootPath]]/simple/albums?name={{searchTerm}}"
         handle-as="json"
         params="{{header}}"
         last-response="{{albumResults}}">
@@ -141,7 +145,7 @@ class PageSearch extends PolymerElement {
       <!-- Playlist search ajax -->
       <iron-ajax
         id="ajaxSearchPlaylist"
-        url="http://localhost:8080/api/v1/playlists?name={{searchTerm}}"
+        url="[[apiRootPath]]/playlists?name={{searchTerm}}"
         handle-as="json"
         params="{{header}}"
         last-response="{{playlistResults}}">
@@ -164,11 +168,10 @@ class PageSearch extends PolymerElement {
           No results.
         </template> 
       </div>
+
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
+    
     `;
-  }
-  ready() {
-    super.ready();
-    console.log(this.header);
   }
 
   static get properties() {

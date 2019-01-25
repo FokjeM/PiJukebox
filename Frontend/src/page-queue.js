@@ -25,11 +25,13 @@ class PageQueue extends PolymerElement {
           cursor: pointer;
         }
       </style>
+
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
       
       <iron-ajax
         id="getCurrentQueue"
         auto
-        url="http://localhost:8080/api/v1/player/queue/"
+        url="[[apiRootPath]]/player/queue/"
         params="{{header}}"
         handle-as="json"
         last-response="{{response}}">
@@ -37,7 +39,7 @@ class PageQueue extends PolymerElement {
 
       <iron-ajax
         id="clearQueue"
-        url="http://localhost:8080/api/v1/player/queue/clear/"
+        url="[[apiRootPath]]/player/queue/clear/"
         params="{{header}}"
         handle-as="json"
         on-response="queueCleared"

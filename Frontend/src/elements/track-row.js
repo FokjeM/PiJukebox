@@ -107,20 +107,23 @@ class TrackRow extends PolymerElement {
         }
       </style>
 
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
+
       <iron-ajax
         id="addToPlaylist"
         method="PATCH"
-        url="http://localhost:8080/api/v1/details/playlists/{{playlistId}}/tracks/{{trackId}}"
+        url="[[apiRootPath]]/details/playlists/{{playlistId}}/tracks/{{trackId}}"
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
-        on-response="addedTrack">
+        on-response="addedTrack"
+        on-error="addedTrackError">
       </iron-ajax>
 
       <iron-ajax
         auto
         id="getPlaylists"
-        url="http://localhost:8080/api/v1/playlists"  
+        url="[[apiRootPath]]/playlists"  
         params="{{header}}"
         handle-as="json"
         content-type="application/json"
@@ -130,7 +133,7 @@ class TrackRow extends PolymerElement {
       <iron-ajax
         id="addTrackToQueue"
         method="get"
-        url="http://localhost:8080/api/v1/player/add/{{trackId}}"
+        url="[[apiRootPath]]/player/add/{{trackId}}"
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
@@ -236,13 +239,12 @@ class TrackRow extends PolymerElement {
   }
 
   addedTrack(e, response) {
-    if(response.status == 200) {
-      this.dispatchEvent(new CustomEvent('refresh-playlist-event', { bubbles: true, composed: true }));
-      this.throwEvent('open-dialog-event', {title: 'Playlist', text: 'Song is successfully added to the playlist'});
-    }
-    else {
-      this.throwEvent('open-dialog-event', {title: 'Playlist', text: 'Something went wrong, please try again'});
-    }
+    this.dispatchEvent(new CustomEvent('refresh-playlist-event', { bubbles: true, composed: true }));
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Add track', text: this.track.name + ' is successfully added to the playlist.'}, bubbles: true,composed: true }));
+  }
+
+  addedTrackError(e,r){
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Add track', text: this.track.name + ' could not be added. (No double tracks allowed in playlist)'}, bubbles: true,composed: true }));
   }
 
   addToQueue(e){
@@ -258,17 +260,6 @@ class TrackRow extends PolymerElement {
   handleError(e,r){
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true }));
   }
-
-  throwEvent(name, detail){
-    this.dispatchEvent(new CustomEvent(name, 
-      { 
-          detail: detail, 
-          bubbles: true,
-          composed: true, 
-      }
-    ));
-  }
-
 }
 
 customElements.define('track-row', TrackRow);

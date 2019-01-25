@@ -23,17 +23,17 @@ class PageTracks extends PolymerElement {
         }
       </style>
 
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
+
       <iron-ajax
         auto
-        url="http://localhost:8080/api/v1/extended/tracks"
+        url="[[apiRootPath]]/extended/tracks"
         handle-as="json"
         params="{{header}}"
         last-response="{{response}}">
       </iron-ajax>
 
-
       <div class="card">      
-      
         <div class="container">        
           <h1>Tracks</h1>
           <dom-repeat items="{{response}}" as="track">
@@ -44,9 +44,7 @@ class PageTracks extends PolymerElement {
             </template>
           </dom-repeat>
         </div>
-      
       </div>
-      
     `;
   }
 

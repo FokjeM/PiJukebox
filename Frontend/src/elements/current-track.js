@@ -66,22 +66,10 @@ class CurrentTrack extends PolymerElement {
    return {
      currentTrack: {
        type: Object
-     },
-     token: {
-       type: String,
-       value: localStorage.getItem("token")
-     },
-     header: {
-       type: Object,
-       reflectToAttribute: true,
-       computed: '_computeTokenHeaders(token)'
      }
    };
  }
- _computeTokenHeaders(token)
- {
-     return {'Authorization': token};
- }
+
 
  hasArtist(){
    return this.currentTrack.artists.length > 0;

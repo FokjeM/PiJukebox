@@ -60,33 +60,35 @@ class PagePlaylists extends PolymerElement {
         }
 
       </style>
+
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
       
+      <!-- Get current playlists -->
       <iron-ajax
         auto
         id="getPlaylists"
-        url="http://localhost:8080/api/v1/details/playlists"  
+        url="[[apiRootPath]]/details/playlists"  
         handle-as="json"
         content-type='application/json'
         params="{{header}}"
-        last-response="{{playlists}}"
-        on-response="gotPlaylists">
+        last-response="{{playlists}}">
       </iron-ajax>
       
+      <!-- Create new playlist -->
       <iron-ajax
         id="sendPlaylistForm"
         method="post"
-        url="http://localhost:8080/api/v1/playlists/create"
+        url="[[apiRootPath]]/playlists/create"
         handle-as="json"
         body='{"title": "{{title}}","description": "{{description}}"}'
         params="{{header}}"
         content-type="application/json"
         on-response="formResponse"
-        on-error="handleError">
+        on-error="formResponseError">
       </iron-ajax>
 
       <div class="card">
         <div class="container">
-            
           <h1>Playlists</h1>
           <dom-repeat items="{{playlists}}" as="playlist">
             <template>
@@ -114,7 +116,6 @@ class PagePlaylists extends PolymerElement {
                 <paper-icon-button id="submitBtn" on-tap="submitPlaylistForm" icon="icons:add-circle-outline"></paper-icon-button>
               </div>
             </iron-form>
-            
           </div>
         </div>
       </div>
@@ -123,7 +124,7 @@ class PagePlaylists extends PolymerElement {
 
   submitPlaylistForm() {
     if(this.title == "") {
-      this.throwEvent('open-dialog-event', {title: 'Playlist', text: 'Please fill in a title'});
+      this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Status', text: 'Please fill in the title.'}, bubbles: true, composed: true }));
     }
     else{
       this.$.sendPlaylistForm.generateRequest();
@@ -131,24 +132,23 @@ class PagePlaylists extends PolymerElement {
   }
 
   formResponse(e,response) {
-    if(response.status == 200) {
-      this.updatePlaylists();
-      this.dispatchEvent(new CustomEvent('refresh-playlists-event', { bubbles: true, composed: true }));
-    } else {
-      this.throwEvent('open-dialog-event', {title: 'Playlist', text: 'Something went wrong, please try again'});
-    }
+    this.updatePlaylists();
+    this.dispatchEvent(new CustomEvent('refresh-playlists-event', { bubbles: true, composed: true }));
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Status', text: 'Playlist created.'}, bubbles: true, composed: true }));
+    this.clearPlaylistForm();
   }
 
+  formResponseError(e,r){
+    this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Status', text: 'Could not create playlist.'}, bubbles: true, composed: true }));
+  }
 
   updatePlaylists() {
     this.$.getPlaylists.generateRequest();
   }
   
-  gotPlaylists(e, response) {
-    if(response.status == 200) {
+  clearPlaylistForm() {
       this.title = "";
       this.description = "";
-    }
   }
 
   static get properties() {
@@ -167,16 +167,6 @@ class PagePlaylists extends PolymerElement {
   _computeTokenHeaders(token)
   {
       return {'Authorization': token};
-  }
-
-  throwEvent(name, detail){
-    this.dispatchEvent(new CustomEvent(name, 
-      { 
-          detail: detail, 
-          bubbles: true,
-          composed: true, 
-      }
-    ));
   }
 }
 
