@@ -18,10 +18,7 @@ class TrackControl extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
-        :host {
-          display: block;
-        }
-        
+ 
         .container {
           display: flex;
           flex-direction: column;
