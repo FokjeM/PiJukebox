@@ -27,6 +27,7 @@ public final class Track {
     private final Path filepath;
     private final String title;
     private final String artist;
+    private final String genre;
     private final int bitrate;
     private final String streamType;
     private final String duration;
@@ -65,6 +66,7 @@ public final class Track {
             bitrate = Integer.parseInt(ffprobe("-show_entries format=bit_rate").trim());
             duration = ffprobe("-show_entries format=duration").trim();
             frames = Integer.parseInt(ffprobe("-count_frames -select_streams a:0 -show_entries stream=nb_read_frames").trim());
+            genre = ffprobe("-show_entries format_tags=genre").trim();
             String art = ffprobe("-show_entries format_tags=artist").trim();
             if(art.contentEquals("")) {
                 artist = ffprobe("-show_entries format_tags=album_artist").trim();
@@ -228,8 +230,22 @@ public final class Track {
         return this.frames;
     }
     
+    /**
+     * Get the artist or album artist for this Track as specified in its metadata.
+     *
+     * @return The String artist for this Track
+     */
     public String getArtist() {
         return this.artist;
+    }
+    
+    /**
+     * Get the genre for this Track as specified in its metadata.
+     * 
+     * @return the String genre for this Track
+     */
+    public String getGenre() {
+        return this.genre;
     }
 
     /**
