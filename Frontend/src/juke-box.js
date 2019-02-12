@@ -156,7 +156,7 @@ class JukeBox extends PolymerElement {
   }
 
   openDialog(e){
-    var dialog = this.shadowRoot.getElementById('mainDialog');
+    let dialog = this.shadowRoot.getElementById('mainDialog');
     dialog.dialogTitle = e.detail.title;
     dialog.dialogText = e.detail.text;
     dialog.open();
@@ -194,7 +194,7 @@ class JukeBox extends PolymerElement {
      //
      // If no page was found in the route data, page will be an empty string.
      // Show 'tracks' in that case. And if the page doesn't exist, show 'view404'.
-    var token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     if(token == null){
       this.set('route.path', '/login');
       this.page = 'login';

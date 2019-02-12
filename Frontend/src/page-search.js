@@ -195,9 +195,9 @@ class PageSearch extends PolymerElement {
   //Toggle ajax auto attribute and hide/show results according to checkbox value
   setAjaxAuto(e){
     //Select iron ajax ID by checkbox data-ajax || data-ajax == iron ajax id
-    var ajaxElement = this.shadowRoot.getElementById(e.target.dataset.ajax);
+    let ajaxElement = this.shadowRoot.getElementById(e.target.dataset.ajax);
     //Select result div ID by checkbox data-results || data-results == result div id
-    var ajaxResults = this.shadowRoot.getElementById(e.target.dataset.results);
+    let ajaxResults = this.shadowRoot.getElementById(e.target.dataset.results);
 
     if(e.target.checked){
       ajaxElement.setAttribute('auto', '');
