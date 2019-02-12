@@ -24,6 +24,11 @@ public class TrackDetails {
 
     private Path absolutePath = Paths.get("C:\\Users\\Public\\Music\\");
 
+    /**
+     * Instantiates a new Track details object
+     *
+     * @param filename the filename
+     */
     public TrackDetails(String filename) {
         try {
             this.mp3file = new Mp3File(absolutePath + "\\" + filename);
@@ -37,6 +42,12 @@ public class TrackDetails {
         }
     }
 
+    /**
+     * Instantiates a new Track details object
+     *
+     * @param filename the filename
+     * @param path     the path
+     */
     public TrackDetails(String filename, String path) {
         try {
 
@@ -51,6 +62,9 @@ public class TrackDetails {
         }
     }
 
+    /**
+     * Set metadata to fields of current object
+     */
     private void setTagValuesToFields() {
         if (mp3file.hasId3v2Tag()) {
             ID3v2 id3v2Tag = mp3file.getId3v2Tag();

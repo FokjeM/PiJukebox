@@ -8,6 +8,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Player wrapper.
+ */
 public class PlayerWrapper {
 
     // http://jacomp3player.sourceforge.net/guide.html
@@ -21,13 +24,23 @@ public class PlayerWrapper {
     private PlayerStatus playerStatus = new PlayerStatus();
     private TrackDetails trackDetails = new TrackDetails();
 
+    /**
+     * Instantiates a new Player wrapper.
+     *
+     * @param songDirPath the song dir path
+     */
     public PlayerWrapper(Path songDirPath) {
         this.songDirPath = songDirPath;
         this.queue = new ArrayList<>();
         this.current = 0;
     }
 
-    public void playOne(String filename) {
+    /**
+     * Play one song.
+     *
+     * @param filename the filename
+     */
+    public void playOneSong(String filename) {
         mp3Player.add(new File(songDirPath.toAbsolutePath() + "\\" + filename), false);
         mp3Player.play();
         this.trackDetails = new TrackDetails(filename);
@@ -36,7 +49,10 @@ public class PlayerWrapper {
         keepSongPlaying();
     }
 
-    public void playCurrent() {
+    /**
+     * Play current song.
+     */
+    public void playCurrentSong() {
         mp3Player.add(queue.get(current));
         mp3Player.play();
         this.trackDetails = new TrackDetails(queue.get(current).getName());
@@ -45,56 +61,93 @@ public class PlayerWrapper {
         keepSongPlaying();
     }
 
-    public void playNext() {
+    /**
+     * Play next song.
+     */
+    public void playNextSong() {
         current++;
         if (current >= queue.size()) {
             current = 0;
         }
-        playCurrent();
+        playCurrentSong();
     }
 
-    public void playPrev() {
+    /**
+     * Play previous song.
+     */
+    public void playPreviousSong() {
         current--;
         if (current < 0) {
             current = queue.size() - 1;
         }
-        playCurrent();
+        playCurrentSong();
     }
 
+    /**
+     * Pause song.
+     */
     public void pauseSong() {
         mp3Player.pause();
         playerStatus.setCurrStatus(PlayerStatus.Status.PAUSED);
     }
 
+    /**
+     * Stop song.
+     */
     public void stopSong() {
         mp3Player.stop();
         playerStatus.setCurrStatus(PlayerStatus.Status.STOPPED);
     }
 
+    /**
+     * Add song to playlist.
+     *
+     * @param filename the filename
+     */
     public void addSongToPlaylist(String filename) {
         if (!inPlaylist(filename)) {
             queue.add(new File(songDirPath.toAbsolutePath() + "\\" + filename));
         }
     }
 
+    /**
+     * Remove song from playlist.
+     *
+     * @param filename the filename
+     */
     public void removeSongFromPlaylist(String filename) {
         if (inPlaylist(filename)) {
             removeSongFromQueue(filename);
         }
     }
 
-    public String getStatus() {
+    /**
+     * Gets player status.
+     *
+     * @return the player status
+     */
+    public String getPlayerStatus() {
         if (!getCurrentSong().isEmpty()) {
-            return playerStatus.getStatus();
+            return playerStatus.GetPlayerStatus();
         }
         return "";
     }
 
-    public int getVolume() {
+    /**
+     * Gets player volume.
+     *
+     * @return the player volume
+     */
+    public int getPlayerVolume() {
         return mp3Player.getVolume();
     }
 
-    public void setVolume(int volume) {
+    /**
+     * Sets player volume.
+     *
+     * @param volume the volume
+     */
+    public void setPlayerVolume(int volume) {
         try {
             mp3Player.setVolume(Math.round(volume));
         } catch (Exception ex) {
@@ -102,25 +155,46 @@ public class PlayerWrapper {
         }
     }
 
-    public Boolean getRepeat() {
+    /**
+     * Gets repeat state.
+     *
+     * @return the repeat state
+     */
+    public Boolean getRepeatState() {
         return playerStatus.isRepeat();
     }
 
+    /**
+     * Gets current song.
+     *
+     * @return the current song
+     */
     public String getCurrentSong() {
         return playerStatus.getCurrSong();
     }
 
-    public void toggleRepeat() {
+    /**
+     * Toggle repeat state.
+     */
+    public void toggleRepeatState() {
         boolean sw = !mp3Player.isRepeat();
         mp3Player.setRepeat(sw);
     }
 
-    public void shuffle() {
+    /**
+     * Toggle shuffle state.
+     */
+    public void toggleShuffleState() {
         boolean sw = !mp3Player.isShuffle();
         mp3Player.setShuffle(sw);
     }
 
-    public List<String> getQueue() {
+    /**
+     * Gets the player's queue.
+     *
+     * @return the queue
+     */
+    public List<String> getPlayerQueue() {
         List<String> currQueue = new ArrayList<>();
         for (File file : queue) {
             currQueue.add(file.getName());
@@ -128,14 +202,29 @@ public class PlayerWrapper {
         return currQueue;
     }
 
+    /**
+     * Gets artist of current song.
+     *
+     * @return the artist
+     */
     public String getArtist() {
         return trackDetails.getArtist();
     }
 
+    /**
+     * Gets genre of current song.
+     *
+     * @return the genre
+     */
     public String getGenre() {
         return trackDetails.getGenre();
     }
 
+    /**
+     * Gets album of current song.
+     *
+     * @return the album
+     */
     public String getAlbum() {
         return trackDetails.getAlbum();
     }
@@ -153,6 +242,11 @@ public class PlayerWrapper {
         return exists;
     }
 
+    /**
+     * Removes a song from the queue
+     *
+     * @param filename the filename
+     */
     private void removeSongFromQueue(String filename) {
         for (int i = 0; i < queue.size(); i++) {
             if (queue.get(i).getName().equals(filename)) {
@@ -162,6 +256,9 @@ public class PlayerWrapper {
         }
     }
 
+    /**
+     * Method to have the player keep track of the player status.
+     */
     private void keepSongPlaying() {
         new Thread(() -> {
             boolean sw = true;

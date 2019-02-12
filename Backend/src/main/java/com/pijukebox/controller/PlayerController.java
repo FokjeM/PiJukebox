@@ -49,7 +49,7 @@ public class PlayerController {
     @GetMapping("/play")
     public ResponseEntity<String> playCurrent(@RequestParam(name = "filename") String filename) {
         try {
-            playerWrapper.playOne(filename);
+            playerWrapper.playOneSong(filename);
             return new ResponseEntity<>("Playing...", HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -65,11 +65,11 @@ public class PlayerController {
     @GetMapping("/playCurrent")
     public ResponseEntity<String> playCurrent() {
         try {
-            playerWrapper.playCurrent();
+            playerWrapper.playCurrentSong();
             return new ResponseEntity<>("Playing...", HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't play track! /playCurrent", ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't play track! /playCurrentSong", ex);
         }
     }
 
@@ -113,7 +113,7 @@ public class PlayerController {
     @GetMapping("/next")
     public ResponseEntity<String> nextTrack() {
         try {
-            playerWrapper.playNext();
+            playerWrapper.playNextSong();
             return new ResponseEntity<>("Next...", HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -129,7 +129,7 @@ public class PlayerController {
     @GetMapping("/prev")
     public ResponseEntity<String> prevTrack() {
         try {
-            playerWrapper.playPrev();
+            playerWrapper.playPreviousSong();
             return new ResponseEntity<>("Previous...", HttpStatus.OK);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't play track /prev", ex);
@@ -144,11 +144,11 @@ public class PlayerController {
     @GetMapping("/shuffle")
     public ResponseEntity<String> toggleShuffle() {
         try {
-            playerWrapper.shuffle();
+            playerWrapper.toggleShuffleState();
             return new ResponseEntity<>("Shuffling...", HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't shuffle current queue", ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't toggleShuffleState current queue", ex);
         }
     }
 
@@ -160,11 +160,11 @@ public class PlayerController {
     @GetMapping("/repeat")
     public ResponseEntity<String> toggleRepeat() {
         try {
-            playerWrapper.toggleRepeat();
-            return new ResponseEntity<>("Changed toggleRepeat state...", HttpStatus.OK);
+            playerWrapper.toggleRepeatState();
+            return new ResponseEntity<>("Changed toggleRepeatState state...", HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't change toggleRepeat state", ex);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't change toggleRepeatState state", ex);
         }
     }
 
@@ -216,7 +216,7 @@ public class PlayerController {
     @GetMapping("/queue")
     public ResponseEntity<List<String>> getQueue() {
         try {
-            return new ResponseEntity<>(playerWrapper.getQueue(), HttpStatus.OK);
+            return new ResponseEntity<>(playerWrapper.getPlayerQueue(), HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Couldn't get queue", ex);
@@ -255,10 +255,10 @@ public class PlayerController {
     @ApiOperation(value = "Get player status")
     public String getStatus() {
         boolean isPlaying = false;
-        if (playerWrapper.getStatus().equals("PLAYING")) {
+        if (playerWrapper.getPlayerStatus().equals("PLAYING")) {
             isPlaying = true;
         }
-        return String.format("{\"isPlaying\": %s, \"volumeLevel\": %d, \"repeatState\": %b}", isPlaying, playerWrapper.getVolume(), playerWrapper.getRepeat());
+        return String.format("{\"isPlaying\": %s, \"volumeLevel\": %d, \"repeatState\": %b}", isPlaying, playerWrapper.getPlayerVolume(), playerWrapper.getRepeatState());
     }
 
     /**
@@ -291,8 +291,8 @@ public class PlayerController {
     @GetMapping("/volume/{volumeLevel}")
     public ResponseEntity<String> setVolume(@PathVariable int volumeLevel) {
         try {
-            playerWrapper.setVolume((volumeLevel));
-            return new ResponseEntity<>(String.format("Volume is %s", playerWrapper.getVolume()), HttpStatus.OK);
+            playerWrapper.setPlayerVolume((volumeLevel));
+            return new ResponseEntity<>(String.format("Volume is %s", playerWrapper.getPlayerVolume()), HttpStatus.OK);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't change volume", ex);
         }
@@ -306,7 +306,7 @@ public class PlayerController {
     @GetMapping("/volume")
     public ResponseEntity<String> getVolume() {
         try {
-            return new ResponseEntity<>(String.format("Volume is %s", playerWrapper.getVolume()), HttpStatus.OK);
+            return new ResponseEntity<>(String.format("Volume is %s", playerWrapper.getPlayerVolume()), HttpStatus.OK);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't change volume", ex);
         }
