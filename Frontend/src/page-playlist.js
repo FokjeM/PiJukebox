@@ -16,7 +16,7 @@ import '@polymer/app-route/app-route.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 import './elements/result-row-track.js';
 
-class SinglePlaylist extends PolymerElement {
+class PagePlaylist extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -34,6 +34,8 @@ class SinglePlaylist extends PolymerElement {
         }
       </style>
       
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
+
       <app-location 
         route="{{route}}"
         url-space-regex="^[[rootPath]]">
@@ -50,7 +52,7 @@ class SinglePlaylist extends PolymerElement {
       <iron-ajax
         auto
         id="getDetails"
-        url="http://localhost:8080/api/v1/details/playlists/[[routeData.playlistId]]"
+        url="[[apiRootPath]]/details/playlists/[[routeData.playlistId]]"
         handle-as="json"
         params="{{header}}"
         last-response="{{playlist}}">
@@ -58,7 +60,7 @@ class SinglePlaylist extends PolymerElement {
 
       <iron-ajax
         id="addPlaylist"
-        url="http://localhost:8080/api/v1/player/add/playlist/[[routeData.playlistId]]"
+        url="[[apiRootPath]]/player/add/playlist/[[routeData.playlistId]]"
         handle-as="json"
         params="{{header}}"
         on-response="handleAddPlaylist"
@@ -131,4 +133,4 @@ class SinglePlaylist extends PolymerElement {
   }
 }
 
-window.customElements.define('single-playlist', SinglePlaylist);
+window.customElements.define('page-playlist', PagePlaylist);

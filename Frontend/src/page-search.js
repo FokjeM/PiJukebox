@@ -10,9 +10,7 @@
 
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import './shared-styles.js';
-import './elements/track-list.js';
 import './elements/track-control.js';
-import './elements/track-info.js';
 import './elements/result-row-track.js';
 import './elements/result-row-artist.js';
 import './elements/result-row-playlist.js';
@@ -21,9 +19,11 @@ import '@polymer/paper-input/paper-input.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/iron-icons/av-icons.js';
 import '@polymer/paper-checkbox/paper-checkbox.js';
+import '@polymer/iron-meta/iron-meta.js';
 
 
-class SearchTracks extends PolymerElement {
+
+class PageSearch extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -40,6 +40,8 @@ class SearchTracks extends PolymerElement {
           padding: 0 15px 0 0;
         }
       </style>
+
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
 
       <div class="card">
         <h1>Search</h1>
@@ -60,7 +62,7 @@ class SearchTracks extends PolymerElement {
       method="GET"
         auto
         id="ajaxSearchTrack"
-        url="http://localhost:8080/api/v1/extended/tracks?name={{searchTerm}}"
+        url="[[apiRootPath]]/extended/tracks?name={{searchTerm}}"
         handle-as="json"
         params="{{header}}"
         content-type="application/json"
@@ -89,7 +91,7 @@ class SearchTracks extends PolymerElement {
       <!-- Artist search ajax -->
       <iron-ajax
         id="ajaxSearchArtist"
-        url="http://localhost:8080/api/v1/simple/artists?name={{searchTerm}}"
+        url="[[apiRootPath]]/simple/artists?name={{searchTerm}}"
         handle-as="json"
         params="{{header}}"
         last-response="{{artistResults}}">
@@ -116,7 +118,7 @@ class SearchTracks extends PolymerElement {
       <!-- Album search ajax -->
       <iron-ajax
         id="ajaxSearchAlbum"
-        url="http://localhost:8080/api/v1/simple/albums?name={{searchTerm}}"
+        url="[[apiRootPath]]/simple/albums?name={{searchTerm}}"
         handle-as="json"
         params="{{header}}"
         last-response="{{albumResults}}">
@@ -143,7 +145,7 @@ class SearchTracks extends PolymerElement {
       <!-- Playlist search ajax -->
       <iron-ajax
         id="ajaxSearchPlaylist"
-        url="http://localhost:8080/api/v1/playlists?name={{searchTerm}}"
+        url="[[apiRootPath]]/playlists?name={{searchTerm}}"
         handle-as="json"
         params="{{header}}"
         last-response="{{playlistResults}}">
@@ -166,11 +168,10 @@ class SearchTracks extends PolymerElement {
           No results.
         </template> 
       </div>
+
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
+    
     `;
-  }
-  ready() {
-    super.ready();
-    console.log(this.header);
   }
 
   static get properties() {
@@ -209,4 +210,4 @@ class SearchTracks extends PolymerElement {
   }
 }
 
-window.customElements.define('search-tracks', SearchTracks);
+window.customElements.define('page-search', PageSearch);

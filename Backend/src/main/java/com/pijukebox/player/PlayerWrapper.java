@@ -108,11 +108,13 @@ public class PlayerWrapper {
     }
 
     public void toggleRepeat() {
-        mp3Player.setRepeat(!mp3Player.isRepeat());
+        boolean sw = !mp3Player.isRepeat();
+        mp3Player.setRepeat(sw);
     }
 
     public void shuffle() {
-        mp3Player.setShuffle(!mp3Player.isShuffle());
+        boolean sw = !mp3Player.isShuffle();
+        mp3Player.setShuffle(sw);
     }
 
     public void addMultiple(String[] files) {

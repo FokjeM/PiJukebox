@@ -17,7 +17,7 @@ import '@polymer/iron-ajax/iron-ajax.js';
 import './elements/result-row-track.js';
 import './elements/result-row-album.js';
 
-class SingleArtist extends PolymerElement {
+class PageArtist extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -28,6 +28,8 @@ class SingleArtist extends PolymerElement {
         }
       </style>
       
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
+
       <app-location 
         route="{{route}}"
         url-space-regex="^[[rootPath]]">
@@ -40,19 +42,18 @@ class SingleArtist extends PolymerElement {
         tail="{{subroute}}">
       </app-route>
 
-      <div class="card">
-        <h1>[[artist.name]]</h1>
-      </div>
-
       <!-- Get all artist info -->
       <iron-ajax
         auto
-        url="http://localhost:8080/api/v1/extended/artists/[[routeData.artistId]]"
+        url="[[apiRootPath]]/extended/artists/[[routeData.artistId]]"
         handle-as="json"
         params="{{header}}"
         last-response="{{artist}}">
       </iron-ajax>
 
+      <div class="card">
+        <h1>[[artist.name]]</h1>
+      </div>
 
       <!-- Artist tracks -->
       <div id="artistTracks" class="card">
@@ -115,4 +116,4 @@ class SingleArtist extends PolymerElement {
 
 }
 
-window.customElements.define('single-artist', SingleArtist);
+window.customElements.define('page-artist', PageArtist);

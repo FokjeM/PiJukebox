@@ -186,15 +186,27 @@ public class PlayerController {
         }
     }
 
+//    @GetMapping("/move/track/down/{index}")
+//    public ResponseEntity<String> moveQueueItemDown(@PathVariable int index)
+//    {
+//        try{
+//            sp.moveSongDown(index);
+//            return new ResponseEntity<>("track moved up ", HttpStatus.OK);
+//        }
+//        catch (Exception ex) {
+//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, String.format("track can't be moved down"), ex);
+//        }
+//
+//    }
+
     @GetMapping(value = "/status", produces = "application/json")
     @ApiOperation(value = "Get player status")
-    public Map<String, String> status() {
-        Map<String, String> status = new HashMap<>();
-
-        addMapValue(status, "status", playerWrapper.getStatus());
-        addMapValue(status, "song", playerWrapper.getCurrentSong());
-        addMapValue(status, "repeat", playerWrapper.getRepeat().toString());
-        return status;
+    public String status() {
+        boolean isPlaying = false;
+        if (playerWrapper.getStatus().equals("PLAYING")) {
+            isPlaying = true;
+        }
+        return String.format("{\"isPlaying\": %s, \"volumeLevel\": %d, \"repeatState\": %b}", isPlaying, 10, playerWrapper.getRepeat());
     }
 
     @GetMapping("/current")

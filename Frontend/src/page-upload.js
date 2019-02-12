@@ -18,7 +18,7 @@ import '@polymer/iron-form/iron-form.js';
 import '@polymer/paper-button/paper-button.js';
 import './elements/result-row-track.js';
 
-class UploadTrack extends PolymerElement {
+class PageUpload extends PolymerElement {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -27,35 +27,57 @@ class UploadTrack extends PolymerElement {
 
           padding: 10px;
         }
+
+        #fileUpload {
+          max-width: 350px;
+        }
+
+        .uploadForm {
+          display: flex;
+          flex-direction: row;
+          align-items:flex-end;
+          justify-content: space-between;
+          margin-top: 10px;
+          max-width: 500px;
+        }
+
+        #scanForFilesContainer {
+          margin-top: 100px;
+        }
+
+        paper-button {
+          color: var(--app-primary-color);
+        }
       </style>
       
-      <iron-request
-        id="sendUploadForm"
-        handle-as="document">
-      </iron-request>
+      <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
 
       <iron-ajax
         id="scanFolder"
-        url="http://localhost:8080/api/v1/upload/folder/"
+        url="[[apiRootPath]]/upload/folder/"
         params="{{header}}"
         handle-as="json"
         on-response="handleScanResponse"
         on-error="handleError">
       </iron-ajax>
 
+      <iron-request
+        id="sendUploadForm"
+        handle-as="document">
+      </iron-request>
+
       <div class="card">  
         <div class="container">
-          <form>
+          <form class="uploadForm">
             <input id="fileUpload" type="file" name="file" multiple>
             <paper-button raised id="subBtn" on-tap="subForm">Send</paper-button>
           </form>
         </div>
 
-        <div class="container">
+        <div class="container" id="scanForFilesContainer">
           <paper-button raised id="subBtn" on-tap="scanForFiles">Scan folder for files</paper-button>
         </div>
       </div>
-
     `;
   }
 
@@ -69,7 +91,7 @@ class UploadTrack extends PolymerElement {
     
     let xhr = new XMLHttpRequest();
     xhr.Authorization = true;
-    xhr.open("POST", "http://localhost:8080/api/v1/upload?Authorization=" + JSON.parse(JSON.stringify(this.header)).Authorization);
+    xhr.open("POST", this.apiRootPath+"/upload?Authorization=" + JSON.parse(JSON.stringify(this.header)).Authorization);
     xhr.send(data);
   }
 
@@ -105,4 +127,4 @@ class UploadTrack extends PolymerElement {
   }
 }
 
-window.customElements.define('upload-track', UploadTrack);
+window.customElements.define('page-upload', PageUpload);
