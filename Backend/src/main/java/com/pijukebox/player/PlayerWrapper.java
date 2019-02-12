@@ -71,6 +71,18 @@ public class PlayerWrapper {
         playerStatus.setCurrStatus(PlayerStatus.Status.STOPPED);
     }
 
+    public void addSongToPlaylist(String filename) {
+        if (!inPlaylist(filename)) {
+            queue.add(new File(songDirPath.toAbsolutePath() + "\\" + filename));
+        }
+    }
+
+    public void removeSongFromPlaylist(String filename) {
+        if (inPlaylist(filename)) {
+            removeSongFromQueue(filename);
+        }
+    }
+
     public String getStatus() {
         if (!getCurrentSong().isEmpty()) {
             return playerStatus.getStatus();
