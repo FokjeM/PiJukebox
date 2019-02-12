@@ -32,12 +32,12 @@ public class TrackController {
         try {
             if (name != null && !name.isEmpty()) {
                 if (!trackService.findAllSimpleTrackByName(name).isPresent()) {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 }
                 return new ResponseEntity<>(trackService.findAllSimpleTrackByName(name).get(), HttpStatus.OK);
             }
             if (!trackService.findAllSimpleTrack().isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(trackService.findAllSimpleTrack().get(), HttpStatus.OK);
         } catch (Exception ex) {
@@ -51,12 +51,12 @@ public class TrackController {
         try {
             if (name != null && !name.isEmpty()) {
                 if (!trackService.findAllTracksByName(name).isPresent()) {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 }
                 return new ResponseEntity<>(trackService.findAllTracksByName(name).get(), HttpStatus.OK);
             }
             if (!trackService.findAllSimpleTrack().isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(trackService.findAllTracksWithDetails(), HttpStatus.OK);
         } catch (Exception ex) {
@@ -69,7 +69,7 @@ public class TrackController {
     public ResponseEntity<Track> trackDetails(@PathVariable Long id) {
         try {
             if (!trackService.findTrackDetailsById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(trackService.findTrackDetailsById(id).get(), HttpStatus.OK);
         } catch (Exception ex) {
@@ -82,7 +82,7 @@ public class TrackController {
     public ResponseEntity<SimpleTrack> simpleTrack(@PathVariable Long id) {
         try {
             if (!trackService.findTrackDetailsById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(trackService.findSimpleTrackById(id).get(), HttpStatus.OK);
         } catch (Exception ex) {
@@ -97,7 +97,7 @@ public class TrackController {
 
             if (name != null && !name.isEmpty()) {
                 if (!trackService.findAllTracksByGenreName(name).isPresent()) {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 }
                 return new ResponseEntity<>(trackService.findAllTracksByGenreName(name).get(), HttpStatus.OK);
             }
@@ -114,7 +114,7 @@ public class TrackController {
 
             if (name != null && !name.isEmpty()) {
                 if (!trackService.findAllTracksByArtistName(name).isPresent()) {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 }
                 return new ResponseEntity<>(trackService.findAllTracksByArtistName(name).get(), HttpStatus.OK);
             }
@@ -141,7 +141,7 @@ public class TrackController {
         try {
             if (simpleTrack.getId() != null && !simpleTrack.getId().toString().isEmpty()) {
                 if (!trackService.findTrackDetailsById(simpleTrack.getId()).isPresent()) {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 }
 
                 SimpleTrack simpleTrack1 = trackService.findSimpleTrackById(simpleTrack.getId()).get();
@@ -163,10 +163,10 @@ public class TrackController {
 
         try {
             if (!trackService.findSimpleTrackById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             if (!trackService.findTrackByGenreId(genreId).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             GenreWithTracks genreWithTracks = trackService.findTrackByGenreId(genreId).get();
             SimpleTrack simpleTrack = trackService.findSimpleTrackById(id).get();
@@ -185,10 +185,10 @@ public class TrackController {
 
         try {
             if (!trackService.findSimpleTrackById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             if (!trackService.findTrackByArtistId(artistId).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             ArtistWithTracks genreTrack = trackService.findTrackByArtistId(artistId).get();
             SimpleTrack simpleTrack = trackService.findSimpleTrackById(id).get();
@@ -206,11 +206,11 @@ public class TrackController {
         try {
             if (searchTerm != null && !searchTerm.isEmpty()) {
                 if (!trackService.findAllTracksByName(searchTerm).isPresent()) {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 }
                 return new ResponseEntity<>(trackService.findAllTracksByName(searchTerm).get(), HttpStatus.OK);
             }
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No tracks found.", ex);
         }

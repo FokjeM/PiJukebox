@@ -45,7 +45,7 @@ public class PlaylistController {
             {
                 if(!playlistService.findSimplePlaylistsByName(name).isPresent())
                 {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 }
                 return new ResponseEntity<>(playlistService.findSimplePlaylistsByName(name).get(), HttpStatus.OK);
             }
@@ -60,7 +60,7 @@ public class PlaylistController {
     public ResponseEntity<SimplePlaylist> simplePlaylistDetails(@PathVariable Long id) {
         try {
             if (!playlistService.findSimplePlaylistById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(playlistService.findSimplePlaylistById(id).get(), HttpStatus.OK);
         } catch (Exception ex) {
@@ -122,7 +122,7 @@ public class PlaylistController {
     public ResponseEntity<PlaylistWithTracks> playlistDetails(@PathVariable Long id) {
         try {
             if (!playlistService.findById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(playlistService.findById(id).get(), HttpStatus.OK);
         } catch (Exception ex) {
@@ -135,10 +135,10 @@ public class PlaylistController {
     public ResponseEntity<PlaylistWithTracks> addTrackToPlaylist(@PathVariable Long playlistID, @PathVariable Long trackId) {
         try {
             if (!playlistService.findById(playlistID).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             if (!trackService.findSimpleTrackById(trackId).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             PlaylistWithTracks playlistTrack = playlistService.findById(playlistID).get();
             Set<SimpleTrack> trackSet = playlistTrack.getTracks();
@@ -156,10 +156,10 @@ public class PlaylistController {
     public ResponseEntity<PlaylistWithTracks> removeTrackFromPlaylist(@PathVariable Long playlistID, @PathVariable Long trackId) {
         try {
             if (!playlistService.findById(playlistID).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             if (!trackService.findSimpleTrackById(trackId).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             PlaylistWithTracks playlistTrack = playlistService.findById(playlistID).get();
             Set<SimpleTrack> trackSet = playlistTrack.getTracks();

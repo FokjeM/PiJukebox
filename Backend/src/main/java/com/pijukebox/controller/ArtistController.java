@@ -30,7 +30,7 @@ public class ArtistController {
         try {
             if (name != null && !name.isEmpty()) {
                 if (!artistService.findSimpleArtistsByNameContaining(name).isPresent()) {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 }
                 return new ResponseEntity<>(artistService.findSimpleArtistsByNameContaining(name).get(), HttpStatus.OK);
             }
@@ -45,7 +45,7 @@ public class ArtistController {
     public ResponseEntity<SimpleArtist> artistDetails(@PathVariable Long id) {
         try {
             if (!artistService.findSimpleArtistById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(artistService.findSimpleArtistById(id).get(), HttpStatus.OK);
         } catch (Exception ex) {
@@ -60,7 +60,7 @@ public class ArtistController {
         try {
             if (name != null && !name.isEmpty()) {
                 if (!artistService.findExtendedArtistsByNameContaining(name).isPresent()) {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 }
                 return new ResponseEntity<>(artistService.findExtendedArtistsByNameContaining(name).get(), HttpStatus.OK);
             }
@@ -75,7 +75,7 @@ public class ArtistController {
     public ResponseEntity<Artist> getExtendedAlbum(@PathVariable Long id) {
         try {
             if (!artistService.findExtendedArtistById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             } else {
                 return new ResponseEntity<>(artistService.findExtendedArtistById(id).get(), HttpStatus.OK);
             }

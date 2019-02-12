@@ -7,6 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -22,17 +26,19 @@ public class TrackDetails {
 
     private Mp3File mp3file;
 
-    private Path absolutePath = Paths.get("C:\\Users\\Public\\Music\\");
+    private Path absolutePath = Paths.get("C:/Users/Public/Music");
 
     public TrackDetails(String filename) {
         try {
-            this.mp3file = new Mp3File(absolutePath + "\\" + filename);
+            filename = filename.trim();
+            String mainPath = Paths.get(absolutePath.toString(), filename).toString();
+            this.mp3file = new Mp3File(new File(mainPath));
             setTagValuesToFields();
 
             System.out.println("Length of this mp3 is: " + mp3file.getLengthInSeconds() + " seconds");
             System.out.println("Has ID3v1 tag?: " + (mp3file.hasId3v1Tag() ? "YES" : "NO"));
             System.out.println("Has ID3v2 tag?: " + (mp3file.hasId3v2Tag() ? "YES" : "NO"));
-        } catch (Exception ex) {
+        }catch (Exception ex) {
             ex.printStackTrace();
         }
     }

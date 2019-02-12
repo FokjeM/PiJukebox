@@ -91,9 +91,9 @@ public class PlayerWrapper {
         return "";
     }
 
-    public void setVolume(Float volume) {
+    public void setVolume(int volume) {
         try {
-            Audio.setMasterOutputVolume(volume);
+//            (volume);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -104,6 +104,12 @@ public class PlayerWrapper {
     }
 
     public String getCurrentSong() {
+        if(!queue.isEmpty())
+        {
+            playerStatus.setCurrSong(queue.get(current).getName());
+        }else {
+            playerStatus.setCurrSong("No song available");
+        }
         return playerStatus.getCurrSong();
     }
 
@@ -186,5 +192,9 @@ public class PlayerWrapper {
     private void clearQueue() {
         mp3Player.stop();
         mp3Player.getPlayList().clear();
+    }
+
+    public void clearFileQueue() {
+        queue.clear();
     }
 }
