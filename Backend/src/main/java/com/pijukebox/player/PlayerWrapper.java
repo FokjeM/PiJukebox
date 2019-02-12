@@ -11,6 +11,7 @@ import java.util.List;
 public class PlayerWrapper {
 
     // http://jacomp3player.sourceforge.net/guide.html
+    // https://sourceforge.net/p/jacomp3player/code/HEAD/tree/JACo%20MP3%20Player%20v3/
 
     private final MP3Player mp3Player = new MP3Player();
     private Path songDirPath;
@@ -27,8 +28,7 @@ public class PlayerWrapper {
     }
 
     public void playOne(String filename) {
-        clearQueue();
-        mp3Player.addToPlayList(new File(songDirPath.toAbsolutePath() + "\\" + filename));
+        mp3Player.add(new File(songDirPath.toAbsolutePath() + "\\" + filename), false);
         mp3Player.play();
         this.trackDetails = new TrackDetails(filename);
         playerStatus.setCurrSong(FilenameUtils.removeExtension(filename));
@@ -37,8 +37,7 @@ public class PlayerWrapper {
     }
 
     public void playCurrent() {
-        clearQueue();
-        mp3Player.addToPlayList(queue.get(current));
+        mp3Player.add(queue.get(current));
         mp3Player.play();
         this.trackDetails = new TrackDetails(queue.get(current).getName());
         playerStatus.setCurrStatus(PlayerStatus.Status.PLAYING);
@@ -72,18 +71,6 @@ public class PlayerWrapper {
         playerStatus.setCurrStatus(PlayerStatus.Status.STOPPED);
     }
 
-    public void addSongToPlaylist(String filename) {
-        if (!inPlaylist(filename)) {
-            queue.add(new File(songDirPath.toAbsolutePath() + "\\" + filename));
-        }
-    }
-
-    public void removeSongFromPlaylist(String filename) {
-        if (inPlaylist(filename)) {
-            removeSongFromQueue(filename);
-        }
-    }
-
     public String getStatus() {
         if (!getCurrentSong().isEmpty()) {
             return playerStatus.getStatus();
@@ -93,7 +80,8 @@ public class PlayerWrapper {
 
     public void setVolume(Float volume) {
         try {
-            Audio.setMasterOutputVolume(volume);
+            mp3Player.setVolume(Math.round(volume));
+//            Audio.setMasterOutputVolume(volume);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -115,15 +103,6 @@ public class PlayerWrapper {
     public void shuffle() {
         boolean sw = !mp3Player.isShuffle();
         mp3Player.setShuffle(sw);
-    }
-
-    public void addMultiple(String[] files) {
-        for (String f : files) {
-            File file = new File(f);
-            if (!inPlaylist(file.getName())) {
-                addSongToPlaylist(file.getName());
-            }
-        }
     }
 
     public List<String> getQueue() {
@@ -160,7 +139,6 @@ public class PlayerWrapper {
     }
 
     private void removeSongFromQueue(String filename) {
-        mp3Player.getPlayList().clear();
         for (int i = 0; i < queue.size(); i++) {
             if (queue.get(i).getName().equals(filename)) {
                 queue.remove(i);
@@ -181,10 +159,5 @@ public class PlayerWrapper {
                 }
             }
         }).start();
-    }
-
-    private void clearQueue() {
-        mp3Player.stop();
-        mp3Player.getPlayList().clear();
     }
 }
