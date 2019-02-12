@@ -90,10 +90,13 @@ public class PlayerWrapper {
         return "";
     }
 
-    public void setVolume(Float volume) {
+    public int getVolume() {
+        return mp3Player.getVolume();
+    }
+
+    public void setVolume(int volume) {
         try {
             mp3Player.setVolume(Math.round(volume));
-//            Audio.setMasterOutputVolume(volume);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
