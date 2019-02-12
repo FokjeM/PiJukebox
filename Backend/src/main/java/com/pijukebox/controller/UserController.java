@@ -40,6 +40,13 @@ public class UserController {
         return sb.toString();
     }
 
+    /**
+     * Get all users from the database
+     * <p>
+     * With relations
+     *
+     * @return All users
+     */
     @GetMapping("/users")
     @ApiOperation(value = "Get all information pertaining to users (with relations)")
     public ResponseEntity<List<User>> users() {
@@ -50,6 +57,14 @@ public class UserController {
         }
     }
 
+    /**
+     * Get a user by user ID
+     * <p>
+     * With relations
+     *
+     * @param id The user ID
+     * @return Zero or one user
+     */
     @GetMapping("/users/{id}")
     @ApiOperation(value = "Get all information pertaining to a certain user (with relations) by its ID")
     public ResponseEntity<User> users(@PathVariable Long id) {
@@ -63,6 +78,14 @@ public class UserController {
         }
     }
 
+    /**
+     * Get all playlist from a user by user ID
+     * <p>
+     * With relations
+     *
+     * @param userID The user ID
+     * @return Zero or more playlists
+     */
     @GetMapping("/users/{userID}/details/playlists")
     @ApiOperation(value = "Get all information pertaining to playlists (with relations) from a user.")
     public ResponseEntity<List<PlaylistWithTracks>> playlistsByUser(@PathVariable Long userID) {
@@ -79,8 +102,16 @@ public class UserController {
         }
     }
 
+    /**
+     * Get all playlist from a user by user ID
+     * <p>
+     * Without relations
+     *
+     * @param userID The user ID
+     * @return Zero or more playlists
+     */
     @GetMapping("/users/{userID}/playlists")
-    @ApiOperation(value = "Get all information pertaining to a playlist from a user.")
+    @ApiOperation(value = "Get all information pertaining to a playlist from a user (without relations).")
     public ResponseEntity<List<SimplePlaylist>> simplePlaylistsByUser(@PathVariable Long userID) {
         try {
             if (!userService.findById(userID).isPresent()) {
@@ -95,6 +126,13 @@ public class UserController {
         }
     }
 
+    /**
+     * Login into frontend
+     *
+     * @param loginForm A {@link LoginForm LoginForm} object
+     * @param response  A {@link HttpServletResponse HttpServletResponse} object
+     * @return A login token
+     */
     @PostMapping(value = "/login", produces = "application/json")
     @ApiOperation(value = "Login by username and password.")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginForm loginForm, HttpServletResponse response) {

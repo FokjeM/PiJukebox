@@ -26,6 +26,14 @@ public class TrackController {
         this.trackService = trackService;
     }
 
+    /**
+     * Get tracks by track name
+     * <p>
+     * Without relations
+     *
+     * @param name Name of the track
+     * @return Zero or more tracks
+     */
     @GetMapping("/simple/tracks")
     @ApiOperation(value = "Get all pertaining to tracks (without relations)", notes = "Filter the returned items using the name parameter")
     public ResponseEntity<List<SimpleTrack>> simpleTracks(@RequestParam(name = "name", required = false) String name) {
@@ -45,6 +53,14 @@ public class TrackController {
         }
     }
 
+    /**
+     * Get tracks by track name
+     * <p>
+     * With relations
+     *
+     * @param name Name of the track
+     * @return Zero or more tracks
+     */
     @GetMapping("/extended/tracks")
     @ApiOperation(value = "Get all information pertaining to tracks (with relations)", notes = "Filter the returned items using the name parameter")
     public ResponseEntity<List<Track>> detailTracks(@RequestParam(name = "name", required = false) String name) {
@@ -64,6 +80,14 @@ public class TrackController {
         }
     }
 
+    /**
+     * Get track by track ID
+     * <p>
+     * With relations
+     *
+     * @param id ID of the track
+     * @return Zero or one track
+     */
     @GetMapping("/extended/tracks/{id}")
     @ApiOperation(value = "Get all information pertaining to a certain track (with relations) by its ID")
     public ResponseEntity<Track> trackDetails(@PathVariable Long id) {
@@ -77,6 +101,14 @@ public class TrackController {
         }
     }
 
+    /**
+     * Get track by track ID
+     * <p>
+     * Without relations
+     *
+     * @param id ID of the track
+     * @return Zero or one track
+     */
     @GetMapping("/simple/tracks/{id}")
     @ApiOperation(value = "Get all information pertaining to a certain track (without relations) by its ID")
     public ResponseEntity<SimpleTrack> simpleTrack(@PathVariable Long id) {
@@ -90,6 +122,14 @@ public class TrackController {
         }
     }
 
+    /**
+     * Get tracks by genre name
+     * <p>
+     * Without relations
+     *
+     * @param name Genre of the track
+     * @return Zero or more tracks
+     */
     @GetMapping("/tracks/byGenre")
     @ApiOperation(value = "Get all information pertaining to an track by genre", notes = "Filter the returned items using the name parameter")
     public ResponseEntity<List<GenreWithTracks>> getTracksByGenreName(@RequestParam(name = "name") String name) {
@@ -107,6 +147,14 @@ public class TrackController {
         }
     }
 
+    /**
+     * Get tracks by artist name
+     * <p>
+     * Without relations
+     *
+     * @param name Artist of the track
+     * @return Zero or more tracks
+     */
     @GetMapping("/tracks/byArtist")
     @ApiOperation(value = "Get all information pertaining to an track by artist", notes = "Filter the returned items using the name parameter")
     public ResponseEntity<List<ArtistWithTracks>> getTracksByArtistName(@RequestParam(name = "name") String name) {
@@ -124,6 +172,12 @@ public class TrackController {
         }
     }
 
+    /**
+     * Add a new track to the database
+     *
+     * @param simpleTrack A {@link SimpleTrack SimpleTrack} object
+     * @return The newly added track
+     */
     @PostMapping("/simple/tracks")
     @ApiOperation(value = "Add a new track")
     public ResponseEntity<SimpleTrack> addSimpleTrack(@RequestBody SimpleTrack simpleTrack) {
@@ -135,6 +189,12 @@ public class TrackController {
         }
     }
 
+    /**
+     * Update an existing track to the database
+     *
+     * @param simpleTrack A {@link SimpleTrack SimpleTrack} object
+     * @return The updated track
+     */
     @PatchMapping("/simple/tracks")
     @ApiOperation(value = "Update an existing a track")
     public ResponseEntity<SimpleTrack> updateSimpleTrack(@RequestBody SimpleTrack simpleTrack) {
@@ -157,6 +217,13 @@ public class TrackController {
         }
     }
 
+    /**
+     * Update an existing track to the database
+     *
+     * @param id      The track ID
+     * @param genreId The genre ID
+     * @return The updated track
+     */
     @PatchMapping("/extended/tracks/{id}/genres/{genreId}")
     @ApiOperation(value = "Add a new genre to an existing track")
     public ResponseEntity<GenreWithTracks> addGenreToTrack(@PathVariable Long id, @PathVariable Long genreId) {

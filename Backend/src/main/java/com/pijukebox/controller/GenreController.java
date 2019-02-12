@@ -23,9 +23,14 @@ public class GenreController {
         this.genreService = genreService;
     }
 
+    /**
+     * Get genres by genre name
+     *
+     * @param name Name of the genre
+     * @return Zero or more genres
+     */
     @GetMapping("/genres")
     @ApiOperation(value = "Get all information pertaining to a genre (without relations)", notes = "Filter the returned items using the name parameter")
-
     public ResponseEntity<List<SimpleGenre>> genres(@RequestParam(name = "name", required = false) String name) {
         try {
             if (name != null && !name.isEmpty()) {
@@ -40,6 +45,12 @@ public class GenreController {
         }
     }
 
+    /**
+     * Get genres by genre ID
+     *
+     * @param id ID of the genre
+     * @return Zero or one genres
+     */
     @GetMapping("/genres/{id}")
     @ApiOperation(value = "Get all information pertaining to a certain genre (without relations) by its ID")
     public ResponseEntity<SimpleGenre> genreDetails(@PathVariable Long id) {

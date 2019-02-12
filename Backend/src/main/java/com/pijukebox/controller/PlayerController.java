@@ -171,7 +171,7 @@ public class PlayerController {
     /**
      * Add a song to the queue
      *
-     * @return HttpStatus.OK/HttpStatus.NOT_FOUND/HttpStatus.BAD_REQUEST
+     * @return Details of the newly added song
      */
     @GetMapping("/add/{id}")
     public ResponseEntity<String> addTrack(@PathVariable Long id) {
@@ -211,7 +211,7 @@ public class PlayerController {
     /**
      * Get current songs in the queue
      *
-     * @return HttpStatus.OK/HttpStatus.BAD_REQUEST
+     * @return The current song
      */
     @GetMapping("/queue")
     public ResponseEntity<List<String>> getQueue() {
@@ -264,7 +264,7 @@ public class PlayerController {
     /**
      * Get current song
      *
-     * @return HttpStatus.OK/HttpStatus.NOT_FOUND
+     * @return The current song
      */
     @GetMapping("/current")
     public ResponseEntity<Track> getCurrent() {
@@ -286,7 +286,7 @@ public class PlayerController {
     /**
      * Set volume level of player
      *
-     * @return HttpStatus.OK/HttpStatus.NOT_FOUND
+     * @return The new volume level
      */
     @GetMapping("/volume/{volumeLevel}")
     public ResponseEntity<String> setVolume(@PathVariable int volumeLevel) {
@@ -301,7 +301,7 @@ public class PlayerController {
     /**
      * Get volume level of player
      *
-     * @return HttpStatus.OK/HttpStatus.NOT_FOUND
+     * @return The current volume level
      */
     @GetMapping("/volume")
     public ResponseEntity<String> getVolume() {
