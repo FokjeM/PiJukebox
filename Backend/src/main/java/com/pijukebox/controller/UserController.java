@@ -70,7 +70,7 @@ public class UserController {
     public ResponseEntity<User> users(@PathVariable Long id) {
         try {
             if (!userService.findById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(userService.findById(id).get(), HttpStatus.OK);
         } catch (Exception ex) {
@@ -91,10 +91,10 @@ public class UserController {
     public ResponseEntity<List<PlaylistWithTracks>> playlistsByUser(@PathVariable Long userID) {
         try {
             if (!userService.findById(userID).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             if (!userService.findPlaylistsByUserId(userID).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(userService.findPlaylistsByUserId(userID).get(), HttpStatus.OK);
         } catch (Exception ex) {
@@ -115,10 +115,10 @@ public class UserController {
     public ResponseEntity<List<SimplePlaylist>> simplePlaylistsByUser(@PathVariable Long userID) {
         try {
             if (!userService.findById(userID).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             if (!userService.findSimplePlaylistsByUserId(userID).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(userService.findSimplePlaylistsByUserId(userID).get(), HttpStatus.OK);
         } catch (Exception ex) {

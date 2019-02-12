@@ -46,7 +46,7 @@ public class AlbumController {
         try {
             if (name != null && !name.isEmpty()) {
                 if (!albumService.findSimpleAlbumsByNameContaining(name).isPresent()) {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 }
                 return new ResponseEntity<>(albumService.findSimpleAlbumsByNameContaining(name).get(), HttpStatus.OK);
             }
@@ -71,7 +71,7 @@ public class AlbumController {
 
             if (name != null && !name.isEmpty()) {
                 if (!albumService.findSimpleAlbumsByGenreName(name).isPresent()) {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 }
                 return new ResponseEntity<>(albumService.findSimpleAlbumsByGenreName(name).get(), HttpStatus.OK);
             }
@@ -96,7 +96,7 @@ public class AlbumController {
 
             if (name != null && !name.isEmpty()) {
                 if (!albumService.findAlbumsByArtistName(name).isPresent()) {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 }
                 return new ResponseEntity<>(albumService.findAlbumsByArtistName(name).get(), HttpStatus.OK);
             }
@@ -119,7 +119,7 @@ public class AlbumController {
     public ResponseEntity<SimpleAlbum> getSimpleAlbum(@PathVariable Long id) {
         try {
             if (!albumService.findSimpleAlbumById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             } else {
                 return new ResponseEntity<>(albumService.findSimpleAlbumById(id).get(), HttpStatus.OK);
             }
@@ -142,7 +142,7 @@ public class AlbumController {
         try {
             if (name != null && !name.isEmpty()) {
                 if (!albumService.findAlbumsByNameContaining(name).isPresent()) {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 }
                 return new ResponseEntity<>(albumService.findAlbumsByNameContaining(name).get(), HttpStatus.OK);
             }
@@ -165,7 +165,7 @@ public class AlbumController {
     public ResponseEntity<Album> getExtendedAlbum(@PathVariable Long id) {
         try {
             if (!albumService.findExtendedAlbumById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             } else {
                 return new ResponseEntity<>(albumService.findExtendedAlbumById(id).get(), HttpStatus.OK);
             }
@@ -186,10 +186,10 @@ public class AlbumController {
     public ResponseEntity<AlbumWithTracks> addTrackToAlbum(@PathVariable Long albumId, @PathVariable Long trackId) {
         try {
             if (!albumService.findTrackByAlbumId(albumId).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             if (!albumService.findTrackById(trackId).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
             AlbumWithTracks album = albumService.findTrackByAlbumId(albumId).get();
@@ -223,10 +223,10 @@ public class AlbumController {
     public ResponseEntity<AlbumWithArtists> addArtistToAlbum(@PathVariable Long albumId, @PathVariable Long artistId) {
         try {
             if (!albumService.findArtistByAlbumId(albumId).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             if (!albumService.findArtistById(artistId).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
             AlbumWithArtists album = albumService.findArtistByAlbumId(albumId).get();
@@ -259,10 +259,10 @@ public class AlbumController {
     public ResponseEntity<AlbumWithGenres> addGenreToAlbum(@PathVariable Long albumId, @PathVariable Long genreId) {
         try {
             if (!albumService.findGenreByAlbumId(albumId).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             if (!albumService.findGenreById(genreId).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
             AlbumWithGenres album = albumService.findGenreByAlbumId(albumId).get();

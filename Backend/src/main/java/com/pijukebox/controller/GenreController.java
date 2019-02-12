@@ -35,7 +35,7 @@ public class GenreController {
         try {
             if (name != null && !name.isEmpty()) {
                 if (!genreService.findGenresByNameContaining(name).isPresent()) {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 }
                 return new ResponseEntity<>(genreService.findGenresByNameContaining(name).get(), HttpStatus.OK);
             }
@@ -56,7 +56,7 @@ public class GenreController {
     public ResponseEntity<SimpleGenre> genreDetails(@PathVariable Long id) {
         try {
             if (!genreService.findById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(genreService.findById(id).get(), HttpStatus.OK);
         } catch (Exception ex) {

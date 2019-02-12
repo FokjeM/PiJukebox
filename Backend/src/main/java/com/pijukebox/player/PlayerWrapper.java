@@ -170,6 +170,11 @@ public class PlayerWrapper {
      * @return the current song
      */
     public String getCurrentSong() {
+        if (!queue.isEmpty()) {
+            playerStatus.setCurrSong(queue.get(current).getName());
+        } else {
+            playerStatus.setCurrSong("No song available");
+        }
         return playerStatus.getCurrSong();
     }
 
@@ -271,5 +276,28 @@ public class PlayerWrapper {
                 }
             }
         }).start();
+    }
+
+    /**
+     * Clear the player´s queue.
+     *
+     * @param stopCurrentSong stop current song
+     */
+    public void clearQueue(Boolean stopCurrentSong) {
+        if (stopCurrentSong) {
+            mp3Player.stop();
+        }
+        queue.clear();
+    }
+
+    /**
+     * @return Songs in queue
+     */
+    public List<String> getQueue() {
+        List<String> stringQueue = new ArrayList<>();
+        for (File song : queue) {
+            stringQueue.add(song.getName());
+        }
+        return stringQueue;
     }
 }

@@ -31,15 +31,16 @@ class PageQueue extends PolymerElement {
       <iron-ajax
         id="getCurrentQueue"
         auto
-        url="[[apiRootPath]]/player/queue/"
+        url="[[apiRootPath]]/player/queue"
         params="{{header}}"
         handle-as="json"
-        last-response="{{response}}">
+        last-response="{{response}}"
+        on-response="getResponse">
       </iron-ajax>
 
       <iron-ajax
         id="clearQueue"
-        url="[[apiRootPath]]/player/queue/clear/"
+        url="[[apiRootPath]]/player/queue/clear"
         params="{{header}}"
         handle-as="json"
         on-response="queueCleared"
@@ -54,7 +55,7 @@ class PageQueue extends PolymerElement {
               <queue-item
                   track-id="{{track.id}}"
                   track-name="{{track.name}}"
-                  track-artist="{{track.artists}}"
+                  track-artists="{{track.artists}}"
                   track-index={{innerIndex}}>
               </queue-item>
             </template>
@@ -73,6 +74,9 @@ class PageQueue extends PolymerElement {
 
   ready(){
     super.ready();
+    console.log(this.response);
+    // this.$.getCurrentQueue.generateRequest();
+  
     window.addEventListener('refresh-queue-event', function(e) {
       this.$.getCurrentQueue.generateRequest();
     }.bind(this));
@@ -80,6 +84,7 @@ class PageQueue extends PolymerElement {
  
   clearQueue(e){
     this.$.clearQueue.generateRequest();
+    
   }
 
   queueChanged(e, r) {
@@ -99,6 +104,11 @@ class PageQueue extends PolymerElement {
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong, please try again'}, bubbles: true, composed: true }));
   }
 
+  getResponse(e, r) {
+    console.log(r.response);
+    this.response = r.response;
+  }
+
   static get properties() {
     return {
       token: {
@@ -109,6 +119,10 @@ class PageQueue extends PolymerElement {
         type: Object,
         reflectToAttribute: true,
         computed: '_computeTokenHeaders(token)'
+      },
+      response: {
+        type: Array,
+        value: []
       }
     };
   }

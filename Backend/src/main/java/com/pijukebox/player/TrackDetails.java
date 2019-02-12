@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -22,7 +23,7 @@ public class TrackDetails {
 
     private Mp3File mp3file;
 
-    private Path absolutePath = Paths.get("C:\\Users\\Public\\Music\\");
+    private Path absolutePath = Paths.get("C:/Users/Public/Music");
 
     /**
      * Instantiates a new Track details object
@@ -31,7 +32,9 @@ public class TrackDetails {
      */
     public TrackDetails(String filename) {
         try {
-            this.mp3file = new Mp3File(absolutePath + "\\" + filename);
+            filename = filename.trim();
+            String mainPath = Paths.get(absolutePath.toString(), filename).toString();
+            this.mp3file = new Mp3File(new File(mainPath));
             setTagValuesToFields();
 
             System.out.println("Length of this mp3 is: " + mp3file.getLengthInSeconds() + " seconds");

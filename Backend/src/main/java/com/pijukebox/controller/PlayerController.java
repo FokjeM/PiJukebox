@@ -6,6 +6,7 @@ import com.pijukebox.player.PlayerWrapper;
 import com.pijukebox.service.IPlaylistService;
 import com.pijukebox.service.ITrackService;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -177,7 +179,7 @@ public class PlayerController {
     public ResponseEntity<String> addTrack(@PathVariable Long id) {
         try {
             if (!trackService.findSimpleTrackById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             SimpleTrack track = trackService.findSimpleTrackById(id).get();
             playerWrapper.addSongToPlaylist(track.getFilename());
@@ -197,7 +199,7 @@ public class PlayerController {
     public ResponseEntity<String> deleteTrack(@PathVariable Long id) {
         try {
             if (!trackService.findSimpleTrackById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             SimpleTrack track = trackService.findSimpleTrackById(id).get();
             playerWrapper.removeSongFromPlaylist(track.getFilename());
@@ -214,9 +216,17 @@ public class PlayerController {
      * @return The current song
      */
     @GetMapping("/queue")
-    public ResponseEntity<List<String>> getQueue() {
+    public ResponseEntity<Object> getQueue() {
         try {
-            return new ResponseEntity<>(playerWrapper.getPlayerQueue(), HttpStatus.OK);
+            List<String> songs = playerWrapper.getQueue();
+            List<Track> queue = new ArrayList<>();
+            for (String song : songs) {
+                String name = FilenameUtils.removeExtension(song);
+                if (trackService.findAllTracksByName(name).isPresent()) {
+                    queue.add(trackService.findAllTracksByName(name).get().get(0));
+                }
+            }
+            return new ResponseEntity<>(queue, HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Couldn't get queue", ex);
@@ -269,16 +279,24 @@ public class PlayerController {
     @GetMapping("/current")
     public ResponseEntity<Track> getCurrent() {
         try {
-            if (!trackService.findAllSimpleTrackByName(playerWrapper.getCurrentSong()).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            SimpleTrack st = trackService.findAllSimpleTrackByName(playerWrapper.getCurrentSong()).get().get(0);
+            if (!playerWrapper.getQueue().isEmpty()) {
 
-            if (!trackService.findTrackDetailsById(st.getId()).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                String name = FilenameUtils.removeExtension(playerWrapper.getCurrentSong());
+                if (!trackService.findAllSimpleTrackByName(name).isPresent()) {
+                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                }
+                SimpleTrack st = trackService.findAllSimpleTrackByName(name).get().get(0);
+
+                if (!trackService.findTrackDetailsById(st.getId()).isPresent()) {
+                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                }
+
+                return new ResponseEntity<>(trackService.findTrackDetailsById(st.getId()).get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.ACCEPTED);
             }
-            return new ResponseEntity<>(trackService.findTrackDetailsById(st.getId()).get(), HttpStatus.OK);
         } catch (Exception ex) {
+            ex.printStackTrace();
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't get the current track or it doesn't exists", ex);
         }
     }
@@ -309,6 +327,16 @@ public class PlayerController {
             return new ResponseEntity<>(String.format("Volume is %s", playerWrapper.getPlayerVolume()), HttpStatus.OK);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't change volume", ex);
+        }
+    }
+
+    @GetMapping("/queue/clear")
+    public ResponseEntity<String> clearQueue() {
+        try {
+            playerWrapper.clearQueue(true);
+            return new ResponseEntity<>("Queue cleared!", HttpStatus.OK);
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't clear queue", ex);
         }
     }
 }
