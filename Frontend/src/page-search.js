@@ -176,6 +176,27 @@ class PageSearch extends PolymerElement {
 
   static get properties() {
     return {
+      searchTerm: {
+        type: String
+      },
+      trackResults: {
+        type: Object
+      },
+      trackResultsCount: {
+        type: Number
+      },
+      albumResults: {
+        type: Object
+      },
+      albumResultCount: {
+        type: Number
+      },
+      playlistResults: {
+        type: Object
+      },
+      playlistResultsCount: {
+        type: Number
+      },
       token: {
         type: String,
         value: localStorage.getItem("token")

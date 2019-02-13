@@ -116,6 +116,12 @@ class PagePlaylist extends PolymerElement {
 
   static get properties() {
     return {
+      playlist: {
+        type: Object
+      },
+      playlistTrackCount: {
+        type: Number
+      },
       token: {
         type: String,
         value: localStorage.getItem("token")

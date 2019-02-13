@@ -77,7 +77,16 @@ class PageLogin extends PolymerElement {
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Login', text: 'Login failed (Invalid credentials?)'}, bubbles: true,composed: true, }));
   }
 
-
+  static get properties() {
+    return {
+      email: {
+        type: String
+      },
+      password: {
+        type: String
+      }
+    };
+  }
 
   
 }

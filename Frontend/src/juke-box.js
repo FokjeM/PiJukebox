@@ -164,11 +164,8 @@ class JukeBox extends PolymerElement {
 
   signOut(){
     window.localStorage.removeItem("token");
- 
     //Redirect to /login
     window.location.href = "/";
-    // window.history.pushState({}, null, '/login');
-    // window.dispatchEvent(new CustomEvent('location-changed'));
   }
 
   static get properties() {

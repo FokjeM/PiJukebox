@@ -192,6 +192,12 @@ class TrackRow extends PolymerElement {
         type: Number,
         value: null
       },
+      artist: {
+        type: Object
+      },
+      playlist: {
+        type: Object
+      },
       playlistId: {
         type: Number,
         value: null

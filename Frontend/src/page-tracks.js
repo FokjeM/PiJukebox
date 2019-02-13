@@ -30,13 +30,13 @@ class PageTracks extends PolymerElement {
         url="[[apiRootPath]]/extended/tracks"
         handle-as="json"
         params="{{header}}"
-        last-response="{{response}}">
+        last-response="{{tracks}}">
       </iron-ajax>
 
       <div class="card">      
         <div class="container">        
           <h1>Tracks</h1>
-          <dom-repeat items="{{response}}" as="track">
+          <dom-repeat items="{{tracks}}" as="track">
             <template>
               <track-row 
                   track="[[track]]">
@@ -50,6 +50,9 @@ class PageTracks extends PolymerElement {
 
   static get properties() {
     return {
+      tracks: {
+        type: Object
+      },
       token: {
         type: String,
         value: localStorage.getItem("token")

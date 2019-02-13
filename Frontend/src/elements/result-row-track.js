@@ -89,6 +89,9 @@ class ResultRowTrack extends PolymerElement {
       trackArtist: {
         type: Object
       },
+      artistCount: {
+        type: Number
+      },
       excludeArtist:{
         type: Boolean,
         value: false

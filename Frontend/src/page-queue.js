@@ -34,7 +34,7 @@ class PageQueue extends PolymerElement {
         url="[[apiRootPath]]/player/queue"
         params="{{header}}"
         handle-as="json"
-        last-response="{{response}}"
+        last-response="{{queueTracks}}"
         on-response="getResponse">
       </iron-ajax>
 
@@ -50,7 +50,7 @@ class PageQueue extends PolymerElement {
       <div class="card">  
         <div class="container">
           <h1>Current queue</h1>
-          <dom-repeat id="domRepeat" items="{{response}}" as="track" index-as="innerIndex" rendered-item-count="{{queueTrackCount}}">
+          <dom-repeat id="domRepeat" items="{{queueTracks}}" as="track" index-as="innerIndex" rendered-item-count="{{queueTrackCount}}">
           <template>
               <queue-item
                   track-id="{{track.id}}"
@@ -74,8 +74,6 @@ class PageQueue extends PolymerElement {
 
   ready(){
     super.ready();
-    console.log(this.response);
-    // this.$.getCurrentQueue.generateRequest();
   
     window.addEventListener('refresh-queue-event', function(e) {
       this.$.getCurrentQueue.generateRequest();
@@ -105,12 +103,17 @@ class PageQueue extends PolymerElement {
   }
 
   getResponse(e, r) {
-    console.log(r.response);
     this.response = r.response;
   }
 
   static get properties() {
     return {
+      queueTracks: {
+        type: Object
+      },
+      queueTrackCount: {
+        type: Number
+      },
       token: {
         type: String,
         value: localStorage.getItem("token")

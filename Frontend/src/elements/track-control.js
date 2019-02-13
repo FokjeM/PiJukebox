@@ -180,6 +180,9 @@ class TrackControl extends PolymerElement {
 
   static get properties() {
     return {
+      currentTrack: {
+        type: Object
+      },
       playPauseIcon: {
         type: String,
         value: "av:play-arrow"

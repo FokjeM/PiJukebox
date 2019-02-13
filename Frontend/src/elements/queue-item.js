@@ -78,7 +78,6 @@ class QueueItem extends PolymerElement {
 
   ready(){
     super.ready();
-    console.log(this.trackArtists);
     this.trackArtists.forEach(element => {
         this.trackArtist = this.trackArtist + " " + element.name;
     });
@@ -127,6 +126,9 @@ class QueueItem extends PolymerElement {
       trackArtist: {
         type: String,
         value: "Artists: "
+      },
+      trackIndex: {
+        type: Number
       },
       token: {
         type: String,
