@@ -170,7 +170,7 @@ class TrackControl extends PolymerElement {
 
           <div class="controls">
             <iron-icon icon="[[volumeIcon]]"></iron-icon>
-            <paper-slider id="volumeSlider" max="10" step="1" value="{{volumeLevel}}" on-change="changeVolumeVal"></paper-slider>
+            <paper-slider id="volumeSlider" max="100" step="1" value="{{volumeLevel}}" on-change="changeVolumeVal"></paper-slider>
           </div>
         </div>
 
@@ -346,10 +346,10 @@ class TrackControl extends PolymerElement {
   changeVolumeIcon() {
     const volume = this.volumeLevel;
     this.$.volumeSlider.value = volume;
-    if (volume >= 1 && volume <= 5) {
+    if (volume >= 1 && volume <= 50) {
       // low / medium
       this.volumeIcon = "av:volume-down";
-    } else if (volume >= 6 && volume <= 10) {
+    } else if (volume >= 51 && volume <= 100) {
       // High
       this.volumeIcon = "av:volume-up";
     } else {
