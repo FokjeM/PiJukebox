@@ -48,7 +48,7 @@ public class PlayerController {
      * @param filename The filename of a song
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND
      */
-    @GetMapping("/play")
+    @PostMapping("/play")
     public ResponseEntity<String> playCurrent(@RequestParam(name = "filename") String filename) {
         try {
             playerWrapper.playOneSong(filename);
@@ -143,7 +143,7 @@ public class PlayerController {
      *
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND
      */
-    @GetMapping("/shuffle")
+    @PostMapping("/shuffle")
     public ResponseEntity<String> toggleShuffle() {
         try {
             playerWrapper.toggleShuffleState();
@@ -159,7 +159,7 @@ public class PlayerController {
      *
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND
      */
-    @GetMapping("/repeat")
+    @PostMapping("/repeat")
     public ResponseEntity<String> toggleRepeat() {
         try {
             playerWrapper.toggleRepeatState();
@@ -175,7 +175,7 @@ public class PlayerController {
      *
      * @return Details of the newly added song
      */
-    @GetMapping("/add/{id}")
+    @PostMapping("/add/{id}")
     public ResponseEntity<String> addTrack(@PathVariable Long id) {
         try {
             if (!trackService.findSimpleTrackById(id).isPresent()) {
@@ -195,7 +195,7 @@ public class PlayerController {
      *
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND/HttpStatus.BAD_REQUEST
      */
-    @GetMapping("/remove/{id}")
+    @PostMapping("/remove/{id}")
     public ResponseEntity<String> deleteTrack(@PathVariable Long id) {
         try {
             if (!trackService.findSimpleTrackById(id).isPresent()) {
@@ -306,7 +306,7 @@ public class PlayerController {
      *
      * @return The new volume level
      */
-    @GetMapping("/volume/{volumeLevel}")
+    @PostMapping("/volume/{volumeLevel}")
     public ResponseEntity<String> setVolume(@PathVariable int volumeLevel) {
         try {
             playerWrapper.setPlayerVolume((volumeLevel));
@@ -330,7 +330,7 @@ public class PlayerController {
         }
     }
 
-    @GetMapping("/queue/clear")
+    @PostMapping("/queue/clear")
     public ResponseEntity<String> clearQueue() {
         try {
             playerWrapper.clearQueue(true);
