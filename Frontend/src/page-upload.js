@@ -82,7 +82,7 @@ class PageUpload extends PolymerElement {
   }
 
   subForm() {
-    let files = this.$.fileUpload.files;
+    const files = this.$.fileUpload.files;
     let data = new FormData();
 
     for(let i=0; i < files.length; i++) {

@@ -173,7 +173,7 @@ class TrackControl extends PolymerElement {
 
           <div class="controls">
             <iron-icon icon="[[volumeIcon]]"></iron-icon>
-            <paper-slider id="volumeSlider" max="10" step="1" value="{{volumeLevel}}" on-change="changeVolumeVal"></paper-slider>
+            <paper-slider id="volumeSlider" max="100" step="1" value="{{volumeLevel}}" on-change="changeVolumeVal"></paper-slider>
           </div>
         </div>
       </div>
@@ -246,7 +246,7 @@ class TrackControl extends PolymerElement {
 
   // Update play/pause state, repeat state and volumeLevel (+ icons)
   verifyStatus(e, r) {
-    let playerStatus = JSON.parse(r.response);
+    const playerStatus = JSON.parse(r.response);
     this.updateStates(playerStatus);
     this.updateControls();
   }
@@ -274,7 +274,7 @@ class TrackControl extends PolymerElement {
   }
 
   playPause(e) {
-    let state = this.playPauseState;
+    const state = this.playPauseState;
     if (state) {
       // player is playing
       this.pause(e);
@@ -325,7 +325,7 @@ class TrackControl extends PolymerElement {
    * Change the play/pause icon to the current play / pause state
    */
   changePlayPauseIcon() {
-    let state = this.playPauseState;
+    const state = this.playPauseState;
     if (state) {
       // player is playing
       this.playPauseIcon = "av:pause";
@@ -360,12 +360,12 @@ class TrackControl extends PolymerElement {
    * This method changes the volume icon according to the volume
    */
   changeVolumeIcon() {
-    let volume = this.volumeLevel;
+    const volume = this.volumeLevel;
     this.$.volumeSlider.value = volume;
-    if (volume >= 1 && volume <= 5) {
+    if (volume >= 1 && volume <= 50) {
       // low / medium
       this.volumeIcon = "av:volume-down";
-    } else if (volume >= 6 && volume <= 10) {
+    } else if (volume >= 51 && volume <= 100) {
       // High
       this.volumeIcon = "av:volume-up";
     } else {

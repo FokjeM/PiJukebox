@@ -236,8 +236,8 @@ class TrackRow extends PolymerElement {
   }
 
   addTrack(e) {
-    let playlist_Id = e.target.dataset.playlistId;
-    let track_Id = e.target.dataset.trackId;
+    const playlist_Id = e.target.dataset.playlistId;
+    const track_Id = e.target.dataset.trackId;
 
     this.playlistId = playlist_Id;
     this.trackId = track_Id;

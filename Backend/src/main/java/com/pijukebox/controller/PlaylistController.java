@@ -37,9 +37,17 @@ public class PlaylistController {
         this.userService = userService;
     }
 
+    /**
+     * Get playlists by playlist name
+     * <p>
+     * Without relations
+     *
+     * @param name Name of the playlist
+     * @return Zero or more playlists
+     */
     @GetMapping("/playlists")
     @ApiOperation(value = "Get all information pertaining to playlist (without relations)", notes = "Filter the returned items using the name parameter")
-    public ResponseEntity<List<SimplePlaylist>> playlists(@RequestParam(name="name", required = false) String name) {
+    public ResponseEntity<List<SimplePlaylist>> playlists(@RequestParam(name = "name", required = false) String name) {
         try {
             if(name != null && !name.isEmpty())
             {
@@ -55,6 +63,14 @@ public class PlaylistController {
         }
     }
 
+    /**
+     * Get playlists by playlist ID
+     * <p>
+     * Without relations
+     *
+     * @param id ID of the playlist
+     * @return Zero or one playlists
+     */
     @GetMapping("/playlists/{id}")
     @ApiOperation(value = "Get all information pertaining to a certain playlist (without relations) by its ID")
     public ResponseEntity<SimplePlaylist> simplePlaylistDetails(@PathVariable Long id) {
@@ -68,6 +84,12 @@ public class PlaylistController {
         }
     }
 
+    /**
+     * Create a new playlist using a {@link SimplePlaylist SimplePlaylist} object
+     *
+     * @param simplePlaylist A {@link SimplePlaylist SimplePlaylist} object
+     * @return The newly created playlist
+     */
     @PostMapping("/playlists")
     @ApiOperation(value = "Create a new empty Playlist")
     public ResponseEntity<SimplePlaylist> addSimplePlaylist(@RequestBody SimplePlaylist simplePlaylist) {
@@ -80,6 +102,14 @@ public class PlaylistController {
     }
 
 
+    /**
+     * Create a new playlist using a {@link PlaylistForm PlaylistForm} object
+     *
+     * @param playlistForm A {@link PlaylistForm PlaylistForm} object
+     * @param response     A {@link HttpServletResponse HttpServletResponse} object
+     * @param request      A {@link HttpServletRequest HttpServletRequest} object
+     * @return The newly create playlist
+     */
     @PostMapping(value = "/playlists/create", produces = "application/json")
     @ApiOperation(value = "Create a new playlist")
     public String createNewSimplePlaylist(@RequestBody PlaylistForm playlistForm, HttpServletResponse response, HttpServletRequest request) {
@@ -107,6 +137,11 @@ public class PlaylistController {
         return null;
     }
 
+    /**
+     * Get Zero or more playlists
+     *
+     * @return Zero or more playlists
+     */
     @GetMapping("/details/playlists")
     @ApiOperation(value = "Get all information pertaining to an playlist (with relations)")
     public ResponseEntity<List<PlaylistWithTracks>> detailedPlaylists() {
@@ -117,6 +152,11 @@ public class PlaylistController {
         }
     }
 
+    /**
+     * Get Zero or more playlists by playlist ID
+     *
+     * @return Zero or one playlist
+     */
     @GetMapping("/details/playlists/{id}")
     @ApiOperation(value = "Get all information pertaining to a certain playlist (with relations) by its ID")
     public ResponseEntity<PlaylistWithTracks> playlistDetails(@PathVariable Long id) {
@@ -130,6 +170,13 @@ public class PlaylistController {
         }
     }
 
+    /**
+     * Add a track to an existing playlist by track ID
+     *
+     * @param playlistID The ID of the playlist
+     * @param trackId    The ID of the track
+     * @return The playlist
+     */
     @PatchMapping("/details/playlists/{playlistID}/tracks/{trackId}")
     @ApiOperation(value = "Add a track to a playlist")
     public ResponseEntity<PlaylistWithTracks> addTrackToPlaylist(@PathVariable Long playlistID, @PathVariable Long trackId) {
@@ -151,6 +198,13 @@ public class PlaylistController {
         }
     }
 
+    /**
+     * Remove a track from an existing playlist by track ID
+     *
+     * @param playlistID The ID of the playlist
+     * @param trackId    The ID of the track
+     * @return The playlist
+     */
     @PatchMapping("/details/playlists/remove/{playlistID}/tracks/{trackId}")
     @ApiOperation(value = "Remove a track from a playlist")
     public ResponseEntity<PlaylistWithTracks> removeTrackFromPlaylist(@PathVariable Long playlistID, @PathVariable Long trackId) {
