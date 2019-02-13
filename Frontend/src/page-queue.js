@@ -74,7 +74,6 @@ class PageQueue extends PolymerElement {
 
   ready(){
     super.ready();
-  
     window.addEventListener('refresh-queue-event', function(e) {
       this.$.getCurrentQueue.generateRequest();
     }.bind(this));
@@ -82,7 +81,6 @@ class PageQueue extends PolymerElement {
  
   clearQueue(e){
     this.$.clearQueue.generateRequest();
-    
   }
 
   queueChanged(e, r) {
@@ -95,6 +93,7 @@ class PageQueue extends PolymerElement {
 
   queueCleared(e,r){
     this.$.getCurrentQueue.generateRequest(); // Refresh Queue
+    this.dispatchEvent(new CustomEvent('refresh-track-control-event', { bubbles: true, composed: true }));
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'The queue has been cleaned successfully'}, bubbles: true, composed: true }));
   }
 

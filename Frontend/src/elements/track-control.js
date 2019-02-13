@@ -49,6 +49,16 @@ class TrackControl extends PolymerElement {
 
       <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
 
+      <!-- Get currently playing track and bind to {{currentTrack}}-->
+      <iron-ajax
+       id="getCurrentTrack"
+       auto
+       url="[[apiRootPath]]/player/current"
+       handle-as="json"
+       params="{{header}}"
+       last-response="{{currentTrack}}">
+     </iron-ajax>
+
       <!-- Get Play/Pause state, Volume level and Repeat state  -->
       <iron-ajax
         auto
@@ -137,15 +147,8 @@ class TrackControl extends PolymerElement {
         on-error="handleSetError">
       </iron-ajax>
 
-      <!-- Get currently playing track and bind to {{currentTrack}}-->
-      <iron-ajax
-       id="getCurrentTrack"
-       auto
-       url="[[apiRootPath]]/player/current"
-       handle-as="json"
-       params="{{header}}"
-       last-response="{{currentTrack}}">
-     </iron-ajax>
+      <template is="dom-if" if="{{currentTrack}}">
+        
 
       <div class="container">  
         <div class="controlsContainer">
@@ -173,8 +176,8 @@ class TrackControl extends PolymerElement {
             <paper-slider id="volumeSlider" max="10" step="1" value="{{volumeLevel}}" on-change="changeVolumeVal"></paper-slider>
           </div>
         </div>
-
       </div>
+      </template> 
     `;
   }
 
@@ -230,6 +233,10 @@ class TrackControl extends PolymerElement {
   ready(){
     super.ready();
     this.token = localStorage.getItem("token");
+
+    window.addEventListener('refresh-track-control-event', function(e) {
+      this.$.getCurrentTrack.generateRequest();
+    }.bind(this));
   }
 
   getPlayerStatus(e) {
