@@ -221,9 +221,15 @@ class TrackControl extends PolymerElement {
       }
     };
   }
+  
   _computeTokenHeaders(token)
   {
       return {'Authorization': token};
+  }
+
+  ready(){
+    super.ready();
+    this.token = localStorage.getItem("token");
   }
 
   getPlayerStatus(e) {
