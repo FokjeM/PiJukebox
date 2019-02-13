@@ -8,9 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -28,6 +25,11 @@ public class TrackDetails {
 
     private Path absolutePath = Paths.get("C:/Users/Public/Music");
 
+    /**
+     * Instantiates a new Track details object
+     *
+     * @param filename the filename
+     */
     public TrackDetails(String filename) {
         try {
             filename = filename.trim();
@@ -43,6 +45,12 @@ public class TrackDetails {
         }
     }
 
+    /**
+     * Instantiates a new Track details object
+     *
+     * @param filename the filename
+     * @param path     the path
+     */
     public TrackDetails(String filename, String path) {
         try {
 
@@ -57,6 +65,9 @@ public class TrackDetails {
         }
     }
 
+    /**
+     * Set metadata to fields of current object
+     */
     private void setTagValuesToFields() {
         if (mp3file.hasId3v2Tag()) {
             ID3v2 id3v2Tag = mp3file.getId3v2Tag();
