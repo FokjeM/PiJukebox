@@ -24,6 +24,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+/**
+ * Testing class for the UserServiceImplementation.
+ * Makes sure all components required to for a UserService are implemented
+ * and in a correct, working order.
+ */
 public class UserServiceImplTest {
 
     @Mock
@@ -36,12 +41,24 @@ public class UserServiceImplTest {
     private IUserService userService;
 
 
+    /**
+     * Before each test, set up the required Mocks and a new instance of the
+     * UserServiceImplementation to test with.
+     */
     @BeforeEach
     void setUp() {
         initMocks(this);
         userService = new UserServiceImpl(userRepository,playlistRepository,simplePlaylistRepository);
     }
 
+    /**
+     * Test if finding a playlist by user works.
+     * Creates a new Set with a {@link SimpleTrack} and a new List with a {@link PlayListWithTracks}.
+     * These objects are immediately populated with testing data and an optional
+     * expected result is specified. Then the optional result is populated
+     * and checked against the assertion that it matches the expected result.
+     * For verification, both the expected and actual results are printed.
+     */
     @Test
     void testFindPlaylistsByUser() {
 
@@ -55,7 +72,7 @@ public class UserServiceImplTest {
         final Optional<List<PlaylistWithTracks>> expectedResult = Optional.of(playListWithTracks);
         when(playlistRepository.findAllByUserID(anyLong())).thenReturn(expectedResult);
 
-        final Optional<List<PlaylistWithTracks>> result = userService.findPlaylistsByUserId(1L);
+        final Optional<List<PlaylistWithTracks>> result = userService.findPlaylistsByUser(1L);
 
         assertThat("result", result, is(IsSame.sameInstance(expectedResult)));
 
@@ -69,6 +86,13 @@ public class UserServiceImplTest {
 
     }
 
+    /**
+     * Tests if a user can be found based on Email and Password.
+     * Sets the expectedresult to a new userinsrance and pushes that into the
+     * UserRepository Mock object. Then proceeeds to populate the actual result
+     * by calling the correct search function and checks wether the result is
+     * correct. Finally prints the data for verification.
+     */
     @Test
     void testFindByEmailAndPassword(){
 

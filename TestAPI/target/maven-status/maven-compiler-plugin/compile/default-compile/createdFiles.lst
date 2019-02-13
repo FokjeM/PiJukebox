@@ -1,0 +1,12 @@
+test\api\configuration\ApplicationInitializer.class
+test\player\FatalException.class
+test\player\Queue.class
+test\player\Player.class
+test\player\Player$1.class
+test\api\configuration\WebConfig.class
+test\api\PlayerController.class
+test\player\Queue$QueueEntry.class
+test\player\ErrorLogger.class
+test\player\NonFatalException.class
+test\api\configuration\DatabaseConfig.class
+test\player\Track.class

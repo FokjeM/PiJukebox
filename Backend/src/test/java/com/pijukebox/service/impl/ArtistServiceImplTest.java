@@ -30,12 +30,21 @@ class ArtistServiceImplTest {
 
     private ArtistServiceImpl artistServiceImplUnderTest;
 
+    /**
+     * Before each test, set up the Mock objects and initialize an ArtistServiceImplementation
+     */
     @BeforeEach
     void setUp() {
         initMocks(this);
         artistServiceImplUnderTest = new ArtistServiceImpl(artistRepository, simpleArtistRepository);
     }
 
+    /**
+     * Test for finding a SimpleArtist by the assigned ID
+     * This code has been provided by an external source and has only been
+     * changed in the areas applicable to our usecase.
+     * Original source: https://stackoverflow.com/a/36004293
+     */
     @Test
     void testFindSimpleArtistById() {
         String newLine = System.getProperty("line.separator");
@@ -63,6 +72,12 @@ class ArtistServiceImplTest {
         System.out.println("------------------------------------------------------------------------------------------------------------------------------------");
     }
 
+    /**
+     * Test for finding an ExtendedArtist by the assigned ID
+     * This code has been provided by an external source and has only been
+     * changed in the areas applicable to our usecase.
+     * Original source: https://stackoverflow.com/a/36004293
+     */
     @Test
     void testFindExtendedArtistById() {
         // Given
@@ -95,6 +110,12 @@ class ArtistServiceImplTest {
         System.out.println("------------------------------------------------------------------------------------------------------------------------------------");
     }
 
+    /**
+     * Test for getting the ExtendedArtist by the assigned Name or a part of it
+     * This code has been provided by an external source and has only been
+     * changed in the areas applicable to our usecase.
+     * Original source: https://stackoverflow.com/a/36004293
+     */
     @Test
     void findExtendedArtistsByNameContaining() {
         // Given
