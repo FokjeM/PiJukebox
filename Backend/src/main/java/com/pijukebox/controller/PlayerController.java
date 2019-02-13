@@ -26,7 +26,7 @@ import java.util.Map;
 public class PlayerController {
 
     /*
-     * Command: mvn install:install-file -Dfile='lib/jaco-mp3-player-0.10.2.jar' -DgroupId='jaco.mp3.player' -DartifactId=jacocontrol -Dversion='0.10.2' -Dpackaging=jar -DgeneratePom=false
+     * Command: mvn install:install-file -Dfile=lib/jaco-mp3-player-0.10.2.jar -DgroupId=jaco.mp3.player -DartifactId=jacocontrol -Dversion=0.10.2 -Dpackaging=jar -DgeneratePom=false
      * */
 
     private static Path currentRelativePath = Paths.get("");
