@@ -13,7 +13,12 @@ public class PlayerStatus {
     private boolean repeat;
     private String currSong;
 
-    public String getStatus() {
+    /**
+     * Get player status string.
+     *
+     * @return A status string
+     */
+    public String GetPlayerStatus() {
         switch (this.currStatus) {
             case PLAYING:
                 return "PLAYING";

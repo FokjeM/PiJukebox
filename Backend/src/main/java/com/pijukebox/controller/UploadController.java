@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Objects;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -44,6 +45,12 @@ public class UploadController {
         this.artistService = artistService;
     }
 
+    /**
+     * Upload a file to the Raspberry Pi
+     *
+     * @param file A file to upload
+     * @return HttpStatus.CREATED/HttpStatus.CONFLICT/HttpStatus.BAD_REQUEST
+     */
     @PostMapping(value = "/upload", consumes = {"multipart/form-data"})
     public ResponseEntity<?> upload(@RequestBody MultipartFile[] file) {
         for (MultipartFile f : file) {
@@ -63,38 +70,53 @@ public class UploadController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    /**
+     * Upload all files in a folder to the Raspberry Pi
+     *
+     * @return HttpStatus.OK/HttpStatus.BAD_REQUEST
+     */
     @GetMapping(value = "/upload/folder")
     public ResponseEntity<?> uploadFromFolder() {
         File[] files = new File(dirToScan).listFiles();
-        showFiles(files);
+        if (files != null) {
+            showFiles(files);
 
-        for (String t : tracks) {
-            if (!t.equals("desktop.ini")) {
-                try {
-                    SimpleTrack track = new SimpleTrack(null, FilenameUtils.removeExtension(t), null, t);
-                    TrackDetails trackDetails = new TrackDetails(t, dirToScan);
-                    SimpleGenre genre = new SimpleGenre(null, trackDetails.getGenre());
-                    SimpleArtist artist = new SimpleArtist(null, trackDetails.getArtist());
-                    if (!trackService.findAllSimpleTrackByName(track.getName()).isPresent()) {
-                        addFileToFolder(dirToScan, uploadDir, t);
-                        trackService.addSimpleTrack(track);
-                    }
-                    if (!genreService.findGenresByNameContaining(genre.getName()).isPresent()) {
-                        genreService.addSimpleGenre(genre);
-                    }
-                    if (!artistService.findSimpleArtistsByNameContaining(artist.getName()).isPresent()) {
-                        artistService.addSimpleArtist(artist);
-                    }
-                    Long addToArtistId = artistService.findSimpleArtistsByNameContaining(artist.getName()).get().get(0).getId();
-                    Long addToGenreId = genreService.findGenresByNameContaining(genre.getName()).get().get(0).getId();
-                    trackService.addArtistToTrack(trackService.findTrackByArtistId(addToArtistId).get());
-                    trackService.addGenreToTrack(trackService.findTrackByGenreId(addToGenreId).get());
+            for (String t : tracks) {
+                if (!t.equals("desktop.ini")) {
+                    try {
+                        SimpleTrack track = new SimpleTrack(null, FilenameUtils.removeExtension(t), null, t);
+                        TrackDetails trackDetails = new TrackDetails(t, dirToScan);
+                        SimpleGenre genre = new SimpleGenre(null, trackDetails.getGenre());
+                        SimpleArtist artist = new SimpleArtist(null, trackDetails.getArtist());
+                        if (!trackService.findAllSimpleTrackByName(track.getName()).isPresent()) {
+                            addFileToFolder(dirToScan, uploadDir, t);
+                            trackService.addSimpleTrack(track);
+                        }
+                        if (!genreService.findGenresByNameContaining(genre.getName()).isPresent()) {
+                            genreService.addSimpleGenre(genre);
+                        }
+                        if (!artistService.findSimpleArtistsByNameContaining(artist.getName()).isPresent()) {
+                            artistService.addSimpleArtist(artist);
+                        }
+                        Long addToArtistId = artistService.findSimpleArtistsByNameContaining(artist.getName()).get().get(0).getId();
+                        Long addToGenreId = genreService.findGenresByNameContaining(genre.getName()).get().get(0).getId();
 
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Something went wrong while uploading %s.", t), ex);
+                        if (trackService.findTrackByArtistId(addToArtistId).isPresent()) {
+                            trackService.addArtistToTrack(trackService.findTrackByArtistId(addToArtistId).get());
+
+                        }
+                        if (trackService.findTrackByGenreId(addToGenreId).isPresent()) {
+                            trackService.addGenreToTrack(trackService.findTrackByGenreId(addToGenreId).get());
+
+                        }
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Something went wrong while uploading %s.", t), ex);
+                    }
                 }
             }
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         return null;
     }
@@ -115,7 +137,7 @@ public class UploadController {
         tracks.clear();
         for (File file : files) {
             if (file.isDirectory()) {
-                showFiles(file.listFiles()); // Calls same method again.
+                showFiles(Objects.requireNonNull(file.listFiles())); // Calls same method again.
             } else {
                 tracks.add(file.getName());
             }

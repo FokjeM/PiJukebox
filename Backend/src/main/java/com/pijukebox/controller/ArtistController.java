@@ -24,6 +24,14 @@ public class ArtistController {
         this.artistService = artistService;
     }
 
+    /**
+     * Get artists by artist name
+     * <p>
+     * Without relations
+     *
+     * @param name Name of the artist
+     * @return Zero or more artists
+     */
     @GetMapping("/simple/artists")
     @ApiOperation(value = "Get all information pertaining artists (without relations)", notes = "Filter the returned items using the name parameter")
     public ResponseEntity<List<SimpleArtist>> getSimpleAlbums(@RequestParam(name = "name", required = false) String name) {
@@ -40,6 +48,14 @@ public class ArtistController {
         }
     }
 
+    /**
+     * Get artist by artist ID
+     * <p>
+     * Without relations
+     *
+     * @param id ID of the artist
+     * @return Zero or one artist
+     */
     @GetMapping("/simple/artists/{id}")
     @ApiOperation(value = "Get all information pertaining to a certain artist (without relations) by its ID")
     public ResponseEntity<SimpleArtist> artistDetails(@PathVariable Long id) {
@@ -54,6 +70,14 @@ public class ArtistController {
         }
     }
 
+    /**
+     * Get artists by artist name
+     * <p>
+     * With relations
+     *
+     * @param name Name of the artist
+     * @return Zero or more artists
+     */
     @GetMapping("/extended/artists")
     @ApiOperation(value = "Get all information pertaining to an album (with relations)")
     public ResponseEntity<List<Artist>> getExtendedAlbums(@RequestParam(name = "name", required = false) String name) {
@@ -70,6 +94,14 @@ public class ArtistController {
         return new ResponseEntity<>(artistService.findAllExtendedArtists(), HttpStatus.OK);
     }
 
+    /**
+     * Get artist by artist ID
+     * <p>
+     * With relations
+     *
+     * @param id ID of the artist
+     * @return Zero or one artist
+     */
     @GetMapping("/extended/artists/{id}")
     @ApiOperation(value = "Get all information pertaining to an album (with relations) by its ID")
     public ResponseEntity<Artist> getExtendedAlbum(@PathVariable Long id) {
