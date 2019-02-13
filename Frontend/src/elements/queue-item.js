@@ -51,8 +51,7 @@ class QueueItem extends PolymerElement {
       </iron-ajax>
 
       <div class="queueItem">
-        <div class="controls">
-
+        <!-- <div class="controls">
           <template is="dom-if" if="[[isFirst()]]">
             <paper-icon-button on-tap="oneUp" icon="arrow-upward" disabled></paper-icon-button>
           </template> 
@@ -62,8 +61,7 @@ class QueueItem extends PolymerElement {
           </template>  
 
           <paper-icon-button class="downButton" on-tap="oneDown" icon="arrow-downward"></paper-icon-button>
-          
-        </div>
+        </div> -->
         <div class="trackLink">
           <div class="trackName">
             [[trackName]]
