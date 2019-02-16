@@ -23,33 +23,36 @@ public class GenreController {
         this.genreService = genreService;
     }
 
+    /**
+     * Get genres by genre name
+     *
+     * @param name Name of the genre
+     * @return Zero or more genres
+     */
     @GetMapping("/genres")
     @ApiOperation(value = "Get all information pertaining to a genre (without relations)", notes = "Filter the returned items using the name parameter")
-
     public ResponseEntity<List<SimpleGenre>> genres(@RequestParam(name = "name", required = false) String name) {
-        try {
-            if (name != null && !name.isEmpty()) {
-                if (!genreService.findGenresByNameContaining(name).isPresent()) {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-                }
-                return new ResponseEntity<>(genreService.findGenresByNameContaining(name).get(), HttpStatus.OK);
+        if (name != null && !name.isEmpty()) {
+            if (!genreService.findGenresByNameContaining(name).isPresent()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>(genreService.findAll(), HttpStatus.OK);
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Genre with name %s Not Found", name), ex);
+            return new ResponseEntity<>(genreService.findGenresByNameContaining(name).get(), HttpStatus.OK);
         }
+        return new ResponseEntity<>(genreService.findAll(), HttpStatus.OK);
     }
 
+    /**
+     * Get genres by genre ID
+     *
+     * @param id ID of the genre
+     * @return Zero or one genres
+     */
     @GetMapping("/genres/{id}")
     @ApiOperation(value = "Get all information pertaining to a certain genre (without relations) by its ID")
     public ResponseEntity<SimpleGenre> genreDetails(@PathVariable Long id) {
-        try {
             if (!genreService.findById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(genreService.findById(id).get(), HttpStatus.OK);
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Genre with ID %s Not Found", id), ex);
-        }
     }
 }

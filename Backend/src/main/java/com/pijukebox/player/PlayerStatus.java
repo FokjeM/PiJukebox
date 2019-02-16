@@ -1,4 +1,4 @@
-package com.pijukebox;
+package com.pijukebox.player;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,11 +9,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PlayerStatus {
 
-    private Status currStatus;
+    private Status currStatus = Status.STOPPED;
     private boolean repeat;
     private String currSong;
 
-    public String getStatus() {
+    /**
+     * Get player status string.
+     *
+     * @return A status string
+     */
+    public String GetPlayerStatus() {
         switch (this.currStatus) {
             case PLAYING:
                 return "PLAYING";

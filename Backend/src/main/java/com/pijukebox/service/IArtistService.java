@@ -19,4 +19,6 @@ public interface IArtistService {
     Optional<SimpleArtist> findSimpleArtistById(Long id);
 
     Optional<List<SimpleArtist>> findSimpleArtistsByNameContaining(String name);
+
+    SimpleArtist addSimpleArtist(SimpleArtist artist);
 }

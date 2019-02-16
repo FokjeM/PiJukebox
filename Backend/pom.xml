@@ -22,7 +22,13 @@
         <dependency>
             <groupId>jaco.mp3.player</groupId>
             <artifactId>jacocontrol</artifactId>
-            <version>0.9.4</version>
+            <version>0.10.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mpatric</groupId>
+            <artifactId>mp3agic</artifactId>
+            <version>0.9.1</version>
         </dependency>
 
         <dependency>

@@ -40,67 +40,87 @@ public class UserController {
         return sb.toString();
     }
 
+    /**
+     * Get all users from the database
+     * <p>
+     * With relations
+     *
+     * @return All users
+     */
     @GetMapping("/users")
     @ApiOperation(value = "Get all information pertaining to users (with relations)")
     public ResponseEntity<List<User>> users() {
-        try {
-            return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No users found", ex);
-        }
+        return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
     }
 
+    /**
+     * Get a user by user ID
+     * <p>
+     * With relations
+     *
+     * @param id The user ID
+     * @return Zero or one user
+     */
     @GetMapping("/users/{id}")
     @ApiOperation(value = "Get all information pertaining to a certain user (with relations) by its ID")
     public ResponseEntity<User> users(@PathVariable Long id) {
-        try {
-            if (!userService.findById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(userService.findById(id).get(), HttpStatus.OK);
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No user with ID %s found", id), ex);
+        if (!userService.findById(id).isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+        return new ResponseEntity<>(userService.findById(id).get(), HttpStatus.OK);
     }
 
+    /**
+     * Get all playlist from a user by user ID
+     * <p>
+     * With relations
+     *
+     * @param userID The user ID
+     * @return Zero or more playlists
+     */
     @GetMapping("/users/{userID}/details/playlists")
-    @ApiOperation(value = "Get all information pertaining to playlists (with relations) from a user.")
+    @ApiOperation(value = "Get all information pertaining to play" +
+            "lists (with relations) from a user.")
     public ResponseEntity<List<PlaylistWithTracks>> playlistsByUser(@PathVariable Long userID) {
-        try {
-            if (!userService.findById(userID).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            if (!userService.findPlaylistsByUserId(userID).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(userService.findPlaylistsByUserId(userID).get(), HttpStatus.OK);
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No user with ID %s found", userID), ex);
+        if (!userService.findById(userID).isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+        if (!userService.findPlaylistsByUserId(userID).isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(userService.findPlaylistsByUserId(userID).get(), HttpStatus.OK);
     }
 
+    /**
+     * Get all playlist from a user by user ID
+     * <p>
+     * Without relations
+     *
+     * @param userID The user ID
+     * @return Zero or more playlists
+     */
     @GetMapping("/users/{userID}/playlists")
-    @ApiOperation(value = "Get all information pertaining to a playlist from a user.")
+    @ApiOperation(value = "Get all information pertaining to a playlist from a user (without relations).")
     public ResponseEntity<List<SimplePlaylist>> simplePlaylistsByUser(@PathVariable Long userID) {
-        try {
-            if (!userService.findById(userID).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            if (!userService.findSimplePlaylistsByUserId(userID).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(userService.findSimplePlaylistsByUserId(userID).get(), HttpStatus.OK);
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No user with ID %s found", userID), ex);
+        if (!userService.findById(userID).isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+        if (!userService.findSimplePlaylistsByUserId(userID).isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(userService.findSimplePlaylistsByUserId(userID).get(), HttpStatus.OK);
     }
 
+    /**
+     * Login into frontend
+     *
+     * @param loginForm A {@link LoginForm LoginForm} object
+     * @param response  A {@link HttpServletResponse HttpServletResponse} object
+     * @return A login token
+     */
     @PostMapping(value = "/login", produces = "application/json")
     @ApiOperation(value = "Login by username and password.")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginForm loginForm, HttpServletResponse response) {
-
-        try {
-
             if (!userService.findByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword()).isPresent()) {
                 response.setStatus(403);
                 return new ResponseEntity<>(new HashMap<>(), HttpStatus.BAD_REQUEST);
@@ -116,9 +136,5 @@ public class UserController {
             Map<String, String> tokenResponse = new HashMap<>();
             tokenResponse.put("token", user.getToken());
             return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", ex);
-        }
     }
 }

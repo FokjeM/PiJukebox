@@ -86,9 +86,5 @@ public class UserServiceImplTest {
         System.out.println(System.getProperty("line.separator"));
         System.out.println("Given result: " + result);
         System.out.println("------------------------------------------------------------------------------------------------------------------------------------");
-
-
     }
-    
-
 }
