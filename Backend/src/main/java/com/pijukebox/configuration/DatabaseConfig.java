@@ -2,6 +2,7 @@ package com.pijukebox.configuration;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.dbcp.BasicDataSource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -52,7 +53,7 @@ public class DatabaseConfig {
         dataSource.setMaxActive(10);
         dataSource.setMaxIdle(5);
         dataSource.setInitialSize(5);
-        dataSource.setValidationQuery("SELECT 1");
+//        dataSource.setValidationQuery("SELECT 1");
         return dataSource;
     }
 
