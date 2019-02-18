@@ -2,6 +2,7 @@ package com.pijukebox.configuration;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.dbcp.BasicDataSource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,7 +39,7 @@ public class DatabaseConfig {
     private final String DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
     private final String URL = "jdbc:mysql://localhost:3306/pijukebox?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     private final String USER_NAME = "root";
-    private final String PASSWORD = "root";
+    private final String PASSWORD = "";
 
 
     @Bean
@@ -52,7 +53,7 @@ public class DatabaseConfig {
         dataSource.setMaxActive(10);
         dataSource.setMaxIdle(5);
         dataSource.setInitialSize(5);
-        dataSource.setValidationQuery("SELECT 1");
+//        dataSource.setValidationQuery("SELECT 1");
         return dataSource;
     }
 
@@ -88,56 +89,58 @@ public class DatabaseConfig {
 
     @Bean
     public JpaVendorAdapter jpaVendorAdapter() {
+        HibernateJpaVendorAdapter adapter = null;
         try {
-            HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
+            adapter = new HibernateJpaVendorAdapter();
             adapter.setDatabase(Database.MYSQL);
             return adapter;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return null;
+        return adapter;
     }
 
     @Bean
     @PersistenceContext
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, JpaVendorAdapter jpaVendorAdapter) {
+
+        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = null;
         try {
-            LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+            entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
             entityManagerFactoryBean.setDataSource(dataSource);
             entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter);
             entityManagerFactoryBean.setPackagesToScan("com.pijukebox.model");
-            return entityManagerFactoryBean;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return null;
+        return entityManagerFactoryBean;
     }
 
     @Bean
     public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
+        LocalSessionFactoryBean sfb = null;
         try {
-            LocalSessionFactoryBean sfb = new LocalSessionFactoryBean();
+            sfb = new LocalSessionFactoryBean();
             sfb.setDataSource(dataSource);
             sfb.setPackagesToScan("com.pijukebox.model");
             Properties props = new Properties();
             props.setProperty("dialect", "org.hibernate.dialect.MySQLDialect");
             sfb.setHibernateProperties(props);
-            return sfb;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return null;
+        return sfb;
     }
 
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+        JpaTransactionManager transactionManager = null;
         try {
-            JpaTransactionManager transactionManager = new JpaTransactionManager();
+             transactionManager = new JpaTransactionManager();
             transactionManager.setEntityManagerFactory(entityManagerFactory);
-            return transactionManager;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return null;
+        return transactionManager;
     }
 }
