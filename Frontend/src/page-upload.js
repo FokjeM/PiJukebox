@@ -99,11 +99,11 @@ class PageUpload extends PolymerElement {
     this.$.scanFolder.generateRequest();
   }
 
-  handleScanResponse(e,r){
+  handleScanResponse(){
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Upload', text: 'Scan was successful'}, bubbles: true, composed: true }));
   }
 
-  handleError(e,r){
+  handleError(){
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Upload', text: 'Something went wrong'}, bubbles: true,composed: true }));
   }
 

@@ -135,14 +135,14 @@ class PagePlaylists extends PolymerElement {
     }
   }
 
-  formResponse(e,response) {
+  formResponse() {
     this.updatePlaylists();
     this.dispatchEvent(new CustomEvent('refresh-playlists-event', { bubbles: true, composed: true }));
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Status', text: 'Playlist created.'}, bubbles: true, composed: true }));
     this.clearPlaylistForm();
   }
 
-  formResponseError(e,r){
+  formResponseError(){
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Status', text: 'Could not create playlist.'}, bubbles: true, composed: true }));
   }
 

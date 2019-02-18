@@ -239,12 +239,12 @@ class TrackControl extends PolymerElement {
     super.ready();
     this.token = localStorage.getItem("token");
 
-    window.addEventListener('refresh-track-control-event', function(e) {
+    window.addEventListener('refresh-track-control-event', function() {
       this.$.getCurrentTrack.generateRequest();
     }.bind(this));
   }
 
-  getPlayerStatus(e) {
+  getPlayerStatus() {
     this.$.getStatus.generateRequest();
     this.$.getCurrentTrack.generateRequest();
   }
@@ -256,7 +256,7 @@ class TrackControl extends PolymerElement {
     this.updateControls();
   }
 
-  handleSetError(e,r){
+  handleSetError(){
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Status', text: 'Could not send request.'}, bubbles: true, composed: true }));
   }
 
@@ -289,27 +289,27 @@ class TrackControl extends PolymerElement {
     }
   }
 
-  play(e) {
+  play() {
     this.$.play.generateRequest();
   }
 
-  pause(e){
+  pause(){
     this.$.pause.generateRequest();
   }
   
-  repeat(e) {
+  repeat() {
     this.$.repeat.generateRequest();
   }
   
-  nextTrack(e) {
+  nextTrack() {
     this.$.nextTrack.generateRequest();
   }
   
-  previousTrack(e) {
+  previousTrack() {
     this.$.previousTrack.generateRequest();
   }
 
-  shuffle(e){
+  shuffle(){
     this.$.shuffle.generateRequest();
     this.dispatchEvent(new CustomEvent('refresh-queue-event', { bubbles: true, composed: true }));
   }
@@ -356,7 +356,7 @@ class TrackControl extends PolymerElement {
   /**
    * This method calls the changeVolumeIcon and changeVolumeLevel methods 
    */
-  changeVolumeVal(e) {
+  changeVolumeVal() {
     this.changeVolumeIcon();
     this.changeVolumeLevel();
   }

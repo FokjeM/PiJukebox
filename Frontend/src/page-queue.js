@@ -74,30 +74,30 @@ class PageQueue extends PolymerElement {
 
   ready(){
     super.ready();
-    window.addEventListener('refresh-queue-event', function(e) {
+    window.addEventListener('refresh-queue-event', function() {
       this.$.getCurrentQueue.generateRequest();
     }.bind(this));
   }
  
-  clearQueue(e){
+  clearQueue(){
     this.$.clearQueue.generateRequest();
   }
 
-  queueChanged(e, r) {
+  queueChanged() {
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'The queue changed successfully'}, bubbles: true, composed: true }));
   }
 
-  queueChangedError(e,r){
+  queueChangedError(){
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong, please try again'}, bubbles: true, composed: true }));
   }
 
-  queueCleared(e,r){
+  queueCleared(){
     this.$.getCurrentQueue.generateRequest(); // Refresh Queue
     this.dispatchEvent(new CustomEvent('refresh-track-control-event', { bubbles: true, composed: true }));
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'The queue has been cleaned successfully'}, bubbles: true, composed: true }));
   }
 
-  queueClearedError(e,r){
+  queueClearedError(){
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong, please try again'}, bubbles: true, composed: true }));
   }
 

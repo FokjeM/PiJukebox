@@ -40,7 +40,7 @@ class DialogElement extends PolymerElement {
     };
   }
 
-  open(e) {
+  open() {
     this.$.dialog.open();
   }
 

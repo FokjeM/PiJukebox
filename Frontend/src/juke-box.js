@@ -144,8 +144,8 @@ class JukeBox extends PolymerElement {
     `;
   }
 
-  isLogin(page){
-    return page == 'login';
+  isLogin(){
+    return this.page == 'login';
   }
 
   ready(){
@@ -156,7 +156,7 @@ class JukeBox extends PolymerElement {
   }
 
   openDialog(e){
-    let dialog = this.shadowRoot.getElementById('mainDialog');
+    var dialog = this.shadowRoot.getElementById('mainDialog');
     dialog.dialogTitle = e.detail.title;
     dialog.dialogText = e.detail.text;
     dialog.open();
@@ -176,8 +176,22 @@ class JukeBox extends PolymerElement {
         observer: '_pageChanged'
       },
       routeData: Object,
-      subroute: Object
+      subroute: Object,
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
+      }
     };
+  }
+  
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
   }
 
   static get observers() {
@@ -191,7 +205,7 @@ class JukeBox extends PolymerElement {
      //
      // If no page was found in the route data, page will be an empty string.
      // Show 'tracks' in that case. And if the page doesn't exist, show 'view404'.
-    const token = localStorage.getItem('token');
+    var token = localStorage.getItem('token');
     if(token == null){
       this.set('route.path', '/login');
       this.page = 'login';

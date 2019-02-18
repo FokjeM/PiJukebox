@@ -73,7 +73,7 @@ class PageLogin extends PolymerElement {
     window.dispatchEvent(new CustomEvent('location-changed'));
   }
 
-  handleError(e,r){
+  handleError(){
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Login', text: 'Login failed (Invalid credentials?)'}, bubbles: true,composed: true, }));
   }
 

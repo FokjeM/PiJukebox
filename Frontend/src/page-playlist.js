@@ -96,21 +96,21 @@ class PagePlaylist extends PolymerElement {
 
   ready(){
     super.ready();
-    window.addEventListener('refresh-playlist-event', function(e) {
+    window.addEventListener('refresh-playlist-event', function() {
       this.$.getDetails.generateRequest();
     }.bind(this));
   }
 
-  addPlaylistToQueue(e){
+  addPlaylistToQueue(){
     this.$.addPlaylist.generateRequest();
   }
 
-  handleAddPlaylist(e,r){
+  handleAddPlaylist(){
     this.dispatchEvent(new CustomEvent('refresh-queue-event', { bubbles: true, composed: true }));
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Playlist', text: 'Playlist has been added to the queue.'}, bubbles: true, composed: true }));
   }
 
-  handleAddPlaylistError(e,r){
+  handleAddPlaylistError(){
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Playlist', text: 'Playlist has not been added to the queue.'}, bubbles: true, composed: true }));
   }
 

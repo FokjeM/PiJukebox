@@ -220,7 +220,7 @@ class TrackRow extends PolymerElement {
 
   ready(){
     super.ready();
-    window.addEventListener('refresh-playlists-event', function(e) {
+    window.addEventListener('refresh-playlists-event', function() {
       this.$.getPlaylists.generateRequest();
     }.bind(this));
   }
@@ -244,16 +244,16 @@ class TrackRow extends PolymerElement {
     this.$.addToPlaylist.generateRequest();
   }
 
-  addedTrack(e, response) {
+  addedTrack() {
     this.dispatchEvent(new CustomEvent('refresh-playlist-event', { bubbles: true, composed: true }));
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Add track', text: this.track.name + ' is successfully added to the playlist.'}, bubbles: true,composed: true }));
   }
 
-  addedTrackError(e,r){
+  addedTrackError(){
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Add track', text: this.track.name + ' could not be added. (No double tracks allowed in playlist)'}, bubbles: true,composed: true }));
   }
 
-  addToQueue(e){
+  addToQueue(){
     this.trackId = this.track.id;
     this.$.addTrackToQueue.generateRequest();
   }
