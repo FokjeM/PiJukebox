@@ -2,12 +2,15 @@ package com.pijukebox.player;
 
 import com.mpatric.mp3agic.ID3v1;
 import com.mpatric.mp3agic.ID3v2;
+import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
+import com.mpatric.mp3agic.UnsupportedTagException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -23,30 +26,12 @@ public class TrackDetails {
 
     private Mp3File mp3file;
 
-    private Path absolutePath = Paths.get("C:/Users/Public/Music");
+    private final static Path ABSOLUTE_PATH = Paths.get("C:/Users/Public/Music");
 
     /**
-     * Instantiates a new Track details object
-     *
-     * @param filename the filename
-     */
-    public TrackDetails(String filename) {
-        try {
-            filename = filename.trim();
-            String mainPath = Paths.get(absolutePath.toString(), filename).toString();
-            this.mp3file = new Mp3File(new File(mainPath));
-            setTagValuesToFields();
-
-            System.out.println("Length of this mp3 is: " + mp3file.getLengthInSeconds() + " seconds");
-            System.out.println("Has ID3v1 tag?: " + (mp3file.hasId3v1Tag() ? "YES" : "NO"));
-            System.out.println("Has ID3v2 tag?: " + (mp3file.hasId3v2Tag() ? "YES" : "NO"));
-        }catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    /**
-     * Instantiates a new Track details object
+     * Instantiates a new Track details object.
+     * Takes the information from the file with the specified name at the
+     * specified location.
      *
      * @param filename the filename
      * @param path     the path
@@ -54,19 +39,30 @@ public class TrackDetails {
     public TrackDetails(String filename, String path) {
         try {
 
-            this.mp3file = new Mp3File(Paths.get(path) + "\\" + filename);
+            this.mp3file = new Mp3File(Paths.get(path) + "\\" + filename.trim());
             setTagValuesToFields();
 
             System.out.println("Length of this mp3 is: " + mp3file.getLengthInSeconds() + " seconds");
             System.out.println("Has ID3v1 tag?: " + (mp3file.hasId3v1Tag() ? "YES" : "NO"));
             System.out.println("Has ID3v2 tag?: " + (mp3file.hasId3v2Tag() ? "YES" : "NO"));
-        } catch (Exception ex) {
+        } catch (InvalidDataException | UnsupportedTagException | IOException ex) {
             ex.printStackTrace();
         }
     }
 
     /**
-     * Set metadata to fields of current object
+     * Instantiates a new Track details object.
+     * Takes the information from the file with the specified name in the
+     * default file location.
+     *
+     * @param filename the filename
+     */
+    public TrackDetails(String filename) {
+        this(filename.trim(), Paths.get(TrackDetails.ABSOLUTE_PATH.toString()).toString());
+    }
+
+    /**
+     * Set metadata of the current Track file to the fields of current object
      */
     private void setTagValuesToFields() {
         if (mp3file.hasId3v2Tag()) {
