@@ -9,10 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface IPlaylistWithTracksRepository extends JpaRepository<PlaylistWithTracks, Long> {
-
-    List<PlaylistWithTracks> findAll();
-
-    Optional<PlaylistWithTracks> findById(Long id);
-
     Optional<List<PlaylistWithTracks>> findAllByUserID(Long userID);
 }

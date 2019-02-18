@@ -9,6 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface IGenreWithAlbumsRepository extends JpaRepository<GenreWithAlbums, Long> {
-
     Optional<List<GenreWithAlbums>> findGenreAlbumsByNameContaining(String name);
 }
