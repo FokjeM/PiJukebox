@@ -90,6 +90,19 @@ class PageUpload extends PolymerElement {
     }
     
     let xhr = new XMLHttpRequest();
+
+    xhr.addEventListener('load', function() {
+      if(xhr.status === 409){
+        this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Upload', text: 'File already exists.'}, bubbles: true,composed: true }));
+      }
+      else if(xhr.status === 201){
+        this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Upload', text: 'File has been uploaded.'}, bubbles: true,composed: true }));
+      }
+      else{
+        this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Upload', text: 'Something went wrong.'}, bubbles: true,composed: true }));
+      }
+    }.bind(this));
+    
     xhr.Authorization = true;
     xhr.open("POST", this.apiRootPath+"/upload?Authorization=" + JSON.parse(JSON.stringify(this.header)).Authorization);
     xhr.send(data);
@@ -103,7 +116,7 @@ class PageUpload extends PolymerElement {
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Upload', text: 'Scan was successful'}, bubbles: true, composed: true }));
   }
 
-  handleError(){
+  handleError(e,r){
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Upload', text: 'Something went wrong'}, bubbles: true,composed: true }));
   }
 
