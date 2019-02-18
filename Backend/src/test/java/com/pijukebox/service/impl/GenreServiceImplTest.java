@@ -26,15 +26,23 @@ class GenreServiceImplTest {
 
     private GenreServiceImpl genreServiceImplUnderTest;
 
+    /**
+     * Setup before every test to initialize the Mock objects and GenreServiceImplementation
+     */
     @BeforeEach
     void setUp() {
         initMocks(this);
         genreServiceImplUnderTest = new GenreServiceImpl(mockGenreWithAlbumsRepository);
     }
 
+    /**
+     * Test for getting a genre by the assigned ID
+     * This code has been provided by an external source and has only been
+     * changed in the areas applicable to our usecase.
+     * Original source: https://stackoverflow.com/a/36004293
+     */
     @Test
     void testGenreById() {
-        // Source: https://stackoverflow.com/a/36004293
         String newLine = System.getProperty("line.separator");
         System.out.println("Initiating testGenreById...");
         System.out.println(newLine);
@@ -60,9 +68,14 @@ class GenreServiceImplTest {
         System.out.println("------------------------------------------------------------------------------------------------------------------------------------");
     }
 
+    /**
+     * Test for getting a genre by the assigned Name
+     * This code has been provided by an external source and has only been
+     * changed in the areas applicable to our usecase.
+     * Original source: https://stackoverflow.com/a/36004293
+     */
     @Test
     void testFindGenresByNameContaining() {
-        // Source: https://stackoverflow.com/a/36004293
 
         String newLine = System.getProperty("line.separator");
 
