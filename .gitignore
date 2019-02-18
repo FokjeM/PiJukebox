@@ -16,7 +16,7 @@ thumbs.db
 *.tar
 *.gz
 *.rar
-*.jar
+# *.jar
 *.iso
 
 # Compiled sources. It's always better to build your own #
@@ -51,7 +51,7 @@ buildNumber.properties
 # *.rar
 # These were already included in the compiled resources or packages parts #
 *.log
-*.jar
+#*.jar
 *.war
 *.nar
 *.ear
@@ -65,3 +65,4 @@ hs_err_pid*
 # errors and failed downloads... #
 nb-configuration.xml # You don't need my config!
 Backend/.idea/misc.xml
+/Backend/nbproject/
