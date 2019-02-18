@@ -32,15 +32,10 @@ public class TrackDetails {
      */
     public TrackDetails(String filename) {
         try {
-            filename = filename.trim();
-            String mainPath = Paths.get(absolutePath.toString(), filename).toString();
-            this.mp3file = new Mp3File(new File(mainPath));
+            this.mp3file = new Mp3File(new File(Paths.get(absolutePath.toString(), filename.trim()).toString()));
             setTagValuesToFields();
-
-            System.out.println("Length of this mp3 is: " + mp3file.getLengthInSeconds() + " seconds");
-            System.out.println("Has ID3v1 tag?: " + (mp3file.hasId3v1Tag() ? "YES" : "NO"));
-            System.out.println("Has ID3v2 tag?: " + (mp3file.hasId3v2Tag() ? "YES" : "NO"));
-        }catch (Exception ex) {
+            printOutput();
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -54,12 +49,9 @@ public class TrackDetails {
     public TrackDetails(String filename, String path) {
         try {
 
-            this.mp3file = new Mp3File(Paths.get(path) + "\\" + filename);
+            this.mp3file = new Mp3File(Paths.get(path) + "\\" + filename.trim());
             setTagValuesToFields();
-
-            System.out.println("Length of this mp3 is: " + mp3file.getLengthInSeconds() + " seconds");
-            System.out.println("Has ID3v1 tag?: " + (mp3file.hasId3v1Tag() ? "YES" : "NO"));
-            System.out.println("Has ID3v2 tag?: " + (mp3file.hasId3v2Tag() ? "YES" : "NO"));
+            printOutput();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -82,5 +74,11 @@ public class TrackDetails {
             this.genre = id3v1Tag.getGenreDescription() == null ? "unknown" : id3v1Tag.getGenreDescription();
             this.album = id3v1Tag.getAlbum() == null ? "unknown" : id3v1Tag.getAlbum();
         }
+    }
+
+    private void printOutput() {
+        System.out.println("Length of this mp3 is: " + mp3file.getLengthInSeconds() + " seconds");
+        System.out.println("Has ID3v1 tag?: " + (mp3file.hasId3v1Tag() ? "YES" : "NO"));
+        System.out.println("Has ID3v2 tag?: " + (mp3file.hasId3v2Tag() ? "YES" : "NO"));
     }
 }
