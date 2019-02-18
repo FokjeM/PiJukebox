@@ -16,7 +16,7 @@ thumbs.db
 *.tar
 *.gz
 *.rar
-#*.jar
+*.jar
 *.iso
 
 # Compiled sources. It's always better to build your own #
