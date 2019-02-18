@@ -191,17 +191,11 @@ public class PlayerController {
     public Map<String, String> getTackDetails() {
         Map<String, String> status = new HashMap<>();
 
-        addMapValue(status, "title", playerWrapper.getCurrentSong());
-        addMapValue(status, "artist", playerWrapper.getArtist());
-        addMapValue(status, "genre", playerWrapper.getGenre());
-        addMapValue(status, "album", playerWrapper.getAlbum());
+        status.put("title", playerWrapper.getCurrentSong());
+        status.put("artist", playerWrapper.getArtist());
+        status.put("genre", playerWrapper.getGenre());
+        status.put("album", playerWrapper.getAlbum());
         return status;
-    }
-
-    private void addMapValue(Map<String, String> map, String key, String value) {
-        if (value != null && !value.isEmpty()) {
-            map.put(key, value);
-        }
     }
 
     /**
