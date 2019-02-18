@@ -28,6 +28,12 @@ public interface IAlbumService {
 
     Optional<List<SimpleAlbum>> findSimpleAlbumsByNameContaining(String name);
 
+    Optional<List<AlbumWithGenres>> findAlbumsByGenresContaining(String name);
+
+    Optional<List<AlbumWithArtists>> findAlbumsByArtistsContaining(String name);
+
+    Optional<List<AlbumWithTracks>> findAlbumsByTracksContaining(String name);
+
     Optional<List<GenreWithAlbums>> findSimpleAlbumsByGenreName(String name);
 
     Optional<List<ArtistWithAlbums>> findAlbumsByArtistName(String name);

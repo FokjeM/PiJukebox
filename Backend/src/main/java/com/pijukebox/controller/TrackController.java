@@ -50,26 +50,45 @@ public class TrackController {
     }
 
     /**
-     * Get tracks by track name
+     * Get tracks by track, genre or artist name
      * <p>
      * With relations
      *
-     * @param name Name of the track
+     * @param name     name of the track when 'searchBy' is not set, otherwise name of the genre or artist
+     * @param searchBy find a track by genre or artist
      * @return Zero or more tracks
      */
     @GetMapping("/extended/tracks")
     @ApiOperation(value = "Get all information pertaining to tracks (with relations)", notes = "Filter the returned items using the name parameter")
-    public ResponseEntity<List<Track>> detailTracks(@RequestParam(name = "name", required = false) String name) {
+    public ResponseEntity<?> getExtendedTracks(@RequestParam(name = "name", required = false) String name, @RequestParam(name = "searchBy", required = false) String searchBy) {
         if (name != null && !name.isEmpty()) {
-            if (!trackService.findAllTracksByName(name).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            if (searchBy != null && !searchBy.isEmpty()) {
+                switch (searchBy.toLowerCase()) {
+                    case "genre":
+                        if (!trackService.findAllTracksByGenreName(name).isPresent()) {
+                            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                        } else {
+                            return new ResponseEntity<>(trackService.findAllTracksByGenreName(name), HttpStatus.OK);
+                        }
+                    case "artist":
+                        if (!trackService.findAllTracksByArtistName(name).isPresent()) {
+                            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                        } else {
+                            return new ResponseEntity<>(trackService.findAllTracksByArtistName(name), HttpStatus.OK);
+                        }
+                    default:
+                        return new ResponseEntity<>("No valid search value. Use 'genre' or 'artist'", HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                if (!trackService.findAllTracksByName(name).isPresent()) {
+                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                } else {
+                    return new ResponseEntity<>(trackService.findAllTracksByName(name), HttpStatus.OK);
+                }
             }
-            return new ResponseEntity<>(trackService.findAllTracksByName(name).get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(trackService.findAllTracksWithDetails(), HttpStatus.OK);
         }
-        if (!trackService.findAllSimpleTrack().isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(trackService.findAllTracksWithDetails(), HttpStatus.OK);
     }
 
     /**
@@ -104,46 +123,6 @@ public class TrackController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(trackService.findSimpleTrackById(id).get(), HttpStatus.OK);
-    }
-
-    /**
-     * Get tracks by genre name
-     * <p>
-     * Without relations
-     *
-     * @param name Genre of the track
-     * @return Zero or more tracks
-     */
-    @GetMapping("/tracks/byGenre")
-    @ApiOperation(value = "Get all information pertaining to an track by genre", notes = "Filter the returned items using the name parameter")
-    public ResponseEntity<List<GenreWithTracks>> getTracksByGenreName(@RequestParam(name = "name") String name) {
-        if (name != null && !name.isEmpty()) {
-            if (!trackService.findAllTracksByGenreName(name).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(trackService.findAllTracksByGenreName(name).get(), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    /**
-     * Get tracks by artist name
-     * <p>
-     * Without relations
-     *
-     * @param name Artist of the track
-     * @return Zero or more tracks
-     */
-    @GetMapping("/tracks/byArtist")
-    @ApiOperation(value = "Get all information pertaining to an track by artist", notes = "Filter the returned items using the name parameter")
-    public ResponseEntity<List<ArtistWithTracks>> getTracksByArtistName(@RequestParam(name = "name") String name) {
-        if (name != null && !name.isEmpty()) {
-            if (!trackService.findAllTracksByArtistName(name).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(trackService.findAllTracksByArtistName(name).get(), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     /**

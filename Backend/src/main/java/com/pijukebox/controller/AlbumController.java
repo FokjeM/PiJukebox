@@ -4,8 +4,6 @@ import com.pijukebox.model.album.Album;
 import com.pijukebox.model.album.AlbumWithArtists;
 import com.pijukebox.model.album.AlbumWithGenres;
 import com.pijukebox.model.album.AlbumWithTracks;
-import com.pijukebox.model.artist.ArtistWithAlbums;
-import com.pijukebox.model.genre.GenreWithAlbums;
 import com.pijukebox.model.simple.SimpleAlbum;
 import com.pijukebox.model.simple.SimpleArtist;
 import com.pijukebox.model.simple.SimpleGenre;
@@ -52,47 +50,6 @@ public class AlbumController {
     }
 
     /**
-     * Get albums by genre name
-     * <p>
-     * Without relations
-     *
-     * @param name Genre of the album
-     * @return Zero or more albums
-     */
-    @GetMapping("/albums/byGenre")
-    @ApiOperation(value = "Get all information pertaining to an album (without relations) by genre", notes = "Filter the returned items using the name parameter")
-    public ResponseEntity<List<GenreWithAlbums>> getAlbumsByGenreName(@RequestParam(name = "name") String name) {
-        if (name != null && !name.isEmpty()) {
-            if (!albumService.findSimpleAlbumsByGenreName(name).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(albumService.findSimpleAlbumsByGenreName(name).get(), HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    /**
-     * Get albums by artist name
-     * <p>
-     * Without relations
-     *
-     * @param name Artist of the album
-     * @return Zero or more albums
-     */
-    @GetMapping("/albums/byArtist")
-    @ApiOperation(value = "Get all information pertaining to an album by artist", notes = "Filter the returned items using the name parameter")
-    public ResponseEntity<List<ArtistWithAlbums>> getAlbumsByArtistName(@RequestParam(name = "name") String name) {
-        if (name != null && !name.isEmpty()) {
-            if (!albumService.findAlbumsByArtistName(name).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(albumService.findAlbumsByArtistName(name).get(), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    /**
      * Get an album by album by ID
      * <p>
      * Without relations
@@ -111,23 +68,51 @@ public class AlbumController {
     }
 
     /**
-     * Get albums by album name
+     * Get albums by album, genre, artist or a track name
      * <p>
      * With relations
      *
-     * @param name name of the album
+     * @param name     name of the album when 'searchBy' is not set, otherwise name of the genre, artist or track
+     * @param searchBy find an album by genre, artist or track
      * @return Zero or more album
      */
     @GetMapping("/extended/albums")
     @ApiOperation(value = "Get all information pertaining to an album (with relations)")
-    public ResponseEntity<List<Album>> getExtendedAlbums(@RequestParam(name = "name", required = false) String name) {
+    public ResponseEntity<?> getExtendedAlbums(@RequestParam(name = "name", required = false) String name, @RequestParam(name = "searchBy", required = false) String searchBy) {
         if (name != null && !name.isEmpty()) {
-            if (!albumService.findAlbumsByNameContaining(name).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            if (searchBy != null && !searchBy.isEmpty()) {
+                switch (searchBy.toLowerCase()) {
+                    case "genre":
+                        if (!albumService.findAlbumsByGenresContaining(name).isPresent()) {
+                            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                        } else {
+                            return new ResponseEntity<>(albumService.findAlbumsByGenresContaining(name), HttpStatus.OK);
+                        }
+                    case "artist":
+                        if (!albumService.findAlbumsByArtistsContaining(name).isPresent()) {
+                            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                        } else {
+                            return new ResponseEntity<>(albumService.findAlbumsByArtistsContaining(name), HttpStatus.OK);
+                        }
+                    case "track":
+                        if (!albumService.findAlbumsByTracksContaining(name).isPresent()) {
+                            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                        } else {
+                            return new ResponseEntity<>(albumService.findAlbumsByTracksContaining(name), HttpStatus.OK);
+                        }
+                    default:
+                        return new ResponseEntity<>("No valid search value. Use 'genre', 'artist' or 'track'", HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                if (!albumService.findAlbumsByNameContaining(name).isPresent()) {
+                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                } else {
+                    return new ResponseEntity<>(albumService.findAlbumsByNameContaining(name), HttpStatus.OK);
+                }
             }
-            return new ResponseEntity<>(albumService.findAlbumsByNameContaining(name).get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(albumService.findAllExtendedAlbums(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(albumService.findAllExtendedAlbums(), HttpStatus.OK);
     }
 
     /**

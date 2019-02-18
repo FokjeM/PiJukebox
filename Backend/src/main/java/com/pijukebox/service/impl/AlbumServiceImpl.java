@@ -79,6 +79,21 @@ public class AlbumServiceImpl implements IAlbumService {
     }
 
     @Override
+    public Optional<List<AlbumWithGenres>> findAlbumsByGenresContaining(String name) {
+        return albumWithGenreRepository.findAlbumWithGenresByGenresContaining(name);
+    }
+
+    @Override
+    public Optional<List<AlbumWithArtists>> findAlbumsByArtistsContaining(String name) {
+        return albumWithArtistsRepository.findAlbumWithArtistsByArtistsContaining(name);
+    }
+
+    @Override
+    public Optional<List<AlbumWithTracks>> findAlbumsByTracksContaining(String name) {
+        return albumWithTracksRepository.findAlbumWithTracksByTracksContaining(name);
+    }
+
+    @Override
     public Optional<List<GenreWithAlbums>> findSimpleAlbumsByGenreName(String name) {
         return genreWithAlbumsRepository.findGenreAlbumsByNameContaining(name);
     }

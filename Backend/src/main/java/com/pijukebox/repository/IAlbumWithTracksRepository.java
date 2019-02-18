@@ -12,5 +12,5 @@ public interface IAlbumWithTracksRepository extends JpaRepository<AlbumWithTrack
 
     Optional<AlbumWithTracks> findById(Long id);
 
-    Optional<List<AlbumWithTracks>> findAlbumTracksByNameContaining(String name);
+    Optional<List<AlbumWithTracks>> findAlbumWithTracksByTracksContaining(String name);
 }

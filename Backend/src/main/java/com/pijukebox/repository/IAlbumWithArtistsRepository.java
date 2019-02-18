@@ -12,5 +12,5 @@ public interface IAlbumWithArtistsRepository extends JpaRepository<AlbumWithArti
 
     Optional<AlbumWithArtists> findById(Long id);
 
-    Optional<List<AlbumWithArtists>> findAlbumArtistByNameContaining(String name);
+    Optional<List<AlbumWithArtists>> findAlbumWithArtistsByArtistsContaining(String name);
 }
