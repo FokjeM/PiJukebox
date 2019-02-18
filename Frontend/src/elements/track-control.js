@@ -147,9 +147,6 @@ class TrackControl extends PolymerElement {
         on-error="handleSetError">
       </iron-ajax>
 
-      <template is="dom-if" if="{{currentTrack}}">
-        
-
       <div class="container">  
         <div class="controlsContainer">
          
@@ -177,14 +174,18 @@ class TrackControl extends PolymerElement {
           </div>
         </div>
       </div>
-      </template> 
     `;
   }
 
   static get properties() {
     return {
+      hidden: {
+        type: Boolean,
+        value: true,
+      },
       currentTrack: {
-        type: Object
+        type: Object,
+        observer: '_currentTrackChanged'
       },
       playPauseIcon: {
         type: String,
@@ -224,7 +225,11 @@ class TrackControl extends PolymerElement {
       }
     };
   }
-  
+
+  _currentTrackChanged(newValue, oldValue){
+    this.hidden = (newValue === null);
+  }
+
   _computeTokenHeaders(token)
   {
       return {'Authorization': token};
