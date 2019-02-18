@@ -68,13 +68,13 @@ public class TrackController {
                         if (!trackService.findAllTracksByGenreName(name).isPresent()) {
                             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                         } else {
-                            return new ResponseEntity<>(trackService.findAllTracksByGenreName(name), HttpStatus.OK);
+                            return new ResponseEntity<>(trackService.findAllTracksByGenreName(name).get(), HttpStatus.OK);
                         }
                     case "artist":
                         if (!trackService.findAllTracksByArtistName(name).isPresent()) {
                             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                         } else {
-                            return new ResponseEntity<>(trackService.findAllTracksByArtistName(name), HttpStatus.OK);
+                            return new ResponseEntity<>(trackService.findAllTracksByArtistName(name).get(), HttpStatus.OK);
                         }
                     default:
                         return new ResponseEntity<>("No valid search value. Use 'genre' or 'artist'", HttpStatus.BAD_REQUEST);
@@ -83,7 +83,7 @@ public class TrackController {
                 if (!trackService.findAllTracksByName(name).isPresent()) {
                     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 } else {
-                    return new ResponseEntity<>(trackService.findAllTracksByName(name), HttpStatus.OK);
+                    return new ResponseEntity<>(trackService.findAllTracksByName(name).get(), HttpStatus.OK);
                 }
             }
         } else {

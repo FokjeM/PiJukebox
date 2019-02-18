@@ -83,22 +83,22 @@ public class AlbumController {
             if (searchBy != null && !searchBy.isEmpty()) {
                 switch (searchBy.toLowerCase()) {
                     case "genre":
-                        if (!albumService.findAlbumsByGenresContaining(name).isPresent()) {
+                        if (!albumService.findAlbumWithGenresByNameContaining(name).isPresent()) {
                             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                         } else {
-                            return new ResponseEntity<>(albumService.findAlbumsByGenresContaining(name), HttpStatus.OK);
+                            return new ResponseEntity<>(albumService.findAlbumWithGenresByNameContaining(name).get(), HttpStatus.OK);
                         }
                     case "artist":
-                        if (!albumService.findAlbumsByArtistsContaining(name).isPresent()) {
+                        if (!albumService.findAlbumWithArtistsByNameContaining(name).isPresent()) {
                             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                         } else {
-                            return new ResponseEntity<>(albumService.findAlbumsByArtistsContaining(name), HttpStatus.OK);
+                            return new ResponseEntity<>(albumService.findAlbumWithArtistsByNameContaining(name).get(), HttpStatus.OK);
                         }
                     case "track":
-                        if (!albumService.findAlbumsByTracksContaining(name).isPresent()) {
+                        if (!albumService.findAlbumWithTracksByNameContaining(name).isPresent()) {
                             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                         } else {
-                            return new ResponseEntity<>(albumService.findAlbumsByTracksContaining(name), HttpStatus.OK);
+                            return new ResponseEntity<>(albumService.findAlbumWithTracksByNameContaining(name).get(), HttpStatus.OK);
                         }
                     default:
                         return new ResponseEntity<>("No valid search value. Use 'genre', 'artist' or 'track'", HttpStatus.BAD_REQUEST);
@@ -107,7 +107,7 @@ public class AlbumController {
                 if (!albumService.findAlbumsByNameContaining(name).isPresent()) {
                     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 } else {
-                    return new ResponseEntity<>(albumService.findAlbumsByNameContaining(name), HttpStatus.OK);
+                    return new ResponseEntity<>(albumService.findAlbumsByNameContaining(name).get(), HttpStatus.OK);
                 }
             }
         } else {

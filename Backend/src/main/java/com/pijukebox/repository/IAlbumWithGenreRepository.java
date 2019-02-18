@@ -14,5 +14,5 @@ public interface IAlbumWithGenreRepository extends JpaRepository<AlbumWithGenres
 
     Optional<AlbumWithGenres> findById(Long id);
 
-    Optional<List<AlbumWithGenres>> findAlbumWithGenresByGenresContaining(String name);
+    Optional<List<AlbumWithGenres>> findAlbumWithGenresByNameContaining(String name);
 }
