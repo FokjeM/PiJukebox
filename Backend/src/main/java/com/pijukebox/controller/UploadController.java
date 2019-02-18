@@ -47,11 +47,11 @@ public class UploadController {
     /**
      * Upload a file to the Raspberry Pi
      *
-     * @param file A file to upload
-     * @return HttpStatus.CREATED/HttpStatus.CONFLICT/HttpStatus.BAD_REQUEST
+     * @param file a file to upload
+     * @return a track
      */
     @PostMapping(value = "/upload", consumes = {"multipart/form-data"})
-    public ResponseEntity<?> upload(@RequestBody MultipartFile[] file) throws Exception {
+    public ResponseEntity<SimpleTrack> upload(@RequestBody MultipartFile[] file) throws Exception {
         for (MultipartFile f : file) {
             SimpleTrack track = new SimpleTrack(null, FilenameUtils.removeExtension(f.getOriginalFilename()), null, f.getOriginalFilename());
             if (trackService.findAllSimpleTrackByName(track.getName()).isPresent()) {
@@ -67,10 +67,10 @@ public class UploadController {
     /**
      * Upload all files in a folder to the Raspberry Pi
      *
-     * @return HttpStatus.OK/HttpStatus.BAD_REQUEST
+     * @return a track
      */
     @PostMapping(value = "/upload/folder")
-    public ResponseEntity<?> uploadFromFolder() throws IOException {
+    public ResponseEntity<SimpleTrack> uploadFromFolder() throws IOException {
         File[] files = new File(dirToScan).listFiles();
         if (files != null) {
             showFiles(files);
