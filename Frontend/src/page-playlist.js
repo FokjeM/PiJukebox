@@ -70,7 +70,9 @@ class PagePlaylist extends PolymerElement {
       <div class="card">
         <h1>[[playlist.title]]</h1>
         <p><i>[[playlist.description]]</i></p>
-        <paper-button id="addPlaylistToQueue" on-click="addPlaylistToQueue">Add playlist to Queue</paper-button>
+        <template is="dom-if" if="{{playlistTrackCount}}">
+          <paper-button id="addPlaylistToQueue" on-click="addPlaylistToQueue">Add playlist to Queue</paper-button>
+        </template>
       </div>
 
       <!-- Artist tracks -->

@@ -205,6 +205,9 @@ public class PlayerController {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             PlaylistWithTracks playlist = playlistService.findById(id).get();
+            if(playlist.getTracks().isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
             for (SimpleTrack track : playlist.getTracks()) {
                 playerWrapper.addSongToPlaylist(track.getFilename());
             }
