@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -79,8 +78,7 @@ public class UserController {
      * @return Zero or more playlists
      */
     @GetMapping("/users/{userID}/details/playlists")
-    @ApiOperation(value = "Get all information pertaining to play" +
-            "lists (with relations) from a user.")
+    @ApiOperation(value = "Get all information pertaining to play" + "lists (with relations) from a user.")
     public ResponseEntity<List<PlaylistWithTracks>> playlistsByUser(@PathVariable Long userID) {
         if (!userService.findById(userID).isPresent()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -121,20 +119,20 @@ public class UserController {
     @PostMapping(value = "/login", produces = "application/json")
     @ApiOperation(value = "Login by username and password.")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginForm loginForm, HttpServletResponse response) {
-            if (!userService.findByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword()).isPresent()) {
-                response.setStatus(403);
-                return new ResponseEntity<>(new HashMap<>(), HttpStatus.BAD_REQUEST);
-            }
-            User user = userService.findByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword()).get();
-            if (user.getToken() == null || user.getToken().isEmpty()) {
-                String token = generateRandomChars("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", 17);
+        if (!userService.findByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword()).isPresent()) {
+            response.setStatus(403);
+            return new ResponseEntity<>(new HashMap<>(), HttpStatus.BAD_REQUEST);
+        }
+        User user = userService.findByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword()).get();
+        if (user.getToken() == null || user.getToken().isEmpty()) {
+            String token = generateRandomChars("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", 17);
 
-                // Save token
-                user.setToken(token);
-                userService.saveUser(user);
-            }
-            Map<String, String> tokenResponse = new HashMap<>();
-            tokenResponse.put("token", user.getToken());
-            return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
+            // Save token
+            user.setToken(token);
+            userService.saveUser(user);
+        }
+        Map<String, String> tokenResponse = new HashMap<>();
+        tokenResponse.put("token", user.getToken());
+        return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
     }
 }

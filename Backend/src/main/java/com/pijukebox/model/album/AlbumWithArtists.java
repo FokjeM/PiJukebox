@@ -1,11 +1,10 @@
 package com.pijukebox.model.album;
 
-import com.pijukebox.model.SqlElement;
+import com.pijukebox.model.BaseModel;
 import com.pijukebox.model.simple.SimpleArtist;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "album")
-public class AlbumWithArtists extends SqlElement implements Serializable {
+public class AlbumWithArtists extends BaseModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

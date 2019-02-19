@@ -1,5 +1,6 @@
 package com.pijukebox.controller;
 
+import com.pijukebox.model.playlist.PlaylistWithTracks;
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.model.track.Track;
 import com.pijukebox.player.PlayerWrapper;
@@ -13,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,17 +29,21 @@ public class PlayerController {
      * Command: mvn install:install-file -Dfile='lib/jaco-mp3-player-0.10.2.jar' -DgroupId='jaco.mp3.player' -DartifactId=jacocontrol -Dversion='0.10.2' -Dpackaging=jar -DgeneratePom=false
      * */
 
-    private static Path currentRelativePath = Paths.get("");
-    private static Path songsDir = Paths.get(currentRelativePath.toAbsolutePath().toString(), "/songs");
     private final ITrackService trackService;
+    private final IPlaylistService playlistService;
     private final PlayerWrapper playerWrapper;
 
+    /**
+     * Instantiates a new Player controller.
+     *
+     * @param trackService the track service
+     */
     @Autowired
     public PlayerController(ITrackService trackService, IPlaylistService playlistService) {
         this.trackService = trackService;
+        this.playlistService = playlistService;
 //        this.playerWrapper = new PlayerWrapper(Paths.get("/media/music/"));
         this.playerWrapper = new PlayerWrapper(Paths.get("C:\\Users\\Public\\Music\\"));
-
     }
 
     /**
@@ -134,6 +138,7 @@ public class PlayerController {
     /**
      * Add a song to the queue
      *
+     * @param id the id
      * @return Details of the newly added song
      */
     @GetMapping("/add/{id}")
@@ -147,8 +152,31 @@ public class PlayerController {
     }
 
     /**
+     * Add an entire playlist to the queue
+     *
+     * @param id the ID of the playlist to add
+     * @return HttpStatus.NO_CONTENT/HttpStatus.OK/HttpStatus.BAD_REQUEST
+     */
+    @GetMapping("/add/playlist/{id}")
+    public ResponseEntity<String> addPlaylist(@PathVariable Long id) {
+        try {
+            if (!playlistService.findById(id).isPresent()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            PlaylistWithTracks playlist = playlistService.findById(id).get();
+            for (SimpleTrack track : playlist.getTracks()) {
+                playerWrapper.addSongToPlaylist(track.getFilename());
+            }
+            return new ResponseEntity<>("Playlist added!", HttpStatus.OK);
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Couldn't add playlist", ex);
+        }
+    }
+
+    /**
      * Remove a song from the queue
      *
+     * @param id the id
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND/HttpStatus.BAD_REQUEST
      */
     @GetMapping("/remove/{id}")
@@ -189,17 +217,11 @@ public class PlayerController {
     public Map<String, String> getTackDetails() {
         Map<String, String> status = new HashMap<>();
 
-        addMapValue(status, "title", playerWrapper.getCurrentSong());
-        addMapValue(status, "artist", playerWrapper.getArtist());
-        addMapValue(status, "genre", playerWrapper.getGenre());
-        addMapValue(status, "album", playerWrapper.getAlbum());
+        status.put("title", playerWrapper.getCurrentSong());
+        status.put("artist", playerWrapper.getArtist());
+        status.put("genre", playerWrapper.getGenre());
+        status.put("album", playerWrapper.getAlbum());
         return status;
-    }
-
-    private void addMapValue(Map<String, String> map, String key, String value) {
-        if (value != null && !value.isEmpty()) {
-            map.put(key, value);
-        }
     }
 
     /**
@@ -245,6 +267,7 @@ public class PlayerController {
     /**
      * Set volume level of player
      *
+     * @param volumeLevel the volume level
      * @return The new volume level
      */
     @GetMapping("/volume/{volumeLevel}")
@@ -263,6 +286,11 @@ public class PlayerController {
         return new ResponseEntity<>(String.format("Volume is %s", playerWrapper.getPlayerVolume()), HttpStatus.OK);
     }
 
+    /**
+     * Clear player queue.
+     *
+     * @return HttpStatus.OK
+     */
     @GetMapping("/queue/clear")
     public ResponseEntity<String> clearQueue() {
         playerWrapper.clearQueue(true);

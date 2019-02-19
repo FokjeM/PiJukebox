@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -50,9 +49,9 @@ public class GenreController {
     @GetMapping("/genres/{id}")
     @ApiOperation(value = "Get all information pertaining to a certain genre (without relations) by its ID")
     public ResponseEntity<SimpleGenre> genreDetails(@PathVariable Long id) {
-            if (!genreService.findById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(genreService.findById(id).get(), HttpStatus.OK);
+        if (!genreService.findById(id).isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(genreService.findById(id).get(), HttpStatus.OK);
     }
 }

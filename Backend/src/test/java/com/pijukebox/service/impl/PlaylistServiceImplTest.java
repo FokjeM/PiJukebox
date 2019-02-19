@@ -26,6 +26,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+/**
+ * Testing class to ensure correct implementation and functioning of the PlaylistServiceImplementation
+ */
 public class PlaylistServiceImplTest {
     @Mock
     IPlaylistWithTracksRepository playlistWithTracksRepository;
@@ -33,12 +36,22 @@ public class PlaylistServiceImplTest {
     ISimplePlaylistRepository simplePlaylistRepository;
 
     IPlaylistService playlistService;
+    
+    /**
+     * Before each test, initialize the Mock objects and instantiate a clean
+     * PlaylistServiceImplementation to work with.
+     */
     @BeforeEach
     void setUp(){
         initMocks(this);
         playlistService = new PlaylistServiceImpl(playlistWithTracksRepository,simplePlaylistRepository);
     }
 
+    /**
+     * Test finding a SimplePlaylist based on the assigned ID.
+     * Sets the expectedresult to a new SimplePlaylist and then tests if the find
+     * method matching this usecase can find the correct object.
+     */
     @Test
     void testFindSimplePlaylistById(){
         final Optional<SimplePlaylist> expectedResult = Optional.of(new SimplePlaylist(1L,"title","description",1L));
@@ -58,9 +71,13 @@ public class PlaylistServiceImplTest {
 
     }
 
+    /**
+     * Test finding a Playlist based on the assigned ID.
+     * Sets the expectedresult to a new Playlist and then tests if the find
+     * method matching this usecase can find the correct object.
+     */
     @Test
     void testFindById(){
-
         Set<SimpleTrack> tracks = new HashSet<>();
         SimpleTrack simpleTracks = new SimpleTrack(1L, "trackName", "song","song.mp3");
         tracks.add(simpleTracks);

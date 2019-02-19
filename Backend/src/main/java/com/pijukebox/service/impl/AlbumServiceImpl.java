@@ -4,8 +4,6 @@ import com.pijukebox.model.album.Album;
 import com.pijukebox.model.album.AlbumWithArtists;
 import com.pijukebox.model.album.AlbumWithGenres;
 import com.pijukebox.model.album.AlbumWithTracks;
-import com.pijukebox.model.artist.ArtistWithAlbums;
-import com.pijukebox.model.genre.GenreWithAlbums;
 import com.pijukebox.model.simple.SimpleAlbum;
 import com.pijukebox.model.simple.SimpleArtist;
 import com.pijukebox.model.simple.SimpleGenre;
@@ -79,13 +77,18 @@ public class AlbumServiceImpl implements IAlbumService {
     }
 
     @Override
-    public Optional<List<GenreWithAlbums>> findSimpleAlbumsByGenreName(String name) {
-        return genreWithAlbumsRepository.findGenreAlbumsByNameContaining(name);
+    public Optional<List<AlbumWithArtists>> findAlbumWithArtistsByNameContaining(String name) {
+        return albumWithArtistsRepository.findAlbumWithArtistsByNameContaining(name);
     }
 
     @Override
-    public Optional<List<ArtistWithAlbums>> findAlbumsByArtistName(String name) {
-        return artistWithAlbumsRepository.findArtistWithAlbumsByNameContaining(name);
+    public Optional<List<AlbumWithGenres>> findAlbumWithGenresByNameContaining(String name) {
+        return albumWithGenreRepository.findAlbumWithGenresByNameContaining(name);
+    }
+
+    @Override
+    public Optional<List<AlbumWithTracks>> findAlbumWithTracksByNameContaining(String name) {
+        return albumWithTracksRepository.findAlbumWithTracksByNameContaining(name);
     }
 
     @Override
