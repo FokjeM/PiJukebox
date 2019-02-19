@@ -8,6 +8,7 @@ import com.mpatric.mp3agic.UnsupportedTagException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.nio.file.Paths;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Component
 public class TrackDetails {
 
     private String title;

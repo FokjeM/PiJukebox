@@ -3,10 +3,12 @@ package com.pijukebox.player;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Component
 public class PlayerStatus {
 
     private Status currStatus = Status.STOPPED;
