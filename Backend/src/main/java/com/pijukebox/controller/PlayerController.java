@@ -37,8 +37,7 @@ public class PlayerController {
     @Autowired
     public PlayerController(ITrackService trackService, IPlaylistService playlistService) {
         this.trackService = trackService;
-//        this.playerWrapper = new PlayerWrapper(Paths.get("/media/music/"));
-        this.playerWrapper = new PlayerWrapper(Paths.get("C:\\Users\\Public\\Music\\"));
+        this.playerWrapper = new PlayerWrapper(Paths.get("D:\\Java minor\\Royalty Free Music\\"));
 
     }
 
