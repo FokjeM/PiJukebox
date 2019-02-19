@@ -10,12 +10,14 @@ import com.pijukebox.repository.ISimpleTrackRepository;
 import com.pijukebox.repository.ITrackRepository;
 import com.pijukebox.service.ITrackService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 @Service
 @Transactional
 public class TrackServiceImpl implements ITrackService {
@@ -33,67 +35,67 @@ public class TrackServiceImpl implements ITrackService {
     }
 
     @Override
-    public List<Track> findAllTracksWithDetails() {
-        return trackRepository.findAll();
+    public ResponseEntity<List<Track>> findAllTracksWithDetails() {
+        return new ResponseEntity<>(trackRepository.findAll(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<Track> findTrackDetailsById(Long id) {
-        return trackRepository.findById(id);
+    public ResponseEntity<Track> findTrackDetailsById(Long id) {
+        return new ResponseEntity<>(trackRepository.findById(id).get(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<List<SimpleTrack>> findAllSimpleTrack() {
-        return Optional.of(simpleTrackRepository.findAll());
+    public ResponseEntity<List<SimpleTrack>> findAllSimpleTrack() {
+        return new ResponseEntity<>(simpleTrackRepository.findAll(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<SimpleTrack> findSimpleTrackById(Long id) {
-        return simpleTrackRepository.findById(id);
+    public ResponseEntity<SimpleTrack> findSimpleTrackById(Long id) {
+        return new ResponseEntity<>(simpleTrackRepository.findById(id).get(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<List<SimpleTrack>> findAllSimpleTrackByName(String name) {
-        return simpleTrackRepository.findSimpleTracksByNameContaining(name);
+    public ResponseEntity<List<SimpleTrack>> findAllSimpleTrackByName(String name) {
+        return new ResponseEntity<>(simpleTrackRepository.findSimpleTracksByNameContaining(name).get(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<List<Track>> findAllTracksByName(String name) {
-        return trackRepository.findTracksByNameContaining(name);
+    public ResponseEntity<List<Track>> findAllTracksByName(String name) {
+        return new ResponseEntity<>(trackRepository.findTracksByNameContaining(name).get(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<List<ArtistWithTracks>> findAllTracksByArtistName(String name) {
-        return artistWithTracksRepository.findArtistWithTracksByNameContaining(name);
+    public ResponseEntity<List<ArtistWithTracks>> findAllTracksByArtistName(String name) {
+        return new ResponseEntity<>(artistWithTracksRepository.findArtistWithTracksByNameContaining(name).get(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<List<GenreWithTracks>> findAllTracksByGenreName(String name) {
-        return genreWithTracksRepository.findGenreTracksByNameContaining(name);
+    public ResponseEntity<List<GenreWithTracks>> findAllTracksByGenreName(String name) {
+        return new ResponseEntity<>(genreWithTracksRepository.findGenreTracksByNameContaining(name).get(), HttpStatus.OK);
     }
 
     @Override
-    public SimpleTrack addSimpleTrack(SimpleTrack simpleTrack) {
-        return simpleTrackRepository.save(simpleTrack);
+    public ResponseEntity<SimpleTrack> addSimpleTrack(SimpleTrack simpleTrack) {
+        return new ResponseEntity<>(simpleTrackRepository.save(simpleTrack), HttpStatus.OK);
     }
 
     @Override
-    public ArtistWithTracks addArtistToTrack(ArtistWithTracks artistWithTracks) {
-        return artistWithTracksRepository.save(artistWithTracks);
+    public ResponseEntity<ArtistWithTracks> addArtistToTrack(ArtistWithTracks artistWithTracks) {
+        return new ResponseEntity<>(artistWithTracksRepository.save(artistWithTracks), HttpStatus.OK);
     }
 
     @Override
-    public GenreWithTracks addGenreToTrack(GenreWithTracks genreWithTracks) {
-        return genreWithTracksRepository.save(genreWithTracks);
+    public ResponseEntity<GenreWithTracks> addGenreToTrack(GenreWithTracks genreWithTracks) {
+        return new ResponseEntity<>(genreWithTracksRepository.save(genreWithTracks), HttpStatus.OK);
     }
 
     @Override
-    public Optional<GenreWithTracks> findTrackByGenreId(Long id) {
-        return genreWithTracksRepository.findById(id);
+    public ResponseEntity<GenreWithTracks> findTrackByGenreId(Long id) {
+        return new ResponseEntity<>(genreWithTracksRepository.findById(id).get(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<ArtistWithTracks> findTrackByArtistId(Long id) {
-        return artistWithTracksRepository.findById(id);
+    public ResponseEntity<ArtistWithTracks> findTrackByArtistId(Long id) {
+        return new ResponseEntity<>(artistWithTracksRepository.findById(id).get(), HttpStatus.OK);
     }
 }

@@ -1,5 +1,6 @@
 package com.pijukebox.controller;
 
+import com.pijukebox.model.playlist.PlaylistWithTracks;
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.model.track.Track;
 import com.pijukebox.model.playlist.PlaylistWithTracks;
@@ -14,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,19 +30,21 @@ public class PlayerController {
      * Command: mvn install:install-file -Dfile=lib/jaco-mp3-player-0.10.2.jar -DgroupId=jaco.mp3.player -DartifactId=jacocontrol -Dversion=0.10.2 -Dpackaging=jar -DgeneratePom=false
      * */
 
-    private static Path currentRelativePath = Paths.get("");
-    private static Path songsDir = Paths.get(currentRelativePath.toAbsolutePath().toString(), "/songs");
     private final ITrackService trackService;
     private final IPlaylistService playlistService;
     private final PlayerWrapper playerWrapper;
 
+    /**
+     * Instantiates a new Player controller.
+     *
+     * @param trackService the track service
+     */
     @Autowired
     public PlayerController(ITrackService trackService, IPlaylistService playlistService) {
         this.trackService = trackService;
         this.playlistService = playlistService;
 //        this.playerWrapper = new PlayerWrapper(Paths.get("/media/music/"));
         this.playerWrapper = new PlayerWrapper(Paths.get("C:\\Users\\Public\\Music\\"));
-
     }
 
     /**
@@ -53,13 +55,8 @@ public class PlayerController {
      */
     @GetMapping("/play")
     public ResponseEntity<String> playCurrent(@RequestParam(name = "filename") String filename) {
-        try {
-            playerWrapper.playOneSong(filename);
-            return new ResponseEntity<>("Playing...", HttpStatus.OK);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't play track! /play", ex);
-        }
+        playerWrapper.playOneSong(filename);
+        return new ResponseEntity<>("Playing...", HttpStatus.OK);
     }
 
     /**
@@ -69,13 +66,8 @@ public class PlayerController {
      */
     @GetMapping("/playCurrent")
     public ResponseEntity<String> playCurrent() {
-        try {
-            playerWrapper.playCurrentSong();
-            return new ResponseEntity<>("Playing...", HttpStatus.OK);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't play track! /playCurrentSong", ex);
-        }
+        playerWrapper.playCurrentSong();
+        return new ResponseEntity<>("Playing...", HttpStatus.OK);
     }
 
     /**
@@ -85,13 +77,8 @@ public class PlayerController {
      */
     @GetMapping("/pause")
     public ResponseEntity<String> pauseCurrent() {
-        try {
-            playerWrapper.pauseSong();
-            return new ResponseEntity<>("Paused...", HttpStatus.OK);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't play track /pause", ex);
-        }
+        playerWrapper.pauseSong();
+        return new ResponseEntity<>("Paused...", HttpStatus.OK);
     }
 
     /**
@@ -101,13 +88,8 @@ public class PlayerController {
      */
     @GetMapping("/stop")
     public ResponseEntity<String> stopCurrent() {
-        try {
-            playerWrapper.stopSong();
-            return new ResponseEntity<>("Stopped...", HttpStatus.OK);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't play track /stop", ex);
-        }
+        playerWrapper.stopSong();
+        return new ResponseEntity<>("Stopped...", HttpStatus.OK);
     }
 
     /**
@@ -117,13 +99,8 @@ public class PlayerController {
      */
     @GetMapping("/next")
     public ResponseEntity<String> nextTrack() {
-        try {
-            playerWrapper.playNextSong();
-            return new ResponseEntity<>("Next...", HttpStatus.OK);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't play track /next", ex);
-        }
+        playerWrapper.playNextSong();
+        return new ResponseEntity<>("Next...", HttpStatus.OK);
     }
 
     /**
@@ -133,12 +110,8 @@ public class PlayerController {
      */
     @GetMapping("/prev")
     public ResponseEntity<String> prevTrack() {
-        try {
-            playerWrapper.playPreviousSong();
-            return new ResponseEntity<>("Previous...", HttpStatus.OK);
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't play track /prev", ex);
-        }
+        playerWrapper.playPreviousSong();
+        return new ResponseEntity<>("Previous...", HttpStatus.OK);
     }
 
     /**
@@ -148,13 +121,8 @@ public class PlayerController {
      */
     @GetMapping("/shuffle")
     public ResponseEntity<String> toggleShuffle() {
-        try {
-            playerWrapper.toggleShuffleState();
-            return new ResponseEntity<>("Shuffling...", HttpStatus.OK);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't toggleShuffleState current queue", ex);
-        }
+        playerWrapper.toggleShuffleState();
+        return new ResponseEntity<>("Shuffling...", HttpStatus.OK);
     }
 
     /**
@@ -164,32 +132,39 @@ public class PlayerController {
      */
     @GetMapping("/repeat")
     public ResponseEntity<String> toggleRepeat() {
-        try {
-            playerWrapper.toggleRepeatState();
-            return new ResponseEntity<>("Changed toggleRepeatState state...", HttpStatus.OK);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't change toggleRepeatState state", ex);
-        }
+        playerWrapper.toggleRepeatState();
+        return new ResponseEntity<>("Changed toggleRepeatState state...", HttpStatus.OK);
     }
 
     /**
      * Add a song to the queue
      *
+     * @param id the id
      * @return Details of the newly added song
      */
     @GetMapping("/add/{id}")
     public ResponseEntity<String> addTrack(@PathVariable Long id) {
+        SimpleTrack track = trackService.findSimpleTrackById(id).getBody();
+        playerWrapper.addSongToPlaylist(track.getFilename());
+        return new ResponseEntity<>("Song added", HttpStatus.OK);
+    }
+
+    /**
+     * Add an entire playlist to the queue
+     *
+     * @param id the ID of the playlist to add
+     * @return HttpStatus.NO_CONTENT/HttpStatus.OK/HttpStatus.BAD_REQUEST
+     */
+    @GetMapping("/add/playlist/{id}")
+    public ResponseEntity<String> addPlaylist(@PathVariable Long id) {
         try {
-            if (!trackService.findSimpleTrackById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            PlaylistWithTracks playlist = playlistService.findById(id).getBody();
+            for (SimpleTrack track : playlist.getTracks()) {
+                playerWrapper.addSongToPlaylist(track.getFilename());
             }
-            SimpleTrack track = trackService.findSimpleTrackById(id).get();
-            playerWrapper.addSongToPlaylist(track.getFilename());
-            return new ResponseEntity<>("Song added", HttpStatus.OK);
+            return new ResponseEntity<>("Playlist added!", HttpStatus.OK);
         } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Couldn't add song", ex);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Couldn't add playlist", ex);
         }
     }
 
@@ -221,21 +196,14 @@ public class PlayerController {
     /**
      * Remove a song from the queue
      *
+     * @param id the id
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND/HttpStatus.BAD_REQUEST
      */
     @GetMapping("/remove/{id}")
     public ResponseEntity<String> deleteTrack(@PathVariable Long id) {
-        try {
-            if (!trackService.findSimpleTrackById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            SimpleTrack track = trackService.findSimpleTrackById(id).get();
-            playerWrapper.removeSongFromPlaylist(track.getFilename());
-            return new ResponseEntity<>("Song removed", HttpStatus.OK);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Couldn't remove song", ex);
-        }
+        SimpleTrack track = trackService.findSimpleTrackById(id).getBody();
+        playerWrapper.removeSongFromPlaylist(track.getFilename());
+        return new ResponseEntity<>("Song removed", HttpStatus.OK);
     }
 
     /**
@@ -245,20 +213,13 @@ public class PlayerController {
      */
     @GetMapping("/queue")
     public ResponseEntity<Object> getQueue() {
-        try {
-            List<String> songs = playerWrapper.getQueue();
-            List<Track> queue = new ArrayList<>();
-            for (String song : songs) {
-                String name = FilenameUtils.removeExtension(song);
-                if (trackService.findAllTracksByName(name).isPresent()) {
-                    queue.add(trackService.findAllTracksByName(name).get().get(0));
-                }
-            }
-            return new ResponseEntity<>(queue, HttpStatus.OK);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Couldn't get queue", ex);
+        List<String> songs = playerWrapper.getQueue();
+        List<Track> queue = new ArrayList<>();
+        for (String song : songs) {
+            String name = FilenameUtils.removeExtension(song);
+            queue.add(trackService.findAllTracksByName(name).getBody().get(0));
         }
+        return new ResponseEntity<>(queue, HttpStatus.OK);
     }
 
     /**
@@ -271,17 +232,11 @@ public class PlayerController {
     public Map<String, String> getTackDetails() {
         Map<String, String> status = new HashMap<>();
 
-        addMapValue(status, "title", playerWrapper.getCurrentSong());
-        addMapValue(status, "artist", playerWrapper.getArtist());
-        addMapValue(status, "genre", playerWrapper.getGenre());
-        addMapValue(status, "album", playerWrapper.getAlbum());
+        status.put("title", playerWrapper.getCurrentSong());
+        status.put("artist", playerWrapper.getArtist());
+        status.put("genre", playerWrapper.getGenre());
+        status.put("album", playerWrapper.getAlbum());
         return status;
-    }
-
-    private void addMapValue(Map<String, String> map, String key, String value) {
-        if (value != null && !value.isEmpty()) {
-            map.put(key, value);
-        }
     }
 
     /**
@@ -306,42 +261,26 @@ public class PlayerController {
      */
     @GetMapping("/current")
     public ResponseEntity<Track> getCurrent() {
-        try {
-            if (!playerWrapper.getQueue().isEmpty()) {
+        if (!playerWrapper.getQueue().isEmpty()) {
 
-                String name = FilenameUtils.removeExtension(playerWrapper.getCurrentSong());
-                if (!trackService.findAllSimpleTrackByName(name).isPresent()) {
-                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-                }
-                SimpleTrack st = trackService.findAllSimpleTrackByName(name).get().get(0);
-
-                if (!trackService.findTrackDetailsById(st.getId()).isPresent()) {
-                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-                }
-
-                return new ResponseEntity<>(trackService.findTrackDetailsById(st.getId()).get(), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.ACCEPTED);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't get the current track or it doesn't exists", ex);
+            String name = FilenameUtils.removeExtension(playerWrapper.getCurrentSong());
+            SimpleTrack st = trackService.findAllSimpleTrackByName(name).getBody().get(0);
+            return new ResponseEntity<>(trackService.findTrackDetailsById(st.getId()).getBody(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
     }
 
     /**
      * Set volume level of player
      *
+     * @param volumeLevel the volume level
      * @return The new volume level
      */
     @GetMapping("/volume/{volumeLevel}")
     public ResponseEntity<String> setVolume(@PathVariable int volumeLevel) {
-        try {
-            playerWrapper.setPlayerVolume((volumeLevel));
-            return new ResponseEntity<>(String.format("Volume is %s", playerWrapper.getPlayerVolume()), HttpStatus.OK);
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't change volume", ex);
-        }
+        playerWrapper.setPlayerVolume((volumeLevel));
+        return new ResponseEntity<>(String.format("Volume is %s", playerWrapper.getPlayerVolume()), HttpStatus.OK);
     }
 
     /**
@@ -351,20 +290,17 @@ public class PlayerController {
      */
     @GetMapping("/volume")
     public ResponseEntity<String> getVolume() {
-        try {
-            return new ResponseEntity<>(String.format("Volume is %s", playerWrapper.getPlayerVolume()), HttpStatus.OK);
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't change volume", ex);
-        }
+        return new ResponseEntity<>(String.format("Volume is %s", playerWrapper.getPlayerVolume()), HttpStatus.OK);
     }
 
+    /**
+     * Clear player queue.
+     *
+     * @return HttpStatus.OK
+     */
     @GetMapping("/queue/clear")
     public ResponseEntity<String> clearQueue() {
-        try {
-            playerWrapper.clearQueue(true);
-            return new ResponseEntity<>("Queue cleared!", HttpStatus.OK);
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't clear queue", ex);
-        }
+        playerWrapper.clearQueue(true);
+        return new ResponseEntity<>("Queue cleared!", HttpStatus.OK);
     }
 }

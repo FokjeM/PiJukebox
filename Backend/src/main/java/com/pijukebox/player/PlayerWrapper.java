@@ -213,7 +213,11 @@ public class PlayerWrapper {
      * @return the artist
      */
     public String getArtist() {
-        return trackDetails.getArtist();
+        String artist = trackDetails.getArtist();
+        if (artist != null && artist.isEmpty()) {
+            return artist;
+        }
+        return "No artist tag found.";
     }
 
     /**
@@ -222,7 +226,11 @@ public class PlayerWrapper {
      * @return the genre
      */
     public String getGenre() {
-        return trackDetails.getGenre();
+        String genre = trackDetails.getGenre();
+        if (genre != null && genre.isEmpty()) {
+            return genre;
+        }
+        return "No genre tag found.";
     }
 
     /**
@@ -231,7 +239,11 @@ public class PlayerWrapper {
      * @return the album
      */
     public String getAlbum() {
-        return trackDetails.getAlbum();
+        String album = trackDetails.getAlbum();
+        if (album != null && album.isEmpty()) {
+            return album;
+        }
+        return "No album tag found.";
     }
 
     private boolean inPlaylist(String filename) {

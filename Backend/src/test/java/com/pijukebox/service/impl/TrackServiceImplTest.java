@@ -19,6 +19,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+/**
+ * Testing class to verify the TrackServiceImplementation is implemented and
+ * functions in the intended manner.
+ */
 class TrackServiceImplTest {
 
     @Mock
@@ -32,15 +36,23 @@ class TrackServiceImplTest {
 
     private TrackServiceImpl trackServiceImplUnderTest;
 
+    /**
+     * Before each test, set up the Mock objects and a clean TrackServiceImplementation.
+     */
     @BeforeEach
     void setUp() {
         initMocks(this);
         trackServiceImplUnderTest = new TrackServiceImpl(mockTrackRepository, mockArtistWithTracksRepository, mockGenreWithTracksRepository, mockSimpleTrackRepository);
     }
 
+    /**
+     * Test for finding a SimpleTrack based on the assigned ID.
+     * This code has been provided by an external source and has only been
+     * changed in the areas applicable to our usecase.
+     * Original source: https://stackoverflow.com/a/36004293
+     */
     @Test
     void testFindSimpleTrackById() {
-        // Source: https://stackoverflow.com/a/36004293
         String newLine = System.getProperty("line.separator");
         System.out.println("Initiating testFindSimpleTrackById...");
         System.out.println(newLine);
@@ -51,7 +63,7 @@ class TrackServiceImplTest {
         when(mockSimpleTrackRepository.findById(anyLong())).thenReturn(expectedResult);
 
         // When
-        final Optional<SimpleTrack> result = trackServiceImplUnderTest.findSimpleTrackById(id);
+        final SimpleTrack result = trackServiceImplUnderTest.findSimpleTrackById(id).getBody();
 
         // Then
         // You are expecting service to return whatever returned by repo

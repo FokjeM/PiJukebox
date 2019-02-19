@@ -20,15 +20,15 @@ public class PlayerStatus {
     public String GetPlayerStatus() {
         switch (this.currStatus) {
             case PLAYING:
-                return "PLAYING";
+                return Status.PLAYING.name();
             case PAUSED:
-                return "PAUSED";
+                return Status.PAUSED.name();
             case STOPPED:
-                return "STOPPED";
+                return Status.STOPPED.name();
             case INTERRUPTED:
-                return "INTERRUPTED";
+                return Status.INTERRUPTED.name();
             default:
-                return "ERROR";
+                return "NO VALID STATUS DETECTED.";
         }
     }
 

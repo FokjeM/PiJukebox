@@ -30,12 +30,21 @@ class ArtistServiceImplTest {
 
     private ArtistServiceImpl artistServiceImplUnderTest;
 
+    /**
+     * Before each test, set up the Mock objects and initialize an ArtistServiceImplementation
+     */
     @BeforeEach
     void setUp() {
         initMocks(this);
         artistServiceImplUnderTest = new ArtistServiceImpl(artistRepository, simpleArtistRepository);
     }
 
+    /**
+     * Test for finding a SimpleArtist by the assigned ID
+     * This code has been provided by an external source and has only been
+     * changed in the areas applicable to our usecase.
+     * Original source: https://stackoverflow.com/a/36004293
+     */
     @Test
     void testFindSimpleArtistById() {
         String newLine = System.getProperty("line.separator");
@@ -48,7 +57,7 @@ class ArtistServiceImplTest {
         when(simpleArtistRepository.findById(anyLong())).thenReturn(expectedResult);
 
         // When
-        final Optional<SimpleArtist> result = artistServiceImplUnderTest.findSimpleArtistById(id);
+        final SimpleArtist result = artistServiceImplUnderTest.findSimpleArtistById(id).getBody();
 
         // Then
         // You are expecting service to return whatever returned by repo
@@ -63,6 +72,12 @@ class ArtistServiceImplTest {
         System.out.println("------------------------------------------------------------------------------------------------------------------------------------");
     }
 
+    /**
+     * Test for finding an ExtendedArtist by the assigned ID
+     * This code has been provided by an external source and has only been
+     * changed in the areas applicable to our usecase.
+     * Original source: https://stackoverflow.com/a/36004293
+     */
     @Test
     void testFindExtendedArtistById() {
         // Given
@@ -80,7 +95,7 @@ class ArtistServiceImplTest {
         when(artistRepository.findById(anyLong())).thenReturn(expectedResult);
 
         // When
-        final Optional<Artist> result = artistServiceImplUnderTest.findExtendedArtistById(id);
+        final Artist result = artistServiceImplUnderTest.findExtendedArtistById(id).getBody();
 
         // Then
         // You are expecting service to return whatever returned by repo
@@ -95,6 +110,12 @@ class ArtistServiceImplTest {
         System.out.println("------------------------------------------------------------------------------------------------------------------------------------");
     }
 
+    /**
+     * Test for getting the ExtendedArtist by the assigned Name or a part of it
+     * This code has been provided by an external source and has only been
+     * changed in the areas applicable to our usecase.
+     * Original source: https://stackoverflow.com/a/36004293
+     */
     @Test
     void findExtendedArtistsByNameContaining() {
         // Given
@@ -115,7 +136,7 @@ class ArtistServiceImplTest {
         when(artistRepository.findExtendedArtistsByNameContaining(anyString())).thenReturn(expectedResult);
 
         // When
-        final Optional<List<Artist>> result = artistServiceImplUnderTest.findExtendedArtistsByNameContaining(name);
+        final List<Artist> result = artistServiceImplUnderTest.findExtendedArtistsByNameContaining(name).getBody();
 
         // Then
         // You are expecting service to return whatever returned by repo
