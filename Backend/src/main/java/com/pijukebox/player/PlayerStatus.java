@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 public class PlayerStatus {
 
     private Status currStatus = Status.STOPPED;
-    private boolean repeat;
     private String currSong;
 
     /**
