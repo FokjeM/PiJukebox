@@ -2,6 +2,7 @@ package com.pijukebox.controller;
 
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.model.track.Track;
+import com.pijukebox.model.playlist.PlaylistWithTracks;
 import com.pijukebox.player.PlayerWrapper;
 import com.pijukebox.service.IPlaylistService;
 import com.pijukebox.service.ITrackService;
@@ -32,11 +33,13 @@ public class PlayerController {
     private static Path currentRelativePath = Paths.get("");
     private static Path songsDir = Paths.get(currentRelativePath.toAbsolutePath().toString(), "/songs");
     private final ITrackService trackService;
+    private final IPlaylistService playlistService;
     private final PlayerWrapper playerWrapper;
 
     @Autowired
     public PlayerController(ITrackService trackService, IPlaylistService playlistService) {
         this.trackService = trackService;
+        this.playlistService = playlistService;
 //        this.playerWrapper = new PlayerWrapper(Paths.get("/media/music/"));
         this.playerWrapper = new PlayerWrapper(Paths.get("C:\\Users\\Public\\Music\\"));
 
@@ -187,6 +190,28 @@ public class PlayerController {
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Couldn't add song", ex);
+        }
+    }
+
+    /**
+     * Add entire playlist to the queue
+     *
+     * @return HttpStatus.NO_CONTENT/HttpStatus.OK/HttpStatus.BAD_REQUEST
+     */
+    @GetMapping("/add/playlist/{id}")
+    public ResponseEntity<String> addPlaylist(@PathVariable Long id) {
+        try {
+            if (!playlistService.findById(id).isPresent()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            PlaylistWithTracks playlist = playlistService.findById(id).get();
+            for (SimpleTrack track : playlist.getTracks()) {
+                playerWrapper.addSongToPlaylist(track.getFilename());
+            }
+            return new ResponseEntity<>("Playlist added", HttpStatus.OK);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Couldn't add playlist", ex);
         }
     }
 
