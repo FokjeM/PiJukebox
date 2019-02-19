@@ -37,7 +37,6 @@ public class PlayerController {
     public PlayerController(ITrackService trackService, IPlaylistService playlistService, IPlayerService playerService) {
         this.trackService = trackService;
         this.playlistService = playlistService;
-//        this.playerWrapper = new PlayerWrapper(Paths.get("/media/music/"));//Paths.get("C:\\Users\\Public\\Music\\")
         this.playerService = playerService;
         playerService.setFolderPath(Paths.get("C:\\Users\\Public\\Music\\"));
     }
@@ -110,9 +109,7 @@ public class PlayerController {
      */
     @GetMapping("/shuffle")
     public ResponseEntity<String> toggleShuffle() {
-//        playerWrapper.toggleShuffleState();
-//        return new ResponseEntity<>("Shuffling...", HttpStatus.OK);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return playerService.toggleShuffleState();
     }
 
     /**

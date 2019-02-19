@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,7 +32,6 @@ public class PlayerWrapper {
 
     /**
      * Instantiates a new Player wrapper.
-     *
      */
     public PlayerWrapper() {
         mp3Player = new MP3Player();
@@ -43,12 +43,11 @@ public class PlayerWrapper {
      * Sets the path for the music folder
      *
      * @param songDirPath the song dir path
-     *
      */
-    public void setMusicPath(Path songDirPath)
-    {
+    public void setMusicPath(Path songDirPath) {
         this.songDirPath = songDirPath;
     }
+
     /**
      * Play one song.
      *
@@ -197,6 +196,10 @@ public class PlayerWrapper {
         return playerStatus.getCurrSong();
     }
 
+    public boolean getShuffleState() {
+        return mp3Player.isShuffle();
+    }
+
     /**
      * Toggle repeat state.
      */
@@ -210,6 +213,11 @@ public class PlayerWrapper {
      */
     public void toggleShuffleState() {
         boolean sw = !mp3Player.isShuffle();
+        if (sw) {
+            Collections.shuffle(queue);
+        } else {
+            Collections.sort(queue);
+        }
         mp3Player.setShuffle(sw);
     }
 

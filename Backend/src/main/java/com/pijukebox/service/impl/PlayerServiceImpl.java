@@ -15,19 +15,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.nio.file.Path;
 import java.util.*;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 @Service
 @Transactional
 public class PlayerServiceImpl implements IPlayerService {
 
     private PlayerWrapper playerWrapper;
     private ITrackRepository trackRepository;
+
     @Autowired
-    public PlayerServiceImpl(PlayerWrapper playerWrapper,
-                             ITrackRepository trackRepository)
-    {
+    public PlayerServiceImpl(PlayerWrapper playerWrapper, ITrackRepository trackRepository) {
         this.playerWrapper = playerWrapper;
         this.trackRepository = trackRepository;
     }
+
     @Override
     public ResponseEntity<String> playOneSong(String fileName) {
         playerWrapper.playOneSong(fileName);
@@ -77,14 +78,16 @@ public class PlayerServiceImpl implements IPlayerService {
     }
 
     @Override
-    public ResponseEntity<Map<String, String>> getPlayerStatus() {  boolean isPlaying = false;
+    public ResponseEntity<Map<String, String>> getPlayerStatus() {
+        boolean isPlaying = false;
         if (playerWrapper.getPlayerStatus().equals("PLAYING")) {
             isPlaying = true;
         }
         Map<String, String> status = new HashMap<>();
         status.put("isPlaying", String.valueOf(isPlaying));
         status.put("volumeLevel", String.valueOf(playerWrapper.getPlayerVolume()));
-        status.put("repeatState",  String.valueOf(playerWrapper.getRepeatState()));
+        status.put("repeatState", String.valueOf(playerWrapper.getRepeatState()));
+        status.put("shuffleState", String.valueOf(playerWrapper.getShuffleState()));
         return new ResponseEntity<>(status, HttpStatus.OK);
     }
 
@@ -102,10 +105,9 @@ public class PlayerServiceImpl implements IPlayerService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Boolean>> getRepeatState() {
-        Map<String, Boolean> repeat = new HashMap<>();
-        repeat.put("repeat", playerWrapper.getRepeatState());
-        return new ResponseEntity<>(repeat, HttpStatus.OK);
+    public ResponseEntity<String> toggleShuffleState() {
+        playerWrapper.toggleShuffleState();
+        return new ResponseEntity<>("Shuffle has been toggled", HttpStatus.OK);
     }
 
     @Override
@@ -133,28 +135,25 @@ public class PlayerServiceImpl implements IPlayerService {
 
     @Override
     public ResponseEntity<List<Track>> getQueue() {
-        List<String> songs = playerWrapper.getQueue();
+        List<String> songs = playerWrapper.getPlayerQueue();
         List<Track> queue = new ArrayList<>();
         for (String song : songs) {
             String name = FilenameUtils.removeExtension(song);
             Optional<List<Track>> track = trackRepository.findTracksByNameContaining(name);
-            if (track.isPresent()) {
-                queue.add(track.get().get(0));
-            }
+            // TODO Check if statement below works
+            queue.add(track.get().get(0));
         }
         return new ResponseEntity<>(queue, HttpStatus.OK);
     }
 
     @Override
-    public void setFolderPath(Path path)
-    {
+    public void setFolderPath(Path path) {
         playerWrapper.setMusicPath(path);
     }
 
     @Override
     public ResponseEntity<String> addPlaylistToQueue(Set<SimpleTrack> tracks) {
-        for(SimpleTrack track : tracks)
-        {
+        for (SimpleTrack track : tracks) {
             playerWrapper.addSongToPlaylist(track.getFilename());
         }
         return new ResponseEntity<>("Playlist added", HttpStatus.OK);
@@ -165,7 +164,7 @@ public class PlayerServiceImpl implements IPlayerService {
         Map<String, String> status = new HashMap<>();
 
         status.put("title", playerWrapper.getCurrentSong());
-        status.put("artist",playerWrapper.getArtist());
+        status.put("artist", playerWrapper.getArtist());
         status.put("genre", playerWrapper.getGenre());
         status.put("album", playerWrapper.getAlbum());
         return new ResponseEntity<>(status, HttpStatus.OK);
