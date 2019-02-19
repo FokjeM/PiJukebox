@@ -39,6 +39,5 @@ public class UserWithPlaylists extends BaseModel {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "playlist", catalog = "pijukebox", joinColumns = {@JoinColumn(name = "user_id", nullable = false)})
-//, inverseJoinColumns = {@JoinColumn(name = "album_id", nullable = false)}
     private Set<SimplePlaylist> playlists = new HashSet<>();
 }

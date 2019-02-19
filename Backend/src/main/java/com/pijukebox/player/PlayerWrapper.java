@@ -2,37 +2,50 @@ package com.pijukebox.player;
 
 import jaco.mp3.player.MP3Player;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * The type Player wrapper.
  */
+@Component
 public class PlayerWrapper {
 
     // http://jacomp3player.sourceforge.net/guide.html
     // https://sourceforge.net/p/jacomp3player/code/HEAD/tree/JACo%20MP3%20Player%20v3/
 
-    private final MP3Player mp3Player = new MP3Player();
+    private MP3Player mp3Player;
     private Path songDirPath;
     private List<File> queue;
     private int current;
 
-    private PlayerStatus playerStatus = new PlayerStatus();
-    private TrackDetails trackDetails = new TrackDetails();
+    @Autowired
+    private PlayerStatus playerStatus;
+    @Autowired
+    private TrackDetails trackDetails;
 
     /**
      * Instantiates a new Player wrapper.
+     */
+    public PlayerWrapper() {
+        mp3Player = new MP3Player();
+        this.queue = new ArrayList<>();
+        this.current = 0;
+    }
+
+    /**
+     * Sets the path for the music folder
      *
      * @param songDirPath the song dir path
      */
-    public PlayerWrapper(Path songDirPath) {
+    public void setMusicPath(Path songDirPath) {
         this.songDirPath = songDirPath;
-        this.queue = new ArrayList<>();
-        this.current = 0;
     }
 
     /**
@@ -53,6 +66,8 @@ public class PlayerWrapper {
      * Play current song.
      */
     public void playCurrentSong() {
+        mp3Player = new MP3Player();
+        System.out.println("The song playing is: " + queue.get(current).getName());
         mp3Player.add(queue.get(current));
         mp3Player.play();
         this.trackDetails = new TrackDetails(queue.get(current).getName());
@@ -69,7 +84,9 @@ public class PlayerWrapper {
         if (current >= queue.size()) {
             current = 0;
         }
+        stopSong();
         playCurrentSong();
+
     }
 
     /**
@@ -80,6 +97,7 @@ public class PlayerWrapper {
         if (current < 0) {
             current = queue.size() - 1;
         }
+        stopSong();
         playCurrentSong();
     }
 
@@ -161,7 +179,7 @@ public class PlayerWrapper {
      * @return the repeat state
      */
     public Boolean getRepeatState() {
-        return mp3Player.isRepeat();
+        return playerStatus.isRepeat();
     }
 
     /**
@@ -178,6 +196,10 @@ public class PlayerWrapper {
         return playerStatus.getCurrSong();
     }
 
+    public boolean getShuffleState() {
+        return mp3Player.isShuffle();
+    }
+
     /**
      * Toggle repeat state.
      */
@@ -191,6 +213,11 @@ public class PlayerWrapper {
      */
     public void toggleShuffleState() {
         boolean sw = !mp3Player.isShuffle();
+        if (sw) {
+            Collections.shuffle(queue);
+        } else {
+            Collections.sort(queue);
+        }
         mp3Player.setShuffle(sw);
     }
 

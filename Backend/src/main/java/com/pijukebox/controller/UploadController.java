@@ -31,10 +31,8 @@ public class UploadController {
     private final IGenreService genreService;
     private final IArtistService artistService;
     private String uploadDir = "C:\\Users\\Public\\Music\\";
-//    private String uploadDir = "D:\\Users\\Ruben\\Desktop\\uploads\\";
 
     private String dirToScan = "C:\\Users\\Public\\Downloads\\";
-    //    private String dirToScan = "D:\\Users\\Ruben\\Desktop\\uploads\\check\\";
     private ArrayList<String> tracks = new ArrayList<>();
 
     @Autowired

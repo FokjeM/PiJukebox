@@ -38,7 +38,6 @@ public class WebConfig implements WebMvcConfigurer {
         MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
 
         ObjectMapper mapper = new ObjectMapper();
-        // Registering Hibernate5Module to support lazy objects
         mapper.registerModule(new Hibernate5Module());
 
         messageConverter.setObjectMapper(mapper);
@@ -48,7 +47,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        // Here we add our custom-configured HttpMessageConverter
         converters.add(jacksonMessageConverter());
         WebMvcConfigurer.super.configureMessageConverters(converters);
     }
