@@ -108,7 +108,6 @@ public class UserController {
         if (user.getToken() == null || user.getToken().isEmpty()) {
             String token = generateRandomChars("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", 17);
 
-            // Save token
             user.setToken(token);
             userService.saveUser(user);
         }

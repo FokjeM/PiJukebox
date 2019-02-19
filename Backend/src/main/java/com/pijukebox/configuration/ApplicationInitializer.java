@@ -1,6 +1,5 @@
 package com.pijukebox.configuration;
 
-//import javafx.application.Application;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 /**

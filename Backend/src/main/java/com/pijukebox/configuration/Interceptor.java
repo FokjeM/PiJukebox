@@ -19,7 +19,6 @@ public class Interceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        // Check if token exists
         String token = request.getParameter("Authorization");
         if (!userService.findByToken(token).hasBody()) {
             response.setStatus(403);
