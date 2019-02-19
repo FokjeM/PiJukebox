@@ -73,6 +73,7 @@ class TrackControl extends PolymerElement {
       <!-- Shuffle the queue-->
       <iron-ajax
         id="shuffle"
+        method="post"
         url="[[apiRootPath]]/player/shuffle"
         content-type="application/json"
         params="{{header}}"
@@ -84,6 +85,7 @@ class TrackControl extends PolymerElement {
       <!-- Play current track -->
       <iron-ajax
         id="play"
+        method="post"
         url="[[apiRootPath]]/player/playCurrent"
         content-type="application/json"
         params="{{header}}"
@@ -95,6 +97,7 @@ class TrackControl extends PolymerElement {
       <!-- Pause current track -->
       <iron-ajax
         id="pause"
+        method="post"
         url="[[apiRootPath]]/player/pause"
         content-type="application/json"
         params="{{header}}"
@@ -106,6 +109,7 @@ class TrackControl extends PolymerElement {
       <!-- Toggle repeat state -->
       <iron-ajax
         id="repeat"
+        method="post"
         url="[[apiRootPath]]/player/repeat"
         content-type="application/json"
         params="{{header}}"
@@ -117,6 +121,7 @@ class TrackControl extends PolymerElement {
       <!-- Play next track in queue -->
       <iron-ajax
         id="nextTrack"
+        method="post"
         url="[[apiRootPath]]/player/next"
         content-type="application/json"
         params="{{header}}"
@@ -128,6 +133,7 @@ class TrackControl extends PolymerElement {
       <!-- Play previous track in queue -->
       <iron-ajax
         id="previousTrack"
+        method="post"
         url="[[apiRootPath]]/player/prev"
         content-type="application/json"
         params="{{header}}"
@@ -139,7 +145,9 @@ class TrackControl extends PolymerElement {
       <!-- Set volume level  -->
       <iron-ajax
         id="changeVolume"
-        url="[[apiRootPath]]/player/volume/{{volumeLevel}}"
+        method="post"
+        url="[[apiRootPath]]/player/volume"
+        body='{"volumeLevel": "{{volumeLevel}}"}'
         content-type="application/json"
         params="{{header}}"
         handle-as="json"

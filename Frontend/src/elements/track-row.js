@@ -111,8 +111,9 @@ class TrackRow extends PolymerElement {
 
       <iron-ajax
         id="addToPlaylist"
-        method="PATCH"
-        url="[[apiRootPath]]/details/playlists/{{playlistId}}/tracks/{{trackId}}"
+        method="patch"
+        url="[[apiRootPath]]/details/playlists/add/track"
+        body='{"playlistId": "[[playlistId]]", "trackId": "[[trackId]]",}'
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
@@ -132,8 +133,9 @@ class TrackRow extends PolymerElement {
 
       <iron-ajax
         id="addTrackToQueue"
-        method="get"
-        url="[[apiRootPath]]/player/add/{{trackId}}"
+        method="post"
+        url="[[apiRootPath]]/player/add"
+        body='{"trackId": "[[trackId]]"}'
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
