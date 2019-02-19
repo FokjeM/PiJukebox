@@ -53,7 +53,7 @@ public class PlayerController {
      * @param filename The filename of a song
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND
      */
-    @GetMapping("/play")
+    @PostMapping("/play")
     public ResponseEntity<String> playCurrent(@RequestParam(name = "filename") String filename) {
         playerWrapper.playOneSong(filename);
         return new ResponseEntity<>("Playing...", HttpStatus.OK);
@@ -64,7 +64,7 @@ public class PlayerController {
      *
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND
      */
-    @GetMapping("/playCurrent")
+    @PostMapping("/playCurrent")
     public ResponseEntity<String> playCurrent() {
         playerWrapper.playCurrentSong();
         return new ResponseEntity<>("Playing...", HttpStatus.OK);
@@ -75,7 +75,7 @@ public class PlayerController {
      *
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND
      */
-    @GetMapping("/pause")
+    @PostMapping("/pause")
     public ResponseEntity<String> pauseCurrent() {
         playerWrapper.pauseSong();
         return new ResponseEntity<>("Paused...", HttpStatus.OK);
@@ -86,7 +86,7 @@ public class PlayerController {
      *
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND
      */
-    @GetMapping("/stop")
+    @PostMapping("/stop")
     public ResponseEntity<String> stopCurrent() {
         playerWrapper.stopSong();
         return new ResponseEntity<>("Stopped...", HttpStatus.OK);
@@ -97,7 +97,7 @@ public class PlayerController {
      *
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND
      */
-    @GetMapping("/next")
+    @PostMapping("/next")
     public ResponseEntity<String> nextTrack() {
         playerWrapper.playNextSong();
         return new ResponseEntity<>("Next...", HttpStatus.OK);
@@ -108,7 +108,7 @@ public class PlayerController {
      *
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND
      */
-    @GetMapping("/prev")
+    @PostMapping("/prev")
     public ResponseEntity<String> prevTrack() {
         playerWrapper.playPreviousSong();
         return new ResponseEntity<>("Previous...", HttpStatus.OK);
@@ -119,7 +119,7 @@ public class PlayerController {
      *
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND
      */
-    @GetMapping("/shuffle")
+    @PostMapping("/shuffle")
     public ResponseEntity<String> toggleShuffle() {
         playerWrapper.toggleShuffleState();
         return new ResponseEntity<>("Shuffling...", HttpStatus.OK);
@@ -130,7 +130,7 @@ public class PlayerController {
      *
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND
      */
-    @GetMapping("/repeat")
+    @PostMapping("/repeat")
     public ResponseEntity<String> toggleRepeat() {
         playerWrapper.toggleRepeatState();
         return new ResponseEntity<>("Changed toggleRepeatState state...", HttpStatus.OK);
@@ -142,8 +142,8 @@ public class PlayerController {
      * @param id the id
      * @return Details of the newly added song
      */
-    @GetMapping("/add/{id}")
-    public ResponseEntity<String> addTrack(@PathVariable Long id) {
+    @PostMapping("/add")
+    public ResponseEntity<String> addTrack(@RequestBody Long id) {
         SimpleTrack track = trackService.findSimpleTrackById(id).getBody();
         playerWrapper.addSongToPlaylist(track.getFilename());
         return new ResponseEntity<>("Song added", HttpStatus.OK);
@@ -155,8 +155,8 @@ public class PlayerController {
      * @param id the ID of the playlist to add
      * @return HttpStatus.NO_CONTENT/HttpStatus.OK/HttpStatus.BAD_REQUEST
      */
-    @GetMapping("/add/playlist/{id}")
-    public ResponseEntity<String> addPlaylist(@PathVariable Long id) {
+    @PostMapping("/add/playlist")
+    public ResponseEntity<String> addPlaylist(@RequestBody Long id) {
         try {
             PlaylistWithTracks playlist = playlistService.findById(id).getBody();
             for (SimpleTrack track : playlist.getTracks()) {
@@ -174,8 +174,8 @@ public class PlayerController {
      * @param id the id
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND/HttpStatus.BAD_REQUEST
      */
-    @GetMapping("/remove/{id}")
-    public ResponseEntity<String> deleteTrack(@PathVariable Long id) {
+    @PostMapping("/remove")
+    public ResponseEntity<String> deleteTrack(@RequestBody Long id) {
         SimpleTrack track = trackService.findSimpleTrackById(id).getBody();
         playerWrapper.removeSongFromPlaylist(track.getFilename());
         return new ResponseEntity<>("Song removed", HttpStatus.OK);
@@ -252,8 +252,8 @@ public class PlayerController {
      * @param volumeLevel the volume level
      * @return The new volume level
      */
-    @GetMapping("/volume/{volumeLevel}")
-    public ResponseEntity<String> setVolume(@PathVariable int volumeLevel) {
+    @PostMapping("/volume")
+    public ResponseEntity<String> setVolume(@RequestBody int volumeLevel) {
         playerWrapper.setPlayerVolume((volumeLevel));
         return new ResponseEntity<>(String.format("Volume is %s", playerWrapper.getPlayerVolume()), HttpStatus.OK);
     }
@@ -273,7 +273,7 @@ public class PlayerController {
      *
      * @return HttpStatus.OK
      */
-    @GetMapping("/queue/clear")
+    @PostMapping("/queue/clear")
     public ResponseEntity<String> clearQueue() {
         playerWrapper.clearQueue(true);
         return new ResponseEntity<>("Queue cleared!", HttpStatus.OK);
