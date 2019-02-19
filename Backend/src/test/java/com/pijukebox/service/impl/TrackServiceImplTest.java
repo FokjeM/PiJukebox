@@ -63,7 +63,7 @@ class TrackServiceImplTest {
         when(mockSimpleTrackRepository.findById(anyLong())).thenReturn(expectedResult);
 
         // When
-        final Optional<SimpleTrack> result = trackServiceImplUnderTest.findSimpleTrackById(id);
+        final SimpleTrack result = trackServiceImplUnderTest.findSimpleTrackById(id).getBody();
 
         // Then
         // You are expecting service to return whatever returned by repo

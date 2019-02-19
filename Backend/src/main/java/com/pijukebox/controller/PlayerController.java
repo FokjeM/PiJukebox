@@ -143,10 +143,7 @@ public class PlayerController {
      */
     @GetMapping("/add/{id}")
     public ResponseEntity<String> addTrack(@PathVariable Long id) {
-        if (!trackService.findSimpleTrackById(id).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        SimpleTrack track = trackService.findSimpleTrackById(id).get();
+        SimpleTrack track = trackService.findSimpleTrackById(id).getBody();
         playerWrapper.addSongToPlaylist(track.getFilename());
         return new ResponseEntity<>("Song added", HttpStatus.OK);
     }
@@ -160,10 +157,7 @@ public class PlayerController {
     @GetMapping("/add/playlist/{id}")
     public ResponseEntity<String> addPlaylist(@PathVariable Long id) {
         try {
-            if (!playlistService.findById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            PlaylistWithTracks playlist = playlistService.findById(id).get();
+            PlaylistWithTracks playlist = playlistService.findById(id).getBody();
             for (SimpleTrack track : playlist.getTracks()) {
                 playerWrapper.addSongToPlaylist(track.getFilename());
             }
@@ -181,10 +175,7 @@ public class PlayerController {
      */
     @GetMapping("/remove/{id}")
     public ResponseEntity<String> deleteTrack(@PathVariable Long id) {
-        if (!trackService.findSimpleTrackById(id).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        SimpleTrack track = trackService.findSimpleTrackById(id).get();
+        SimpleTrack track = trackService.findSimpleTrackById(id).getBody();
         playerWrapper.removeSongFromPlaylist(track.getFilename());
         return new ResponseEntity<>("Song removed", HttpStatus.OK);
     }
@@ -200,9 +191,7 @@ public class PlayerController {
         List<Track> queue = new ArrayList<>();
         for (String song : songs) {
             String name = FilenameUtils.removeExtension(song);
-            if (trackService.findAllTracksByName(name).isPresent()) {
-                queue.add(trackService.findAllTracksByName(name).get().get(0));
-            }
+            queue.add(trackService.findAllTracksByName(name).getBody().get(0));
         }
         return new ResponseEntity<>(queue, HttpStatus.OK);
     }
@@ -249,16 +238,8 @@ public class PlayerController {
         if (!playerWrapper.getQueue().isEmpty()) {
 
             String name = FilenameUtils.removeExtension(playerWrapper.getCurrentSong());
-            if (!trackService.findAllSimpleTrackByName(name).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            SimpleTrack st = trackService.findAllSimpleTrackByName(name).get().get(0);
-
-            if (!trackService.findTrackDetailsById(st.getId()).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-
-            return new ResponseEntity<>(trackService.findTrackDetailsById(st.getId()).get(), HttpStatus.OK);
+            SimpleTrack st = trackService.findAllSimpleTrackByName(name).getBody().get(0);
+            return new ResponseEntity<>(trackService.findTrackDetailsById(st.getId()).getBody(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }

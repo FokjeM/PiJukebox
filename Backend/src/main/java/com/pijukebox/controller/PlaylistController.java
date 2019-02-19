@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @CrossOrigin(maxAge = 3600)
@@ -88,10 +87,7 @@ public class PlaylistController {
     @PostMapping(value = "/playlists/create", produces = "application/json")
     @ApiOperation(value = "Create a new playlist")
     public ResponseEntity<String> createNewSimplePlaylist(@RequestBody PlaylistForm playlistForm, @RequestParam(name = "Authorization") String authorization) {
-        if (!userService.findByToken(authorization).isPresent()) {
-            return new ResponseEntity<>(Optional.empty().toString(), HttpStatus.FORBIDDEN);
-        }
-        User user = userService.findByToken(authorization).get();
+        User user = userService.findByToken(authorization).getBody();
 
         Long userID = user.getId();
         String title = playlistForm.getTitle();
@@ -137,7 +133,7 @@ public class PlaylistController {
     public ResponseEntity<PlaylistWithTracks> addTrackToPlaylist(@PathVariable Long playlistID, @PathVariable Long trackId) {
         PlaylistWithTracks playlistTrack = playlistService.findById(playlistID).getBody();
         Set<SimpleTrack> trackSet = playlistTrack.getTracks();
-        trackSet.add(trackService.findSimpleTrackById(trackId).get());
+        trackSet.add(trackService.findSimpleTrackById(trackId).getBody());
         playlistTrack.setTracks(trackSet);
         playlistService.addTrackToPlaylist(playlistTrack);
         return new ResponseEntity<>(playlistTrack, HttpStatus.OK);
@@ -155,7 +151,7 @@ public class PlaylistController {
     public ResponseEntity<PlaylistWithTracks> removeTrackFromPlaylist(@PathVariable Long playlistID, @PathVariable Long trackId) {
         PlaylistWithTracks playlistTrack = playlistService.findById(playlistID).getBody();
         Set<SimpleTrack> trackSet = playlistTrack.getTracks();
-        trackSet.remove(trackService.findSimpleTrackById(trackId).get());
+        trackSet.remove(trackService.findSimpleTrackById(trackId).getBody());
         playlistTrack.setTracks(trackSet);
         playlistService.deleteTrackFromPlaylist(playlistTrack);
         return new ResponseEntity<>(playlistTrack, HttpStatus.OK);

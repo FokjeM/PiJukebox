@@ -71,7 +71,7 @@ public class UserServiceImplTest {
         final Optional<List<PlaylistWithTracks>> expectedResult = Optional.of(playListWithTracks);
         when(playlistRepository.findAllByUserID(anyLong())).thenReturn(expectedResult);
 
-        final Optional<List<PlaylistWithTracks>> result = userService.findPlaylistsByUserId(1L);
+        final List<PlaylistWithTracks> result = userService.findPlaylistsByUserId(1L).getBody();
 
         assertThat("result", result, is(IsSame.sameInstance(expectedResult)));
 
@@ -99,7 +99,7 @@ public class UserServiceImplTest {
 
         when(userRepository.findByEmailAndPassword(anyString(), anyString())).thenReturn(expectedResult);
 
-        final Optional<User> result = userService.findByEmailAndPassword("email", "password");
+        final User result = userService.findByEmailAndPassword("email", "password").getBody();
 
         assertThat("reason", result, is(IsSame.sameInstance(expectedResult)));
 
