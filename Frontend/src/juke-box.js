@@ -144,8 +144,8 @@ class JukeBox extends PolymerElement {
     `;
   }
 
-  isLogin(){
-    return this.page == 'login';
+  isLogin(page){
+    return page == 'login';
   }
 
   ready(){
