@@ -1,8 +1,10 @@
 package com.pijukebox.controller;
 
+import com.pijukebox.model.playlist.PlaylistWithTracks;
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.model.track.Track;
 import com.pijukebox.player.PlayerWrapper;
+import com.pijukebox.service.IPlaylistService;
 import com.pijukebox.service.ITrackService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FilenameUtils;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ public class PlayerController {
      * */
 
     private final ITrackService trackService;
+    private final IPlaylistService playlistService;
     private final PlayerWrapper playerWrapper;
 
     /**
@@ -35,11 +39,11 @@ public class PlayerController {
      * @param trackService the track service
      */
     @Autowired
-    public PlayerController(ITrackService trackService) {
+    public PlayerController(ITrackService trackService, IPlaylistService playlistService) {
         this.trackService = trackService;
+        this.playlistService = playlistService;
 //        this.playerWrapper = new PlayerWrapper(Paths.get("/media/music/"));
         this.playerWrapper = new PlayerWrapper(Paths.get("C:\\Users\\Public\\Music\\"));
-
     }
 
     /**
@@ -145,6 +149,28 @@ public class PlayerController {
         SimpleTrack track = trackService.findSimpleTrackById(id).get();
         playerWrapper.addSongToPlaylist(track.getFilename());
         return new ResponseEntity<>("Song added", HttpStatus.OK);
+    }
+
+    /**
+     * Add an entire playlist to the queue
+     *
+     * @param id the ID of the playlist to add
+     * @return HttpStatus.NO_CONTENT/HttpStatus.OK/HttpStatus.BAD_REQUEST
+     */
+    @GetMapping("/add/playlist/{id}")
+    public ResponseEntity<String> addPlaylist(@PathVariable Long id) {
+        try {
+            if (!playlistService.findById(id).isPresent()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            PlaylistWithTracks playlist = playlistService.findById(id).get();
+            for (SimpleTrack track : playlist.getTracks()) {
+                playerWrapper.addSongToPlaylist(track.getFilename());
+            }
+            return new ResponseEntity<>("Playlist added!", HttpStatus.OK);
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Couldn't add playlist", ex);
+        }
     }
 
     /**
