@@ -11,20 +11,20 @@ import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.repository.*;
 import com.pijukebox.service.IAlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 @Service
 @Transactional
 public class AlbumServiceImpl implements IAlbumService {
 
     private final IAlbumRepository albumRepository;
     private final ISimpleAlbumRepository simpleAlbumRepository;
-    private final IGenreWithAlbumsRepository genreWithAlbumsRepository;
-    private final IArtistWithAlbumsRepository artistWithAlbumsRepository;
     private final IAlbumWithTracksRepository albumWithTracksRepository;
     private final ISimpleTrackRepository simpleTrackRepository;
     private final ISimpleArtistRepository simpleArtistRepository;
@@ -33,11 +33,9 @@ public class AlbumServiceImpl implements IAlbumService {
     private final IAlbumWithGenreRepository albumWithGenreRepository;
 
     @Autowired
-    public AlbumServiceImpl(IAlbumRepository albumRepository, ISimpleAlbumRepository simpleAlbumRepository, IGenreWithAlbumsRepository genreWithAlbumsRepository, IArtistWithAlbumsRepository artistWithAlbumsRepository, IAlbumWithTracksRepository albumWithTracksRepository, ISimpleTrackRepository simpleTrackRepository, ISimpleArtistRepository simpleArtistRepository, ISimpleGenreRepository simpleGenreRepository, IAlbumWithArtistsRepository albumWithArtistsRepository, IAlbumWithGenreRepository albumWithGenreRepository) {
+    public AlbumServiceImpl(IAlbumRepository albumRepository, ISimpleAlbumRepository simpleAlbumRepository, IAlbumWithTracksRepository albumWithTracksRepository, ISimpleTrackRepository simpleTrackRepository, ISimpleArtistRepository simpleArtistRepository, ISimpleGenreRepository simpleGenreRepository, IAlbumWithArtistsRepository albumWithArtistsRepository, IAlbumWithGenreRepository albumWithGenreRepository) {
         this.albumRepository = albumRepository;
         this.simpleAlbumRepository = simpleAlbumRepository;
-        this.genreWithAlbumsRepository = genreWithAlbumsRepository;
-        this.artistWithAlbumsRepository = artistWithAlbumsRepository;
         this.albumWithTracksRepository = albumWithTracksRepository;
         this.simpleTrackRepository = simpleTrackRepository;
         this.simpleArtistRepository = simpleArtistRepository;
@@ -47,92 +45,92 @@ public class AlbumServiceImpl implements IAlbumService {
     }
 
     @Override
-    public List<Album> findAllExtendedAlbums() {
-        return albumRepository.findAll();
+    public ResponseEntity<List<Album>> findAllExtendedAlbums() {
+        return new ResponseEntity<>(albumRepository.findAll(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<Album> findExtendedAlbumById(Long id) {
-        return albumRepository.findById(id);
+    public ResponseEntity<Album> findExtendedAlbumById(Long id) {
+        return new ResponseEntity<>(albumRepository.findById(id).get(), HttpStatus.NO_CONTENT);
     }
 
     @Override
-    public Optional<List<Album>> findAlbumsByNameContaining(String name) {
-        return albumRepository.findAlbumsByNameContaining(name);
+    public ResponseEntity<List<Album>> findAlbumsByNameContaining(String name) {
+        return new ResponseEntity<>(albumRepository.findAlbumsByNameContaining(name).get(), HttpStatus.NO_CONTENT);
     }
 
     @Override
-    public List<SimpleAlbum> findAllSimpleAlbums() {
-        return simpleAlbumRepository.findAll();
+    public ResponseEntity<List<SimpleAlbum>> findAllSimpleAlbums() {
+        return new ResponseEntity<>(simpleAlbumRepository.findAll(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<SimpleAlbum> findSimpleAlbumById(Long id) {
-        return simpleAlbumRepository.findById(id);
+    public ResponseEntity<SimpleAlbum> findSimpleAlbumById(Long id) {
+        return new ResponseEntity<>(simpleAlbumRepository.findById(id).get(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<List<SimpleAlbum>> findSimpleAlbumsByNameContaining(String name) {
-        return simpleAlbumRepository.findSimpleAlbumsByNameContaining(name);
+    public ResponseEntity<List<SimpleAlbum>> findSimpleAlbumsByNameContaining(String name) {
+        return new ResponseEntity<>(simpleAlbumRepository.findSimpleAlbumsByNameContaining(name).get(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<List<AlbumWithArtists>> findAlbumWithArtistsByNameContaining(String name) {
-        return albumWithArtistsRepository.findAlbumWithArtistsByNameContaining(name);
+    public ResponseEntity<List<AlbumWithArtists>> findAlbumWithArtistsByNameContaining(String name) {
+        return new ResponseEntity<>(albumWithArtistsRepository.findAlbumWithArtistsByNameContaining(name).get(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<List<AlbumWithGenres>> findAlbumWithGenresByNameContaining(String name) {
-        return albumWithGenreRepository.findAlbumWithGenresByNameContaining(name);
+    public ResponseEntity<List<AlbumWithGenres>> findAlbumWithGenresByNameContaining(String name) {
+        return new ResponseEntity<>(albumWithGenreRepository.findAlbumWithGenresByNameContaining(name).get(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<List<AlbumWithTracks>> findAlbumWithTracksByNameContaining(String name) {
-        return albumWithTracksRepository.findAlbumWithTracksByNameContaining(name);
+    public ResponseEntity<List<AlbumWithTracks>> findAlbumWithTracksByNameContaining(String name) {
+        return new ResponseEntity<>(albumWithTracksRepository.findAlbumWithTracksByNameContaining(name).get(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<SimpleTrack> findTrackById(Long id) {
-        return simpleTrackRepository.findById(id);
+    public ResponseEntity<SimpleTrack> findTrackById(Long id) {
+        return new ResponseEntity<>(simpleTrackRepository.findById(id).get(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<AlbumWithTracks> findTrackByAlbumId(Long id) {
-        return albumWithTracksRepository.findById(id);
+    public ResponseEntity<AlbumWithTracks> findTrackByAlbumId(Long id) {
+        return new ResponseEntity<>(albumWithTracksRepository.findById(id).get(), HttpStatus.OK);
     }
 
     @Override
-    public AlbumWithTracks addTrackToAlbum(AlbumWithTracks track) {
-        return albumWithTracksRepository.save(track);
+    public ResponseEntity<AlbumWithTracks> addTrackToAlbum(AlbumWithTracks track) {
+        return new ResponseEntity<>(albumWithTracksRepository.save(track), HttpStatus.OK);
     }
 
     @Override
-    public Optional<SimpleArtist> findArtistById(Long id) {
-        return simpleArtistRepository.findById(id);
+    public ResponseEntity<SimpleArtist> findArtistById(Long id) {
+        return new ResponseEntity<>(simpleArtistRepository.findById(id).get(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<AlbumWithArtists> findArtistByAlbumId(Long id) {
-        return albumWithArtistsRepository.findById(id);
+    public ResponseEntity<AlbumWithArtists> findArtistByAlbumId(Long id) {
+        return new ResponseEntity<>(albumWithArtistsRepository.findById(id).get(), HttpStatus.OK);
     }
 
     @Override
-    public AlbumWithArtists addArtistToAlbum(AlbumWithArtists album) {
-        return albumWithArtistsRepository.save(album);
+    public ResponseEntity<AlbumWithArtists> addArtistToAlbum(AlbumWithArtists album) {
+        return new ResponseEntity<>(albumWithArtistsRepository.save(album), HttpStatus.OK);
     }
 
     @Override
-    public Optional<AlbumWithGenres> findGenreByAlbumId(Long id) {
-        return albumWithGenreRepository.findById(id);
+    public ResponseEntity<AlbumWithGenres> findGenreByAlbumId(Long id) {
+        return new ResponseEntity<>(albumWithGenreRepository.findById(id).get(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<SimpleGenre> findGenreById(Long id) {
-        return simpleGenreRepository.findById(id);
+    public ResponseEntity<SimpleGenre> findGenreById(Long id) {
+        return new ResponseEntity<>(simpleGenreRepository.findById(id).get(), HttpStatus.OK);
     }
 
     @Override
-    public AlbumWithGenres addGenreToAlbum(AlbumWithGenres album) {
-        return albumWithGenreRepository.save(album);
+    public ResponseEntity<AlbumWithGenres> addGenreToAlbum(AlbumWithGenres album) {
+        return new ResponseEntity<>(albumWithGenreRepository.save(album), HttpStatus.OK);
     }
 }
