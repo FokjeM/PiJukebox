@@ -169,31 +169,6 @@ public class PlayerController {
     }
 
     /**
-     * Add entire playlist to the queue
-     *
-     * @return HttpStatus.NO_CONTENT/HttpStatus.OK/HttpStatus.BAD_REQUEST
-     */
-    @GetMapping("/add/playlist/{id}")
-    public ResponseEntity<String> addPlaylist(@PathVariable Long id) {
-        try {
-            if (!playlistService.findById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            PlaylistWithTracks playlist = playlistService.findById(id).get();
-            if(playlist.getTracks().isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            for (SimpleTrack track : playlist.getTracks()) {
-                playerWrapper.addSongToPlaylist(track.getFilename());
-            }
-            return new ResponseEntity<>("Playlist added", HttpStatus.OK);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Couldn't add playlist", ex);
-        }
-    }
-
-    /**
      * Remove a song from the queue
      *
      * @param id the id
