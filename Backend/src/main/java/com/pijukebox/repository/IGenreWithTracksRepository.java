@@ -9,8 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface IGenreWithTracksRepository extends JpaRepository<GenreWithTracks, Long> {
-    List<GenreWithTracks> findAll();
-
     Optional<GenreWithTracks> findById(Long id);
 
     Optional<List<GenreWithTracks>> findGenreTracksByNameContaining(String name);

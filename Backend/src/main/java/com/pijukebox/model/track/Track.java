@@ -1,13 +1,12 @@
 package com.pijukebox.model.track;
 
-import com.pijukebox.model.SqlElement;
+import com.pijukebox.model.BaseModel;
 import com.pijukebox.model.simple.SimpleArtist;
 import com.pijukebox.model.simple.SimpleGenre;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(schema = "pijukebox", name = "track")
-public class Track extends SqlElement implements Serializable {
+public class Track extends BaseModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -1,10 +1,9 @@
 package com.pijukebox.model.simple;
 
-import com.pijukebox.model.SqlElement;
+import com.pijukebox.model.BaseModel;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -12,7 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(schema = "pijukebox", name = "genre")
-public class SimpleGenre extends SqlElement implements Serializable {
+public class SimpleGenre extends BaseModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

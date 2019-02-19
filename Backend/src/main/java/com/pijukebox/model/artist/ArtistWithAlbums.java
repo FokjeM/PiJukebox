@@ -1,6 +1,6 @@
 package com.pijukebox.model.artist;
 
-import com.pijukebox.model.SqlElement;
+import com.pijukebox.model.BaseModel;
 import com.pijukebox.model.simple.SimpleAlbum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +10,6 @@ import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(schema = "pijukebox", name = "artist")
-public class ArtistWithAlbums extends SqlElement implements Serializable {
+public class ArtistWithAlbums extends BaseModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

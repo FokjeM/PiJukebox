@@ -4,16 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import java.io.Serializable;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class PlaylistForm implements Serializable {
-    @Column(name="title")
+public class PlaylistForm {
     private String title;
-
-    @Column(name="description")
     private String description;
 }

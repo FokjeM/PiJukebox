@@ -9,10 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface ISimpleAlbumRepository extends JpaRepository<SimpleAlbum, Long> {
-
-    List<SimpleAlbum> findAll();
-
-    Optional<SimpleAlbum> findById(Long id);
-
     Optional<List<SimpleAlbum>> findSimpleAlbumsByNameContaining(String name);
 }
