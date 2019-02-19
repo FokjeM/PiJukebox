@@ -85,12 +85,6 @@ public class PlayerWrapper {
         if (current >= queue.size()) {
             current = 0;
         }
-        System.out.println(String.format("The current is: %d", current));
-        System.out.println(String.format("The current is: %d", current));
-        System.out.println(String.format("The current is: %d", current));
-        System.out.println(String.format("The current is: %d", current));
-        System.out.println(String.format("The current is: %d", current));
-        System.out.println(String.format("The current is: %d", current));
         stopSong();
         playCurrentSong();
 
@@ -104,12 +98,7 @@ public class PlayerWrapper {
         if (current < 0) {
             current = queue.size() - 1;
         }
-        System.out.println(String.format("The current is: %d", current));
-        System.out.println(String.format("The current is: %d", current));
-        System.out.println(String.format("The current is: %d", current));
-        System.out.println(String.format("The current is: %d", current));
-        System.out.println(String.format("The current is: %d", current));
-        System.out.println(String.format("The current is: %d", current));
+        stopSong();
         playCurrentSong();
     }
 

@@ -27,9 +27,11 @@ public class PlayerController {
     private final IPlayerService playerService;
 
     /**
-     * Instantiates a new Player controller.
+     * Instantiates a new Player controller
      *
-     * @param trackService the track service
+     * @param trackService    the track service
+     * @param playlistService the playlist service
+     * @param playerService   the player service
      */
     @Autowired
     public PlayerController(ITrackService trackService, IPlaylistService playlistService, IPlayerService playerService) {
@@ -48,7 +50,7 @@ public class PlayerController {
      */
     @GetMapping("/play")
     public ResponseEntity<String> playCurrent(@RequestParam(name = "filename") String filename) {
-       return playerService.playOneSong(filename);
+        return playerService.playOneSong(filename);
     }
 
     /**
@@ -193,7 +195,7 @@ public class PlayerController {
     @ApiOperation(value = "Get player status")
     public ResponseEntity<Map<String, String>> getStatus() {
         return playerService.getPlayerStatus();
-     }
+    }
 
     /**
      * Get current song
