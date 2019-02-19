@@ -53,7 +53,7 @@ class GenreServiceImplTest {
         when(mockGenreWithAlbumsRepository.findById(anyLong())).thenReturn(expectedResult);
 
         // When
-        final Optional<SimpleGenre> result = genreServiceImplUnderTest.findById(id);
+        final SimpleGenre result = genreServiceImplUnderTest.findById(id).getBody();
 
         // Then
         // You are expecting service to return whatever returned by repo

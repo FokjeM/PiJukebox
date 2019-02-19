@@ -54,7 +54,7 @@ public class UploadController {
     public ResponseEntity<SimpleTrack> upload(@RequestBody MultipartFile[] file) throws Exception {
         for (MultipartFile f : file) {
             SimpleTrack track = new SimpleTrack(null, FilenameUtils.removeExtension(f.getOriginalFilename()), null, f.getOriginalFilename());
-            if (trackService.findAllSimpleTrackByName(track.getName()).isPresent()) {
+            if (trackService.findAllSimpleTrackByName(track.getName()).hasBody()) {
                 return new ResponseEntity<>(HttpStatus.CONFLICT);
             } else {
                 uploadFile(f);
@@ -81,25 +81,21 @@ public class UploadController {
                     TrackDetails trackDetails = new TrackDetails(t, dirToScan);
                     SimpleGenre genre = new SimpleGenre(null, trackDetails.getGenre());
                     SimpleArtist artist = new SimpleArtist(null, trackDetails.getArtist());
-                    if (!trackService.findAllSimpleTrackByName(track.getName()).isPresent()) {
+                    if (!trackService.findAllSimpleTrackByName(track.getName()).hasBody()) {
                         addFileToFolder(dirToScan, uploadDir, t);
                         trackService.addSimpleTrack(track);
                     }
-                    if (!genreService.findGenresByNameContaining(genre.getName()).isPresent()) {
-                        genreService.addSimpleGenre(genre);
-                    }
-                    if (!artistService.findSimpleArtistsByNameContaining(artist.getName()).isPresent()) {
-                        artistService.addSimpleArtist(artist);
-                    }
-                    Long addToArtistId = artistService.findSimpleArtistsByNameContaining(artist.getName()).get().get(0).getId();
-                    Long addToGenreId = genreService.findGenresByNameContaining(genre.getName()).get().get(0).getId();
+                    genreService.addSimpleGenre(genre);
+                    artistService.addSimpleArtist(artist);
+                    Long addToArtistId = artistService.findSimpleArtistsByNameContaining(artist.getName()).getBody().get(0).getId();
+                    Long addToGenreId = genreService.findGenresByNameContaining(genre.getName()).getBody().get(0).getId();
 
-                    if (trackService.findTrackByArtistId(addToArtistId).isPresent()) {
-                        trackService.addArtistToTrack(trackService.findTrackByArtistId(addToArtistId).get());
+                    if (trackService.findTrackByArtistId(addToArtistId).hasBody()) {
+                        trackService.addArtistToTrack(trackService.findTrackByArtistId(addToArtistId).getBody());
 
                     }
-                    if (trackService.findTrackByGenreId(addToGenreId).isPresent()) {
-                        trackService.addGenreToTrack(trackService.findTrackByGenreId(addToGenreId).get());
+                    if (trackService.findTrackByGenreId(addToGenreId).hasBody()) {
+                        trackService.addGenreToTrack(trackService.findTrackByGenreId(addToGenreId).getBody());
 
                     }
                 }

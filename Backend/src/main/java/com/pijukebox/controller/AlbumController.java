@@ -41,12 +41,9 @@ public class AlbumController {
     @ApiOperation(value = "Get all pertaining to albums (without relations)", notes = "Filter the returned items using the name parameter")
     public ResponseEntity<List<SimpleAlbum>> getSimpleAlbums(@RequestParam(name = "name", required = false) String name) {
         if (name != null && !name.isEmpty()) {
-            if (!albumService.findSimpleAlbumsByNameContaining(name).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(albumService.findSimpleAlbumsByNameContaining(name).get(), HttpStatus.OK);
+            return new ResponseEntity<>(albumService.findSimpleAlbumsByNameContaining(name).getBody(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(albumService.findAllSimpleAlbums(), HttpStatus.OK);
+        return new ResponseEntity<>(albumService.findAllSimpleAlbums().getBody(), HttpStatus.OK);
     }
 
     /**
@@ -60,11 +57,7 @@ public class AlbumController {
     @GetMapping("/simple/albums/{id}")
     @ApiOperation(value = "Get all information pertaining to a certain album (without relations) by its ID")
     public ResponseEntity<SimpleAlbum> getSimpleAlbum(@PathVariable Long id) {
-        if (!albumService.findSimpleAlbumById(id).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(albumService.findSimpleAlbumById(id).get(), HttpStatus.OK);
-        }
+        return new ResponseEntity<>(albumService.findSimpleAlbumById(id).getBody(), HttpStatus.OK);
     }
 
     /**
@@ -83,35 +76,19 @@ public class AlbumController {
             if (searchBy != null && !searchBy.isEmpty()) {
                 switch (searchBy.toLowerCase()) {
                     case "genre":
-                        if (!albumService.findAlbumWithGenresByNameContaining(name).isPresent()) {
-                            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-                        } else {
-                            return new ResponseEntity<>(albumService.findAlbumWithGenresByNameContaining(name).get(), HttpStatus.OK);
-                        }
+                        return new ResponseEntity<>(albumService.findAlbumWithGenresByNameContaining(name).getBody(), HttpStatus.OK);
                     case "artist":
-                        if (!albumService.findAlbumWithArtistsByNameContaining(name).isPresent()) {
-                            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-                        } else {
-                            return new ResponseEntity<>(albumService.findAlbumWithArtistsByNameContaining(name).get(), HttpStatus.OK);
-                        }
+                        return new ResponseEntity<>(albumService.findAlbumWithArtistsByNameContaining(name).getBody(), HttpStatus.OK);
                     case "track":
-                        if (!albumService.findAlbumWithTracksByNameContaining(name).isPresent()) {
-                            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-                        } else {
-                            return new ResponseEntity<>(albumService.findAlbumWithTracksByNameContaining(name).get(), HttpStatus.OK);
-                        }
+                        return new ResponseEntity<>(albumService.findAlbumWithTracksByNameContaining(name).getBody(), HttpStatus.OK);
                     default:
                         return new ResponseEntity<>("No valid search value. Use 'genre', 'artist' or 'track'", HttpStatus.BAD_REQUEST);
                 }
             } else {
-                if (!albumService.findAlbumsByNameContaining(name).isPresent()) {
-                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-                } else {
-                    return new ResponseEntity<>(albumService.findAlbumsByNameContaining(name).get(), HttpStatus.OK);
-                }
+                return new ResponseEntity<>(albumService.findAlbumsByNameContaining(name).getBody(), HttpStatus.OK);
             }
         } else {
-            return new ResponseEntity<>(albumService.findAllExtendedAlbums(), HttpStatus.OK);
+            return new ResponseEntity<>(albumService.findAllExtendedAlbums().getBody(), HttpStatus.OK);
         }
     }
 
@@ -126,11 +103,7 @@ public class AlbumController {
     @GetMapping("/extended/albums/{id}")
     @ApiOperation(value = "Get all information pertaining to a certain album (with relations) by its ID")
     public ResponseEntity<Album> getExtendedAlbum(@PathVariable Long id) {
-        if (!albumService.findExtendedAlbumById(id).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(albumService.findExtendedAlbumById(id).get(), HttpStatus.OK);
-        }
+        return albumService.findExtendedAlbumById(id);
     }
 
     /**
@@ -143,14 +116,7 @@ public class AlbumController {
     @PostMapping("/extended/albums/{albumId}/tracks/{trackId}")
     @ApiOperation(value = "Add a new track to an existing album")
     public ResponseEntity<AlbumWithTracks> addTrackToAlbum(@PathVariable Long albumId, @PathVariable Long trackId) {
-        if (!albumService.findTrackByAlbumId(albumId).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        if (!albumService.findTrackById(trackId).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
-        AlbumWithTracks album = albumService.findTrackByAlbumId(albumId).get();
+        AlbumWithTracks album = albumService.findTrackByAlbumId(albumId).getBody();
         boolean trackExistsInAlbum = false;
         for (SimpleTrack albumTrack : album.getTracks()) {
             if (albumTrack.getId().equals(trackId)) {
@@ -158,13 +124,12 @@ public class AlbumController {
             }
         }
         if (!trackExistsInAlbum) {
-            album.getTracks().add(albumService.findTrackById(trackId).get());
-            return new ResponseEntity<>(albumService.addTrackToAlbum(album), HttpStatus.CREATED);
+            album.getTracks().add(albumService.findTrackById(trackId).getBody());
+            return new ResponseEntity<>(albumService.addTrackToAlbum(album).getBody(), HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
-
 
     /**
      * Add an artist to an existing album by artist ID
@@ -176,14 +141,7 @@ public class AlbumController {
     @PostMapping("/extended/albums/{albumId}/artists/{artistId}")
     @ApiOperation(value = "Add a new artist to an existing album")
     public ResponseEntity<AlbumWithArtists> addArtistToAlbum(@PathVariable Long albumId, @PathVariable Long artistId) {
-        if (!albumService.findArtistByAlbumId(albumId).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        if (!albumService.findArtistById(artistId).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
-        AlbumWithArtists album = albumService.findArtistByAlbumId(albumId).get();
+        AlbumWithArtists album = albumService.findArtistByAlbumId(albumId).getBody();
         boolean ArtistExistsInAlbum = false;
         for (SimpleArtist artistAlbum : album.getArtists()) {
             if (artistAlbum.getId().equals(artistId)) {
@@ -191,8 +149,8 @@ public class AlbumController {
             }
         }
         if (!ArtistExistsInAlbum) {
-            album.getArtists().add(albumService.findArtistById(artistId).get());
-            return new ResponseEntity<>(albumService.addArtistToAlbum(album), HttpStatus.CREATED);
+            album.getArtists().add(albumService.findArtistById(artistId).getBody());
+            return new ResponseEntity<>(albumService.addArtistToAlbum(album).getBody(), HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
@@ -208,14 +166,7 @@ public class AlbumController {
     @PostMapping("/extended/albums/{albumId}/genres/{genreId}")
     @ApiOperation(value = "Add a new genre to an existing album")
     public ResponseEntity<AlbumWithGenres> addGenreToAlbum(@PathVariable Long albumId, @PathVariable Long genreId) {
-        if (!albumService.findGenreByAlbumId(albumId).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        if (!albumService.findGenreById(genreId).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
-        AlbumWithGenres album = albumService.findGenreByAlbumId(albumId).get();
+        AlbumWithGenres album = albumService.findGenreByAlbumId(albumId).getBody();
         boolean ArtistExistsInAlbum = false;
         for (SimpleGenre simpleGenre : album.getGenres()) {
             if (simpleGenre.getId().equals(genreId)) {
@@ -223,11 +174,10 @@ public class AlbumController {
             }
         }
         if (!ArtistExistsInAlbum) {
-            album.getGenres().add(albumService.findGenreById(genreId).get());
-            return new ResponseEntity<>(albumService.addGenreToAlbum(album), HttpStatus.CREATED);
+            album.getGenres().add(albumService.findGenreById(genreId).getBody());
+            return new ResponseEntity<>(albumService.addGenreToAlbum(album).getBody(), HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-
     }
 }

@@ -3,22 +3,22 @@ package com.pijukebox.service;
 import com.pijukebox.model.playlist.PlaylistWithTracks;
 import com.pijukebox.model.simple.SimplePlaylist;
 import com.pijukebox.model.user.User;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IUserService {
-    List<User> findAllUsers();
+    ResponseEntity<List<User>> findAllUsers();
 
-    Optional<User> findById(Long id);
+    ResponseEntity<User> findById(Long id);
 
-    Optional<List<PlaylistWithTracks>> findPlaylistsByUserId(Long id);
+    ResponseEntity<List<PlaylistWithTracks>> findPlaylistsByUserId(Long id);
 
-    Optional<List<SimplePlaylist>> findSimplePlaylistsByUserId(Long id);
+    ResponseEntity<List<SimplePlaylist>> findSimplePlaylistsByUserId(Long id);
 
-    Optional<User> findByToken(String token);
+    ResponseEntity<User> findByToken(String token);
 
-    Optional<User> findByEmailAndPassword(String email, String password);
+    ResponseEntity<User> findByEmailAndPassword(String email, String password);
 
-    User saveUser(User user);
+    ResponseEntity<User> saveUser(User user);
 }

@@ -49,7 +49,7 @@ public class UserController {
     @GetMapping("/users")
     @ApiOperation(value = "Get all information pertaining to users (with relations)")
     public ResponseEntity<List<User>> users() {
-        return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findAllUsers().getBody(), HttpStatus.OK);
     }
 
     /**
@@ -63,10 +63,7 @@ public class UserController {
     @GetMapping("/users/{id}")
     @ApiOperation(value = "Get all information pertaining to a certain user (with relations) by its ID")
     public ResponseEntity<User> users(@PathVariable Long id) {
-        if (!userService.findById(id).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(userService.findById(id).get(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findById(id).getBody(), HttpStatus.OK);
     }
 
     /**
@@ -80,13 +77,7 @@ public class UserController {
     @GetMapping("/users/{userID}/details/playlists")
     @ApiOperation(value = "Get all information pertaining to play" + "lists (with relations) from a user.")
     public ResponseEntity<List<PlaylistWithTracks>> playlistsByUser(@PathVariable Long userID) {
-        if (!userService.findById(userID).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        if (!userService.findPlaylistsByUserId(userID).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(userService.findPlaylistsByUserId(userID).get(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findPlaylistsByUserId(userID).getBody(), HttpStatus.OK);
     }
 
     /**
@@ -100,13 +91,7 @@ public class UserController {
     @GetMapping("/users/{userID}/playlists")
     @ApiOperation(value = "Get all information pertaining to a playlist from a user (without relations).")
     public ResponseEntity<List<SimplePlaylist>> simplePlaylistsByUser(@PathVariable Long userID) {
-        if (!userService.findById(userID).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        if (!userService.findSimplePlaylistsByUserId(userID).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(userService.findSimplePlaylistsByUserId(userID).get(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findSimplePlaylistsByUserId(userID).getBody(), HttpStatus.OK);
     }
 
     /**
@@ -119,11 +104,7 @@ public class UserController {
     @PostMapping(value = "/login", produces = "application/json")
     @ApiOperation(value = "Login by username and password.")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginForm loginForm, HttpServletResponse response) {
-        if (!userService.findByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword()).isPresent()) {
-            response.setStatus(403);
-            return new ResponseEntity<>(new HashMap<>(), HttpStatus.BAD_REQUEST);
-        }
-        User user = userService.findByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword()).get();
+        User user = userService.findByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword()).getBody();
         if (user.getToken() == null || user.getToken().isEmpty()) {
             String token = generateRandomChars("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", 17);
 

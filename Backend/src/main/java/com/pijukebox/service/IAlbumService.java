@@ -8,45 +8,45 @@ import com.pijukebox.model.simple.SimpleAlbum;
 import com.pijukebox.model.simple.SimpleArtist;
 import com.pijukebox.model.simple.SimpleGenre;
 import com.pijukebox.model.simple.SimpleTrack;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IAlbumService {
 
-    List<Album> findAllExtendedAlbums();
+    ResponseEntity<List<Album>> findAllExtendedAlbums();
 
-    Optional<Album> findExtendedAlbumById(Long id);
+    ResponseEntity<Album> findExtendedAlbumById(Long id);
 
-    Optional<List<Album>> findAlbumsByNameContaining(String name);
+    ResponseEntity<List<Album>> findAlbumsByNameContaining(String name);
 
-    List<SimpleAlbum> findAllSimpleAlbums();
+    ResponseEntity<List<SimpleAlbum>> findAllSimpleAlbums();
 
-    Optional<SimpleAlbum> findSimpleAlbumById(Long id);
+    ResponseEntity<SimpleAlbum> findSimpleAlbumById(Long id);
 
-    Optional<List<SimpleAlbum>> findSimpleAlbumsByNameContaining(String name);
+    ResponseEntity<List<SimpleAlbum>> findSimpleAlbumsByNameContaining(String name);
 
-    Optional<List<AlbumWithArtists>> findAlbumWithArtistsByNameContaining(String name);
+    ResponseEntity<List<AlbumWithArtists>> findAlbumWithArtistsByNameContaining(String name);
 
-    Optional<List<AlbumWithGenres>> findAlbumWithGenresByNameContaining(String name);
+    ResponseEntity<List<AlbumWithGenres>> findAlbumWithGenresByNameContaining(String name);
 
-    Optional<List<AlbumWithTracks>> findAlbumWithTracksByNameContaining(String name);
+    ResponseEntity<List<AlbumWithTracks>> findAlbumWithTracksByNameContaining(String name);
 
-    Optional<SimpleTrack> findTrackById(Long id);
+    ResponseEntity<SimpleTrack> findTrackById(Long id);
 
-    Optional<AlbumWithTracks> findTrackByAlbumId(Long id);
+    ResponseEntity<AlbumWithTracks> findTrackByAlbumId(Long id);
 
-    AlbumWithTracks addTrackToAlbum(AlbumWithTracks track);
+    ResponseEntity<AlbumWithTracks> addTrackToAlbum(AlbumWithTracks track);
 
-    Optional<SimpleArtist> findArtistById(Long id);
+    ResponseEntity<SimpleArtist> findArtistById(Long id);
 
-    Optional<AlbumWithArtists> findArtistByAlbumId(Long id);
+    ResponseEntity<AlbumWithArtists> findArtistByAlbumId(Long id);
 
-    AlbumWithArtists addArtistToAlbum(AlbumWithArtists album);
+    ResponseEntity<AlbumWithArtists> addArtistToAlbum(AlbumWithArtists album);
 
-    Optional<AlbumWithGenres> findGenreByAlbumId(Long id);
+    ResponseEntity<AlbumWithGenres> findGenreByAlbumId(Long id);
 
-    Optional<SimpleGenre> findGenreById(Long id);
+    ResponseEntity<SimpleGenre> findGenreById(Long id);
 
-    AlbumWithGenres addGenreToAlbum(AlbumWithGenres album);
+    ResponseEntity<AlbumWithGenres> addGenreToAlbum(AlbumWithGenres album);
 }
