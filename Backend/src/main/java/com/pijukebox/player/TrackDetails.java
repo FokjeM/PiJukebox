@@ -5,11 +5,11 @@ import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
+import java.io.File;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,7 +26,7 @@ public class TrackDetails {
 
     private Mp3File mp3file;
 
-    private final static Path ABSOLUTE_PATH = Paths.get("C:/Users/Public/Music");
+    private final static Path ABSOLUTE_PATH = Paths.get(com.pijukebox.configuration.ApplicationInitializer.getMediaPath());
 
     /**
      * Instantiates a new Track details object.
@@ -38,8 +38,7 @@ public class TrackDetails {
      */
     public TrackDetails(String filename, String path) {
         try {
-
-            this.mp3file = new Mp3File(Paths.get(path) + "\\" + filename.trim());
+            this.mp3file = new Mp3File(Paths.get(path.trim()) + File.separator + filename.trim());
             setTagValuesToFields();
 
             System.out.println("Length of this mp3 is: " + mp3file.getLengthInSeconds() + " seconds");

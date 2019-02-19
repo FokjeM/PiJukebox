@@ -41,7 +41,7 @@ public class PlayerWrapper {
      * @param filename the filename
      */
     public void playOneSong(String filename) {
-        mp3Player.add(new File(songDirPath.toAbsolutePath() + "\\" + filename), false);
+        mp3Player.add(new File(songDirPath.toAbsolutePath() + File.separator + filename), false);
         mp3Player.play();
         this.trackDetails = new TrackDetails(filename);
         playerStatus.setCurrSong(FilenameUtils.removeExtension(filename));
@@ -106,7 +106,7 @@ public class PlayerWrapper {
      */
     public void addSongToPlaylist(String filename) {
         if (!inPlaylist(filename)) {
-            queue.add(new File(songDirPath.toAbsolutePath() + "\\" + filename));
+            queue.add(new File(songDirPath.toAbsolutePath() + File.separator + filename));
         }
     }
 

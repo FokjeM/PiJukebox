@@ -25,10 +25,6 @@ import java.util.Map;
 @RequestMapping("/api/v1/player")
 public class PlayerController {
 
-    /*
-     * Command: mvn install:install-file -Dfile='lib/jaco-mp3-player-0.10.2.jar' -DgroupId='jaco.mp3.player' -DartifactId=jacocontrol -Dversion='0.10.2' -Dpackaging=jar -DgeneratePom=false
-     * */
-
     private static Path currentRelativePath = Paths.get("");
     private static Path songsDir = Paths.get(currentRelativePath.toAbsolutePath().toString(), "/songs");
     private final ITrackService trackService;
@@ -37,8 +33,7 @@ public class PlayerController {
     @Autowired
     public PlayerController(ITrackService trackService, IPlaylistService playlistService) {
         this.trackService = trackService;
-//        this.playerWrapper = new PlayerWrapper(Paths.get("/media/music/"));
-        this.playerWrapper = new PlayerWrapper(Paths.get("C:\\Users\\Public\\Music\\"));
+        this.playerWrapper = new PlayerWrapper(Paths.get(com.pijukebox.configuration.ApplicationInitializer.getMediaPath()));
 
     }
 
