@@ -1,39 +1,31 @@
 # PiJukebox
-This is supposed to emulate a Jukebox on a Raspberry Pi
- - Play any song availlable on the system
- - Add songs to a queue
- - Play an existing playlist
- - Add a playlist made from songs on the system
+This is supposed to emulate a Jukebox on a Raspberry Pi, with some mediaplayer enhancements
+  - Play any song availlable on the system
+  - Add songs to a queue
+  - Play an existing playlist
+  - Create a playlist made from songs on the system
+  - Pause and Resume functionality
+  - Next and Previous functionality
+    - No skip, seek or restart song functionality though
 
 # Okay ladies, listen up!
-It'll run on the current Raspbian Lite build (No GUI by default, no useless software, lightweight and powerful) (Debian 9 based)
+It'll run on the Raspbian Lite (No GUI by default, no useless software, lightweight and powerful) (Debian 9 based)
+  - Updates and patches will be applied
+  - Oracle JDK 8 will be used
+  - The most recent Maven in the Raspbian APT repositories will be used
+  - Tomcat through Cargo
+    - We use a plugin from the Maven repositories
+    - The JRE Build target is 1.8 (Java 8)
+    - The most recent Tomcat build only promises to work with JRE/JDK 8
+    - Tomcat can run the backwards compatible parts of any newer JRE/JDK
+      - This means Java 11 could be used, but anything introduced in Java >= 9 won't work!
 
 # What we NEED on the system
   - [x] Git, so we can download and build the latest source
    - This is included in Linux by default, possibly because Linus Torvalds is also the creator of Git
-  - [ ] Polymer.js so we can actually serve the frontend
-    - [ ] This is built on NodeJS
-    - [ ] This requires NPM
-  - [ ] JDK 8 (the JDK includes the JRE); preferrably the Oracle JDK even though it isn't open source
-  - [ ] Maven in order to build
-  - [ ] MariaDB / MySQL / MongoDB / Any DB system as per the group agreements
-
-# How this works
-  - Write a component
-  - Test it
-  - Group testing
-  - Still works? Add to master
-  - git pull on the Pi
-  - mvn build on the Pi
-  - polymer serve on the Pi
-    - Try looking for a way to have Maven do this for us
-
-## This is the README.md for Martin, this covers the components:
-  - Media from this branch
-  - Diagrams made for this branch
-  - The Player class to play music
-  - The ErrorLogger class to track and write errors to a file
-  - Fatal Exception so we can check when to kill the Player due to an error
-  - NonFatal Exception so we know when we can keep going
-  - Queue class so we can keep playing and follow what tracks we have left
-  - Track class to store a pointer to the actual song
+  - [x] Polymer.js so we can actually serve the frontend
+    - This is built on NodeJS
+    - This requires NPM
+  - [x] JDK 8 (the JDK includes the JRE); the Oracle JDK even though it isn't open source
+  - [x] Maven in order to build
+  - [x] MariaDB (Tested and working) / MySQL (Preferred)
