@@ -54,12 +54,15 @@ public class UploadController {
     public ResponseEntity<SimpleTrack> upload(@RequestBody MultipartFile[] file) throws Exception {
         for (MultipartFile f : file) {
             SimpleTrack track = new SimpleTrack(null, FilenameUtils.removeExtension(f.getOriginalFilename()), null, f.getOriginalFilename());
-            if (trackService.findAllSimpleTrackByName(track.getName()).hasBody()) {
+            // If track exists, do not upload
+            if (trackService.findSimpleTrackByName(track.getName()).hasBody()) {
                 return new ResponseEntity<>(HttpStatus.CONFLICT);
             } else {
                 uploadFile(f);
                 trackService.addSimpleTrack(track);
             }
+
+
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
