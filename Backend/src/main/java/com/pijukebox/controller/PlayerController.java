@@ -3,12 +3,10 @@ package com.pijukebox.controller;
 import com.pijukebox.model.playlist.PlaylistWithTracks;
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.model.track.Track;
-import com.pijukebox.player.PlayerWrapper;
 import com.pijukebox.service.IPlayerService;
 import com.pijukebox.service.IPlaylistService;
 import com.pijukebox.service.ITrackService;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,10 +21,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/player")
 public class PlayerController {
-
-    /*
-     * Command: mvn install:install-file -Dfile='lib/jaco-mp3-player-0.10.2.jar' -DgroupId='jaco.mp3.player' -DartifactId=jacocontrol -Dversion='0.10.2' -Dpackaging=jar -DgeneratePom=false
-     * */
 
     private final ITrackService trackService;
     private final IPlaylistService playlistService;
@@ -139,10 +131,7 @@ public class PlayerController {
      */
     @GetMapping("/add/{id}")
     public ResponseEntity<String> addTrack(@PathVariable Long id) {
-        if (!trackService.findSimpleTrackById(id).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        SimpleTrack track = trackService.findSimpleTrackById(id).get();
+        SimpleTrack track = trackService.findSimpleTrackById(id).getBody();
         return playerService.addSongToQueue(track.getFilename());
     }
 
@@ -155,10 +144,7 @@ public class PlayerController {
     @GetMapping("/add/playlist/{id}")
     public ResponseEntity<String> addPlaylist(@PathVariable Long id) {
         try {
-            if (!playlistService.findById(id).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            PlaylistWithTracks playlist = playlistService.findById(id).get();
+            PlaylistWithTracks playlist = playlistService.findById(id).getBody();
             return playerService.addPlaylistToQueue(playlist.getTracks());
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Couldn't add playlist", ex);
@@ -173,10 +159,7 @@ public class PlayerController {
      */
     @GetMapping("/remove/{id}")
     public ResponseEntity<String> deleteTrack(@PathVariable Long id) {
-        if (!trackService.findSimpleTrackById(id).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        SimpleTrack track = trackService.findSimpleTrackById(id).get();
+        SimpleTrack track = trackService.findSimpleTrackById(id).getBody();
         return playerService.removeSongFromQueue(track.getFilename());
     }
 
