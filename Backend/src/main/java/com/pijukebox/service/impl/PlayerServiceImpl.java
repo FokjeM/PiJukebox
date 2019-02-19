@@ -2,6 +2,7 @@ package com.pijukebox.service.impl;
 
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.model.track.Track;
+import com.pijukebox.player.PlayerStatus;
 import com.pijukebox.player.PlayerWrapper;
 import com.pijukebox.repository.ITrackRepository;
 import com.pijukebox.service.IPlayerService;
@@ -80,7 +81,8 @@ public class PlayerServiceImpl implements IPlayerService {
     @Override
     public ResponseEntity<Map<String, String>> getPlayerStatus() {
         boolean isPlaying = false;
-        if (playerWrapper.getPlayerStatus().equals("PLAYING")) {
+        System.out.println("The status is: " + playerWrapper.getPlayerStatus());
+        if (playerWrapper.getPlayerStatus().equals(PlayerStatus.Status.PLAYING.name())) {
             isPlaying = true;
         }
         Map<String, String> status = new HashMap<>();

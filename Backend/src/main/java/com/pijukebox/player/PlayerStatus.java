@@ -15,6 +15,7 @@ public class PlayerStatus {
     private boolean repeat;
     private String currSong;
 
+
     /**
      * Get player status string.
      *

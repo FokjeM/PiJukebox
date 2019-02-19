@@ -24,6 +24,7 @@ public class PlayerWrapper {
     private Path songDirPath;
     private List<File> queue;
     private int current;
+    private Thread t;
 
     @Autowired
     private PlayerStatus playerStatus;
@@ -66,14 +67,18 @@ public class PlayerWrapper {
      * Play current song.
      */
     public void playCurrentSong() {
-        mp3Player = new MP3Player();
-        System.out.println("The song playing is: " + queue.get(current).getName());
-        mp3Player.add(queue.get(current));
+        if(!playerStatus.GetPlayerStatus().equals(PlayerStatus.Status.PAUSED.name()))
+        {
+            mp3Player = new MP3Player();
+            System.out.println("The song playing is: " + queue.get(current).getName());
+            mp3Player.add(queue.get(current));
+        }
         mp3Player.play();
         this.trackDetails = new TrackDetails(queue.get(current).getName());
-        playerStatus.setCurrStatus(PlayerStatus.Status.PLAYING);
+//        playerStatus.setCurrStatus(PlayerStatus.Status.PLAYING);
         playerStatus.setCurrSong(FilenameUtils.removeExtension(queue.get(current).getName()));
         keepSongPlaying();
+        playerStatus.setCurrStatus(PlayerStatus.Status.PLAYING);
     }
 
     /**
@@ -84,7 +89,12 @@ public class PlayerWrapper {
         if (current >= queue.size()) {
             current = 0;
         }
-        stopSong();
+        if(t != null)
+        {
+            t.interrupt();
+            stopSong();
+        }
+        playerStatus.setCurrStatus(PlayerStatus.Status.STOPPED);
         playCurrentSong();
 
     }
@@ -97,7 +107,12 @@ public class PlayerWrapper {
         if (current < 0) {
             current = queue.size() - 1;
         }
-        stopSong();
+        if(t != null)
+        {
+            t.interrupt();
+            stopSong();
+        }
+        playerStatus.setCurrStatus(PlayerStatus.Status.STOPPED);
         playCurrentSong();
     }
 
@@ -304,7 +319,7 @@ public class PlayerWrapper {
      * Method to have the player keep track of the player status.
      */
     private void keepSongPlaying() {
-        new Thread(() -> {
+       t = new Thread(() -> {
             boolean sw = true;
             while (sw) {
                 if (mp3Player.isPaused() || mp3Player.isStopped()) {
@@ -314,7 +329,8 @@ public class PlayerWrapper {
                     }
                 }
             }
-        }).start();
+        });
+       t.start();
     }
 
     /**

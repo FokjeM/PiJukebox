@@ -258,7 +258,8 @@ class TrackControl extends PolymerElement {
 
   // Update play/pause state, repeat state and volumeLevel (+ icons)
   verifyStatus(e, r) {
-    const playerStatus = JSON.parse(r.response);
+    const playerStatus = r.response;
+    console.log(playerStatus);
     this.updateStates(playerStatus);
     this.updateControls();
   }
@@ -286,7 +287,7 @@ class TrackControl extends PolymerElement {
   }
 
   playPause(e) {
-    const state = this.playPauseState;
+    const state = (this.playPauseState == 'true');
     if (state) {
       // player is playing
       this.pause(e);
@@ -337,7 +338,8 @@ class TrackControl extends PolymerElement {
    * Change the play/pause icon to the current play / pause state
    */
   changePlayPauseIcon() {
-    const state = this.playPauseState;
+    const state = (this.playPauseState == 'true')
+    console.log(state);
     if (state) {
       // player is playing
       this.playPauseIcon = "av:pause";
