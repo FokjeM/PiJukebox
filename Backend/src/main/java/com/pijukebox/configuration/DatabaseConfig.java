@@ -2,14 +2,9 @@ package com.pijukebox.configuration;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.dbcp.BasicDataSource;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -21,7 +16,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
-import java.util.Properties;
 
 @Slf4j
 @Configuration
@@ -45,7 +39,6 @@ public class DatabaseConfig {
     @Bean
     public DataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
-
         dataSource.setDriverClassName(DRIVER_CLASS_NAME);
         dataSource.setUsername(USER_NAME);
         dataSource.setPassword(PASSWORD);
@@ -53,94 +46,30 @@ public class DatabaseConfig {
         dataSource.setMaxActive(10);
         dataSource.setMaxIdle(5);
         dataSource.setInitialSize(5);
-//        dataSource.setValidationQuery("SELECT 1");
         return dataSource;
-    }
-
-    /**
-     * JDBC by itself is tough to use, so we wrap it in the {@link JdbcTemplate} from Spring,
-     * which handles a lot of the boilerplate for us.
-     * Pure JDBC has its uses though. While it gives a lot of boilerplate,
-     * it also gives a lot of control, which can be useful for certain applications.
-     * Think of having to make very complex queries for very specific situations.
-     *
-     * @param dataSource The data source
-     * @return the a {@link JdbcTemplate} template
-     */
-    @Bean
-    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
-        try {
-            return new JdbcTemplate(dataSource);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
-    @Bean
-    public BeanPostProcessor persistenceTranslation() {
-        try {
-            return new PersistenceExceptionTranslationPostProcessor();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
     }
 
     @Bean
     public JpaVendorAdapter jpaVendorAdapter() {
-        HibernateJpaVendorAdapter adapter = null;
-        try {
-            adapter = new HibernateJpaVendorAdapter();
-            adapter.setDatabase(Database.MYSQL);
-            return adapter;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
+        adapter.setDatabase(Database.MYSQL);
         return adapter;
     }
 
     @Bean
     @PersistenceContext
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, JpaVendorAdapter jpaVendorAdapter) {
-
-        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = null;
-        try {
-            entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-            entityManagerFactoryBean.setDataSource(dataSource);
-            entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter);
-            entityManagerFactoryBean.setPackagesToScan("com.pijukebox.model");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+        entityManagerFactoryBean.setDataSource(dataSource);
+        entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter);
+        entityManagerFactoryBean.setPackagesToScan("com.pijukebox.model");
         return entityManagerFactoryBean;
     }
 
     @Bean
-    public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
-        LocalSessionFactoryBean sfb = null;
-        try {
-            sfb = new LocalSessionFactoryBean();
-            sfb.setDataSource(dataSource);
-            sfb.setPackagesToScan("com.pijukebox.model");
-            Properties props = new Properties();
-            props.setProperty("dialect", "org.hibernate.dialect.MySQLDialect");
-            sfb.setHibernateProperties(props);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return sfb;
-    }
-
-    @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
-        JpaTransactionManager transactionManager = null;
-        try {
-             transactionManager = new JpaTransactionManager();
-            transactionManager.setEntityManagerFactory(entityManagerFactory);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(entityManagerFactory);
         return transactionManager;
     }
 }

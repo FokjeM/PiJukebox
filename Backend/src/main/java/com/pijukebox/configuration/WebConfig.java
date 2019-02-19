@@ -23,9 +23,7 @@ import java.util.List;
 @EnableWebMvc
 // We're scanning for Spring beans in the com.pijukebox package
 @ComponentScan(basePackages = "com.pijukebox")
-// We're telling the application to read properties from application.properties,
 // which we have placed in the resources directory
-@PropertySource("classpath:application.properties")
 public class WebConfig implements WebMvcConfigurer {
 
     private Interceptor interceptor;
