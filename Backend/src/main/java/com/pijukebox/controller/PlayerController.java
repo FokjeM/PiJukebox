@@ -25,10 +25,6 @@ import java.util.Map;
 @RequestMapping("/api/v1/player")
 public class PlayerController {
 
-    /*
-     * Command: mvn install:install-file -Dfile='lib/jaco-mp3-player-0.10.2.jar' -DgroupId='jaco.mp3.player' -DartifactId=jacocontrol -Dversion='0.10.2' -Dpackaging=jar -DgeneratePom=false
-     * */
-
     private final ITrackService trackService;
     private final IPlaylistService playlistService;
     private final PlayerWrapper playerWrapper;
@@ -39,10 +35,9 @@ public class PlayerController {
      * @param trackService the track service
      */
     @Autowired
-    public PlayerController(ITrackService trackService, IPlaylistService playlistService) {
+    public PlayerController(ITrackService trackService, IPlaylistService playlistService){
         this.trackService = trackService;
         this.playlistService = playlistService;
-//        this.playerWrapper = new PlayerWrapper(Paths.get("/media/music/"));
         this.playerWrapper = new PlayerWrapper(Paths.get("D:\\Java minor\\Royalty Free Music\\"));
     }
 
