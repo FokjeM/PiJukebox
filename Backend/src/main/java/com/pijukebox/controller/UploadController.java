@@ -85,14 +85,10 @@ public class UploadController {
                         addFileToFolder(dirToScan, uploadDir, t);
                         trackService.addSimpleTrack(track);
                     }
-                    if (!genreService.findGenresByNameContaining(genre.getName()).isPresent()) {
-                        genreService.addSimpleGenre(genre);
-                    }
-                    if (!artistService.findSimpleArtistsByNameContaining(artist.getName()).isPresent()) {
-                        artistService.addSimpleArtist(artist);
-                    }
-                    Long addToArtistId = artistService.findSimpleArtistsByNameContaining(artist.getName()).get().get(0).getId();
-                    Long addToGenreId = genreService.findGenresByNameContaining(genre.getName()).get().get(0).getId();
+                    genreService.addSimpleGenre(genre);
+                    artistService.addSimpleArtist(artist);
+                    Long addToArtistId = artistService.findSimpleArtistsByNameContaining(artist.getName()).getBody().get(0).getId();
+                    Long addToGenreId = genreService.findGenresByNameContaining(genre.getName()).getBody().get(0).getId();
 
                     if (trackService.findTrackByArtistId(addToArtistId).isPresent()) {
                         trackService.addArtistToTrack(trackService.findTrackByArtistId(addToArtistId).get());

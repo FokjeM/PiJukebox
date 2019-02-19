@@ -32,12 +32,9 @@ public class GenreController {
     @ApiOperation(value = "Get all information pertaining to a genre (without relations)", notes = "Filter the returned items using the name parameter")
     public ResponseEntity<List<SimpleGenre>> genres(@RequestParam(name = "name", required = false) String name) {
         if (name != null && !name.isEmpty()) {
-            if (!genreService.findGenresByNameContaining(name).isPresent()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(genreService.findGenresByNameContaining(name).get(), HttpStatus.OK);
+            return new ResponseEntity<>(genreService.findGenresByNameContaining(name).getBody(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(genreService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(genreService.findAll().getBody(), HttpStatus.OK);
     }
 
     /**
@@ -49,9 +46,6 @@ public class GenreController {
     @GetMapping("/genres/{id}")
     @ApiOperation(value = "Get all information pertaining to a certain genre (without relations) by its ID")
     public ResponseEntity<SimpleGenre> genreDetails(@PathVariable Long id) {
-        if (!genreService.findById(id).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(genreService.findById(id).get(), HttpStatus.OK);
+        return new ResponseEntity<>(genreService.findById(id).getBody(), HttpStatus.OK);
     }
 }
