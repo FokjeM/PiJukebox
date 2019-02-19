@@ -161,7 +161,7 @@ public class PlayerWrapper {
      * @return the repeat state
      */
     public Boolean getRepeatState() {
-        return playerStatus.isRepeat();
+        return mp3Player.isRepeat();
     }
 
     /**
