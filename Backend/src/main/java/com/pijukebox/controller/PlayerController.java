@@ -43,7 +43,7 @@ public class PlayerController {
         this.trackService = trackService;
         this.playlistService = playlistService;
 //        this.playerWrapper = new PlayerWrapper(Paths.get("/media/music/"));
-        this.playerWrapper = new PlayerWrapper(Paths.get("C:\\Users\\Public\\Music\\"));
+        this.playerWrapper = new PlayerWrapper(Paths.get("D:\\Java minor\\Royalty Free Music\\"));
     }
 
     /**
