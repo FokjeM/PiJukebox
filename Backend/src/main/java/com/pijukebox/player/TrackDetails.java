@@ -75,10 +75,4 @@ public class TrackDetails {
             this.album = id3v1Tag.getAlbum() == null ? "unknown" : id3v1Tag.getAlbum();
         }
     }
-
-    private void printOutput() {
-        System.out.println("Length of this mp3 is: " + mp3file.getLengthInSeconds() + " seconds");
-        System.out.println("Has ID3v1 tag?: " + (mp3file.hasId3v1Tag() ? "YES" : "NO"));
-        System.out.println("Has ID3v2 tag?: " + (mp3file.hasId3v2Tag() ? "YES" : "NO"));
-    }
 }
