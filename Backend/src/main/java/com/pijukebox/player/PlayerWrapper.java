@@ -224,8 +224,13 @@ public class PlayerWrapper {
      * Toggle repeat state.
      */
     public void toggleRepeatState() {
-        boolean sw = !(playerStatus.isRepeat());
+        boolean sw = !playerStatus.isRepeat();
         playerStatus.setRepeat(sw);
+        System.out.println("The repeat has been set to: " + sw);
+        System.out.println("The repeat has been set to: " + sw);
+        System.out.println("The repeat has been set to: " + sw);
+        System.out.println("The repeat has been set to: " + sw);
+        System.out.println("The repeat has been set to: " + sw);
         mp3Player.setRepeat(playerStatus.isRepeat());
     }
 
@@ -324,9 +329,18 @@ public class PlayerWrapper {
         t = new Thread(() -> {
             boolean sw = true;
             while (sw) {
-                if (mp3Player.isPaused() || mp3Player.isStopped()) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("fasdfsafasdgfsfgserrtqwes " + !mp3Player.isPlaying());
+                if (mp3Player.isPaused() || mp3Player.isStopped() || !mp3Player.isPlaying()) {
                     sw = false;
-                    if (playerStatus.getCurrStatus() != PlayerStatus.Status.PAUSED && playerStatus.getCurrStatus() != PlayerStatus.Status.STOPPED) {
+                    System.out.println("XXXASDIUAHIDAUD " + !playerStatus.isRepeat());
+                    if ((playerStatus.getCurrStatus() != PlayerStatus.Status.PAUSED &&
+                         playerStatus.getCurrStatus() != PlayerStatus.Status.STOPPED) &&
+                         !playerStatus.isRepeat()) {
                         playerStatus.setCurrStatus(PlayerStatus.Status.INTERRUPTED);
                     }
                 }
