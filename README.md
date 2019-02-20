@@ -19,6 +19,7 @@ It'll run on the Raspbian Lite (No GUI by default, no useless software, lightwei
     - The most recent Tomcat build only promises to work with JRE/JDK 8
     - Tomcat can run the backwards compatible parts of any newer JRE/JDK
       - This means Java 11 could be used, but anything introduced in Java >= 9 won't work!
+      - Raspbian only has the JRE/JDK availlable up to Oracle JDK 8 though
 
 # What we NEED on the system
   - [x] Git, so we can download and build the latest source
