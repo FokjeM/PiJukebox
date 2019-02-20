@@ -337,7 +337,6 @@ public class PlayerWrapper {
                 System.out.println("fasdfsafasdgfsfgserrtqwes " + !mp3Player.isPlaying());
                 if (mp3Player.isPaused() || mp3Player.isStopped() || !mp3Player.isPlaying()) {
                     sw = false;
-                    System.out.println("XXXASDIUAHIDAUD " + !playerStatus.isRepeat());
                     if ((playerStatus.getCurrStatus() != PlayerStatus.Status.PAUSED &&
                          playerStatus.getCurrStatus() != PlayerStatus.Status.STOPPED) &&
                          !playerStatus.isRepeat()) {
