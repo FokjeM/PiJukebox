@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -21,14 +22,9 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
      * The array holding the actual QueueEntry objects
      */
     private QueueEntry<Integer, Track>[] entries;
-<<<<<<< HEAD
     private QueueEntry<Integer, Track>[] shuffledEntries;
-=======
-    /**
-     * The current size of this Queue
-     */
->>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
     private int size;
+    private boolean shuffled = false;
 
     /**
      * Instantiates a Queue using an iterable object.
@@ -312,6 +308,24 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
     public void clear() {
         this.entries = new QueueEntry[0];
         this.size = 0;
+    }
+    
+    public void shuffle() {
+        if(shuffled) {
+            entries = shuffledEntries;
+            shuffled = false;
+            return;
+        }
+        shuffledEntries = entries.clone();
+        ArrayList shuff = new ArrayList(size);
+        shuff.addAll(Arrays.asList(entries));
+        Collections.shuffle(shuff);
+        entries = (QueueEntry<Integer, Track>[]) shuff.toArray();
+        shuffled = true;
+    }
+    
+    public boolean isShuffled() {
+        return this.shuffled;
     }
 
 

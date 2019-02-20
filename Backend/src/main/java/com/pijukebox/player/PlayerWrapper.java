@@ -1,6 +1,7 @@
 package com.pijukebox.player;
 
-import jaco.mp3.player.MP3Player;
+//import jaco.mp3.player.MP3Player;
+import com.PiJukeboxPlayer.*;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -17,13 +18,7 @@ public class PlayerWrapper {
     private static Player MP3PLAYER;
 // http://jacomp3player.sourceforge.net/guide.html
     // https://sourceforge.net/p/jacomp3player/code/HEAD/tree/JACo%20MP3%20Player%20v3/
-<<<<<<< HEAD
         private Path songDirPath;
-=======
-
-    private final MP3Player mp3Player = new MP3Player();
-    private Path songDirPath;
->>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
     private List<File> queue;
     private int current;
 
@@ -52,7 +47,6 @@ public class PlayerWrapper {
      * @param filename the filename
      */
     public void playOneSong(String filename) {
-<<<<<<< HEAD
         try {
             MP3PLAYER.playTrack(new Track(Track.getDefaultMediaPath(), filename));
             this.trackDetails = new TrackDetails(filename);
@@ -62,26 +56,6 @@ public class PlayerWrapper {
         } catch (FatalException | NonFatalException ex) {
             ex.printStackTrace();
         }
-=======
-        mp3Player.add(new File(songDirPath.toAbsolutePath() + File.separator + filename), false);
-        mp3Player.play();
-        this.trackDetails = new TrackDetails(filename);
-        playerStatus.setCurrSong(FilenameUtils.removeExtension(filename));
-        playerStatus.setCurrStatus(PlayerStatus.Status.PLAYING);
-        keepSongPlaying();
-    }
-
-    /**
-     * Play current song.
-     */
-    public void playCurrentSong() {
-        mp3Player.add(queue.get(current));
-        mp3Player.play();
-        this.trackDetails = new TrackDetails(queue.get(current).getName());
-        playerStatus.setCurrStatus(PlayerStatus.Status.PLAYING);
-        playerStatus.setCurrSong(FilenameUtils.removeExtension(queue.get(current).getName()));
-        keepSongPlaying();
->>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
     }
 
     /**
@@ -92,15 +66,11 @@ public class PlayerWrapper {
         if (current >= queue.size()) {
             current = 0;
         }
-<<<<<<< HEAD
         try {
         MP3PLAYER.next();
         } catch(FatalException | NonFatalException ex) {
             ex.printStackTrace();
         }
-=======
-        playCurrentSong();
->>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
     }
 
     /**
@@ -111,26 +81,18 @@ public class PlayerWrapper {
         if (current < 0) {
             current = queue.size() - 1;
         }
-<<<<<<< HEAD
         try {
         MP3PLAYER.previous();
         } catch(FatalException | NonFatalException ex) {
             ex.printStackTrace();
         }
-=======
-        playCurrentSong();
->>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
     }
 
     /**
      * Pause song.
      */
     public void pauseSong() {
-<<<<<<< HEAD
         MP3PLAYER.pause();
-=======
-        mp3Player.pause();
->>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
         playerStatus.setCurrStatus(PlayerStatus.Status.PAUSED);
     }
 
@@ -138,11 +100,7 @@ public class PlayerWrapper {
      * Stop song.
      */
     public void stopSong() {
-<<<<<<< HEAD
         MP3PLAYER.stop();
-=======
-        mp3Player.stop();
->>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
         playerStatus.setCurrStatus(PlayerStatus.Status.STOPPED);
     }
 
@@ -154,14 +112,11 @@ public class PlayerWrapper {
     public void addSongToPlaylist(String filename) {
         if (!inPlaylist(filename)) {
             queue.add(new File(songDirPath.toAbsolutePath() + File.separator + filename));
-<<<<<<< HEAD
             try {
                 MP3PLAYER.addToQueue(new Track(null, filename));
             } catch(FatalException | NonFatalException ex) {
                 ex.printStackTrace();
             }
-=======
->>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
         }
     }
 
@@ -174,14 +129,11 @@ public class PlayerWrapper {
         if (inPlaylist(filename)) {
             removeSongFromQueue(filename);
         }
-<<<<<<< HEAD
         try {
         MP3PLAYER.dequeue(new Track("", filename));
         } catch(FatalException | NonFatalException ex) {
             ex.printStackTrace();
         }
-=======
->>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
     }
 
     /**
@@ -195,19 +147,14 @@ public class PlayerWrapper {
         }
         return "";
     }
-
+//Volume controls are currently broken
     /**
      * Gets player volume.
      *
      * @return the player volume
      */
-<<<<<<< HEAD
 /*    public int getPlayerVolume() {
         return MP3PLAYER.getVolume();
-=======
-    public int getPlayerVolume() {
-        return mp3Player.getVolume();
->>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
     }
 
     /**
@@ -215,13 +162,13 @@ public class PlayerWrapper {
      *
      * @param volume the volume
      */
-    public void setPlayerVolume(int volume) {
+ /*   public void setPlayerVolume(int volume) {
         try {
             MP3PLAYER.setVolume(Math.round(volume));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
+    }*/
 
     /**
      * Gets repeat state.
@@ -229,11 +176,7 @@ public class PlayerWrapper {
      * @return the repeat state
      */
     public Boolean getRepeatState() {
-<<<<<<< HEAD
         return MP3PLAYER.getRepeat();
-=======
-        return playerStatus.isRepeat();
->>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
     }
 
     /**
@@ -243,11 +186,7 @@ public class PlayerWrapper {
      */
     public String getCurrentSong() {
         if (!queue.isEmpty()) {
-<<<<<<< HEAD
             playerStatus.setCurrSong(MP3PLAYER.getCurrentTrack());
-=======
-            playerStatus.setCurrSong(queue.get(current).getName());
->>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
         } else {
             playerStatus.setCurrSong("No song available");
         }
@@ -258,28 +197,19 @@ public class PlayerWrapper {
      * Toggle repeat state.
      */
     public void toggleRepeatState() {
-<<<<<<< HEAD
         MP3PLAYER.toggleRepeat();
-=======
-        boolean sw = !mp3Player.isRepeat();
-        mp3Player.setRepeat(sw);
->>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
     }
 
     /**
      * Toggle shuffle state.
      */
     public void toggleShuffleState() {
-<<<<<<< HEAD
         MP3PLAYER.shuffle();
-=======
-        boolean sw = !mp3Player.isShuffle();
-        mp3Player.setShuffle(sw);
->>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
     }
 
     /**
      * Gets the player's queue.
+     * Should suffice, my code was only adding it to my own queue as well as this.
      *
      * @return the queue
      */
@@ -319,20 +249,13 @@ public class PlayerWrapper {
     }
 
     private boolean inPlaylist(String filename) {
-        boolean exists = false;
-        if (queue.size() > 0) {
-            for (File f : queue) {
-                if (f.getName().equals(filename)) {
-                    exists = true;
-                    break;
-                }
-            }
+        Track t = null;
+        try {
+            t = new Track("", filename);
+        } catch (FatalException | NonFatalException ex) {
+            ex.printStackTrace();
         }
-<<<<<<< HEAD
         return MP3PLAYER.inQueue(t);
-=======
-        return exists;
->>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
     }
 
     /**
@@ -356,11 +279,7 @@ public class PlayerWrapper {
         new Thread(() -> {
             boolean sw = true;
             while (sw) {
-<<<<<<< HEAD
                 if (!MP3PLAYER.isPlaying()) {
-=======
-                if (mp3Player.isPaused() || mp3Player.isStopped()) {
->>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
                     sw = false;
                     if (playerStatus.getCurrStatus() != PlayerStatus.Status.PAUSED && playerStatus.getCurrStatus() != PlayerStatus.Status.STOPPED) {
                         playerStatus.setCurrStatus(PlayerStatus.Status.INTERRUPTED);
@@ -377,11 +296,7 @@ public class PlayerWrapper {
      */
     public void clearQueue(Boolean stopCurrentSong) {
         if (stopCurrentSong) {
-<<<<<<< HEAD
                 MP3PLAYER.stop();
-=======
-            mp3Player.stop();
->>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
         }
         queue.clear();
     }
