@@ -275,6 +275,7 @@ class TrackControl extends PolymerElement {
     this.playPauseState = playerStatus.isPlaying;
     this.repeatState = playerStatus.repeatState;
     this.volumeLevel = playerStatus.volumeLevel;
+    this.shuffleIsActive = playerStatus.shuffleState;
   }
 
   /**
@@ -284,6 +285,7 @@ class TrackControl extends PolymerElement {
     this.changePlayPauseIcon();
     this.changeRepeatIcon();
     this.changeVolumeIcon();
+    this.changeShuffleIcon();
   }
 
   playPause(e) {
@@ -334,11 +336,11 @@ class TrackControl extends PolymerElement {
     let shuffleButton = this.$.shuffleBtn;
 
     if(!this.shuffleIsActive) {
-      shuffleButton.style.color = "var(--app-primary-color-light)";
-      this.shuffleIsActive = true;
+      //Shuffle is not active
+      shuffleButton.style.color = "var(--paper-icon-button-ink-color, var(--app-primary-color-light))";
     } else {
-      shuffleButton.style.color = "var(--paper-icon-button-ink-color, var(--primary-text-color))";
-      this.shuffleIsActive = false;
+      //Shuffle is active
+      shuffleButton.style.color = "var(--app-primary-color)";
     }
   }
 
@@ -368,11 +370,11 @@ class TrackControl extends PolymerElement {
     // no repeat
     if(this.repeatState) {
       repeatButton.style.color = "var(--app-primary-color)";
-      this.repeatIcon = "av:repeat";
+      // this.repeatIcon = "av:repeat";
     }
     else {
-      repeatButton.style.color = "var(--paper-icon-button-ink-color, var(--primary-text-color))";
-      this.repeatIcon = "av:repeat";
+      repeatButton.style.color = "var(--paper-icon-button-ink-color, var(--app-primary-color-light))";
+      // this.repeatIcon = "av:repeat";
     }
   }
 
