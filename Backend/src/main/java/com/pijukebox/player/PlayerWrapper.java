@@ -70,20 +70,17 @@ public class PlayerWrapper {
      * Play current song.
      */
     public void playCurrentSong() {
-        if(!playerStatus.GetPlayerStatus().equals(PlayerStatus.Status.PAUSED.name()) &&
-            !playerStatus.GetPlayerStatus().equals(PlayerStatus.Status.PLAYING.name()))
-        {
+        if (!playerStatus.GetPlayerStatus().equals(PlayerStatus.Status.PAUSED.name()) && !playerStatus.GetPlayerStatus().equals(PlayerStatus.Status.PLAYING.name())) {
             mp3Player = new MP3Player();
             mp3Player.setVolume(playerStatus.getVolume());
             mp3Player.setRepeat(playerStatus.isRepeat());
             mp3Player.add(queue.get(current));
         }
-        if(!playerStatus.GetPlayerStatus().equals(PlayerStatus.Status.PLAYING.name()))
-        {
-            String name = queue.get(current).getName();
+        if (!playerStatus.GetPlayerStatus().equals(PlayerStatus.Status.PLAYING.name())) {
+            String songName = queue.get(current).getName();
             mp3Player.play();
-            this.trackDetails = new TrackDetails(name);
-            setCurrentSong(name);
+            this.trackDetails = new TrackDetails(songName);
+            setCurrentSong(songName);
             keepSongPlaying();
             playerStatus.setCurrStatus(PlayerStatus.Status.PLAYING);
         }
@@ -97,8 +94,7 @@ public class PlayerWrapper {
         if (current >= queue.size()) {
             current = 0;
         }
-        if(t != null)
-        {
+        if (t != null) {
             t.interrupt();
             stopSong();
         }
@@ -115,8 +111,7 @@ public class PlayerWrapper {
         if (current < 0) {
             current = queue.size() - 1;
         }
-        if(t != null)
-        {
+        if (t != null) {
             t.interrupt();
             stopSong();
         }
@@ -203,15 +198,6 @@ public class PlayerWrapper {
         return playerStatus.isRepeat();
     }
 
-    private void setCurrentSong(String name)
-    {
-        if (!queue.isEmpty()) {
-            playerStatus.setCurrSong(FilenameUtils.removeExtension(name));
-        } else {
-            playerStatus.setCurrSong("No song available");
-        }
-    }
-
     /**
      * Gets current song.
      *
@@ -220,6 +206,14 @@ public class PlayerWrapper {
     public String getCurrentSong() {
 
         return playerStatus.getCurrSong();
+    }
+
+    private void setCurrentSong(String name) {
+        if (!queue.isEmpty()) {
+            playerStatus.setCurrSong(FilenameUtils.removeExtension(name));
+        } else {
+            playerStatus.setCurrSong("No song available");
+        }
     }
 
     public boolean getShuffleState() {
@@ -327,7 +321,7 @@ public class PlayerWrapper {
      * Method to have the player keep track of the player status.
      */
     private void keepSongPlaying() {
-       t = new Thread(() -> {
+        t = new Thread(() -> {
             boolean sw = true;
             while (sw) {
                 if (mp3Player.isPaused() || mp3Player.isStopped()) {
@@ -338,7 +332,7 @@ public class PlayerWrapper {
                 }
             }
         });
-       t.start();
+        t.start();
     }
 
     /**

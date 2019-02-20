@@ -38,7 +38,7 @@ public class PlayerController {
         this.trackService = trackService;
         this.playlistService = playlistService;
         this.playerService = playerService;
-        playerService.setFolderPath(Paths.get("C:\\Users\\Public\\Music\\"));
+        playerService.setFolderPath(Paths.get(com.pijukebox.configuration.ApplicationInitializer.getMediaPath()));
     }
 
     /**

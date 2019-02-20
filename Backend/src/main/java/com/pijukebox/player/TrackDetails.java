@@ -1,10 +1,6 @@
 package com.pijukebox.player;
 
-import com.mpatric.mp3agic.ID3v1;
-import com.mpatric.mp3agic.ID3v2;
-import com.mpatric.mp3agic.InvalidDataException;
-import com.mpatric.mp3agic.Mp3File;
-import com.mpatric.mp3agic.UnsupportedTagException;
+import com.mpatric.mp3agic.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,14 +17,12 @@ import java.nio.file.Paths;
 @Component
 public class TrackDetails {
 
+    private final static Path ABSOLUTE_PATH = Paths.get(com.pijukebox.configuration.ApplicationInitializer.getMediaPath());
     private String title;
     private String artist;
     private String genre;
     private String album;
-
     private Mp3File mp3file;
-
-    private final static Path ABSOLUTE_PATH = Paths.get("C:/Users/Public/Music");
 
     /**
      * Instantiates a new Track details object.
@@ -41,7 +35,7 @@ public class TrackDetails {
     public TrackDetails(String filename, String path) {
         try {
 
-            this.mp3file = new Mp3File(Paths.get(path) + "\\" + filename.trim());
+            this.mp3file = new Mp3File(Paths.get(path.trim()) + File.separator + filename.trim());
             setTagValuesToFields();
 
             System.out.println("Length of this mp3 is: " + mp3file.getLengthInSeconds() + " seconds");
