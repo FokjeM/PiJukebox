@@ -31,6 +31,12 @@
             <type>jar</type>
         </dependency>
         <!-- am I missing anything? -->
+        <dependency>
+            <groupId>javazoom</groupId>
+            <artifactId>jlayer</artifactId>
+            <version>1.0.1</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
     
     <build>
