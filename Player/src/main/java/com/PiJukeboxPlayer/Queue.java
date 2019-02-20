@@ -22,8 +22,11 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
      */
     private QueueEntry<Integer, Track>[] entries;
 <<<<<<< HEAD
+<<<<<<< HEAD
     private QueueEntry<Integer, Track>[] shuffledEntries;
 =======
+=======
+>>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
     /**
      * The current size of this Queue
      */
@@ -303,6 +306,11 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
                 this.put(index, t);
             }
         }
+<<<<<<< HEAD
+=======
+        //Update the size
+        this.size = index;
+>>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
     }
 
     /**

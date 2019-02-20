@@ -21,7 +21,11 @@ import java.util.Locale;
  * @author Riven
  */
 <<<<<<< HEAD
+<<<<<<< HEAD
 public final class Track {
+=======
+class Track {
+>>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
 =======
 class Track {
 >>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
@@ -69,6 +73,7 @@ class Track {
         streamType = checkFiletype();
         try {
 <<<<<<< HEAD
+<<<<<<< HEAD
             title = ffprobe("-show_entries format_tags=title").trim();
             bitrate = Integer.parseInt(ffprobe("-show_entries format=bit_rate").trim());
             duration = ffprobe("-show_entries format=duration").trim();
@@ -86,6 +91,8 @@ class Track {
             } else {
                 artist = art;
 =======
+=======
+>>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
             if (streamType.equals("mp3")) {
                 Mp3File mp3file = mp3FromPath(filepath);
                 if (mp3file.hasId3v2Tag()) {
@@ -104,6 +111,9 @@ class Track {
                 title = ffprobe("-show-entries stream_tags=title");
                 bitrate = Integer.parseInt(ffprobe("-show-entries stream=bit_rate"));
                 duration = "-show-entries stream=duration";
+<<<<<<< HEAD
+>>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
+=======
 >>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
             }
         } catch (IOException io) {
@@ -125,6 +135,28 @@ class Track {
      */
     public Track(String filename) throws NonFatalException, FatalException {
         this("", filename);
+    }
+
+    /**
+     * Returns an mp3agic Mp3File as specified in the given FILEPATH.
+     *
+     * @param path The Path object of the file to open.
+     * @return the mp3agick Mp3File object.
+     * @throws NonFatalException When the Mp3File class can't handle the data
+     * format of the file. This might mean a different MPeg encoding was used,
+     * like MPeg2 or MPeg4.
+     * @throws FatalException propagated from getOSPath() and
+     * NonFatalException()
+     * @throws IOException Propagated from Mp3File()
+     */
+    private Mp3File mp3FromPath(Path path) throws NonFatalException, FatalException, IOException {
+        try {
+            return new Mp3File(path);
+        } catch (InvalidDataException ide) {
+            throw new NonFatalException("Invalid data for an mp3 file for a file that was determined to be an mp3.", ide);
+        } catch (UnsupportedTagException ut) {
+            throw new NonFatalException("Mp3agic cannot handle this metadata tag. It's either really old, really new or non-standard.", ut);
+        }
     }
 
     /**
