@@ -40,6 +40,6 @@ public class GenreServiceImpl implements IGenreService {
 
     @Override
     public ResponseEntity<SimpleGenre> addSimpleGenre(SimpleGenre simpleGenre) {
-        return new ResponseEntity<>(genreRepository.save(simpleGenre), HttpStatus.OK);
+        return new ResponseEntity<>(genreRepository.saveAndFlush(simpleGenre), HttpStatus.OK);
     }
 }

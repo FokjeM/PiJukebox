@@ -76,15 +76,16 @@ public class UploadController {
             showFiles(files);
 
             for (String t : tracks) {
-                if (!t.equals("desktop.ini")) {
+                if (t.endsWith(".mp3")) {
                     SimpleTrack track = new SimpleTrack(null, FilenameUtils.removeExtension(t), null, t);
                     TrackDetails trackDetails = new TrackDetails(t, uploadDir);
                     SimpleGenre genre = new SimpleGenre(null, trackDetails.getGenre());
                     SimpleArtist artist = new SimpleArtist(null, trackDetails.getArtist());
-                    if (!trackService.findAllSimpleTrackByName(track.getName()).hasBody()) {
+                    if (!trackService.findSimpleTrackByName(track.getName()).hasBody()) {
                         addFileToFolder(uploadDir, musicDir, t);
                         trackService.addSimpleTrack(track);
                     }
+
                     genreService.addSimpleGenre(genre);
                     artistService.addSimpleArtist(artist);
                     Long addToArtistId = artistService.findSimpleArtistsByNameContaining(artist.getName()).getBody().get(0).getId();
@@ -94,15 +95,17 @@ public class UploadController {
                         trackService.addArtistToTrack(trackService.findTrackByArtistId(addToArtistId).getBody());
 
                     }
+
                     if (trackService.findTrackByGenreId(addToGenreId).hasBody()) {
                         trackService.addGenreToTrack(trackService.findTrackByGenreId(addToGenreId).getBody());
 
                     }
+
                 }
             }
             return new ResponseEntity<>(HttpStatus.OK);
         }
-        return null;
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     /**

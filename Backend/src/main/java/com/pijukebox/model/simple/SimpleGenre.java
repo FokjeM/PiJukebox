@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class SimpleGenre extends BaseModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
