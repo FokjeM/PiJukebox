@@ -24,8 +24,11 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     private QueueEntry<Integer, Track>[] shuffledEntries;
 =======
+=======
+>>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
 =======
 >>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
 =======
@@ -314,6 +317,9 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
         //Update the size
         this.size = index;
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
+=======
 >>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
 =======
 >>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it

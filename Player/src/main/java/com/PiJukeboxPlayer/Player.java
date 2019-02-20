@@ -554,7 +554,10 @@ public class Player {
         this.repeatOne = !repeatOne;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         return repeatOne;
+=======
+>>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
 =======
 >>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
 =======
