@@ -259,7 +259,6 @@ class TrackControl extends PolymerElement {
   // Update play/pause state, repeat state and volumeLevel (+ icons)
   verifyStatus(e, r) {
     const playerStatus = r.response;
-    console.log(playerStatus);
     this.updateStates(playerStatus);
     this.updateControls();
   }
@@ -285,7 +284,6 @@ class TrackControl extends PolymerElement {
     this.changePlayPauseIcon();
     this.changeRepeatIcon();
     this.changeVolumeIcon();
-    this.changeShuffleIcon();
   }
 
   playPause(e) {
@@ -330,18 +328,6 @@ class TrackControl extends PolymerElement {
   shuffle(){
     this.$.shuffle.generateRequest();
     this.dispatchEvent(new CustomEvent('refresh-queue-event', { bubbles: true, composed: true }));
-  }
-  
-  changeShuffleIcon() {
-    let shuffleButton = this.$.shuffleBtn;
-
-    if(!this.shuffleIsActive) {
-      //Shuffle is not active
-      shuffleButton.style.color = "var(--paper-icon-button-ink-color, var(--app-primary-color-light))";
-    } else {
-      //Shuffle is active
-      shuffleButton.style.color = "var(--app-primary-color)";
-    }
   }
 
   /**

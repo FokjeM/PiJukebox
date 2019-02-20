@@ -128,9 +128,9 @@ public class PlaylistController {
      * @param trackId    The ID of the track
      * @return The playlist
      */
-    @PatchMapping("/details/playlists/add/track")
+    @PostMapping("/details/playlists/{playlistID}/add/track/{trackId}")
     @ApiOperation(value = "Add a track to a playlist")
-    public ResponseEntity<PlaylistWithTracks> addTrackToPlaylist(@RequestBody Long playlistID, @RequestBody Long trackId) {
+    public ResponseEntity<PlaylistWithTracks> addTrackToPlaylist(@PathVariable Long playlistID, @PathVariable Long trackId) {
         PlaylistWithTracks playlistTrack = playlistService.findById(playlistID).getBody();
         Set<SimpleTrack> trackSet = playlistTrack.getTracks();
         trackSet.add(trackService.findSimpleTrackById(trackId).getBody());
