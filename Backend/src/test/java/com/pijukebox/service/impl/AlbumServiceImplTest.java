@@ -22,15 +22,10 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 class AlbumServiceImplTest {
-
     @Mock
     private IAlbumRepository mockAlbumRepository;
     @Mock
     private ISimpleAlbumRepository mockSimpleAlbumRepository;
-    @Mock
-    private IGenreWithAlbumsRepository mockGenreWithAlbumsRepository;
-    @Mock
-    private IArtistWithAlbumsRepository mockArtistWithAlbumsRepository;
     @Mock
     private IAlbumWithTracksRepository mockAlbumWithTracksRepository;
     @Mock
@@ -52,7 +47,7 @@ class AlbumServiceImplTest {
     @BeforeEach
     void setUp() {
         initMocks(this);
-        albumServiceImplUnderTest = new AlbumServiceImpl(mockAlbumRepository, mockSimpleAlbumRepository, mockGenreWithAlbumsRepository, mockArtistWithAlbumsRepository, mockAlbumWithTracksRepository, mockSimpleTrackRepository, mockSimpleArtistRepository, mockSimpleGenreRepository, mockAlbumWithArtistsRepository, mockAlbumWithGenreRepository);
+        albumServiceImplUnderTest = new AlbumServiceImpl(mockAlbumRepository, mockSimpleAlbumRepository, mockAlbumWithTracksRepository, mockSimpleTrackRepository, mockSimpleArtistRepository, mockSimpleGenreRepository, mockAlbumWithArtistsRepository, mockAlbumWithGenreRepository);
     }
 
     /**
@@ -73,7 +68,7 @@ class AlbumServiceImplTest {
         when(mockSimpleAlbumRepository.findById(anyLong())).thenReturn(expectedResult);
 
         // When
-        final Optional<SimpleAlbum> result = albumServiceImplUnderTest.findSimpleAlbumById(id);
+        final SimpleAlbum result = albumServiceImplUnderTest.findSimpleAlbumById(id).getBody();
 
         // Then
         // You are expecting service to return whatever returned by repo
@@ -121,7 +116,7 @@ class AlbumServiceImplTest {
         when(mockAlbumRepository.findById(anyLong())).thenReturn(expectedResult);
 
         // When
-        final Optional<Album> result = albumServiceImplUnderTest.findExtendedAlbumById(id);
+        final Album result = albumServiceImplUnderTest.findExtendedAlbumById(id).getBody();
 
         // Then
         // You are expecting service to return whatever returned by repo
@@ -172,7 +167,7 @@ class AlbumServiceImplTest {
         when(mockAlbumRepository.findAlbumsByNameContaining(anyString())).thenReturn(expectedResult);
 
         // When
-        final Optional<List<Album>> result = albumServiceImplUnderTest.findAlbumsByNameContaining(name);
+        final List<Album> result = albumServiceImplUnderTest.findAlbumsByNameContaining(name).getBody();
 
         // Then
         // You are expecting service to return whatever returned by repo

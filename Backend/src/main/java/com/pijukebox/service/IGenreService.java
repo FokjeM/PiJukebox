@@ -1,16 +1,16 @@
 package com.pijukebox.service;
 
 import com.pijukebox.model.simple.SimpleGenre;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IGenreService {
-    List<SimpleGenre> findAll();
+    ResponseEntity<List<SimpleGenre>> findAll();
 
-    Optional<SimpleGenre> findById(Long id);
+    ResponseEntity<SimpleGenre> findById(Long id);
 
-    Optional<List<SimpleGenre>> findGenresByNameContaining(String name);
+    ResponseEntity<List<SimpleGenre>> findGenresByNameContaining(String name);
 
-    SimpleGenre addSimpleGenre(SimpleGenre simpleGenre);
+    ResponseEntity<SimpleGenre> addSimpleGenre(SimpleGenre simpleGenre);
 }

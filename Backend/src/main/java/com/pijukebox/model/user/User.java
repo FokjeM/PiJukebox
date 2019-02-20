@@ -1,11 +1,10 @@
 package com.pijukebox.model.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.pijukebox.model.SqlElement;
+import com.pijukebox.model.BaseModel;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -13,7 +12,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Table(schema = "pijukebox", name = "user")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class User extends SqlElement implements Serializable {
+public class User extends BaseModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

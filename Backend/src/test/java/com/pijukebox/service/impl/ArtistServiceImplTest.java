@@ -57,7 +57,7 @@ class ArtistServiceImplTest {
         when(simpleArtistRepository.findById(anyLong())).thenReturn(expectedResult);
 
         // When
-        final Optional<SimpleArtist> result = artistServiceImplUnderTest.findSimpleArtistById(id);
+        final SimpleArtist result = artistServiceImplUnderTest.findSimpleArtistById(id).getBody();
 
         // Then
         // You are expecting service to return whatever returned by repo
@@ -95,7 +95,7 @@ class ArtistServiceImplTest {
         when(artistRepository.findById(anyLong())).thenReturn(expectedResult);
 
         // When
-        final Optional<Artist> result = artistServiceImplUnderTest.findExtendedArtistById(id);
+        final Artist result = artistServiceImplUnderTest.findExtendedArtistById(id).getBody();
 
         // Then
         // You are expecting service to return whatever returned by repo
@@ -136,7 +136,7 @@ class ArtistServiceImplTest {
         when(artistRepository.findExtendedArtistsByNameContaining(anyString())).thenReturn(expectedResult);
 
         // When
-        final Optional<List<Artist>> result = artistServiceImplUnderTest.findExtendedArtistsByNameContaining(name);
+        final List<Artist> result = artistServiceImplUnderTest.findExtendedArtistsByNameContaining(name).getBody();
 
         // Then
         // You are expecting service to return whatever returned by repo

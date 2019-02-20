@@ -4,12 +4,14 @@ import com.pijukebox.model.simple.SimpleGenre;
 import com.pijukebox.repository.IGenreRepository;
 import com.pijukebox.service.IGenreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 @Service
 @Transactional
 public class GenreServiceImpl implements IGenreService {
@@ -22,22 +24,22 @@ public class GenreServiceImpl implements IGenreService {
     }
 
     @Override
-    public List<SimpleGenre> findAll() {
-        return genreRepository.findAll();
+    public ResponseEntity<List<SimpleGenre>> findAll() {
+        return new ResponseEntity<>(genreRepository.findAll(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<SimpleGenre> findById(Long id) {
-        return genreRepository.findById(id);
+    public ResponseEntity<SimpleGenre> findById(Long id) {
+        return new ResponseEntity<>(genreRepository.findById(id).get(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<List<SimpleGenre>> findGenresByNameContaining(String name) {
-        return genreRepository.findGenresByNameContaining(name);
+    public ResponseEntity<List<SimpleGenre>> findGenresByNameContaining(String name) {
+        return new ResponseEntity<>(genreRepository.findGenresByNameContaining(name).get(), HttpStatus.OK);
     }
 
     @Override
-    public SimpleGenre addSimpleGenre(SimpleGenre simpleGenre) {
-        return genreRepository.save(simpleGenre);
+    public ResponseEntity<SimpleGenre> addSimpleGenre(SimpleGenre simpleGenre) {
+        return new ResponseEntity<>(genreRepository.save(simpleGenre), HttpStatus.OK);
     }
 }
