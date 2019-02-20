@@ -1,20 +1,18 @@
 package com.PiJukeboxPlayer;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * Queue class to hold a collection of Tracks in a specific order. Builds upon a
- * Map<Integer, Track> and thus Map.Entry<Integer,Track>
+ * Queue class to hold a collection of Tracks in a specific order. Builds
+ * upon a Map<Integer, Track> and thus Map.Entry<Integer,Track>
  */
 public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
 
@@ -23,6 +21,9 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
      */
     private QueueEntry<Integer, Track>[] entries;
     private QueueEntry<Integer, Track>[] shuffledEntries;
+    /**
+     * The current size of this Queue
+     */
     private int size;
     private boolean shuffled = false;
 
@@ -30,59 +31,67 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
      * Instantiates a Queue using an iterable object.
      *
      * @param list the Iterable collection of Tracks to populate the Queue with.
-     * @throws com.pijukebox.Player.FatalException
-     * @throws com.pijukebox.Player.NonFatalException
      */
-    public Queue(Iterable<String> list) throws FatalException, NonFatalException {
+    public Queue(Iterable list) {
         int length = 0;
-        this.entries = new QueueEntry[1];
         Iterator li = list.iterator();
         while (li.hasNext()) {
             length++;
-            String track = (String) li.next();
-            this.put(length, new Track(track.substring(0, track.lastIndexOf(File.separator)), track.substring(track.lastIndexOf(File.separator) + 1, track.length())));
+            li.next();
         }
+        this.entries = new QueueEntry[length];
         this.size = length;
     }
-
+    
     /**
      * Instantiates a Queue using another Map with the same base types.
-     *
      * @param m the Map<? extends Integer, ? extends Track> to use.
      */
-    public Queue(Map<? extends Integer, ? extends Track> m) {
+    public Queue(Map<? extends Integer, ? extends Track> m){
         this.entries = new QueueEntry[1];
         this.putAll(m);
     }
-
+    
     /**
      * Cannibalistic Queue; it consumes another Queue.
-     *
      * @param q the Queue to consume.
-     * @throws com.pijukebox.Player.FatalException
-     * @throws com.pijukebox.Player.NonFatalException
      */
-    public Queue(Queue q) throws FatalException, NonFatalException {
-        this(q.valueStrings());
+    public Queue(Queue q){
+        this(q.values());
     }
-
+    
     /**
      * Build a Queue with a single Track.
-     *
      * @param t the Track to populate the Queue with.
      */
-    public Queue(Track t) {
+    public Queue(Track t){
         this.entries = new QueueEntry[1];
         this.put(1, t);
     }
-
+    
     /**
      * Create an empty Queue; use this if there is no remaining Queue and the
      * application was not requested to play anything before requiring a Queue.
      */
-    public Queue() {
+    public Queue(){
         this.entries = new QueueEntry[1];
         this.size = 0;
+    }
+
+    /**
+     * Remove all entries that hold null values and shift all Integer keys up.
+     */
+    private void reset() {
+        int index = 0;
+        Collection<Track> values = this.values();
+        this.clear();
+        for(Track t : values){
+            if(t != null){
+                index++;
+                this.put(index, t);
+            }
+        }
+        this.size = index;
     }
 
     /**
@@ -112,14 +121,9 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
      * @return true if the key is present at least once, false otherwise
      */
     public boolean containsKey(Integer key) {
-        if (this.size == 0) {
-            return false;
-        }
         for (QueueEntry e : this.entries) {
-            if (e != null) {
-                if (e.getKey().equals(key)) {
-                    return true;
-                }
+            if (e.getKey().equals(key)) {
+                return true;
             }
         }
         return false;
@@ -148,11 +152,9 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
      */
     public Track get(Integer key) {
         for (QueueEntry e : this.entries) {
-            if (e != null) {
-                if (e.getKey().equals(key)) {
-                    //Cast to Track due to IDE errors; test without cast later
-                    return (Track) e.getValue();
-                }
+            if (e.getKey().equals(key)) {
+                //Cast to Track due to IDE errors; test without cast later
+                return (Track) e.getValue();
             }
         }
         return null;
@@ -160,7 +162,7 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
 
     /**
      * Edits or adds a QueueEntry in the Queue containing the specified
-     * key-value pair
+ key-value pair
      *
      * @param key the Integer key object for the QueueEntry
      * @param value the Track for the QueueEntry
@@ -171,86 +173,73 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
         if (this.containsKey(key)) { //If the key is present, return the result of setValue(value)
             for (QueueEntry e : this.entries) {
                 if (e.getKey().equals(key)) {
+                    //Cast to Track due to IDE errors; test without cast later
                     return (Track) e.setValue(value);
                 }
             }
         } else { //Else, create a new array with the necessary Length
             QueueEntry<Integer, Track>[] newEntries = new QueueEntry[key];
             //copy the current array into it
-            if (size > 0) {
-                for (QueueEntry e : entries) {
-                    newEntries[(Integer) e.getKey() - 1] = e;
-                }
-                //Add the new entry
-                newEntries[key - 1] = new QueueEntry(key, value);
-                //and change the reference pointer of entries
-                this.entries = newEntries;
-                this.size = key;
-            } else {
-                entries = new QueueEntry[key];
-                entries[key - 1] = new QueueEntry(key, value);
-                this.size = key;
+            for (QueueEntry e : entries) {
+                newEntries[(Integer) e.getKey()] = e;
             }
-            for (QueueEntry q : entries) {
-                String s = ((Track) q.getValue()).getPath().toString();
-            }
+            //Add the new entry
+            newEntries[key] = new QueueEntry(key, value);
+            //and change the reference pointer of entries
+            this.entries = newEntries;
+            this.size = key;
         }
         //If nothing was returned yet, the key did not exist
         return null;
     }
-
+    
     /**
-     * Add a Track to the Queue, independent of it being present. This function
-     * should not be implemented without first checking containsValue() and
-     * asking the user about adding duplicate Tracks.
-     *
+     * Add a Track to the Queue, independent of it being present.
+     * This function should not be implemented without first checking
+     * containsValue() and asking the user about adding duplicate Tracks.
      * @param t the Track object to add to the Queue.
      * @throws FatalException when a result other than null is returned, as this
-     * should never happen when adding a new QueueEntry. The return of the
-     * implemented put(Integer, Track) should only return the old Track value
-     * associated with Integer key in the Map.
+     *          should never happen when adding a new QueueEntry. The return of
+     *          the implemented put(Integer, Track) should only return the old
+     *          Track value associated with Integer key in the Map.
      */
     public void enqueue(Track t) throws FatalException {
-        if (t == null) {
+        if(t == null){
             return;
         }
         //A new entry should be created, thus put should return null.
-        if (this.put(this.size + 1, t) != null) {
+        if(this.put(this.size+1, t) != null){
             //If it doesn't, something VERY wrong is happening.
             throw new FatalException("Unexpected return type encountered! Expected null and got something!", new UnsupportedOperationException());
         }
     }
-
+    
     /**
      * Removes a Track from the Queue
-     *
      * @param t The Track to remove
      * @return The dequeued Track if it was present, null otherwise
      */
     public Track dequeue(Track t) {
         int key = 0;
-        if (this.size == 0) {
-            return null;
-        }
-        for (QueueEntry e : this.entries) {
-            if (e.getValue().equals(t)) {
+        for(QueueEntry e : this.entries){
+            if(e.getValue().equals(t)){
                 key = (int) e.getKey();
             }
         }
-        if (key > 0) {
+        if(key > 0){
             this.remove(key);
+            this.reset();
             return t;
         }
         return null;
     }
-
+    
     /**
      * Move an item to the back of the queue by removing and then putting it.
-     *
      * @param t the Track to requeue.
      * @throws FatalException Propagated from enqueue(). EMERGENCY!
      */
-    public void requeue(Track t) throws FatalException {
+    public void requeue(Track t) throws FatalException{
         this.enqueue(this.dequeue(t));
     }
 
@@ -262,20 +251,19 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
      */
     public Track remove(Integer key) {
         Track val = null;
-        if (size > 0) {
-            for (QueueEntry e : this.entries) {
-                if (e.getKey().equals(key)) {
-                    val = (Track) e.getValue();
-                    e = null;
-                }
+        for (QueueEntry e : this.entries) {
+            if (e.getKey().equals(key)) {
+                val = (Track) e.getValue();
+                e = null;
             }
         }
+        reset();
         return val;
     }
 
     /**
      * Add an entire map to to this Queue, as long as the map shares the same
-     * data types for its key-value pairs
+ data types for its key-value pairs
      *
      * @param m the map to add
      */
@@ -285,29 +273,22 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
         int index = 0;
         Collection<? extends Track> tracks = this.values();
         this.clear();
-        for (Track t : tracks) {
-            if (t != null) {
+        for(Track t : tracks){
+            if(t != null){
                 index++;
                 this.put(index, t);
             }
         }
         //Add the new entries. Right order, no nulls
         tracks = m.values();
-        for (Track t : tracks) {
-            if (t != null) {
+        for (Track t : tracks){
+            if(t != null){
                 index++;
                 this.put(index, t);
             }
         }
-    }
-
-    /**
-     * Clears the playlist and sets the size to 0
-     */
-    @Override
-    public void clear() {
-        this.entries = new QueueEntry[0];
-        this.size = 0;
+        //Update the size
+        this.size = index;
     }
     
     public void shuffle() {
@@ -328,6 +309,14 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
         return this.shuffled;
     }
 
+    /**
+     * Clears the playlist and sets the size to 0
+     */
+    @Override
+    public void clear() {
+        this.entries = new QueueEntry[0];
+        this.size = 0;
+    }
 
     /**
      * Get a set containing all of the keys
@@ -352,26 +341,26 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
     public Collection<Track> values() {
         ArrayList<Track> coll = new ArrayList<>();
         //Make sure the returned ArrayList uses the order specified by the user
-        for (int i = 1; i <= size; i++) {
-            coll.add(this.get(i));
+        for(int i = 0; i < size; i++) {
+            coll.add(i, this.get(i));
         }
         return coll;
     }
-
+    
     /**
      * Get all of the String FILEPATHS for this Queue
-     *
+     * 
      * These are created by the {@link java.nio.file.Path Path} implemented in
      * this {@link java.nio.file.FileSystems#getDefault() FileSystems.getDefault()}
-     * {@link java.nio.file.FileSystem#getPath(java.lang.String, java.lang.String...) getPath()}
-     * method
-     *
+     * {@link java.nio.file.FileSystem#getPath(java.lang.String, java.lang.String...) getPath()} method
      * @return a {@link java.util.List} List of FILEPATHS.
      */
     public Collection<String> valueStrings() {
-        List<String> coll = new ArrayList<>();
-        for (int i = 1; i <= size; i++) {
-            coll.add(this.get(i).getPath().toString());
+        ArrayList<String> coll = new ArrayList<>();
+        int index = 0;
+        for(Track t : values()){
+            coll.add(index, t.getPath().toAbsolutePath().toString());
+            index++;
         }
         return coll;
     }
@@ -451,18 +440,18 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
             throw new UnsupportedOperationException("Whoops, we use Integer keys here!");
         }
     }
-
     /**
      * Internal class to return the matching implementation of Map.Entry
      *
      * @param <Integer> an Integer key (key must be an object)
-     * @param <Track> The value to map to the key; Track object
+     * @param <Track> The value to map to the key; location path for the music
+     * file
      */
     public class QueueEntry<Integer, Track> implements Map.Entry<Integer, Track> {
-
+        
         private final Integer key;
         private Track value;
-
+        
         /**
          * Instantiate a PlaylistEntry
          *
@@ -473,7 +462,7 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
             this.key = key;
             this.value = value;
         }
-
+        
         /**
          * Get the key for this QueueEntry
          *
@@ -483,7 +472,7 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
         public Integer getKey() {
             return this.key;
         }
-
+        
         /**
          * Get the value of this QueueEntry
          *
@@ -493,7 +482,7 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
         public Track getValue() {
             return this.value;
         }
-
+        
         /**
          * Set the value of this QueueEntry
          *
@@ -506,7 +495,7 @@ public class Queue implements Map<Integer, Track>, Cloneable, Serializable {
             this.value = value;
             return oldValue;
         }
-
+        
     }
 
 }

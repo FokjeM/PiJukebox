@@ -263,7 +263,7 @@ public class PlayerController {
         if (playerWrapper.getPlayerStatus().equals("PLAYING")) {
             isPlaying = true;
         }
-        return String.format("{\"isPlaying\": %s, \"volumeLevel\": 0, \"repeatState\": %b}", isPlaying, playerWrapper.getRepeatState());
+        return String.format("{\"isPlaying\": %s, \"volumeLevel\": %d, \"repeatState\": %b}", isPlaying, playerWrapper.getPlayerVolume(), playerWrapper.getRepeatState());
     }
 
     /**
@@ -301,7 +301,7 @@ public class PlayerController {
      *
      * @return The new volume level
      */
-/*    @GetMapping("/volume/{volumeLevel}")
+    @GetMapping("/volume/{volumeLevel}")
     public ResponseEntity<String> setVolume(@PathVariable int volumeLevel) {
         try {
             playerWrapper.setPlayerVolume((volumeLevel));
@@ -309,26 +309,22 @@ public class PlayerController {
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't change volume", ex);
         }
-    }*/
+    }
 
     /**
      * Get volume level of player
      *
      * @return The current volume level
      */
- /*   @GetMapping("/volume")
+    @GetMapping("/volume")
     public ResponseEntity<String> getVolume() {
         try {
             return new ResponseEntity<>(String.format("Volume is %s", playerWrapper.getPlayerVolume()), HttpStatus.OK);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't change volume", ex);
         }
-    }*/
+    }
 
-    /**
-     * Clear the queue
-     * @return the correct response
-     */
     @GetMapping("/queue/clear")
     public ResponseEntity<String> clearQueue() {
         try {
