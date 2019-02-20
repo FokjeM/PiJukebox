@@ -76,7 +76,7 @@ public class UploadController {
             showFiles(files);
 
             for (String t : tracks) {
-                if (t.endsWith(".mp3")) {
+                if (t.toLowerCase().endsWith(".mp3")) {
                     SimpleTrack track = new SimpleTrack(null, FilenameUtils.removeExtension(t), null, t);
                     TrackDetails trackDetails = new TrackDetails(t, uploadDir);
                     SimpleGenre genre = new SimpleGenre(null, trackDetails.getGenre());
