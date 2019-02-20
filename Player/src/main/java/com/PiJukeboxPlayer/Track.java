@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Files;
+import com.mpatric.mp3agic.*;
 import java.io.InputStream;
 import java.nio.file.FileSystemNotFoundException;
 import java.util.Locale;
@@ -16,7 +17,7 @@ import java.util.Locale;
  *
  * @author Riven
  */
-public class Track {
+class Track {
 
     private final static String WINDOWS_DEFAULT_MEDIA_PATH = "C:\\Users\\Public\\Music\\";
     private final static String NIX_DEFAULT_MEDIA_PATH = "/media/music/";
@@ -53,13 +54,51 @@ public class Track {
         }
         streamType = checkFiletype();
         try {
-            title = ffprobe("-show-entries stream_tags=title");
-            bitrate = Integer.parseInt(ffprobe("-show-entries stream=bit_rate"));
-            duration = "-show-entries stream=duration";
+            if (streamType.equals("mp3")) {
+                Mp3File mp3file = mp3FromPath(filepath);
+                if (mp3file.hasId3v2Tag()) {
+                    title = mp3file.getId3v2Tag().getTitle();
+                } else {
+                    title = mp3file.getId3v1Tag().getTitle();
+                }
+                bitrate = mp3file.getBitrate();
+                StringBuilder dur = new StringBuilder();
+                dur.append(Long.toString(mp3file.getLengthInSeconds()));
+                dur.append(".");
+                long millis = mp3file.getLengthInMilliseconds() - (mp3file.getLengthInSeconds()*1000);
+                dur.append(Long.toString(millis));
+                duration = dur.toString();
+            } else {
+                title = ffprobe("-show-entries stream_tags=title");
+                bitrate = Integer.parseInt(ffprobe("-show-entries stream=bit_rate"));
+                duration = "-show-entries stream=duration";
+            }
         } catch (IOException io) {
             throw new NonFatalException("The file could not be read and/or processed and an exception was thrown.", io);
         }
 
+    }
+
+    /**
+     * Returns an mp3agic Mp3File as specified in the given FILEPATH.
+     *
+     * @param path The Path object of the file to open.
+     * @return the mp3agick Mp3File object.
+     * @throws NonFatalException When the Mp3File class can't handle the data
+     * format of the file. This might mean a different MPeg encoding was used,
+     * like MPeg2 or MPeg4.
+     * @throws FatalException propagated from getOSPath() and
+     * NonFatalException()
+     * @throws IOException Propagated from Mp3File()
+     */
+    private Mp3File mp3FromPath(Path path) throws NonFatalException, FatalException, IOException {
+        try {
+            return new Mp3File(path);
+        } catch (InvalidDataException ide) {
+            throw new NonFatalException("Invalid data for an mp3 file for a file that was determined to be an mp3.", ide);
+        } catch (UnsupportedTagException ut) {
+            throw new NonFatalException("Mp3agic cannot handle this metadata tag. It's either really old, really new or non-standard.", ut);
+        }
     }
 
     /**
@@ -181,7 +220,7 @@ public class Track {
      * Get the default Media path for music for this OS.
      * @return The default Media path for this OS
      */
-    public static String getDefaultMediaPath() throws FatalException {
+    private static String getDefaultMediaPath() throws FatalException {
         return getOSPath();
     }
 }

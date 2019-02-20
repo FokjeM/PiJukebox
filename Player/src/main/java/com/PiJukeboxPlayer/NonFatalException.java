@@ -4,7 +4,7 @@ package com.PiJukeboxPlayer;
  * Non-fatal exception to be thrown in the PiJukebox
  * @author Riven
  */
-public class NonFatalException extends Exception {
+class NonFatalException extends Exception {
 
     /**
      * A generic, non-fatal exception.

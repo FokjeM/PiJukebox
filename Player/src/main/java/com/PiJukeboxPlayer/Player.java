@@ -468,28 +468,4 @@ public class Player {
     public void toggleRepeatOne(){
         this.repeatOne = !repeatOne;
     }
-    
-    public void dequeue(Track t) {
-        this.queue.dequeue(t);
-    }
-    
-    public String getCurrentTrack(){
-        return this.currentTrack.getTitle();
-    }
-    
-    public boolean isShuffled() {
-        return this.queue.isShuffled();
-    }
-    
-    public void shuffle() {
-        this.queue.shuffle();
-    }
-    
-    public boolean inQueue(Track t) {
-        return this.queue.containsValue(t);
-    }
-    
-    public boolean isPlaying() {
-        return this.playing;
-    }
 }
