@@ -188,7 +188,7 @@ class TrackControl extends PolymerElement {
     return {
       hidden: {
         type: Boolean,
-        value: true,
+        value: true
       },
       currentTrack: {
         type: Object,
@@ -199,7 +199,7 @@ class TrackControl extends PolymerElement {
         value: "av:play-arrow"
       },
       playPauseState: {
-        type: Boolean,
+        type: Boolean
         // value: false
       },
       repeatIcon: {
@@ -219,7 +219,7 @@ class TrackControl extends PolymerElement {
         value: "av:volume-down"
       },
       volumeLevel: {
-        type: Number,
+        type: Number
       },
       token: {
         type: String,
@@ -229,7 +229,8 @@ class TrackControl extends PolymerElement {
         type: Object,
         reflectToAttribute: true,
         computed: '_computeTokenHeaders(token)'
-      }
+      },
+      waitForResponse: false
     };
   }
 
@@ -254,6 +255,7 @@ class TrackControl extends PolymerElement {
   getPlayerStatus() {
     this.$.getStatus.generateRequest();
     this.$.getCurrentTrack.generateRequest();
+    this.waitForResponse = true;
   }
 
   // Update play/pause state, repeat state and volumeLevel (+ icons)
@@ -308,7 +310,10 @@ class TrackControl extends PolymerElement {
   }
 
   play() {
-    this.$.play.generateRequest();
+    if(!this.waitForResponse) {
+      this.waitForResponse = true;
+      this.$.play.generateRequest();
+    }
   }
 
   pause(){
