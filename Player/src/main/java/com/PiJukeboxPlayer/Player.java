@@ -552,9 +552,6 @@ public class Player {
      */
     public boolean toggleRepeatOne() {
         this.repeatOne = !repeatOne;
-<<<<<<< HEAD
         return repeatOne;
-=======
->>>>>>> parent of 9e696a8... My player, implements everything but volume control. Please test it
     }
 }
