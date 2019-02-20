@@ -80,13 +80,10 @@ public class PlayerServiceImpl implements IPlayerService {
 
     @Override
     public ResponseEntity<Map<String, Object>> getPlayerStatus() {
-        boolean isPlaying = false;
         System.out.println("The status is: " + playerWrapper.getPlayerStatus());
-        if (playerWrapper.getPlayerStatus().equals(PlayerStatus.Status.PLAYING.name())) {
-            isPlaying = true;
-        }
+
         Map<String, Object> status = new HashMap<>();
-        status.put("isPlaying", isPlaying);
+        status.put("isPlaying", playerWrapper.getPlayerStatus());
         status.put("volumeLevel", playerWrapper.getPlayerVolume());
         status.put("repeatState", playerWrapper.getRepeatState());
         status.put("shuffleState", playerWrapper.getShuffleState());

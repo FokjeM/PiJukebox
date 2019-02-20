@@ -24,20 +24,21 @@ public class PlayerWrapper {
     private Path songDirPath;
     private List<File> queue;
     private int current;
-    private int volume;
     private Thread t;
 
-    @Autowired
     private PlayerStatus playerStatus;
-    @Autowired
     private TrackDetails trackDetails;
 
     /**
      * Instantiates a new Player wrapper.
      */
-    public PlayerWrapper() {
-        volume = 50;
+    @Autowired
+    public PlayerWrapper(PlayerStatus playerStatus, TrackDetails trackDetails) {
+        this.playerStatus = playerStatus;
+        this.trackDetails = trackDetails;
         mp3Player = new MP3Player();
+        mp3Player.setVolume(playerStatus.getVolume());
+        mp3Player.setRepeat(playerStatus.isRepeat());
         this.queue = new ArrayList<>();
         this.current = 0;
     }
@@ -73,16 +74,16 @@ public class PlayerWrapper {
             !playerStatus.GetPlayerStatus().equals(PlayerStatus.Status.PLAYING.name()))
         {
             mp3Player = new MP3Player();
-            mp3Player.setVolume(volume);
-            System.out.println("The song playing is: " + queue.get(current).getName());
+            mp3Player.setVolume(playerStatus.getVolume());
+            mp3Player.setRepeat(playerStatus.isRepeat());
             mp3Player.add(queue.get(current));
         }
         if(!playerStatus.GetPlayerStatus().equals(PlayerStatus.Status.PLAYING.name()))
         {
+            String name = queue.get(current).getName();
             mp3Player.play();
-            this.trackDetails = new TrackDetails(queue.get(current).getName());
-//        playerStatus.setCurrStatus(PlayerStatus.Status.PLAYING);
-            playerStatus.setCurrSong(FilenameUtils.removeExtension(queue.get(current).getName()));
+            this.trackDetails = new TrackDetails(name);
+            setCurrentSong(name);
             keepSongPlaying();
             playerStatus.setCurrStatus(PlayerStatus.Status.PLAYING);
         }
@@ -167,10 +168,7 @@ public class PlayerWrapper {
      * @return the player status
      */
     public String getPlayerStatus() {
-        if (!getCurrentSong().isEmpty()) {
-            return playerStatus.GetPlayerStatus();
-        }
-        return "";
+        return playerStatus.GetPlayerStatus();
     }
 
     /**
@@ -179,8 +177,7 @@ public class PlayerWrapper {
      * @return the player volume
      */
     public int getPlayerVolume() {
-
-        return volume;
+        return playerStatus.getVolume();
     }
 
     /**
@@ -190,8 +187,8 @@ public class PlayerWrapper {
      */
     public void setPlayerVolume(int volume) {
         try {
-            this.volume = Math.round(volume);
-            mp3Player.setVolume(this.volume);
+            playerStatus.setVolume(Math.round(volume));
+            mp3Player.setVolume(playerStatus.getVolume());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -206,17 +203,22 @@ public class PlayerWrapper {
         return playerStatus.isRepeat();
     }
 
+    private void setCurrentSong(String name)
+    {
+        if (!queue.isEmpty()) {
+            playerStatus.setCurrSong(FilenameUtils.removeExtension(name));
+        } else {
+            playerStatus.setCurrSong("No song available");
+        }
+    }
+
     /**
      * Gets current song.
      *
      * @return the current song
      */
     public String getCurrentSong() {
-        if (!queue.isEmpty()) {
-            playerStatus.setCurrSong(queue.get(current).getName());
-        } else {
-            playerStatus.setCurrSong("No song available");
-        }
+
         return playerStatus.getCurrSong();
     }
 
@@ -229,9 +231,8 @@ public class PlayerWrapper {
      */
     public void toggleRepeatState() {
         boolean sw = !(playerStatus.isRepeat());
-        System.out.println("The repeat state is: " + sw);
         playerStatus.setRepeat(sw);
-        mp3Player.setRepeat(sw);
+        mp3Player.setRepeat(playerStatus.isRepeat());
     }
 
     /**
@@ -239,11 +240,7 @@ public class PlayerWrapper {
      */
     public void toggleShuffleState() {
         boolean sw = !mp3Player.isShuffle();
-        if (sw) {
-            Collections.shuffle(queue);
-        } else {
-            Collections.sort(queue);
-        }
+        Collections.shuffle(queue);
         mp3Player.setShuffle(sw);
     }
 

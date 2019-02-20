@@ -245,7 +245,7 @@ class TrackControl extends PolymerElement {
   ready(){
     super.ready();
     this.token = localStorage.getItem("token");
-
+    setInterval( () => { this.getPlayerStatus() } , 1000);
     window.addEventListener('refresh-track-control-event', function() {
       this.$.getCurrentTrack.generateRequest();
     }.bind(this));
@@ -288,13 +288,21 @@ class TrackControl extends PolymerElement {
 
   playPause(e) {
     const state = this.playPauseState;
-    if (state) {
-      // player is playing
-      this.pause(e);
-    } else if (!state) {
-      // player is not playing
-      this.play(e);
+    console.log("Here" + state);
+    switch(state)
+    {
+        case "PLAYING":
+          this.pause(e);
+          break;
+        case "STOPPED":
+        case "PAUSED":
+          this.play(e);
+          break;
+        case "INTERRUPTED":
+          this.nextTrack();
+          break;
     }
+    
   }
 
   play() {
@@ -340,12 +348,18 @@ class TrackControl extends PolymerElement {
   changePlayPauseIcon() {
     const state = this.playPauseState
     console.log(state);
-    if (state) {
-      // player is playing
-      this.playPauseIcon = "av:pause";
-    } else if (!state) {
-      // player is not playing
-      this.playPauseIcon = "av:play-arrow";
+    switch(state)
+    {
+        case "PLAYING":
+          this.playPauseIcon = "av:pause";
+          break;
+        case "PAUSED":
+          this.playPauseIcon = "av:play-arrow";
+          break;
+        case "INTERRUPTED":
+          this.playPauseIcon = "av:play-arrow";
+          this.nextTrack();
+          break;
     }
   }
 

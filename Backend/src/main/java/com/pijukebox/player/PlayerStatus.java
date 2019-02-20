@@ -11,9 +11,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class PlayerStatus {
 
-    private Status currStatus = Status.STOPPED;
-    private boolean repeat;
-    private String currSong;
+    private Status currStatus = PlayerStatus.Status.STOPPED;
+    private boolean repeat = false;
+    private String currSong = "";
+    private int volume = 50;
 
 
     /**

@@ -39,6 +39,7 @@ class PageQueue extends PolymerElement {
       </iron-ajax>
 
       <iron-ajax
+        method="POST"
         id="clearQueue"
         url="[[apiRootPath]]/player/queue/clear"
         params="{{header}}"
