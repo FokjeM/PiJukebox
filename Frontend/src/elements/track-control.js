@@ -287,7 +287,7 @@ class TrackControl extends PolymerElement {
   }
 
   playPause(e) {
-    const state = (this.playPauseState == 'true');
+    const state = this.playPauseState;
     if (state) {
       // player is playing
       this.pause(e);
@@ -338,7 +338,7 @@ class TrackControl extends PolymerElement {
    * Change the play/pause icon to the current play / pause state
    */
   changePlayPauseIcon() {
-    const state = (this.playPauseState == 'true')
+    const state = this.playPauseState
     console.log(state);
     if (state) {
       // player is playing

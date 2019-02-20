@@ -79,17 +79,17 @@ public class PlayerServiceImpl implements IPlayerService {
     }
 
     @Override
-    public ResponseEntity<Map<String, String>> getPlayerStatus() {
+    public ResponseEntity<Map<String, Object>> getPlayerStatus() {
         boolean isPlaying = false;
         System.out.println("The status is: " + playerWrapper.getPlayerStatus());
         if (playerWrapper.getPlayerStatus().equals(PlayerStatus.Status.PLAYING.name())) {
             isPlaying = true;
         }
-        Map<String, String> status = new HashMap<>();
-        status.put("isPlaying", String.valueOf(isPlaying));
-        status.put("volumeLevel", String.valueOf(playerWrapper.getPlayerVolume()));
-        status.put("repeatState", String.valueOf(playerWrapper.getRepeatState()));
-        status.put("shuffleState", String.valueOf(playerWrapper.getShuffleState()));
+        Map<String, Object> status = new HashMap<>();
+        status.put("isPlaying", isPlaying);
+        status.put("volumeLevel", playerWrapper.getPlayerVolume());
+        status.put("repeatState", playerWrapper.getRepeatState());
+        status.put("shuffleState", playerWrapper.getShuffleState());
         return new ResponseEntity<>(status, HttpStatus.OK);
     }
 

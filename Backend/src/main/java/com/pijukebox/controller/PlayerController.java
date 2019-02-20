@@ -190,7 +190,7 @@ public class PlayerController {
      */
     @GetMapping(value = "/status", produces = "application/json")
     @ApiOperation(value = "Get player status")
-    public ResponseEntity<Map<String, String>> getStatus() {
+    public ResponseEntity<Map<String, Object>> getStatus() {
         return playerService.getPlayerStatus();
     }
 

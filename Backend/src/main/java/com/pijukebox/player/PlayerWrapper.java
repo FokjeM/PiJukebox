@@ -24,6 +24,7 @@ public class PlayerWrapper {
     private Path songDirPath;
     private List<File> queue;
     private int current;
+    private int volume;
     private Thread t;
 
     @Autowired
@@ -35,6 +36,7 @@ public class PlayerWrapper {
      * Instantiates a new Player wrapper.
      */
     public PlayerWrapper() {
+        volume = 50;
         mp3Player = new MP3Player();
         this.queue = new ArrayList<>();
         this.current = 0;
@@ -67,18 +69,23 @@ public class PlayerWrapper {
      * Play current song.
      */
     public void playCurrentSong() {
-        if(!playerStatus.GetPlayerStatus().equals(PlayerStatus.Status.PAUSED.name()))
+        if(!playerStatus.GetPlayerStatus().equals(PlayerStatus.Status.PAUSED.name()) &&
+            !playerStatus.GetPlayerStatus().equals(PlayerStatus.Status.PLAYING.name()))
         {
             mp3Player = new MP3Player();
+            mp3Player.setVolume(volume);
             System.out.println("The song playing is: " + queue.get(current).getName());
             mp3Player.add(queue.get(current));
         }
-        mp3Player.play();
-        this.trackDetails = new TrackDetails(queue.get(current).getName());
+        if(!playerStatus.GetPlayerStatus().equals(PlayerStatus.Status.PLAYING.name()))
+        {
+            mp3Player.play();
+            this.trackDetails = new TrackDetails(queue.get(current).getName());
 //        playerStatus.setCurrStatus(PlayerStatus.Status.PLAYING);
-        playerStatus.setCurrSong(FilenameUtils.removeExtension(queue.get(current).getName()));
-        keepSongPlaying();
-        playerStatus.setCurrStatus(PlayerStatus.Status.PLAYING);
+            playerStatus.setCurrSong(FilenameUtils.removeExtension(queue.get(current).getName()));
+            keepSongPlaying();
+            playerStatus.setCurrStatus(PlayerStatus.Status.PLAYING);
+        }
     }
 
     /**
@@ -172,7 +179,8 @@ public class PlayerWrapper {
      * @return the player volume
      */
     public int getPlayerVolume() {
-        return mp3Player.getVolume();
+
+        return volume;
     }
 
     /**
@@ -182,7 +190,8 @@ public class PlayerWrapper {
      */
     public void setPlayerVolume(int volume) {
         try {
-            mp3Player.setVolume(Math.round(volume));
+            this.volume = Math.round(volume);
+            mp3Player.setVolume(this.volume);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -219,7 +228,9 @@ public class PlayerWrapper {
      * Toggle repeat state.
      */
     public void toggleRepeatState() {
-        boolean sw = !mp3Player.isRepeat();
+        boolean sw = !(playerStatus.isRepeat());
+        System.out.println("The repeat state is: " + sw);
+        playerStatus.setRepeat(sw);
         mp3Player.setRepeat(sw);
     }
 
