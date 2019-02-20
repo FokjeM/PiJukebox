@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -23,9 +22,7 @@ import java.util.List;
 @EnableWebMvc
 // We're scanning for Spring beans in the com.pijukebox package
 @ComponentScan(basePackages = "com.pijukebox")
-// We're telling the application to read properties from application.properties,
 // which we have placed in the resources directory
-@PropertySource("classpath:application.properties")
 public class WebConfig implements WebMvcConfigurer {
 
     private Interceptor interceptor;
@@ -41,7 +38,6 @@ public class WebConfig implements WebMvcConfigurer {
         MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
 
         ObjectMapper mapper = new ObjectMapper();
-        // Registering Hibernate5Module to support lazy objects
         mapper.registerModule(new Hibernate5Module());
 
         messageConverter.setObjectMapper(mapper);
@@ -51,7 +47,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        // Here we add our custom-configured HttpMessageConverter
         converters.add(jacksonMessageConverter());
         WebMvcConfigurer.super.configureMessageConverters(converters);
     }

@@ -49,6 +49,16 @@ class TrackControl extends PolymerElement {
 
       <iron-meta key="apiPath" value="{{apiRootPath}}"></iron-meta>
 
+      <!-- Get currently playing track and bind to {{currentTrack}}-->
+      <iron-ajax
+       id="getCurrentTrack"
+       auto
+       url="[[apiRootPath]]/player/current"
+       handle-as="json"
+       params="{{header}}"
+       last-response="{{currentTrack}}">
+     </iron-ajax>
+
       <!-- Get Play/Pause state, Volume level and Repeat state  -->
       <iron-ajax
         auto
@@ -63,6 +73,7 @@ class TrackControl extends PolymerElement {
       <!-- Shuffle the queue-->
       <iron-ajax
         id="shuffle"
+        method="post"
         url="[[apiRootPath]]/player/shuffle"
         content-type="application/json"
         params="{{header}}"
@@ -74,6 +85,7 @@ class TrackControl extends PolymerElement {
       <!-- Play current track -->
       <iron-ajax
         id="play"
+        method="post"
         url="[[apiRootPath]]/player/playCurrent"
         content-type="application/json"
         params="{{header}}"
@@ -85,6 +97,7 @@ class TrackControl extends PolymerElement {
       <!-- Pause current track -->
       <iron-ajax
         id="pause"
+        method="post"
         url="[[apiRootPath]]/player/pause"
         content-type="application/json"
         params="{{header}}"
@@ -96,6 +109,7 @@ class TrackControl extends PolymerElement {
       <!-- Toggle repeat state -->
       <iron-ajax
         id="repeat"
+        method="post"
         url="[[apiRootPath]]/player/repeat"
         content-type="application/json"
         params="{{header}}"
@@ -107,6 +121,7 @@ class TrackControl extends PolymerElement {
       <!-- Play next track in queue -->
       <iron-ajax
         id="nextTrack"
+        method="post"
         url="[[apiRootPath]]/player/next"
         content-type="application/json"
         params="{{header}}"
@@ -118,6 +133,7 @@ class TrackControl extends PolymerElement {
       <!-- Play previous track in queue -->
       <iron-ajax
         id="previousTrack"
+        method="post"
         url="[[apiRootPath]]/player/prev"
         content-type="application/json"
         params="{{header}}"
@@ -129,6 +145,7 @@ class TrackControl extends PolymerElement {
       <!-- Set volume level  -->
       <iron-ajax
         id="changeVolume"
+        method="post"
         url="[[apiRootPath]]/player/volume/{{volumeLevel}}"
         content-type="application/json"
         params="{{header}}"
@@ -136,16 +153,6 @@ class TrackControl extends PolymerElement {
         on-response="getPlayerStatus"
         on-error="handleSetError">
       </iron-ajax>
-
-      <!-- Get currently playing track and bind to {{currentTrack}}-->
-      <iron-ajax
-       id="getCurrentTrack"
-       auto
-       url="[[apiRootPath]]/player/current"
-       handle-as="json"
-       params="{{header}}"
-       last-response="{{currentTrack}}">
-     </iron-ajax>
 
       <div class="container">  
         <div class="controlsContainer">
@@ -170,16 +177,23 @@ class TrackControl extends PolymerElement {
 
           <div class="controls">
             <iron-icon icon="[[volumeIcon]]"></iron-icon>
-            <paper-slider id="volumeSlider" max="10" step="1" value="{{volumeLevel}}" on-change="changeVolumeVal"></paper-slider>
+            <paper-slider id="volumeSlider" max="100" step="1" value="{{volumeLevel}}" on-change="changeVolumeVal"></paper-slider>
           </div>
         </div>
-
       </div>
     `;
   }
 
   static get properties() {
     return {
+      hidden: {
+        type: Boolean,
+        value: true,
+      },
+      currentTrack: {
+        type: Object,
+        observer: '_currentTrackChanged'
+      },
       playPauseIcon: {
         type: String,
         value: "av:play-arrow"
@@ -218,24 +232,38 @@ class TrackControl extends PolymerElement {
       }
     };
   }
+
+  _currentTrackChanged(newValue, oldValue){
+    this.hidden = (newValue === null);
+  }
+
   _computeTokenHeaders(token)
   {
       return {'Authorization': token};
   }
 
-  getPlayerStatus(e) {
+  ready(){
+    super.ready();
+    this.token = localStorage.getItem("token");
+    setInterval( () => { this.getPlayerStatus() } , 1000);
+    window.addEventListener('refresh-track-control-event', function() {
+      this.$.getCurrentTrack.generateRequest();
+    }.bind(this));
+  }
+
+  getPlayerStatus() {
     this.$.getStatus.generateRequest();
     this.$.getCurrentTrack.generateRequest();
   }
 
   // Update play/pause state, repeat state and volumeLevel (+ icons)
   verifyStatus(e, r) {
-    let playerStatus = JSON.parse(r.response);
+    const playerStatus = r.response;
     this.updateStates(playerStatus);
     this.updateControls();
   }
 
-  handleSetError(e,r){
+  handleSetError(){
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Status', text: 'Could not send request.'}, bubbles: true, composed: true }));
   }
 
@@ -246,6 +274,7 @@ class TrackControl extends PolymerElement {
     this.playPauseState = playerStatus.isPlaying;
     this.repeatState = playerStatus.repeatState;
     this.volumeLevel = playerStatus.volumeLevel;
+    this.shuffleIsActive = playerStatus.shuffleState;
   }
 
   /**
@@ -258,64 +287,67 @@ class TrackControl extends PolymerElement {
   }
 
   playPause(e) {
-    let state = this.playPauseState;
-    if (state) {
-      // player is playing
-      this.pause(e);
-    } else if (!state) {
-      // player is not playing
-      this.play(e);
+    const state = this.playPauseState;
+    console.log("Here" + state);
+    switch(state)
+    {
+        case "PLAYING":
+          this.pause(e);
+          break;
+        case "STOPPED":
+        case "PAUSED":
+          this.play(e);
+          break;
+        case "INTERRUPTED":
+          this.nextTrack();
+          break;
     }
+    
   }
 
-  play(e) {
+  play() {
     this.$.play.generateRequest();
   }
 
-  pause(e){
+  pause(){
     this.$.pause.generateRequest();
   }
   
-  repeat(e) {
+  repeat() {
     this.$.repeat.generateRequest();
   }
   
-  nextTrack(e) {
+  nextTrack() {
     this.$.nextTrack.generateRequest();
   }
   
-  previousTrack(e) {
+  previousTrack() {
     this.$.previousTrack.generateRequest();
   }
 
-  shuffle(e){
+  shuffle(){
     this.$.shuffle.generateRequest();
     this.dispatchEvent(new CustomEvent('refresh-queue-event', { bubbles: true, composed: true }));
-  }
-  
-  changeShuffleIcon() {
-    let shuffleButton = this.$.shuffleBtn;
-
-    if(!this.shuffleIsActive) {
-      shuffleButton.style.color = "var(--app-primary-color-light)";
-      this.shuffleIsActive = true;
-    } else {
-      shuffleButton.style.color = "var(--paper-icon-button-ink-color, var(--primary-text-color))";
-      this.shuffleIsActive = false;
-    }
   }
 
   /**
    * Change the play/pause icon to the current play / pause state
    */
   changePlayPauseIcon() {
-    let state = this.playPauseState;
-    if (state) {
-      // player is playing
-      this.playPauseIcon = "av:pause";
-    } else if (!state) {
-      // player is not playing
-      this.playPauseIcon = "av:play-arrow";
+    const state = this.playPauseState
+    console.log(state);
+    switch(state)
+    {
+        case "PLAYING":
+          this.playPauseIcon = "av:pause";
+          break;
+        case "PAUSED":
+          this.playPauseIcon = "av:play-arrow";
+          break;
+        case "INTERRUPTED":
+          this.playPauseIcon = "av:play-arrow";
+          this.nextTrack();
+          break;
     }
   }
 
@@ -324,18 +356,18 @@ class TrackControl extends PolymerElement {
     // no repeat
     if(this.repeatState) {
       repeatButton.style.color = "var(--app-primary-color)";
-      this.repeatIcon = "av:repeat";
+      // this.repeatIcon = "av:repeat";
     }
     else {
-      repeatButton.style.color = "var(--paper-icon-button-ink-color, var(--primary-text-color))";
-      this.repeatIcon = "av:repeat";
+      repeatButton.style.color = "var(--paper-icon-button-ink-color, var(--app-primary-color-light))";
+      // this.repeatIcon = "av:repeat";
     }
   }
 
   /**
    * This method calls the changeVolumeIcon and changeVolumeLevel methods 
    */
-  changeVolumeVal(e) {
+  changeVolumeVal() {
     this.changeVolumeIcon();
     this.changeVolumeLevel();
   }
@@ -344,12 +376,12 @@ class TrackControl extends PolymerElement {
    * This method changes the volume icon according to the volume
    */
   changeVolumeIcon() {
-    let volume = this.volumeLevel;
+    const volume = this.volumeLevel;
     this.$.volumeSlider.value = volume;
-    if (volume >= 1 && volume <= 5) {
+    if (volume >= 1 && volume <= 50) {
       // low / medium
       this.volumeIcon = "av:volume-down";
-    } else if (volume >= 6 && volume <= 10) {
+    } else if (volume >= 51 && volume <= 100) {
       // High
       this.volumeIcon = "av:volume-up";
     } else {

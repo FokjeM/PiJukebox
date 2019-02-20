@@ -98,6 +98,15 @@ class PageArtist extends PolymerElement {
 
   static get properties() {
     return {
+      artist: {
+        type: Object
+      },
+      albumCount: {
+        type: Number
+      },
+      trackCount: {
+        type: Number 
+      },
       token: {
         type: String,
         value: localStorage.getItem("token")

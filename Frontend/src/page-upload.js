@@ -54,6 +54,7 @@ class PageUpload extends PolymerElement {
 
       <iron-ajax
         id="scanFolder"
+        method="post"
         url="[[apiRootPath]]/upload/folder/"
         params="{{header}}"
         handle-as="json"
@@ -82,7 +83,7 @@ class PageUpload extends PolymerElement {
   }
 
   subForm() {
-    let files = this.$.fileUpload.files;
+    const files = this.$.fileUpload.files;
     let data = new FormData();
 
     for(let i=0; i < files.length; i++) {
@@ -90,6 +91,19 @@ class PageUpload extends PolymerElement {
     }
     
     let xhr = new XMLHttpRequest();
+
+    xhr.addEventListener('load', function() {
+      if(xhr.status === 409){
+        this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Upload', text: 'File already exists.'}, bubbles: true,composed: true }));
+      }
+      else if(xhr.status === 201){
+        this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Upload', text: 'File has been uploaded.'}, bubbles: true,composed: true }));
+      }
+      else{
+        this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Upload', text: 'Something went wrong.'}, bubbles: true,composed: true }));
+      }
+    }.bind(this));
+    
     xhr.Authorization = true;
     xhr.open("POST", this.apiRootPath+"/upload?Authorization=" + JSON.parse(JSON.stringify(this.header)).Authorization);
     xhr.send(data);
@@ -99,7 +113,7 @@ class PageUpload extends PolymerElement {
     this.$.scanFolder.generateRequest();
   }
 
-  handleScanResponse(e,r){
+  handleScanResponse(){
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Upload', text: 'Scan was successful'}, bubbles: true, composed: true }));
   }
 

@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,11 +30,8 @@ public class UploadController {
     private final ITrackService trackService;
     private final IGenreService genreService;
     private final IArtistService artistService;
-    private String uploadDir = "C:\\Users\\Public\\Music\\";
-//    private String uploadDir = "D:\\Users\\Ruben\\Desktop\\uploads\\";
-
-    private String dirToScan = "C:\\Users\\Public\\Downloads\\";
-    //    private String dirToScan = "D:\\Users\\Ruben\\Desktop\\uploads\\check\\";
+    private String musicDir = com.pijukebox.configuration.ApplicationInitializer.getMediaPath();
+    private String uploadDir = com.pijukebox.configuration.ApplicationInitializer.getMediaPath().concat("uploads").concat(File.separator);
     private ArrayList<String> tracks = new ArrayList<>();
 
     @Autowired
@@ -48,24 +44,22 @@ public class UploadController {
     /**
      * Upload a file to the Raspberry Pi
      *
-     * @param file A file to upload
-     * @return HttpStatus.CREATED/HttpStatus.CONFLICT/HttpStatus.BAD_REQUEST
+     * @param file a file to upload
+     * @return a track
      */
     @PostMapping(value = "/upload", consumes = {"multipart/form-data"})
-    public ResponseEntity<?> upload(@RequestBody MultipartFile[] file) {
+    public ResponseEntity<SimpleTrack> upload(@RequestBody MultipartFile[] file) throws Exception {
         for (MultipartFile f : file) {
-            try {
-                SimpleTrack track = new SimpleTrack(null, FilenameUtils.removeExtension(f.getOriginalFilename()), null, f.getOriginalFilename());
-                if (trackService.findAllSimpleTrackByName(track.getName()).isPresent()) {
-                    return new ResponseEntity<>(HttpStatus.CONFLICT);
-                } else {
-                    uploadFile(f);
-                    trackService.addSimpleTrack(track);
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Something went wrong while uploading %s.", f.getName()), ex);
+            SimpleTrack track = new SimpleTrack(null, FilenameUtils.removeExtension(f.getOriginalFilename()), null, f.getOriginalFilename());
+            // If track exists, do not upload
+            if (trackService.findSimpleTrackByName(track.getName()).hasBody()) {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            } else {
+                uploadFile(f);
+                trackService.addSimpleTrack(track);
             }
+
+
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -73,46 +67,36 @@ public class UploadController {
     /**
      * Upload all files in a folder to the Raspberry Pi
      *
-     * @return HttpStatus.OK/HttpStatus.BAD_REQUEST
+     * @return a track
      */
-    @GetMapping(value = "/upload/folder")
-    public ResponseEntity<?> uploadFromFolder() {
-        File[] files = new File(dirToScan).listFiles();
+    @PostMapping(value = "/upload/folder")
+    public ResponseEntity<SimpleTrack> uploadFromFolder() throws IOException {
+        File[] files = new File(uploadDir).listFiles();
         if (files != null) {
             showFiles(files);
 
             for (String t : tracks) {
                 if (!t.equals("desktop.ini")) {
-                    try {
-                        SimpleTrack track = new SimpleTrack(null, FilenameUtils.removeExtension(t), null, t);
-                        TrackDetails trackDetails = new TrackDetails(t, dirToScan);
-                        SimpleGenre genre = new SimpleGenre(null, trackDetails.getGenre());
-                        SimpleArtist artist = new SimpleArtist(null, trackDetails.getArtist());
-                        if (!trackService.findAllSimpleTrackByName(track.getName()).isPresent()) {
-                            addFileToFolder(dirToScan, uploadDir, t);
-                            trackService.addSimpleTrack(track);
-                        }
-                        if (!genreService.findGenresByNameContaining(genre.getName()).isPresent()) {
-                            genreService.addSimpleGenre(genre);
-                        }
-                        if (!artistService.findSimpleArtistsByNameContaining(artist.getName()).isPresent()) {
-                            artistService.addSimpleArtist(artist);
-                        }
-                        Long addToArtistId = artistService.findSimpleArtistsByNameContaining(artist.getName()).get().get(0).getId();
-                        Long addToGenreId = genreService.findGenresByNameContaining(genre.getName()).get().get(0).getId();
+                    SimpleTrack track = new SimpleTrack(null, FilenameUtils.removeExtension(t), null, t);
+                    TrackDetails trackDetails = new TrackDetails(t, uploadDir);
+                    SimpleGenre genre = new SimpleGenre(null, trackDetails.getGenre());
+                    SimpleArtist artist = new SimpleArtist(null, trackDetails.getArtist());
+                    if (!trackService.findAllSimpleTrackByName(track.getName()).hasBody()) {
+                        addFileToFolder(uploadDir, musicDir, t);
+                        trackService.addSimpleTrack(track);
+                    }
+                    genreService.addSimpleGenre(genre);
+                    artistService.addSimpleArtist(artist);
+                    Long addToArtistId = artistService.findSimpleArtistsByNameContaining(artist.getName()).getBody().get(0).getId();
+                    Long addToGenreId = genreService.findGenresByNameContaining(genre.getName()).getBody().get(0).getId();
 
-                        if (trackService.findTrackByArtistId(addToArtistId).isPresent()) {
-                            trackService.addArtistToTrack(trackService.findTrackByArtistId(addToArtistId).get());
+                    if (trackService.findTrackByArtistId(addToArtistId).hasBody()) {
+                        trackService.addArtistToTrack(trackService.findTrackByArtistId(addToArtistId).getBody());
 
-                        }
-                        if (trackService.findTrackByGenreId(addToGenreId).isPresent()) {
-                            trackService.addGenreToTrack(trackService.findTrackByGenreId(addToGenreId).get());
+                    }
+                    if (trackService.findTrackByGenreId(addToGenreId).hasBody()) {
+                        trackService.addGenreToTrack(trackService.findTrackByGenreId(addToGenreId).getBody());
 
-                        }
-
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Something went wrong while uploading %s.", t), ex);
                     }
                 }
             }
@@ -121,18 +105,26 @@ public class UploadController {
         return null;
     }
 
-    private void addFileToFolder(String oldDir, String newDir, String fileName) {
+    /**
+     * Move a file from one directory to another, without overwriting.
+     *
+     * @param oldDir   The directory where the currently file resides.
+     * @param newDir   The directory to move the file to.
+     * @param fileName The name the file has, including the type suffix, if present.
+     */
+    private void addFileToFolder(String oldDir, String newDir, String fileName) throws IOException {
         File source = new File(oldDir + fileName);
         File destination = new File(newDir + fileName);
-        try {
-            if (!destination.exists()) {
-                Files.move(source.toPath(), destination.toPath());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (!destination.exists()) {
+            Files.move(source.toPath(), destination.toPath());
         }
     }
 
+    /**
+     * Show all files in the given array, or any subdirectories of files in the array.
+     *
+     * @param files an array with File objects, which may be files and directories.
+     */
     private void showFiles(File[] files) {
         tracks.clear();
         for (File file : files) {
@@ -144,14 +136,15 @@ public class UploadController {
         }
     }
 
-    private void uploadFile(MultipartFile file) {
-        try {
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(uploadDir + file.getOriginalFilename());
-            Files.write(path, bytes);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    /**
+     * Save a file to the music directory.
+     *
+     * @param file the file to upload.
+     */
+    private void uploadFile(MultipartFile file) throws Exception {
+        byte[] bytes = file.getBytes();
+        Path path = Paths.get(musicDir  + file.getOriginalFilename());
+        Files.write(path, bytes);
     }
 }
 

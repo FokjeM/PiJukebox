@@ -164,11 +164,8 @@ class JukeBox extends PolymerElement {
 
   signOut(){
     window.localStorage.removeItem("token");
- 
     //Redirect to /login
     window.location.href = "/";
-    // window.history.pushState({}, null, '/login');
-    // window.dispatchEvent(new CustomEvent('location-changed'));
   }
 
   static get properties() {
@@ -179,8 +176,22 @@ class JukeBox extends PolymerElement {
         observer: '_pageChanged'
       },
       routeData: Object,
-      subroute: Object
+      subroute: Object,
+      token: {
+        type: String,
+        value: localStorage.getItem("token")
+      },
+      header: {
+        type: Object,
+        reflectToAttribute: true,
+        computed: '_computeTokenHeaders(token)'
+      }
     };
+  }
+  
+  _computeTokenHeaders(token)
+  {
+      return {'Authorization': token};
   }
 
   static get observers() {

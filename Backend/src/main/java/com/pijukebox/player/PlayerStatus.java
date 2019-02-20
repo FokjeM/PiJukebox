@@ -3,15 +3,19 @@ package com.pijukebox.player;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Component
 public class PlayerStatus {
 
-    private Status currStatus = Status.STOPPED;
-    private boolean repeat;
-    private String currSong;
+    private Status currStatus = PlayerStatus.Status.STOPPED;
+    private boolean repeat = false;
+    private String currSong = "";
+    private int volume = 50;
+
 
     /**
      * Get player status string.
@@ -21,15 +25,15 @@ public class PlayerStatus {
     public String GetPlayerStatus() {
         switch (this.currStatus) {
             case PLAYING:
-                return "PLAYING";
+                return Status.PLAYING.name();
             case PAUSED:
-                return "PAUSED";
+                return Status.PAUSED.name();
             case STOPPED:
-                return "STOPPED";
+                return Status.STOPPED.name();
             case INTERRUPTED:
-                return "INTERRUPTED";
+                return Status.INTERRUPTED.name();
             default:
-                return "ERROR";
+                return "NO VALID STATUS DETECTED.";
         }
     }
 

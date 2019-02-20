@@ -80,6 +80,15 @@ class PageAlbum extends PolymerElement {
 
   static get properties() {
     return {
+      track : {
+        type: Object
+      },
+      trackCount: {
+        type: Number
+      },
+      album : {
+        type: Object
+      },
       token: {
         type: String,
         value: localStorage.getItem("token")

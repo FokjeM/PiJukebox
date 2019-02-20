@@ -66,6 +66,12 @@ class CurrentTrack extends PolymerElement {
    return {
      currentTrack: {
        type: Object
+     },
+     artist:{
+       type: Object
+     },
+     artistCount: {
+       type: Number
      }
    };
  }

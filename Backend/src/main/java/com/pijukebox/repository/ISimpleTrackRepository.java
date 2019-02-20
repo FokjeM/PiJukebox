@@ -9,11 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface ISimpleTrackRepository extends JpaRepository<SimpleTrack, Long> {
-    List<SimpleTrack> findAll();
-
-    Optional<SimpleTrack> findById(Long id);
-
     Optional<List<SimpleTrack>> findSimpleTracksByNameContaining(String name);
 
-
+    Optional<SimpleTrack> findSimpleTrackByName(String name);
 }

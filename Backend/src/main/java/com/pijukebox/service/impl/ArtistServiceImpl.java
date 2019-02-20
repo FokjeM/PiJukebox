@@ -6,12 +6,14 @@ import com.pijukebox.repository.IArtistRepository;
 import com.pijukebox.repository.ISimpleArtistRepository;
 import com.pijukebox.service.IArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 @Service
 @Transactional
 public class ArtistServiceImpl implements IArtistService {
@@ -26,37 +28,37 @@ public class ArtistServiceImpl implements IArtistService {
     }
 
     @Override
-    public List<Artist> findAllExtendedArtists() {
-        return artistRepository.findAll();
+    public ResponseEntity<List<Artist>> findAllExtendedArtists() {
+        return new ResponseEntity<>(artistRepository.findAll(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<Artist> findExtendedArtistById(Long id) {
-        return artistRepository.findById(id);
+    public ResponseEntity<Artist> findExtendedArtistById(Long id) {
+        return new ResponseEntity<>(artistRepository.findById(id).get(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<List<Artist>> findExtendedArtistsByNameContaining(String name) {
-        return artistRepository.findExtendedArtistsByNameContaining(name);
+    public ResponseEntity<List<Artist>> findExtendedArtistsByNameContaining(String name) {
+        return new ResponseEntity<>(artistRepository.findExtendedArtistsByNameContaining(name).get(), HttpStatus.OK);
     }
 
     @Override
-    public List<SimpleArtist> findAllSimpleArtists() {
-        return simpleArtistRepository.findAll();
+    public ResponseEntity<List<SimpleArtist>> findAllSimpleArtists() {
+        return new ResponseEntity<>(simpleArtistRepository.findAll(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<SimpleArtist> findSimpleArtistById(Long id) {
-        return simpleArtistRepository.findById(id);
+    public ResponseEntity<SimpleArtist> findSimpleArtistById(Long id) {
+        return new ResponseEntity<>(simpleArtistRepository.findById(id).get(), HttpStatus.OK);
     }
 
     @Override
-    public Optional<List<SimpleArtist>> findSimpleArtistsByNameContaining(String name) {
-        return simpleArtistRepository.findSimpleArtistByNameContaining(name);
+    public ResponseEntity<List<SimpleArtist>> findSimpleArtistsByNameContaining(String name) {
+        return new ResponseEntity<>(simpleArtistRepository.findSimpleArtistByNameContaining(name).get(), HttpStatus.OK);
     }
 
     @Override
-    public SimpleArtist addSimpleArtist(SimpleArtist artist) {
-        return simpleArtistRepository.save(artist);
+    public ResponseEntity<SimpleArtist> addSimpleArtist(SimpleArtist artist) {
+        return new ResponseEntity<>(simpleArtistRepository.save(artist), HttpStatus.OK);
     }
 }

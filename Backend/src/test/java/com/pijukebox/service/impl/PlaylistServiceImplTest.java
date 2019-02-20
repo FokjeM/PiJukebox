@@ -1,10 +1,8 @@
 package com.pijukebox.service.impl;
 
-import com.pijukebox.model.playlist.Playlist;
 import com.pijukebox.model.playlist.PlaylistWithTracks;
 import com.pijukebox.model.simple.SimplePlaylist;
 import com.pijukebox.model.simple.SimpleTrack;
-import com.pijukebox.model.user.User;
 import com.pijukebox.repository.IPlaylistWithTracksRepository;
 import com.pijukebox.repository.ISimplePlaylistRepository;
 import com.pijukebox.service.IPlaylistService;
@@ -18,10 +16,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.Is.isA;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -58,7 +54,7 @@ public class PlaylistServiceImplTest {
 
         when(simplePlaylistRepository.findById(anyLong())).thenReturn(expectedResult);
 
-        final Optional<SimplePlaylist> result = playlistService.findSimplePlaylistById(1L);
+        final SimplePlaylist result = playlistService.findSimplePlaylistById(1L).getBody();
 
         assertThat("reason",result, is(IsSame.sameInstance(expectedResult)));
 
@@ -86,7 +82,7 @@ public class PlaylistServiceImplTest {
 
         when(playlistWithTracksRepository.findById(anyLong())).thenReturn(expectedResult);
 
-        final Optional<PlaylistWithTracks> result = playlistService.findById(1L);
+        final PlaylistWithTracks result = playlistService.findById(1L).getBody();
 
         assertThat("reason",result, is(IsSame.sameInstance(expectedResult)));
 

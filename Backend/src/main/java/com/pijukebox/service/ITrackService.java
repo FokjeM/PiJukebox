@@ -4,35 +4,37 @@ import com.pijukebox.model.artist.ArtistWithTracks;
 import com.pijukebox.model.genre.GenreWithTracks;
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.model.track.Track;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ITrackService {
 
-    List<Track> findAllTracksWithDetails();
+    ResponseEntity<List<Track>> findAllTracksWithDetails();
 
-    Optional<Track> findTrackDetailsById(Long id);
+    ResponseEntity<Track> findTrackDetailsById(Long id);
 
-    Optional<List<SimpleTrack>> findAllSimpleTrack();
+    ResponseEntity<List<SimpleTrack>> findAllSimpleTrack();
 
-    Optional<SimpleTrack> findSimpleTrackById(Long id);
+    ResponseEntity<SimpleTrack> findSimpleTrackByName(String name);
 
-    Optional<List<SimpleTrack>> findAllSimpleTrackByName(String name);
+    ResponseEntity<SimpleTrack> findSimpleTrackById(Long id);
 
-    Optional<List<Track>> findAllTracksByName(String name);
+    ResponseEntity<List<SimpleTrack>> findAllSimpleTrackByName(String name);
 
-    Optional<List<ArtistWithTracks>> findAllTracksByArtistName(String name);
+    ResponseEntity<List<Track>> findAllTracksByName(String name);
 
-    Optional<List<GenreWithTracks>> findAllTracksByGenreName(String name);
+    ResponseEntity<List<ArtistWithTracks>> findAllTracksByArtistName(String name);
 
-    SimpleTrack addSimpleTrack(SimpleTrack simpleTrack);
+    ResponseEntity<List<GenreWithTracks>> findAllTracksByGenreName(String name);
 
-    ArtistWithTracks addArtistToTrack(ArtistWithTracks artistWithTracks);
+    ResponseEntity<SimpleTrack> addSimpleTrack(SimpleTrack simpleTrack);
 
-    GenreWithTracks addGenreToTrack(GenreWithTracks genreWithTracks);
+    ResponseEntity<ArtistWithTracks> addArtistToTrack(ArtistWithTracks artistWithTracks);
 
-    Optional<GenreWithTracks> findTrackByGenreId(Long id);
+    ResponseEntity<GenreWithTracks> addGenreToTrack(GenreWithTracks genreWithTracks);
 
-    Optional<ArtistWithTracks> findTrackByArtistId(Long id);
+    ResponseEntity<GenreWithTracks> findTrackByGenreId(Long id);
+
+    ResponseEntity<ArtistWithTracks> findTrackByArtistId(Long id);
 }
