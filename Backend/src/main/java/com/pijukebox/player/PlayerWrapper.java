@@ -90,6 +90,7 @@ public class PlayerWrapper {
      * Play next song.
      */
     public void playNextSong() {
+        current = getQueueWithoutExtentions().indexOf(playerStatus.getCurrSong());
         current++;
         if (current >= queue.size()) {
             current = 0;
@@ -107,6 +108,7 @@ public class PlayerWrapper {
      * Play previous song.
      */
     public void playPreviousSong() {
+        current = getQueueWithoutExtentions().indexOf(playerStatus.getCurrSong());
         current--;
         if (current < 0) {
             current = queue.size() - 1;
@@ -337,7 +339,6 @@ public class PlayerWrapper {
                 System.out.println("fasdfsafasdgfsfgserrtqwes " + !mp3Player.isPlaying());
                 if (mp3Player.isPaused() || mp3Player.isStopped() || !mp3Player.isPlaying()) {
                     sw = false;
-                    System.out.println("XXXASDIUAHIDAUD " + !playerStatus.isRepeat());
                     if ((playerStatus.getCurrStatus() != PlayerStatus.Status.PAUSED &&
                          playerStatus.getCurrStatus() != PlayerStatus.Status.STOPPED) &&
                          !playerStatus.isRepeat()) {
@@ -370,5 +371,18 @@ public class PlayerWrapper {
             stringQueue.add(song.getName());
         }
         return stringQueue;
+    }
+
+    /**
+     * @return Songs in queue without extentions
+     */
+    public List<String> getQueueWithoutExtentions()
+    {
+        List<String> songs = new ArrayList<>();
+        for(String song : getQueue())
+        {
+            songs.add(FilenameUtils.removeExtension(song));
+        }
+        return songs;
     }
 }

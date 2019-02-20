@@ -54,6 +54,7 @@ class PageUpload extends PolymerElement {
 
       <iron-ajax
         id="scanFolder"
+        method="post"
         url="[[apiRootPath]]/upload/folder/"
         params="{{header}}"
         handle-as="json"
