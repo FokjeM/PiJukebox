@@ -2,6 +2,7 @@ package com.pijukebox.service.impl;
 
 import com.pijukebox.model.simple.SimpleTrack;
 import com.pijukebox.model.track.Track;
+import com.pijukebox.player.PlayerStatus;
 import com.pijukebox.player.PlayerWrapper;
 import com.pijukebox.repository.ITrackRepository;
 import com.pijukebox.service.IPlayerService;
@@ -78,16 +79,14 @@ public class PlayerServiceImpl implements IPlayerService {
     }
 
     @Override
-    public ResponseEntity<Map<String, String>> getPlayerStatus() {
-        boolean isPlaying = false;
-        if (playerWrapper.getPlayerStatus().equals("PLAYING")) {
-            isPlaying = true;
-        }
-        Map<String, String> status = new HashMap<>();
-        status.put("isPlaying", String.valueOf(isPlaying));
-        status.put("volumeLevel", String.valueOf(playerWrapper.getPlayerVolume()));
-        status.put("repeatState", String.valueOf(playerWrapper.getRepeatState()));
-        status.put("shuffleState", String.valueOf(playerWrapper.getShuffleState()));
+    public ResponseEntity<Map<String, Object>> getPlayerStatus() {
+        System.out.println("The status is: " + playerWrapper.getPlayerStatus());
+
+        Map<String, Object> status = new HashMap<>();
+        status.put("isPlaying", playerWrapper.getPlayerStatus());
+        status.put("volumeLevel", playerWrapper.getPlayerVolume());
+        status.put("repeatState", playerWrapper.getRepeatState());
+        status.put("shuffleState", playerWrapper.getShuffleState());
         return new ResponseEntity<>(status, HttpStatus.OK);
     }
 

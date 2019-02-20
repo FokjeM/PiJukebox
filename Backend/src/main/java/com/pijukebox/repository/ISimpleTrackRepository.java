@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface ISimpleTrackRepository extends JpaRepository<SimpleTrack, Long> {
     Optional<List<SimpleTrack>> findSimpleTracksByNameContaining(String name);
 
-
+    Optional<SimpleTrack> findSimpleTrackByName(String name);
 }

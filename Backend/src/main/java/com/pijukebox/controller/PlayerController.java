@@ -47,7 +47,7 @@ public class PlayerController {
      * @param filename The filename of a song
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND
      */
-    @GetMapping("/play")
+    @PostMapping("/play")
     public ResponseEntity<String> playCurrent(@RequestParam(name = "filename") String filename) {
         return playerService.playOneSong(filename);
     }
@@ -57,7 +57,7 @@ public class PlayerController {
      *
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND
      */
-    @GetMapping("/playCurrent")
+    @PostMapping("/playCurrent")
     public ResponseEntity<String> playCurrent() {
         return playerService.playCurrentSong();
     }
@@ -67,7 +67,7 @@ public class PlayerController {
      *
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND
      */
-    @GetMapping("/pause")
+    @PostMapping("/pause")
     public ResponseEntity<String> pauseCurrent() {
         return playerService.pauseCurrentSong();
     }
@@ -77,7 +77,7 @@ public class PlayerController {
      *
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND
      */
-    @GetMapping("/stop")
+    @PostMapping("/stop")
     public ResponseEntity<String> stopCurrent() {
         return playerService.stopCurrentSong();
     }
@@ -87,7 +87,7 @@ public class PlayerController {
      *
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND
      */
-    @GetMapping("/next")
+    @PostMapping("/next")
     public ResponseEntity<String> nextTrack() {
         return playerService.playNextSong();
     }
@@ -97,7 +97,7 @@ public class PlayerController {
      *
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND
      */
-    @GetMapping("/prev")
+    @PostMapping("/prev")
     public ResponseEntity<String> prevTrack() {
         return playerService.playPreviousSong();
     }
@@ -107,7 +107,7 @@ public class PlayerController {
      *
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND
      */
-    @GetMapping("/shuffle")
+    @PostMapping("/shuffle")
     public ResponseEntity<String> toggleShuffle() {
         return playerService.toggleShuffleState();
     }
@@ -117,7 +117,7 @@ public class PlayerController {
      *
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND
      */
-    @GetMapping("/repeat")
+    @PostMapping("/repeat")
     public ResponseEntity<String> toggleRepeat() {
         return playerService.toggleRepeatState();
     }
@@ -128,7 +128,7 @@ public class PlayerController {
      * @param id the id
      * @return Details of the newly added song
      */
-    @GetMapping("/add/{id}")
+    @PostMapping("/add/{id}")
     public ResponseEntity<String> addTrack(@PathVariable Long id) {
         SimpleTrack track = trackService.findSimpleTrackById(id).getBody();
         return playerService.addSongToQueue(track.getFilename());
@@ -140,7 +140,7 @@ public class PlayerController {
      * @param id the ID of the playlist to add
      * @return HttpStatus.NO_CONTENT/HttpStatus.OK/HttpStatus.BAD_REQUEST
      */
-    @GetMapping("/add/playlist/{id}")
+    @PostMapping("/add/playlist/{id}")
     public ResponseEntity<String> addPlaylist(@PathVariable Long id) {
         try {
             PlaylistWithTracks playlist = playlistService.findById(id).getBody();
@@ -156,7 +156,7 @@ public class PlayerController {
      * @param id the id
      * @return HttpStatus.OK/HttpStatus.NOT_FOUND/HttpStatus.BAD_REQUEST
      */
-    @GetMapping("/remove/{id}")
+    @PostMapping("/remove/{id}")
     public ResponseEntity<String> deleteTrack(@PathVariable Long id) {
         SimpleTrack track = trackService.findSimpleTrackById(id).getBody();
         return playerService.removeSongFromQueue(track.getFilename());
@@ -190,7 +190,7 @@ public class PlayerController {
      */
     @GetMapping(value = "/status", produces = "application/json")
     @ApiOperation(value = "Get player status")
-    public ResponseEntity<Map<String, String>> getStatus() {
+    public ResponseEntity<Map<String, Object>> getStatus() {
         return playerService.getPlayerStatus();
     }
 
@@ -210,7 +210,7 @@ public class PlayerController {
      * @param volumeLevel the volume level
      * @return The new volume level
      */
-    @GetMapping("/volume/{volumeLevel}")
+    @PostMapping("/volume/{volumeLevel}")
     public ResponseEntity<String> setVolume(@PathVariable int volumeLevel) {
         return playerService.setPlayerVolume(volumeLevel);
     }
@@ -230,7 +230,7 @@ public class PlayerController {
      *
      * @return HttpStatus.OK
      */
-    @GetMapping("/queue/clear")
+    @PostMapping("/queue/clear")
     public ResponseEntity<String> clearQueue() {
         return playerService.clearQueue(true);
     }

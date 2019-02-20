@@ -61,8 +61,7 @@ class PagePlaylist extends PolymerElement {
       <iron-ajax
         id="addPlaylist"
         method="post"
-        url="[[apiRootPath]]/player/add/playlist"
-        body='{"playlistId": "[[routeData.playlistId]]"}'
+        url="[[apiRootPath]]/player/add/playlist/[[routeData.playlistId]]"
         handle-as="json"
         params="{{header}}"
         on-response="handleAddPlaylist"

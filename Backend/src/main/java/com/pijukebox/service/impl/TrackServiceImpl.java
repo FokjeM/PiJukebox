@@ -50,6 +50,16 @@ public class TrackServiceImpl implements ITrackService {
     }
 
     @Override
+    public ResponseEntity<SimpleTrack> findSimpleTrackByName(String name) {
+        if(simpleTrackRepository.findSimpleTrackByName(name).isPresent())
+        {
+            return new ResponseEntity<>(simpleTrackRepository.findSimpleTrackByName(name).get(), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @Override
     public ResponseEntity<SimpleTrack> findSimpleTrackById(Long id) {
         return new ResponseEntity<>(simpleTrackRepository.findById(id).get(), HttpStatus.OK);
     }

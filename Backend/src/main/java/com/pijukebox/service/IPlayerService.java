@@ -27,7 +27,7 @@ public interface IPlayerService {
 
     ResponseEntity<String> removeSongFromQueue(String filename);
 
-    ResponseEntity<Map<String, String>> getPlayerStatus();
+    ResponseEntity<Map<String, Object>> getPlayerStatus();
 
     ResponseEntity<Map<String, Integer>> getPlayerVolume();
 

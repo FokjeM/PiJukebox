@@ -146,8 +146,7 @@ class TrackControl extends PolymerElement {
       <iron-ajax
         id="changeVolume"
         method="post"
-        url="[[apiRootPath]]/player/volume"
-        body='{"volumeLevel": "{{volumeLevel}}"}'
+        url="[[apiRootPath]]/player/volume/{{volumeLevel}}"
         content-type="application/json"
         params="{{header}}"
         handle-as="json"
@@ -246,7 +245,7 @@ class TrackControl extends PolymerElement {
   ready(){
     super.ready();
     this.token = localStorage.getItem("token");
-
+    setInterval( () => { this.getPlayerStatus() } , 1000);
     window.addEventListener('refresh-track-control-event', function() {
       this.$.getCurrentTrack.generateRequest();
     }.bind(this));
@@ -259,7 +258,8 @@ class TrackControl extends PolymerElement {
 
   // Update play/pause state, repeat state and volumeLevel (+ icons)
   verifyStatus(e, r) {
-    const playerStatus = JSON.parse(r.response);
+    const playerStatus = r.response;
+    console.log(playerStatus);
     this.updateStates(playerStatus);
     this.updateControls();
   }
@@ -288,13 +288,21 @@ class TrackControl extends PolymerElement {
 
   playPause(e) {
     const state = this.playPauseState;
-    if (state) {
-      // player is playing
-      this.pause(e);
-    } else if (!state) {
-      // player is not playing
-      this.play(e);
+    console.log("Here" + state);
+    switch(state)
+    {
+        case "PLAYING":
+          this.pause(e);
+          break;
+        case "STOPPED":
+        case "PAUSED":
+          this.play(e);
+          break;
+        case "INTERRUPTED":
+          this.nextTrack();
+          break;
     }
+    
   }
 
   play() {
@@ -338,13 +346,20 @@ class TrackControl extends PolymerElement {
    * Change the play/pause icon to the current play / pause state
    */
   changePlayPauseIcon() {
-    const state = this.playPauseState;
-    if (state) {
-      // player is playing
-      this.playPauseIcon = "av:pause";
-    } else if (!state) {
-      // player is not playing
-      this.playPauseIcon = "av:play-arrow";
+    const state = this.playPauseState
+    console.log(state);
+    switch(state)
+    {
+        case "PLAYING":
+          this.playPauseIcon = "av:pause";
+          break;
+        case "PAUSED":
+          this.playPauseIcon = "av:play-arrow";
+          break;
+        case "INTERRUPTED":
+          this.playPauseIcon = "av:play-arrow";
+          this.nextTrack();
+          break;
     }
   }
 
