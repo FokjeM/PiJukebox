@@ -2,37 +2,54 @@ package com.pijukebox.player;
 
 import jaco.mp3.player.MP3Player;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * The type Player wrapper.
  */
+@Component
 public class PlayerWrapper {
 
     // http://jacomp3player.sourceforge.net/guide.html
     // https://sourceforge.net/p/jacomp3player/code/HEAD/tree/JACo%20MP3%20Player%20v3/
 
-    private final MP3Player mp3Player = new MP3Player();
+    private MP3Player mp3Player;
     private Path songDirPath;
     private List<File> queue;
     private int current;
+    private Thread t;
 
-    private PlayerStatus playerStatus = new PlayerStatus();
-    private TrackDetails trackDetails = new TrackDetails();
+    private PlayerStatus playerStatus;
+    private TrackDetails trackDetails;
 
     /**
      * Instantiates a new Player wrapper.
+     */
+    @Autowired
+    public PlayerWrapper(PlayerStatus playerStatus, TrackDetails trackDetails) {
+        this.playerStatus = playerStatus;
+        this.trackDetails = trackDetails;
+        mp3Player = new MP3Player();
+        mp3Player.setVolume(playerStatus.getVolume());
+        mp3Player.setRepeat(playerStatus.isRepeat());
+        this.queue = new ArrayList<>();
+        this.current = 0;
+    }
+
+    /**
+     * Sets the path for the music folder
      *
      * @param songDirPath the song dir path
      */
-    public PlayerWrapper(Path songDirPath) {
+    public void setMusicPath(Path songDirPath) {
         this.songDirPath = songDirPath;
-        this.queue = new ArrayList<>();
-        this.current = 0;
     }
 
     /**
@@ -53,12 +70,20 @@ public class PlayerWrapper {
      * Play current song.
      */
     public void playCurrentSong() {
-        mp3Player.add(queue.get(current));
-        mp3Player.play();
-        this.trackDetails = new TrackDetails(queue.get(current).getName());
-        playerStatus.setCurrStatus(PlayerStatus.Status.PLAYING);
-        playerStatus.setCurrSong(FilenameUtils.removeExtension(queue.get(current).getName()));
-        keepSongPlaying();
+        if (!playerStatus.GetPlayerStatus().equals(PlayerStatus.Status.PAUSED.name()) && !playerStatus.GetPlayerStatus().equals(PlayerStatus.Status.PLAYING.name())) {
+            mp3Player = new MP3Player();
+            mp3Player.setVolume(playerStatus.getVolume());
+            mp3Player.setRepeat(playerStatus.isRepeat());
+            mp3Player.add(queue.get(current));
+        }
+        if (!playerStatus.GetPlayerStatus().equals(PlayerStatus.Status.PLAYING.name())) {
+            String songName = queue.get(current).getName();
+            mp3Player.play();
+            this.trackDetails = new TrackDetails(songName);
+            setCurrentSong(songName);
+            keepSongPlaying();
+            playerStatus.setCurrStatus(PlayerStatus.Status.PLAYING);
+        }
     }
 
     /**
@@ -69,7 +94,13 @@ public class PlayerWrapper {
         if (current >= queue.size()) {
             current = 0;
         }
+        if (t != null) {
+            t.interrupt();
+            stopSong();
+        }
+        playerStatus.setCurrStatus(PlayerStatus.Status.STOPPED);
         playCurrentSong();
+
     }
 
     /**
@@ -80,6 +111,11 @@ public class PlayerWrapper {
         if (current < 0) {
             current = queue.size() - 1;
         }
+        if (t != null) {
+            t.interrupt();
+            stopSong();
+        }
+        playerStatus.setCurrStatus(PlayerStatus.Status.STOPPED);
         playCurrentSong();
     }
 
@@ -127,10 +163,7 @@ public class PlayerWrapper {
      * @return the player status
      */
     public String getPlayerStatus() {
-        if (!getCurrentSong().isEmpty()) {
-            return playerStatus.GetPlayerStatus();
-        }
-        return "";
+        return playerStatus.GetPlayerStatus();
     }
 
     /**
@@ -139,7 +172,7 @@ public class PlayerWrapper {
      * @return the player volume
      */
     public int getPlayerVolume() {
-        return mp3Player.getVolume();
+        return playerStatus.getVolume();
     }
 
     /**
@@ -149,7 +182,8 @@ public class PlayerWrapper {
      */
     public void setPlayerVolume(int volume) {
         try {
-            mp3Player.setVolume(Math.round(volume));
+            playerStatus.setVolume(Math.round(volume));
+            mp3Player.setVolume(playerStatus.getVolume());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -170,20 +204,29 @@ public class PlayerWrapper {
      * @return the current song
      */
     public String getCurrentSong() {
+
+        return playerStatus.getCurrSong();
+    }
+
+    private void setCurrentSong(String name) {
         if (!queue.isEmpty()) {
-            playerStatus.setCurrSong(queue.get(current).getName());
+            playerStatus.setCurrSong(FilenameUtils.removeExtension(name));
         } else {
             playerStatus.setCurrSong("No song available");
         }
-        return playerStatus.getCurrSong();
+    }
+
+    public boolean getShuffleState() {
+        return mp3Player.isShuffle();
     }
 
     /**
      * Toggle repeat state.
      */
     public void toggleRepeatState() {
-        boolean sw = !mp3Player.isRepeat();
-        mp3Player.setRepeat(sw);
+        boolean sw = !(playerStatus.isRepeat());
+        playerStatus.setRepeat(sw);
+        mp3Player.setRepeat(playerStatus.isRepeat());
     }
 
     /**
@@ -191,6 +234,7 @@ public class PlayerWrapper {
      */
     public void toggleShuffleState() {
         boolean sw = !mp3Player.isShuffle();
+        Collections.shuffle(queue);
         mp3Player.setShuffle(sw);
     }
 
@@ -277,7 +321,7 @@ public class PlayerWrapper {
      * Method to have the player keep track of the player status.
      */
     private void keepSongPlaying() {
-        new Thread(() -> {
+        t = new Thread(() -> {
             boolean sw = true;
             while (sw) {
                 if (mp3Player.isPaused() || mp3Player.isStopped()) {
@@ -287,7 +331,8 @@ public class PlayerWrapper {
                     }
                 }
             }
-        }).start();
+        });
+        t.start();
     }
 
     /**

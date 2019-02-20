@@ -60,6 +60,7 @@ class PagePlaylist extends PolymerElement {
 
       <iron-ajax
         id="addPlaylist"
+        method="post"
         url="[[apiRootPath]]/player/add/playlist/[[routeData.playlistId]]"
         handle-as="json"
         params="{{header}}"
@@ -70,7 +71,9 @@ class PagePlaylist extends PolymerElement {
       <div class="card">
         <h1>[[playlist.title]]</h1>
         <p><i>[[playlist.description]]</i></p>
-        <paper-button id="addPlaylistToQueue" on-click="addPlaylistToQueue">Add playlist to Queue</paper-button>
+        <template is="dom-if" if="{{playlistTrackCount}}">
+          <paper-button id="addPlaylistToQueue" on-click="addPlaylistToQueue">Add playlist to Queue</paper-button>
+        </template>
       </div>
 
       <!-- Artist tracks -->
@@ -96,26 +99,33 @@ class PagePlaylist extends PolymerElement {
 
   ready(){
     super.ready();
-    window.addEventListener('refresh-playlist-event', function(e) {
+    window.addEventListener('refresh-playlist-event', function() {
       this.$.getDetails.generateRequest();
     }.bind(this));
   }
 
-  addPlaylistToQueue(e){
+  addPlaylistToQueue(){
     this.$.addPlaylist.generateRequest();
   }
 
-  handleAddPlaylist(e,r){
+  handleAddPlaylist(){
     this.dispatchEvent(new CustomEvent('refresh-queue-event', { bubbles: true, composed: true }));
+    this.dispatchEvent(new CustomEvent('refresh-track-control-event', { bubbles: true, composed: true }));
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Playlist', text: 'Playlist has been added to the queue.'}, bubbles: true, composed: true }));
   }
 
-  handleAddPlaylistError(e,r){
+  handleAddPlaylistError(){
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Playlist', text: 'Playlist has not been added to the queue.'}, bubbles: true, composed: true }));
   }
 
   static get properties() {
     return {
+      playlist: {
+        type: Object
+      },
+      playlistTrackCount: {
+        type: Number
+      },
       token: {
         type: String,
         value: localStorage.getItem("token")

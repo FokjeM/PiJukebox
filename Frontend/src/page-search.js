@@ -176,6 +176,27 @@ class PageSearch extends PolymerElement {
 
   static get properties() {
     return {
+      searchTerm: {
+        type: String
+      },
+      trackResults: {
+        type: Object
+      },
+      trackResultsCount: {
+        type: Number
+      },
+      albumResults: {
+        type: Object
+      },
+      albumResultCount: {
+        type: Number
+      },
+      playlistResults: {
+        type: Object
+      },
+      playlistResultsCount: {
+        type: Number
+      },
       token: {
         type: String,
         value: localStorage.getItem("token")
@@ -195,9 +216,9 @@ class PageSearch extends PolymerElement {
   //Toggle ajax auto attribute and hide/show results according to checkbox value
   setAjaxAuto(e){
     //Select iron ajax ID by checkbox data-ajax || data-ajax == iron ajax id
-    var ajaxElement = this.shadowRoot.getElementById(e.target.dataset.ajax);
+    let ajaxElement = this.shadowRoot.getElementById(e.target.dataset.ajax);
     //Select result div ID by checkbox data-results || data-results == result div id
-    var ajaxResults = this.shadowRoot.getElementById(e.target.dataset.results);
+    let ajaxResults = this.shadowRoot.getElementById(e.target.dataset.results);
 
     if(e.target.checked){
       ajaxElement.setAttribute('auto', '');

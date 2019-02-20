@@ -30,11 +30,8 @@ public class UploadController {
     private final ITrackService trackService;
     private final IGenreService genreService;
     private final IArtistService artistService;
-    private String uploadDir = "C:\\Users\\Public\\Music\\";
-//    private String uploadDir = "D:\\Users\\Ruben\\Desktop\\uploads\\";
-
-    private String dirToScan = "C:\\Users\\Public\\Downloads\\";
-    //    private String dirToScan = "D:\\Users\\Ruben\\Desktop\\uploads\\check\\";
+    private String musicDir = com.pijukebox.configuration.ApplicationInitializer.getMediaPath();
+    private String uploadDir = com.pijukebox.configuration.ApplicationInitializer.getMediaPath().concat("uploads").concat(File.separator);
     private ArrayList<String> tracks = new ArrayList<>();
 
     @Autowired
@@ -54,12 +51,15 @@ public class UploadController {
     public ResponseEntity<SimpleTrack> upload(@RequestBody MultipartFile[] file) throws Exception {
         for (MultipartFile f : file) {
             SimpleTrack track = new SimpleTrack(null, FilenameUtils.removeExtension(f.getOriginalFilename()), null, f.getOriginalFilename());
-            if (trackService.findAllSimpleTrackByName(track.getName()).hasBody()) {
+            // If track exists, do not upload
+            if (trackService.findSimpleTrackByName(track.getName()).hasBody()) {
                 return new ResponseEntity<>(HttpStatus.CONFLICT);
             } else {
                 uploadFile(f);
                 trackService.addSimpleTrack(track);
             }
+
+
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -71,18 +71,18 @@ public class UploadController {
      */
     @PostMapping(value = "/upload/folder")
     public ResponseEntity<SimpleTrack> uploadFromFolder() throws IOException {
-        File[] files = new File(dirToScan).listFiles();
+        File[] files = new File(uploadDir).listFiles();
         if (files != null) {
             showFiles(files);
 
             for (String t : tracks) {
                 if (!t.equals("desktop.ini")) {
                     SimpleTrack track = new SimpleTrack(null, FilenameUtils.removeExtension(t), null, t);
-                    TrackDetails trackDetails = new TrackDetails(t, dirToScan);
+                    TrackDetails trackDetails = new TrackDetails(t, uploadDir);
                     SimpleGenre genre = new SimpleGenre(null, trackDetails.getGenre());
                     SimpleArtist artist = new SimpleArtist(null, trackDetails.getArtist());
                     if (!trackService.findAllSimpleTrackByName(track.getName()).hasBody()) {
-                        addFileToFolder(dirToScan, uploadDir, t);
+                        addFileToFolder(uploadDir, musicDir, t);
                         trackService.addSimpleTrack(track);
                     }
                     genreService.addSimpleGenre(genre);
@@ -105,6 +105,13 @@ public class UploadController {
         return null;
     }
 
+    /**
+     * Move a file from one directory to another, without overwriting.
+     *
+     * @param oldDir   The directory where the currently file resides.
+     * @param newDir   The directory to move the file to.
+     * @param fileName The name the file has, including the type suffix, if present.
+     */
     private void addFileToFolder(String oldDir, String newDir, String fileName) throws IOException {
         File source = new File(oldDir + fileName);
         File destination = new File(newDir + fileName);
@@ -113,6 +120,11 @@ public class UploadController {
         }
     }
 
+    /**
+     * Show all files in the given array, or any subdirectories of files in the array.
+     *
+     * @param files an array with File objects, which may be files and directories.
+     */
     private void showFiles(File[] files) {
         tracks.clear();
         for (File file : files) {
@@ -124,9 +136,14 @@ public class UploadController {
         }
     }
 
+    /**
+     * Save a file to the music directory.
+     *
+     * @param file the file to upload.
+     */
     private void uploadFile(MultipartFile file) throws Exception {
         byte[] bytes = file.getBytes();
-        Path path = Paths.get(uploadDir + file.getOriginalFilename());
+        Path path = Paths.get(musicDir  + file.getOriginalFilename());
         Files.write(path, bytes);
     }
 }

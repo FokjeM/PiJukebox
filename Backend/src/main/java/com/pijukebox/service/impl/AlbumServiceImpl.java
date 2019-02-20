@@ -51,12 +51,12 @@ public class AlbumServiceImpl implements IAlbumService {
 
     @Override
     public ResponseEntity<Album> findExtendedAlbumById(Long id) {
-        return new ResponseEntity<>(albumRepository.findById(id).get(), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(albumRepository.findById(id).get(), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<Album>> findAlbumsByNameContaining(String name) {
-        return new ResponseEntity<>(albumRepository.findAlbumsByNameContaining(name).get(), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(albumRepository.findAlbumsByNameContaining(name).get(), HttpStatus.OK);
     }
 
     @Override

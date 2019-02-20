@@ -34,11 +34,12 @@ class PageQueue extends PolymerElement {
         url="[[apiRootPath]]/player/queue"
         params="{{header}}"
         handle-as="json"
-        last-response="{{response}}"
+        last-response="{{queueTracks}}"
         on-response="getResponse">
       </iron-ajax>
 
       <iron-ajax
+        method="POST"
         id="clearQueue"
         url="[[apiRootPath]]/player/queue/clear"
         params="{{header}}"
@@ -50,7 +51,7 @@ class PageQueue extends PolymerElement {
       <div class="card">  
         <div class="container">
           <h1>Current queue</h1>
-          <dom-repeat id="domRepeat" items="{{response}}" as="track" index-as="innerIndex" rendered-item-count="{{queueTrackCount}}">
+          <dom-repeat id="domRepeat" items="{{queueTracks}}" as="track" index-as="innerIndex" rendered-item-count="{{queueTrackCount}}">
           <template>
               <queue-item
                   track-id="{{track.id}}"
@@ -74,43 +75,45 @@ class PageQueue extends PolymerElement {
 
   ready(){
     super.ready();
-    console.log(this.response);
-    // this.$.getCurrentQueue.generateRequest();
-  
-    window.addEventListener('refresh-queue-event', function(e) {
+    window.addEventListener('refresh-queue-event', function() {
       this.$.getCurrentQueue.generateRequest();
     }.bind(this));
   }
  
-  clearQueue(e){
+  clearQueue(){
     this.$.clearQueue.generateRequest();
-    
   }
 
-  queueChanged(e, r) {
+  queueChanged() {
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'The queue changed successfully'}, bubbles: true, composed: true }));
   }
 
-  queueChangedError(e,r){
+  queueChangedError(){
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong, please try again'}, bubbles: true, composed: true }));
   }
 
-  queueCleared(e,r){
+  queueCleared(){
     this.$.getCurrentQueue.generateRequest(); // Refresh Queue
+    this.dispatchEvent(new CustomEvent('refresh-track-control-event', { bubbles: true, composed: true }));
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'The queue has been cleaned successfully'}, bubbles: true, composed: true }));
   }
 
-  queueClearedError(e,r){
+  queueClearedError(){
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong, please try again'}, bubbles: true, composed: true }));
   }
 
   getResponse(e, r) {
-    console.log(r.response);
     this.response = r.response;
   }
 
   static get properties() {
     return {
+      queueTracks: {
+        type: Object
+      },
+      queueTrackCount: {
+        type: Number
+      },
       token: {
         type: String,
         value: localStorage.getItem("token")

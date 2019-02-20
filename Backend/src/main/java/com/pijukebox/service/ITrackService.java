@@ -16,6 +16,8 @@ public interface ITrackService {
 
     ResponseEntity<List<SimpleTrack>> findAllSimpleTrack();
 
+    ResponseEntity<SimpleTrack> findSimpleTrackByName(String name);
+
     ResponseEntity<SimpleTrack> findSimpleTrackById(Long id);
 
     ResponseEntity<List<SimpleTrack>> findAllSimpleTrackByName(String name);

@@ -51,8 +51,7 @@ class QueueItem extends PolymerElement {
       </iron-ajax>
 
       <div class="queueItem">
-        <div class="controls">
-
+        <!-- <div class="controls">
           <template is="dom-if" if="[[isFirst()]]">
             <paper-icon-button on-tap="oneUp" icon="arrow-upward" disabled></paper-icon-button>
           </template> 
@@ -62,8 +61,7 @@ class QueueItem extends PolymerElement {
           </template>  
 
           <paper-icon-button class="downButton" on-tap="oneDown" icon="arrow-downward"></paper-icon-button>
-          
-        </div>
+        </div> -->
         <div class="trackLink">
           <div class="trackName">
             [[trackName]]
@@ -78,7 +76,6 @@ class QueueItem extends PolymerElement {
 
   ready(){
     super.ready();
-    console.log(this.trackArtists);
     this.trackArtists.forEach(element => {
         this.trackArtist = this.trackArtist + " " + element.name;
     });
@@ -88,25 +85,25 @@ class QueueItem extends PolymerElement {
     return this.trackIndex == 0;
   }
 
-  oneUp(e) {
+  oneUp() {
     this.$.queueUp.generateRequest();
   }
 
-  oneDown(e) {
+  oneDown() {
     this.$.queueDown.generateRequest();
   }
 
-  handleQueueResponseUp(e,r){
+  handleQueueResponseUp(){
       this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: this.trackName + ' has been moved up.'}, bubbles: true,composed: true, }));
       this.dispatchEvent(new CustomEvent('refresh-queue-event', { bubbles: true,composed: true }));
   }
 
-  handleQueueResponseDown(e,r){
+  handleQueueResponseDown(){
       this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: this.trackName + ' has been moved down.'}, bubbles: true,composed: true, }));
       this.dispatchEvent(new CustomEvent('refresh-queue-event', { bubbles: true,composed: true }));
   }
 
-  handleError(e,r){
+  handleError(){
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true, }));
   }
 
@@ -127,6 +124,9 @@ class QueueItem extends PolymerElement {
       trackArtist: {
         type: String,
         value: "Artists: "
+      },
+      trackIndex: {
+        type: Number
       },
       token: {
         type: String,

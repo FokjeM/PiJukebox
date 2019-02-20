@@ -1,13 +1,10 @@
 package com.pijukebox.player;
 
-import com.mpatric.mp3agic.ID3v1;
-import com.mpatric.mp3agic.ID3v2;
-import com.mpatric.mp3agic.InvalidDataException;
-import com.mpatric.mp3agic.Mp3File;
-import com.mpatric.mp3agic.UnsupportedTagException;
+import com.mpatric.mp3agic.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,16 +14,15 @@ import java.nio.file.Paths;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Component
 public class TrackDetails {
 
+    private final static Path ABSOLUTE_PATH = Paths.get(com.pijukebox.configuration.ApplicationInitializer.getMediaPath());
     private String title;
     private String artist;
     private String genre;
     private String album;
-
     private Mp3File mp3file;
-
-    private final static Path ABSOLUTE_PATH = Paths.get("C:/Users/Public/Music");
 
     /**
      * Instantiates a new Track details object.
@@ -39,7 +35,7 @@ public class TrackDetails {
     public TrackDetails(String filename, String path) {
         try {
 
-            this.mp3file = new Mp3File(Paths.get(path) + "\\" + filename.trim());
+            this.mp3file = new Mp3File(Paths.get(path.trim()) + File.separator + filename.trim());
             setTagValuesToFields();
 
             System.out.println("Length of this mp3 is: " + mp3file.getLengthInSeconds() + " seconds");
@@ -78,11 +74,5 @@ public class TrackDetails {
             this.genre = id3v1Tag.getGenreDescription() == null ? "unknown" : id3v1Tag.getGenreDescription();
             this.album = id3v1Tag.getAlbum() == null ? "unknown" : id3v1Tag.getAlbum();
         }
-    }
-
-    private void printOutput() {
-        System.out.println("Length of this mp3 is: " + mp3file.getLengthInSeconds() + " seconds");
-        System.out.println("Has ID3v1 tag?: " + (mp3file.hasId3v1Tag() ? "YES" : "NO"));
-        System.out.println("Has ID3v2 tag?: " + (mp3file.hasId3v2Tag() ? "YES" : "NO"));
     }
 }

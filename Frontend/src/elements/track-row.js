@@ -111,7 +111,7 @@ class TrackRow extends PolymerElement {
 
       <iron-ajax
         id="addToPlaylist"
-        method="PATCH"
+        method="patch"
         url="[[apiRootPath]]/details/playlists/{{playlistId}}/tracks/{{trackId}}"
         content-type="application/json"
         params="{{header}}"
@@ -132,7 +132,7 @@ class TrackRow extends PolymerElement {
 
       <iron-ajax
         id="addTrackToQueue"
-        method="get"
+        method="post"
         url="[[apiRootPath]]/player/add/{{trackId}}"
         content-type="application/json"
         params="{{header}}"
@@ -192,6 +192,12 @@ class TrackRow extends PolymerElement {
         type: Number,
         value: null
       },
+      artist: {
+        type: Object
+      },
+      playlist: {
+        type: Object
+      },
       playlistId: {
         type: Number,
         value: null
@@ -214,7 +220,7 @@ class TrackRow extends PolymerElement {
 
   ready(){
     super.ready();
-    window.addEventListener('refresh-playlists-event', function(e) {
+    window.addEventListener('refresh-playlists-event', function() {
       this.$.getPlaylists.generateRequest();
     }.bind(this));
   }
@@ -230,34 +236,35 @@ class TrackRow extends PolymerElement {
   }
 
   addTrack(e) {
-    let playlist_Id = e.target.dataset.playlistId;
-    let track_Id = e.target.dataset.trackId;
+    const playlist_Id = e.target.dataset.playlistId;
+    const track_Id = e.target.dataset.trackId;
 
     this.playlistId = playlist_Id;
     this.trackId = track_Id;
     this.$.addToPlaylist.generateRequest();
   }
 
-  addedTrack(e, response) {
+  addedTrack() {
     this.dispatchEvent(new CustomEvent('refresh-playlist-event', { bubbles: true, composed: true }));
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Add track', text: this.track.name + ' is successfully added to the playlist.'}, bubbles: true,composed: true }));
   }
 
-  addedTrackError(e,r){
+  addedTrackError(){
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Add track', text: this.track.name + ' could not be added. (No double tracks allowed in playlist)'}, bubbles: true,composed: true }));
   }
 
-  addToQueue(e){
+  addToQueue(){
     this.trackId = this.track.id;
     this.$.addTrackToQueue.generateRequest();
   }
 
-  handleQueueResponse(e,r){
+  handleQueueResponse(){
+    this.dispatchEvent(new CustomEvent('refresh-track-control-event', { bubbles: true, composed: true }));
     this.dispatchEvent(new CustomEvent('refresh-queue-event', { bubbles: true, composed: true }));
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: this.track.name + ' has been added to the queue.'}, bubbles: true,composed: true }));
   }
 
-  handleError(e,r){
+  handleError(){
     this.dispatchEvent(new CustomEvent('open-dialog-event', { detail: {title: 'Queue', text: 'Something went wrong.'}, bubbles: true,composed: true }));
   }
 }
