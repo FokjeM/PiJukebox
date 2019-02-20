@@ -4,7 +4,7 @@ package com.PiJukeboxPlayer;
  * An exception that poses a valid reason to halt execution of the program
  * @author Riven
  */
-public class FatalException extends Exception {
+class FatalException extends Exception {
     
     /**
      * Fatal Exception with all parameters
