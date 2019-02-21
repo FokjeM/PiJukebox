@@ -288,7 +288,6 @@ class TrackControl extends PolymerElement {
 
   playPause(e) {
     const state = this.playPauseState;
-    console.log("Here" + state);
     switch(state)
     {
         case "PLAYING":
@@ -335,7 +334,6 @@ class TrackControl extends PolymerElement {
    */
   changePlayPauseIcon() {
     const state = this.playPauseState
-    console.log(state);
     switch(state)
     {
         case "PLAYING":
