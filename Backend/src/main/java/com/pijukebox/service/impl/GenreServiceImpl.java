@@ -35,7 +35,12 @@ public class GenreServiceImpl implements IGenreService {
 
     @Override
     public ResponseEntity<List<SimpleGenre>> findGenresByNameContaining(String name) {
-        return new ResponseEntity<>(genreRepository.findGenresByNameContaining(name).get(), HttpStatus.OK);
+        if (genreRepository.findGenresByNameContaining(name).isPresent())
+        {
+            return new ResponseEntity<>(genreRepository.findGenresByNameContaining(name).get(), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
     }
 
     @Override

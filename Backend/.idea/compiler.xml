@@ -13,7 +13,6 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Backend" target="8" />
-      <module name="pi-jukebox" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

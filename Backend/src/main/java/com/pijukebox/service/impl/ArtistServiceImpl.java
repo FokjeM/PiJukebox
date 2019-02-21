@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.Null;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("OptionalGetWithoutIsPresent")
@@ -54,7 +56,12 @@ public class ArtistServiceImpl implements IArtistService {
 
     @Override
     public ResponseEntity<List<SimpleArtist>> findSimpleArtistsByNameContaining(String name) {
-        return new ResponseEntity<>(simpleArtistRepository.findSimpleArtistByNameContaining(name).get(), HttpStatus.OK);
+        if(simpleArtistRepository.findSimpleArtistByNameContaining(name).isPresent())
+        {
+            return new ResponseEntity<>(simpleArtistRepository.findSimpleArtistByNameContaining(name).get(), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.pijukebox.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -11,21 +12,18 @@ import java.util.NoSuchElementException;
 @RestControllerAdvice
 public class ExceptionHandler {
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
-    public String handleGeneralException(Exception exception, HttpServletRequest request) {
-        return String.format("I have the message '%s' for %s", exception.getMessage(), request.getRemoteAddr());
+    public ResponseEntity<String> handleGeneralException(Exception exception, HttpServletRequest request) {
+        return new ResponseEntity<>(String.format("I have the message '%s' for %s", exception.getMessage(), request.getRemoteAddr()), HttpStatus.BAD_REQUEST);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @org.springframework.web.bind.annotation.ExceptionHandler(IOException.class)
-    public String handleIOException(IOException exception, HttpServletRequest request) {
-        return String.format("I have the message '%s' for %s", exception.getMessage(), request.getRemoteAddr());
+    public ResponseEntity<String> handleIOException(IOException exception, HttpServletRequest request) {
+        return new ResponseEntity<>(String.format("I have the message '%s' for %s", exception.getMessage(), request.getRemoteAddr()), HttpStatus.BAD_REQUEST);
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @org.springframework.web.bind.annotation.ExceptionHandler(NoSuchElementException.class)
-    public String handleIOException(NoSuchElementException exception, HttpServletRequest request) {
-        return String.format("I have the message '%s' for %s", exception.getMessage(), request.getRemoteAddr());
+    public ResponseEntity<String> handleIOException(NoSuchElementException exception, HttpServletRequest request) {
+        return new ResponseEntity<>(String.format("I have the message '%s' for %s", exception.getMessage(), request.getRemoteAddr()), HttpStatus.NO_CONTENT);
     }
 }

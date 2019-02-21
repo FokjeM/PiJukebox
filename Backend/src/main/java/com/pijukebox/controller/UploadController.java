@@ -70,7 +70,7 @@ public class UploadController {
      * @return a track
      */
     @PostMapping(value = "/upload/folder")
-    public ResponseEntity<SimpleTrack> uploadFromFolder() throws IOException {
+    public ResponseEntity<Object> uploadFromFolder() throws IOException {
         File[] files = new File(uploadDir).listFiles();
         if (files != null) {
             showFiles(files);
@@ -81,31 +81,41 @@ public class UploadController {
                     TrackDetails trackDetails = new TrackDetails(t, uploadDir);
                     SimpleGenre genre = new SimpleGenre(null, trackDetails.getGenre());
                     SimpleArtist artist = new SimpleArtist(null, trackDetails.getArtist());
+                    System.out.println("Step 1");
                     if (!trackService.findSimpleTrackByName(track.getName()).hasBody()) {
                         addFileToFolder(uploadDir, musicDir, t);
                         trackService.addSimpleTrack(track);
                     }
-
-                    genreService.addSimpleGenre(genre);
-                    artistService.addSimpleArtist(artist);
+                    System.out.println("Step 2");
+                    if(!genreService.findGenresByNameContaining(genre.getName()).hasBody())
+                    {
+                        genreService.addSimpleGenre(genre);
+                    }
+                    System.out.println("Step 3");
+                    if(!artistService.findSimpleArtistsByNameContaining(artist.getName()).hasBody())
+                    {
+                        artistService.addSimpleArtist(artist);
+                    }
                     Long addToArtistId = artistService.findSimpleArtistsByNameContaining(artist.getName()).getBody().get(0).getId();
                     Long addToGenreId = genreService.findGenresByNameContaining(genre.getName()).getBody().get(0).getId();
 
+                    System.out.println("Step 4");
                     if (trackService.findTrackByArtistId(addToArtistId).hasBody()) {
                         trackService.addArtistToTrack(trackService.findTrackByArtistId(addToArtistId).getBody());
-
                     }
 
+                    System.out.println("Step 5");
                     if (trackService.findTrackByGenreId(addToGenreId).hasBody()) {
                         trackService.addGenreToTrack(trackService.findTrackByGenreId(addToGenreId).getBody());
 
                     }
 
+                    System.out.println("Step 6");
                 }
             }
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>("Song added successfully", HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("Nothing to display",HttpStatus.NO_CONTENT);
     }
 
     /**

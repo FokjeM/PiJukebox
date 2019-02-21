@@ -64,15 +64,15 @@ public class TrackDetails {
         if (mp3file.hasId3v2Tag()) {
             ID3v2 id3v2Tag = mp3file.getId3v2Tag();
             this.title = id3v2Tag.getTitle();
-            this.artist = id3v2Tag.getArtist() == null ? "unknown" : id3v2Tag.getArtist();
-            this.genre = id3v2Tag.getGenreDescription() == null ? "unknown" : id3v2Tag.getGenreDescription();
-            this.album = id3v2Tag.getAlbum() == null ? "unknown" : id3v2Tag.getAlbum();
+            this.artist = (id3v2Tag.getArtist() == null || id3v2Tag.getArtist().isEmpty())  ? "unknown" : id3v2Tag.getArtist();
+            this.genre = (id3v2Tag.getGenreDescription() == null || id3v2Tag.getGenreDescription().isEmpty()) ? "unknown" : id3v2Tag.getGenreDescription();
+            this.album = (id3v2Tag.getAlbum() == null || id3v2Tag.getAlbum().isEmpty()) ? "unknown" : id3v2Tag.getAlbum();
         } else if (mp3file.hasId3v1Tag()) {
             ID3v1 id3v1Tag = mp3file.getId3v1Tag();
             this.title = id3v1Tag.getTitle();
-            this.artist = id3v1Tag.getArtist() == null ? "unknown" : id3v1Tag.getArtist();
-            this.genre = id3v1Tag.getGenreDescription() == null ? "unknown" : id3v1Tag.getGenreDescription();
-            this.album = id3v1Tag.getAlbum() == null ? "unknown" : id3v1Tag.getAlbum();
+            this.artist = (id3v1Tag.getArtist() == null || id3v1Tag.getArtist().isEmpty()) ? "unknown" : id3v1Tag.getArtist();
+            this.genre = (id3v1Tag.getGenreDescription() == null || id3v1Tag.getGenreDescription().isEmpty()) ? "unknown" : id3v1Tag.getGenreDescription();
+            this.album = (id3v1Tag.getAlbum() == null || id3v1Tag.getAlbum().isEmpty()) ? "unknown" : id3v1Tag.getAlbum();
         }
     }
 }
