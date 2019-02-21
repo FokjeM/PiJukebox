@@ -100,12 +100,12 @@ public class UploadController {
                     Long addToGenreId = genreService.findGenresByNameContaining(genre.getName()).getBody().get(0).getId();
 
                     System.out.println("Step 4");
-                    if (trackService.findTrackByArtistId(addToArtistId).hasBody()) {
+                    if (!trackService.findTrackByArtistId(addToArtistId).hasBody()) {
                         trackService.addArtistToTrack(trackService.findTrackByArtistId(addToArtistId).getBody());
                     }
 
                     System.out.println("Step 5");
-                    if (trackService.findTrackByGenreId(addToGenreId).hasBody()) {
+                    if (!trackService.findTrackByGenreId(addToGenreId).hasBody()) {
                         trackService.addGenreToTrack(trackService.findTrackByGenreId(addToGenreId).getBody());
 
                     }
