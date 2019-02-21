@@ -81,17 +81,17 @@ public class UploadController {
                     TrackDetails trackDetails = new TrackDetails(t, uploadDir);
                     SimpleGenre genre = new SimpleGenre(null, trackDetails.getGenre());
                     SimpleArtist artist = new SimpleArtist(null, trackDetails.getArtist());
-                    System.out.println("Step 1");
+                    
                     if (!trackService.findSimpleTrackByName(track.getName()).hasBody()) {
                         addFileToFolder(uploadDir, musicDir, t);
                         trackService.addSimpleTrack(track);
                     }
-                    System.out.println("Step 2");
+
                     if(!genreService.findGenresByNameContaining(genre.getName()).hasBody())
                     {
                         genreService.addSimpleGenre(genre);
                     }
-                    System.out.println("Step 3");
+
                     if(!artistService.findSimpleArtistsByNameContaining(artist.getName()).hasBody())
                     {
                         artistService.addSimpleArtist(artist);
@@ -99,18 +99,15 @@ public class UploadController {
                     Long addToArtistId = artistService.findSimpleArtistsByNameContaining(artist.getName()).getBody().get(0).getId();
                     Long addToGenreId = genreService.findGenresByNameContaining(genre.getName()).getBody().get(0).getId();
 
-                    System.out.println("Step 4");
-                    if (!trackService.findTrackByArtistId(addToArtistId).hasBody()) {
+                    if (trackService.findTrackByArtistId(addToArtistId).hasBody()) {
                         trackService.addArtistToTrack(trackService.findTrackByArtistId(addToArtistId).getBody());
                     }
 
-                    System.out.println("Step 5");
-                    if (!trackService.findTrackByGenreId(addToGenreId).hasBody()) {
+                    if (trackService.findTrackByGenreId(addToGenreId).hasBody()) {
                         trackService.addGenreToTrack(trackService.findTrackByGenreId(addToGenreId).getBody());
 
                     }
 
-                    System.out.println("Step 6");
                 }
             }
             return new ResponseEntity<>("Song added successfully", HttpStatus.OK);
